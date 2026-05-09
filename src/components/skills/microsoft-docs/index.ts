@@ -11,7 +11,7 @@ import {
 
 export const microsoftDocsSkill = defineSkill({
   id: "microsoft-docs",
-  fullName: "microsoft-docs",
+  fullName: "Microsoft 文档",
   description: "在用户需要理解 Microsoft 技术概念、教程、配置、限制、配额、最佳实践，或编写/调试/评审 Microsoft SDK、.NET、Azure 客户端代码时使用；优先检索 Microsoft Learn 官方内容。",
   useCases: [
     "用户在问“怎么工作”“是什么”“有哪些限制”“怎么配置”“官方最佳实践是什么”。",

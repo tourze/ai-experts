@@ -13,7 +13,7 @@ import { systemDesignSkill } from "../system-design/index";
 
 export const protocolFreezingPatternsSkill = defineSkill({
   id: "protocol-freezing-patterns",
-  fullName: "protocol-freezing-patterns",
+  fullName: "协议冻结模式",
   description: "在需要管理协议版本冻结、线格式演进、向后兼容、版本协商和 breaking change 流程时使用。",
   useCases: [
     "需要冻结已部署协议字段或在不破坏旧客户端前提下演进消息结构。",

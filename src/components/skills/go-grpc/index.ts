@@ -13,7 +13,7 @@ import { goPerformanceSkill } from "../go-performance/index";
 
 export const goGrpcSkill = defineSkill({
   id: "go-grpc",
-  fullName: "go-grpc",
+  fullName: "Go gRPC",
   description: "当 Go 代码涉及 gRPC/protobuf：服务定义、服务端/客户端实现、拦截器、流式 RPC、错误码、TLS 或性能优化时使用。",
   useCases: [
     "定义 `.proto` 文件或生成 Go gRPC 代码。",

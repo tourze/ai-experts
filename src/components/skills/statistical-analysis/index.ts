@@ -14,7 +14,7 @@ import { llmEvaluationSkill } from "../llm-evaluation/index";
 
 export const statisticalAnalysisSkill = defineSkill({
   id: "statistical-analysis",
-  fullName: "statistical-analysis",
+  fullName: "统计分析",
   description: "当用户要做统计推断、A/B test、hypothesis testing、p-value、confidence interval、regression 或判断统计结论是否可靠时使用。",
   useCases: [
     "用户问“这个差异算不算显著”“这个波动算异常吗”“这两个指标真的相关吗”。",

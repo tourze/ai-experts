@@ -13,7 +13,7 @@ import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const crossPlatformAdapterPatternsSkill = defineSkill({
   id: "cross-platform-adapter-patterns",
-  fullName: "cross-platform-adapter-patterns",
+  fullName: "跨平台适配器模式",
   description: "在设计跨平台应用的平台抽象层、适配器接口、运行时分支和 monorepo 组织时使用。",
   useCases: [
     "需要让同一套业务逻辑运行在多个平台上，或设计共享包与平台包的边界。",

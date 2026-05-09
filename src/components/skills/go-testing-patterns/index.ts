@@ -14,7 +14,7 @@ import { testingPatternsSkill } from "../testing-patterns/index";
 
 export const goTestingPatternsSkill = defineSkill({
   id: "go-testing-patterns",
-  fullName: "go-testing-patterns",
+  fullName: "Go 测试模式",
   description: "当 Go 代码需要测试设计、table-driven tests、mock、race、fuzz 或 flaky test 排查时使用。",
   useCases: [
     "为 Go 函数、HTTP handler、repository、worker、并发代码或 CLI 编写测试。",

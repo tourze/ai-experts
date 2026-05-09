@@ -15,7 +15,7 @@ import { statisticalAnalysisSkill } from "../statistical-analysis/index";
 
 export const dataAnalysisSkill = defineSkill({
   id: "data-analysis",
-  fullName: "data-analysis",
+  fullName: "数据分析",
   description: "当用户上传或指定 .xlsx、.csv 等表格文件，需要分析数据并给出结论时使用。",
   useCases: [
     "用户给出一个或多个本地 `.xlsx` / `.csv` 文件路径，希望先看结构、再做筛选、聚合、对比、导出。",

@@ -14,7 +14,7 @@ import { goPerformanceSkill } from "../go-performance/index";
 
 export const goTroubleshootingSkill = defineSkill({
   id: "go-troubleshooting",
-  fullName: "go-troubleshooting",
+  fullName: "Go 故障排查",
   description: "当 Go 程序出现异常行为需要排查：CPU 飙高、内存泄漏、goroutine 泄漏、死锁、竞态、panic 或性能回归时使用。",
   useCases: [
     "Go 程序出现 CPU 飙高、内存持续增长、goroutine 泄漏、死锁、数据竞争或性能回归。",

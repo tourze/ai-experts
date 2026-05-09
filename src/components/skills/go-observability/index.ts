@@ -13,7 +13,7 @@ import { goTroubleshootingSkill } from "../go-troubleshooting/index";
 
 export const goObservabilitySkill = defineSkill({
   id: "go-observability",
-  fullName: "go-observability",
+  fullName: "Go 可观测性",
   description: "当 Go 代码需要日志、指标、链路追踪、告警或可观测性体系建设时使用。",
   useCases: [
     "选型或实施日志（slog）、指标（Prometheus）、链路追踪（OpenTelemetry）、profiling、告警。",

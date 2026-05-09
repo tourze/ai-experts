@@ -97,6 +97,14 @@ describe("component source conventions", () => {
     }
   });
 
+  test("skill display names are user-facing labels", () => {
+    const rawDisplayNames = registry.skills
+      .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))
+      .map((skill) => `${skill.id}: ${skill.fullName}`);
+
+    assert.deepEqual(rawDisplayNames, [], "skill fullName should not be a raw kebab-case id");
+  });
+
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
       const filePath = join(repoRoot, fileName);

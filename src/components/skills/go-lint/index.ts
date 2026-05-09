@@ -11,7 +11,7 @@ import {
 
 export const goLintSkill = defineSkill({
   id: "go-lint",
-  fullName: "go-lint",
+  fullName: "Go Lint",
   description: "当 Go 项目需要配置或使用 golangci-lint、理解 linter 规则、抑制误报、或在 CI 中集成 lint 时使用。",
   useCases: [
     "在 Go 项目中引入或调整 `golangci-lint` 配置（`.golangci.yml`）。",

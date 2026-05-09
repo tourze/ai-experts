@@ -13,7 +13,7 @@ import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goCodeStyleSkill = defineSkill({
   id: "go-code-style",
-  fullName: "go-code-style",
+  fullName: "Go 代码风格",
   description: "当 Go 代码需要风格、可读性、文件组织、函数签名或惯用写法判断时使用。",
   useCases: [
     "编写或审查 Go 代码时，需要判断“能跑”和“好维护”之间的差距。",

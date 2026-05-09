@@ -12,7 +12,7 @@ import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const systemDesignSkill = defineSkill({
   id: "system-design",
-  fullName: "system-design",
+  fullName: "系统设计",
   description: "在需要设计系统、服务、存储、接口和边界时使用；强调需求澄清、高层方案、关键细节、可靠性和权衡。",
   useCases: [
     "适合系统设计题、平台方案、服务拆分、API 设计、数据模型和可靠性策略。",

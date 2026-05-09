@@ -13,7 +13,7 @@ import { similaritySearchPatternsSkill } from "../similarity-search-patterns/ind
 
 export const vectorIndexTuningSkill = defineSkill({
   id: "vector-index-tuning",
-  fullName: "vector-index-tuning",
+  fullName: "向量索引调优",
   description: "当用户要调优 HNSW、IVF、PQ、量化、召回-延迟-内存权衡，或排查向量索引性能问题时使用。",
   useCases: [
     "检索结果“够准但太慢”，或“够快但召回掉得离谱”。",

@@ -13,7 +13,7 @@ import { goErrorHandlingSkill } from "../go-error-handling/index";
 
 export const goPerformanceSkill = defineSkill({
   id: "go-performance",
-  fullName: "go-performance",
+  fullName: "Go 性能优化",
   description: "当 Go 代码需要性能优化、benchmark、pprof、benchstat 或优化验证时使用。",
   useCases: [
     "优化热路径延迟、吞吐、内存分配、GC 压力或连接池。",

@@ -13,7 +13,7 @@ import { vectorIndexTuningSkill } from "../vector-index-tuning/index";
 
 export const similaritySearchPatternsSkill = defineSkill({
   id: "similarity-search-patterns",
-  fullName: "similarity-search-patterns",
+  fullName: "相似度搜索模式",
   description: "当用户要实现 semantic search、向量检索、相似度匹配、hybrid search、metadata filters、reranking 或检索架构设计时使用。",
   useCases: [
     "需要从“文本转向量”一路落到“如何存、如何查、如何扩展”。",

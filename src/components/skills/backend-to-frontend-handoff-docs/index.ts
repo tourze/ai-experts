@@ -12,7 +12,7 @@ import { systemDesignSkill } from "../system-design/index";
 
 export const backendToFrontendHandoffDocsSkill = defineSkill({
   id: "backend-to-frontend-handoff-docs",
-  fullName: "backend-to-frontend-handoff-docs",
+  fullName: "后端到前端交接文档",
   description: "当后端接口完成后用户要为前端生成 API 交接材料、DTO 语义、状态码、校验规则或边界场景说明时使用。",
   useCases: [
     "适合接口开发完成后的交接、联调准备和 API 文档补齐。",

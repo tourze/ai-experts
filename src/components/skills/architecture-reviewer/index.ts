@@ -15,7 +15,7 @@ import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const architectureReviewerSkill = defineSkill({
   id: "architecture-reviewer",
-  fullName: "architecture-reviewer",
+  fullName: "架构审查",
   description: "当用户要评审架构设计、代码库结构、技术文档或企业就绪风险时使用。",
   useCases: [
     "适合技术尽调、上线前审计、扩容评估、企业合规审查和架构争议仲裁。",

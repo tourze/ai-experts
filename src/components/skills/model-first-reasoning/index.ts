@@ -15,7 +15,7 @@ import { promptEngineeringPatternsSkill } from "../prompt-engineering-patterns/i
 
 export const modelFirstReasoningSkill = defineSkill({
   id: "model-first-reasoning",
-  fullName: "model-first-reasoning",
+  fullName: "模型优先推理",
   description: "当用户明确要求 model-first 或任务涉及状态机、约束系统等需要先建模的场景时使用。",
   useCases: [
     "功能复杂，直接编码容易引入隐含状态、漏掉约束或发明接口。",

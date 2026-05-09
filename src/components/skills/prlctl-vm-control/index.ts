@@ -15,7 +15,7 @@ import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
 
 export const prlctlVmControlSkill = defineSkill({
   id: "prlctl-vm-control",
-  fullName: "prlctl-vm-control",
+  fullName: "Parallels 虚拟机控制",
   description: "当用户通过 prlctl 控制 Parallels Desktop 虚拟机、采集状态或执行客体命令时使用。",
   useCases: [
     "需要在 macOS 宿主机上列出、定位、开关机、挂起、恢复或查看 Parallels Desktop 虚拟机详情。",

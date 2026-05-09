@@ -13,7 +13,7 @@ import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const techDebtSkill = defineSkill({
   id: "tech-debt",
-  fullName: "tech-debt",
+  fullName: "技术债管理",
   description: "在需要盘点代码健康状况、识别和排序技术债、制定治理策略、重构路线图或债务预算时使用。",
   useCases: [
     "适合代码健康盘点、重构优先级排序和维护 backlog 整理。",

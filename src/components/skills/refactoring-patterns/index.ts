@@ -16,7 +16,7 @@ import { softwareDesignSkill } from "../software-design/index";
 
 export const refactoringPatternsSkill = defineSkill({
   id: "refactoring-patterns",
-  fullName: "refactoring-patterns",
+  fullName: "重构模式",
   description: "当用户要选择命名化重构手法、处理代码异味或在不改行为下改结构时使用。纯格式整理或单次重命名不需要。",
   useCases: [
     "适合需要明确\"该用哪个重构动作、按什么顺序做\"的情况。",

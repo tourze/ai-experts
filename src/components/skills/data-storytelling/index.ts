@@ -14,7 +14,7 @@ import { statisticalAnalysisSkill } from "../statistical-analysis/index";
 
 export const dataStorytellingSkill = defineSkill({
   id: "data-storytelling",
-  fullName: "data-storytelling",
+  fullName: "数据叙事",
   description: "当用户要把数据分析结果转成业务叙事、executive narrative、KPI storyline、洞察结论、建议路径或汇报口径时使用。",
   useCases: [
     "已经有分析结果，但用户真正需要的是“怎么讲清楚”“怎么组织成报告或汇报”。",

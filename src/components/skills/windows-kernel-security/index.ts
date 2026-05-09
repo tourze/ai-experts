@@ -12,7 +12,7 @@ import { windowsUiAutomationSkill } from "../windows-ui-automation/index";
 
 export const windowsKernelSecuritySkill = defineSkill({
   id: "windows-kernel-security",
-  fullName: "windows-kernel-security",
+  fullName: "Windows 内核安全",
   description: "当用户分析或审计 Windows 内核对象、驱动边界、PatchGuard、VBS、HVCI 或 IOCTL 时使用。",
   useCases: [
     "需要分析 Windows 驱动、设备对象、IOCTL、回调注册和对象生命周期。",

@@ -15,7 +15,7 @@ import { vectorIndexTuningSkill } from "../vector-index-tuning/index";
 
 export const ragAuditorSkill = defineSkill({
   id: "rag-auditor",
-  fullName: "rag-auditor",
+  fullName: "RAG 审计",
   description: "当用户要审计 RAG 管线、排查 retrieval failure、groundedness、hallucination、chunking、top-k 或生成答案不忠实时使用。",
   useCases: [
     "用户说“RAG 效果不稳定”“为什么总答非所问”“检索命中了但生成没用上”。",

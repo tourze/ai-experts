@@ -13,7 +13,7 @@ import { vectorIndexTuningSkill } from "../vector-index-tuning/index";
 
 export const embeddingStrategiesSkill = defineSkill({
   id: "embedding-strategies",
-  fullName: "embedding-strategies",
+  fullName: "Embedding 策略",
   description: "当用户要选择或比较 embedding 模型、切块策略或向量检索方案时使用。",
   useCases: [
     "需要在“效果、成本、维度、语言覆盖、领域适配”之间为 embedding 选型。",

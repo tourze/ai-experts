@@ -13,7 +13,7 @@ import { windowsKernelSecuritySkill } from "../windows-kernel-security/index";
 
 export const windowsUiAutomationSkill = defineSkill({
   id: "windows-ui-automation",
-  fullName: "windows-ui-automation",
+  fullName: "Windows UI 自动化",
   description: "当用户自动化 Windows 桌面操作、UIA 元素定位或 Win32 输入仿真时使用。",
   useCases: [
     "需要使用 UIA / Win32 API 做窗口发现、元素定位、按钮点击、键盘输入和状态读取。",

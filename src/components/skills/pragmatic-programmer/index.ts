@@ -13,7 +13,7 @@ import { softwareDesignSkill } from "../software-design/index";
 
 export const pragmaticProgrammerSkill = defineSkill({
   id: "pragmatic-programmer",
-  fullName: "pragmatic-programmer",
+  fullName: "务实程序员原则",
   description: "当用户要用务实工程原则判断抽象是否过度、DRY/YAGNI 取舍、tracer bullet 路径或协作方式时使用。",
   useCases: [
     "适合方案取舍、代码评审、流程纠偏和开发习惯校准。",

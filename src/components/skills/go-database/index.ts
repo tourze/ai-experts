@@ -13,7 +13,7 @@ import { goSecuritySkill } from "../go-security/index";
 
 export const goDatabaseSkill = defineSkill({
   id: "go-database",
-  fullName: "go-database",
+  fullName: "Go 数据库",
   description: "当 Go 代码涉及 SQL 查询、事务、连接池、NULLable 列扫描、migration 或数据库访问层设计时使用。",
   useCases: [
     "编写 SQL 查询、事务块、连接池配置或数据库 migration 脚本。",

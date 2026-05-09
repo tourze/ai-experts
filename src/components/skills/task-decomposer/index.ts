@@ -14,7 +14,7 @@ import { subagentDrivenDevelopmentSkill } from "../subagent-driven-development/i
 
 export const taskDecomposerSkill = defineSkill({
   id: "task-decomposer",
-  fullName: "task-decomposer",
+  fullName: "任务拆解",
   description: "当用户要把复杂需求拆成任务板、依赖关系、关键路径或并行工作项时使用。",
   useCases: [
     "适合复杂功能、跨团队协作、需要排关键路径和并行度的实现计划。",

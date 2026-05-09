@@ -11,7 +11,7 @@ import {
 
 export const goStructsInterfacesSkill = defineSkill({
   id: "go-structs-interfaces",
-  fullName: "go-structs-interfaces",
+  fullName: "Go 结构体与接口",
   description: "当 Go 代码涉及接口设计、结构体组合、embedding、泛型 vs any、receiver 选择、零值可用或 type assertion 时使用。",
   useCases: [
     "设计或审查接口：大小、定义位置、方法集、与泛型的取舍。",

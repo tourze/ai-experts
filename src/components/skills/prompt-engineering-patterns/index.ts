@@ -16,7 +16,7 @@ import { ragAuditorSkill } from "../rag-auditor/index";
 
 export const promptEngineeringPatternsSkill = defineSkill({
   id: "prompt-engineering-patterns",
-  fullName: "prompt-engineering-patterns",
+  fullName: "提示工程模式",
   description: "当用户要设计、优化、约束或排查生产 prompt、few-shot 示例、系统 prompt、结构化响应契约或 prompt 变体实验时使用。",
   useCases: [
     "需要给生产环境 LLM 设计稳健 prompt，而不是临时试几句。",

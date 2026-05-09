@@ -13,7 +13,7 @@ import { systemDesignSkill } from "../system-design/index";
 
 export const hierarchicalMatchingSystemsSkill = defineSkill({
   id: "hierarchical-matching-systems",
-  fullName: "hierarchical-matching-systems",
+  fullName: "层级匹配系统",
   description: "在设计、评审或排查层级匹配系统时使用，适用于稳定匹配、最优分配、实体解析、分班分组或岗位匹配等场景。",
   useCases: [
     "适合学生分班、岗位匹配、组织树映射、分层分类归并、记录链接等问题。",

@@ -12,7 +12,7 @@ import { ragAuditorSkill } from "../rag-auditor/index";
 
 export const llmEvaluationSkill = defineSkill({
   id: "llm-evaluation",
-  fullName: "llm-evaluation",
+  fullName: "LLM 评估",
   description: "当用户要评估 LLM 应用效果或比较 prompt、模型表现时使用。",
   useCases: [
     "需要回答“这个 LLM 应用到底有没有变好”，而不是只看单次样例。",

@@ -12,7 +12,7 @@ import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const featureDevSkill = defineSkill({
   id: "feature-dev",
-  fullName: "feature-dev",
+  fullName: "功能开发",
   description: "当用户要实现跨多文件、跨模块或存在架构取舍的新功能时使用。单文件小改或纯 bug 修复不需要。",
   useCases: [
     "适合复杂功能、陌生代码库、新模块建设和需要沉淀文档的功能开发。",

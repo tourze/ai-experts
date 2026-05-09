@@ -13,7 +13,7 @@ import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const planReviewSkill = defineSkill({
   id: "plan-review",
-  fullName: "plan-review",
+  fullName: "计划审查",
   description: "在编码前审查实现计划、方案文档或 RFC 时使用；重点核 scope、假设、风险、依赖、回归面和缺口。",
   useCases: [
     "适合评审方案是否可落地、是否漏边界、是否高估团队能力或低估依赖。",

@@ -14,7 +14,7 @@ import { statisticalAnalysisSkill } from "../statistical-analysis/index";
 
 export const dataVisualizationSkill = defineSkill({
   id: "data-visualization",
-  fullName: "data-visualization",
+  fullName: "数据可视化",
   description: "当用户要选择图表类型、判断图表是否合适、生成 Python 可视化代码、调整图表表达方式或设计 Dashboard 图表时使用。",
   useCases: [
     "需要把表格结果转成 line/bar/scatter/heatmap 等图表。",
