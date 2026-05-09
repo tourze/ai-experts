@@ -250,6 +250,7 @@ describe("component source conventions", () => {
     )) {
       const source = readFileSync(sourcePath, "utf-8");
       assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
+      assert.doesNotMatch(source, /--break-system-packages/u, `${sourcePath} should not bypass Python package manager safety`);
     }
 
     const accessibilityGuide = readFileSync(

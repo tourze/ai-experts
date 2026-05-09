@@ -221,7 +221,7 @@ export function main(argv: readonly string[]): any {
   const outputPath = resolveOutputPath(args.output, args.format);
   if (!ensureManimInstalled()) {
     throw new Error(
-      "ERROR: Manim is not installed. Run: pip install manim --break-system-packages",
+      "ERROR: Manim is not installed for the selected Python. Create or activate a virtualenv, then install `manim`; do not bypass Python package manager safety.",
     );
   }
   const [qualityFlag, qualityDir] = QUALITY_MAP[args.quality];
