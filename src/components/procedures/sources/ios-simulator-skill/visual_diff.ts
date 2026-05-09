@@ -4,6 +4,7 @@ import { mkdirSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { deflateSync, inflateSync } from "node:zlib";
+import { assertOutputFilesWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-visual-diff",
@@ -30,6 +31,12 @@ export const procedure = defineCliProcedure({
       flag: "--details",
       type: "",
       description: "显示详细 JSON 输出，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 diff 产物后使用",
       required: false,
     },
   ],
@@ -203,6 +210,7 @@ export function parseArgs(argv: readonly string[]): any {
     output: ".",
     threshold: 0.01,
     details: false,
+    overwrite: false,
     help: false,
   };
   const positionals: any[] = [];
@@ -210,6 +218,7 @@ export function parseArgs(argv: readonly string[]): any {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--details") args.details = true;
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (["--output", "--threshold"].includes(arg)) {
       const value = argv[index + 1];
       if (value == null || value.startsWith("--"))
@@ -239,8 +248,16 @@ Options:
   --output <dir>       Output directory for diff artifacts
   --threshold <value>  Acceptable difference threshold
   --details            Show detailed JSON output
+  --overwrite          Replace existing diff artifacts after confirmation
   --help               Show this help
 `;
+}
+export function plannedVisualDiffOutputFiles(outputDir: any): any {
+  return [
+    join(outputDir, "diff.png"),
+    join(outputDir, "side-by-side.png"),
+    join(outputDir, "diff-report.json"),
+  ];
 }
 export function main(argv: readonly string[]): any {
   const args = parseArgs(argv);
@@ -248,6 +265,10 @@ export function main(argv: readonly string[]): any {
     console.log(usage());
     return 0;
   }
+  assertOutputFilesWritable(
+    plannedVisualDiffOutputFiles(args.output),
+    args.overwrite,
+  );
   mkdirSync(args.output, { recursive: true });
   const differ = new VisualDiffer(args.threshold);
   let result;

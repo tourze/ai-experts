@@ -219,6 +219,43 @@ describe("component source conventions", () => {
     assert.doesNotMatch(procedureSource, /Recommended:\s*brew tap/u);
   });
 
+  test("ios simulator output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/ios-simulator-skill/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的报告、截图或 diff 产物/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["accessibility_audit.ts", "visual_diff.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /parseArgs/u, `${sourceFile} should parse overwrite-aware argv`);
+      assert.match(source, /assertOutput(?:Files)?Writable/u, `${sourceFile} should guard existing output files`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const visualDiffSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/ios-simulator-skill/visual_diff.ts"),
+      "utf-8",
+    );
+    assert.match(visualDiffSource, /plannedVisualDiffOutputFiles/u);
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/ios-simulator-skill/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+    assert.match(guardSource, /pass --overwrite only after confirming/u);
+  });
+
   test("android redex installation reference keeps system installs behind confirmation", () => {
     const referenceSource = readFileSync(
       join(repoRoot, "src/components/skills/android-redex/references/installation.md"),

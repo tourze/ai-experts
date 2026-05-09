@@ -26,12 +26,14 @@ export const iosSimulatorSkillSkill = defineSkill({
     "优先走无障碍树：先 `ios-simulator-skill-screen-mapper` / `ios-simulator-skill-navigator` procedure，最后才用坐标。",
     "大多数 Procedure 在未传 `--udid` 时会自动选择 booted simulator；`ios-simulator-skill-log-monitor` procedure 例外，参数名是 `--device-udid`。",
     "`ios-simulator-skill-visual-diff` procedure 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
+    "输出型 procedure 默认不会覆盖已存在的报告、截图或 diff 产物；确认目标可替换后才传 `--overwrite`。",
     "删除、擦除、批量关闭模拟器、卸载或终止应用会丢失或中断本地模拟器状态；只有用户明确确认目标和影响范围后才传 `--yes`。",
   ],
   checklist: [
     "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 `xcrun`、`simctl`、Node.js 运行时可用。",
     "每次交互前先看 `ios-simulator-skill-screen-mapper` procedure 或 `ios-simulator-skill-navigator` procedure（参数 `--list`），不要盲点。",
     "需要日志时确认参数名：`ios-simulator-skill-log-monitor` procedure 用 `--device-udid`，不是 `--udid`。",
+    "写入文件或输出目录前确认目标产物不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
     "需要结构化输出时统一使用 `--json`；需要完整参数时直接跑对应 Procedure 的 `--help`。",
   ],
   antiPatterns: [

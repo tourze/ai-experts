@@ -7,6 +7,7 @@ import {
   getAccessibilityTree,
   resolveUdid,
 } from "./interaction_common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-accessibility-audit",
@@ -33,6 +34,12 @@ export const procedure = defineCliProcedure({
       flag: "--verbose",
       type: "",
       description: "包含所有问题详情，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有输出文件后使用",
       required: false,
     },
   ],
@@ -225,12 +232,14 @@ export function parseArgs(argv: readonly string[]): any {
     udid: null,
     output: null,
     verbose: false,
+    overwrite: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--verbose") args.verbose = true;
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (["--udid", "--output"].includes(arg)) {
       const value = argv[index + 1];
       if (value == null || value.startsWith("--"))
@@ -253,6 +262,7 @@ Options:
   --udid <udid>     Device UDID
   --output <file>   Save JSON report to file
   --verbose         Include all issue details
+  --overwrite       Replace an existing output file after confirmation
   --help            Show this help
 `;
 }
@@ -262,6 +272,7 @@ export function main(argv: readonly string[]): any {
     console.log(usage());
     return 0;
   }
+  if (args.output) assertOutputWritable(args.output, args.overwrite);
   let udid;
   try {
     udid = resolveUdid(args.udid);
