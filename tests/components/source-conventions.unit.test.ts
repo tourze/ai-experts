@@ -218,6 +218,19 @@ describe("component source conventions", () => {
     );
   });
 
+  test("system diagnostics cleanup references keep sampling scripts read-only", () => {
+    const referenceSource = readFileSync(
+      join(repoRoot, "src/components/skills/system-diagnostics/references/disk-cleanup.md"),
+      "utf-8",
+    );
+
+    assert.match(referenceSource, /不要把清理命令写进诊断采样脚本/u);
+    assert.match(referenceSource, /不要使用 `--noconfirm`/u);
+    assert.doesNotMatch(referenceSource, /apt-get clean/u);
+    assert.doesNotMatch(referenceSource, /dnf clean all/u);
+    assert.doesNotMatch(referenceSource, /pacman -Sc --noconfirm/u);
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

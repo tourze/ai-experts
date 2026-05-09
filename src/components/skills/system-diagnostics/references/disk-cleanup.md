@@ -30,11 +30,12 @@ sudo find /var/log -type f -size +100M -printf '%s %p\n' | sort -nr | head -20
 set -euo pipefail
 
 sudo journalctl --disk-usage
-sudo apt-get clean 2>/dev/null || true
-sudo dnf clean all 2>/dev/null || true
-sudo pacman -Sc --noconfirm 2>/dev/null || true
+du -sh ~/.cache 2>/dev/null || true
+sudo du -sh /var/cache/apt /var/cache/dnf /var/cache/pacman 2>/dev/null || true
 docker system df 2>/dev/null || true
 ```
+
+包管理器缓存清理、`journalctl --vacuum-*`、`docker system prune` 或 `pacman -Sc` 都属于会删除本机缓存的动作。先输出候选、路径和预估回收空间，拿到用户明确确认后再单独执行对应命令；不要把清理命令写进诊断采样脚本，也不要使用 `--noconfirm`。
 
 ## 检查清单
 
