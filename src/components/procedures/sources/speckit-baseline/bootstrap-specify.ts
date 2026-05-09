@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getRepoRoot } from "./common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "speckit-baseline-bootstrap-specify",
@@ -13,6 +14,26 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["speckit-baseline"] },
   target: "scripts/bootstrap-specify.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[skillRoot]",
+      type: "路径",
+      description: "Speckit skill 根目录（默认自动解析当前运行时 skill 目录）",
+      required: false,
+    },
+    {
+      flag: "[targetDir]",
+      type: "路径",
+      description: "目标 .specify 目录路径（默认仓库根 .specify）",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 .specify wrapper/template 文件后使用",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: [] },
 });
@@ -45,6 +66,20 @@ function copyDirectoryContents(sourceDir: any, targetDir: any): any {
     }
     fs.copyFileSync(sourcePath, targetPath);
   }
+}
+function collectDirectoryTargets(sourceDir: string, targetDir: string): string[] {
+  const targets: string[] = [];
+  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const sourcePath = path.join(sourceDir, entry.name);
+    const targetPath = path.join(targetDir, entry.name);
+    if (entry.isDirectory()) {
+      targets.push(...collectDirectoryTargets(sourcePath, targetPath));
+      continue;
+    }
+    targets.push(targetPath);
+  }
+  return targets;
 }
 function shellQuote(value: string): string {
   return JSON.stringify(value);
@@ -120,6 +155,22 @@ function currentRuntimeFallback(): string {
   }
   return process.env.AI_EXPERTS_PROCEDURES_FILE ?? "";
 }
+export function plannedBootstrapOutputFiles(
+  skillRoot: string,
+  targetDir: string,
+): string[] {
+  const templatesDir = path.join(skillRoot, "assets", "templates");
+  const scriptsDir = path.join(targetDir, "scripts");
+  return [
+    ...Object.keys(SPECKIT_SCRIPT_PROCEDURES).map((scriptName) =>
+      path.join(scriptsDir, scriptName),
+    ),
+    ...collectDirectoryTargets(
+      templatesDir,
+      path.join(targetDir, "templates"),
+    ),
+  ];
+}
 function writeScriptWrappers(
   scriptsDir: string,
   runtimeFallback: string,
@@ -136,12 +187,31 @@ function writeScriptWrappers(
     fs.chmodSync(scriptPath, 0o755);
   }
 }
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    overwrite: false,
+  };
+  const positional: any[] = [];
+  for (const arg of argv) {
+    if (arg === "--overwrite") {
+      args.overwrite = true;
+    } else {
+      positional.push(arg);
+    }
+  }
+  return {
+    ...args,
+    skillRoot: positional[0] ?? null,
+    targetDir: positional[1] ?? null,
+  };
+}
 export function main(argv: readonly string[]): any {
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const defaultSkillRoot = path.resolve(scriptDir, "..");
   const repoRoot = getRepoRoot();
-  const skillRoot = resolveAbsolute(argv[0] ?? defaultSkillRoot);
-  const targetDir = resolveAbsolute(argv[1] ?? path.join(repoRoot, ".specify"));
+  const args = parseArgs(argv);
+  const skillRoot = resolveAbsolute(args.skillRoot ?? defaultSkillRoot);
+  const targetDir = resolveAbsolute(args.targetDir ?? path.join(repoRoot, ".specify"));
   const templatesDir = path.join(skillRoot, "assets", "templates");
   if (
     !fs.existsSync(templatesDir) ||
@@ -152,14 +222,22 @@ export function main(argv: readonly string[]): any {
     );
     return 1;
   }
-  fs.mkdirSync(targetDir, { recursive: true });
-  const runtimeFallback = currentRuntimeFallback();
-  writeScriptWrappers(path.join(targetDir, "scripts"), runtimeFallback);
-  copyDirectoryContents(templatesDir, path.join(targetDir, "templates"));
-  process.stdout.write(`[ok] 已初始化 .specify 资源：${targetDir}\n`);
-  process.stdout.write(
-    `[ok] scripts 已生成：${path.join(targetDir, "scripts")}\n`,
-  );
-  process.stdout.write(`[ok] templates 来源：${templatesDir}\n`);
-  return 0;
+  try {
+    for (const outputPath of plannedBootstrapOutputFiles(skillRoot, targetDir)) {
+      assertOutputWritable(outputPath, args.overwrite);
+    }
+    fs.mkdirSync(targetDir, { recursive: true });
+    const runtimeFallback = currentRuntimeFallback();
+    writeScriptWrappers(path.join(targetDir, "scripts"), runtimeFallback);
+    copyDirectoryContents(templatesDir, path.join(targetDir, "templates"));
+    process.stdout.write(`[ok] 已初始化 .specify 资源：${targetDir}\n`);
+    process.stdout.write(
+      `[ok] scripts 已生成：${path.join(targetDir, "scripts")}\n`,
+    );
+    process.stdout.write(`[ok] templates 来源：${templatesDir}\n`);
+    return 0;
+  } catch (error: any) {
+    process.stderr.write(`${error.message}\n`);
+    return 1;
+  }
 }

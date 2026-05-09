@@ -425,26 +425,35 @@ describe("component source conventions", () => {
     assert.match(runSource, /commandArgs\.push\("--overwrite"\)/u);
   });
 
-  test("speckit baseline setup plan requires explicit overwrite for existing plan", () => {
+  test("speckit baseline output procedures require explicit overwrite for existing outputs", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/speckit-baseline/index.ts"),
       "utf-8",
     );
+    assert.match(skillSource, /默认不会覆盖已存在的 `\.specify` wrapper\/template 文件/u);
     assert.match(skillSource, /默认不会覆盖已存在的 `plan\.md`/u);
-    assert.match(skillSource, /确认实现计划可替换后才传 `--overwrite`/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
-    const setupPlanSource = readFileSync(
-      join(repoRoot, "src/components/procedures/sources/speckit-baseline/setup-plan.ts"),
+    for (const sourceFile of ["bootstrap-specify.ts", "setup-plan.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/speckit-baseline", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u);
+      assert.match(source, /parseArgs/u);
+      assert.match(source, /assertOutputWritable/u);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `speckit ${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const bootstrapSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/speckit-baseline/bootstrap-specify.ts"),
       "utf-8",
     );
-    assert.match(setupPlanSource, /flag:\s+"--overwrite"/u);
-    assert.match(setupPlanSource, /parseArgs/u);
-    assert.match(setupPlanSource, /assertOutputWritable/u);
-    assert.doesNotMatch(
-      setupPlanSource,
-      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
-      "speckit setup-plan examples should not teach overwrite bypasses",
-    );
+    assert.match(bootstrapSource, /plannedBootstrapOutputFiles/u);
 
     const guardSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/speckit-baseline/output_guard.ts"),
