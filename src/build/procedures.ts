@@ -468,6 +468,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
   if (!context) return source;
+  const sanitizedEntry = "new URL(" + JSON.stringify("ai-experts-procedure:" + context.id) + ")";
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
   const runtimeCommand = (rewrite) =>
@@ -497,6 +498,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
     return rewrite ? runtimeProcedureCommand(rewrite) : match;
   };
   return source
+    .replace(/\\bentry\\s*:\\s*procedureEntry\\s*\\(\\s*import\\.meta\\.url\\s*\\)/g, "entry: " + sanitizedEntry)
     .replace(/\\bpath\\.dirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/(?<!\\.)\\bdirname\\s*\\(\\s*fileURLToPath\\s*\\(\\s*import\\.meta\\.url\\s*\\)\\s*\\)/g, replacement)
     .replace(/\\bpath\\.dirname\\s*\\(\\s*__filename\\s*\\)/g, replacement)
