@@ -117,10 +117,15 @@ function checksum(content: string): string {
 }
 
 function canonicalizeProcedureBundleSource(source: string): string {
-  return source.replace(
-    /(?:\.\.\/)*[^"'\n]*ai-experts-procedure-webpack-[^/"'\n]+\/procedure-runtime-entry\.ts/gu,
-    runtimeEntryId,
-  );
+  return source
+    .replace(
+      /(?:\.\.\/)*[^"'\n]*ai-experts-procedure-webpack-[^/"'\n]+\/procedure-runtime-entry\.ts/gu,
+      runtimeEntryId,
+    )
+    .replace(
+      /(node ~\/\.(?:claude|codex)\/procedures\.js --procedure-id [A-Za-z0-9-]+ --trigger-(?:skill|agent) [A-Za-z0-9-]+) --(?=\r?\n)/gu,
+      "$1",
+    );
 }
 
 function toManifestEntry(procedure: RuntimeProcedureModule, bundleTarget: string): ProcedureManifestEntry {
@@ -449,23 +454,30 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
     "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
   const runtimeProcedureCommand = (rewrite) =>
     "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId;
-  const rewriteScriptCommand = (match) => {
+  const needsArgsSeparator = (offset, match) => {
+    const rest = source.slice(offset + match.length).replace(/^[ \\t]+/, "");
+    if (rest.startsWith("\\\\n") || rest.startsWith("\\\\r\\\\n")) return false;
+    return /^(?:\\\\\\r?\\n|\\S)/.test(rest);
+  };
+  const renderScriptRewrite = (rewrite, offset, match) =>
+    needsArgsSeparator(offset, match) ? runtimeCommand(rewrite) : runtimeProcedureCommand(rewrite);
+  const rewriteScriptCommand = (match, offset) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
     if (target === context.target) {
       return context.primaryTrigger
-        ? runtimeCommand({ id: context.id, triggerKind: context.primaryTrigger.triggerKind, triggerId: context.primaryTrigger.triggerId })
+        ? renderScriptRewrite({ id: context.id, triggerKind: context.primaryTrigger.triggerKind, triggerId: context.primaryTrigger.triggerId }, offset, match)
         : match;
     }
     for (const skillId of context.ownerSkillIds || []) {
       const ownerRewrite = commandRewrites[JSON.stringify(["skill", skillId, target])];
-      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match);
     }
     for (const agentId of context.ownerAgentIds || []) {
       const ownerRewrite = commandRewrites[JSON.stringify(["agent", agentId, target])];
-      if (ownerRewrite) return runtimeCommand(ownerRewrite);
+      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match);
     }
     const globalRewrite = commandRewrites[JSON.stringify(["", "", target])];
-    return globalRewrite ? runtimeCommand(globalRewrite) : match;
+    return globalRewrite ? renderScriptRewrite(globalRewrite, offset, match) : match;
   };
   const rewriteProcedureIdReference = (match, procedureId) => {
     const rewrite = commandRewritesByProcedureId[procedureId];

@@ -743,20 +743,26 @@ function rewriteProcedureScriptCommands(
   platform: PlatformType,
   proceduresByTarget: ReadonlyMap<string, ProcedureDefinition>,
 ): string {
+  const needsArgsSeparator = (offset: number, match: string): boolean => {
+    const rest = source.slice(offset + match.length);
+    return /^[ \t]*(?:\\\r?\n|\S)/u.test(rest);
+  };
+
   return source.replace(
     /\bnode\s+(?:\.\/)?scripts\/([A-Za-z0-9._/-]+\.mjs)\b/gu,
-    (match, scriptPath: string) => {
+    (match, scriptPath: string, offset: number) => {
       const procedure = proceduresByTarget.get(`scripts/${scriptPath}`);
       if (!procedure) return match;
-      return [
+      const commandParts = [
         "node",
         procedureRuntimePath(platform),
         "--procedure-id",
         procedure.id,
         "--trigger-skill",
         skill.id,
-        "--",
-      ].join(" ");
+      ];
+      if (needsArgsSeparator(offset, match)) commandParts.push("--");
+      return commandParts.join(" ");
     },
   );
 }

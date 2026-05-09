@@ -806,6 +806,7 @@ describe("component build integration", () => {
 
   test("generated runtime materials use direct procedure arguments", () => {
     const staleRequestJsonReferences: string[] = [];
+    const bareProcedureSeparators: string[] = [];
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
 
     for (const platform of ["claude", "codex"]) {
@@ -815,6 +816,12 @@ describe("component build integration", () => {
         if (/request-json/u.test(source)) {
           staleRequestJsonReferences.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}`);
         }
+        source.split(/\r?\n/u).forEach((line, index) => {
+          if (/node ~\/\.(?:claude|codex)\/procedures\.js\b.* --$/u.test(line.trim())) {
+            const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
+            bareProcedureSeparators.push(`${platform}/${generatedPath}:${index + 1}`);
+          }
+        });
       }
     }
 
@@ -822,6 +829,11 @@ describe("component build integration", () => {
       staleRequestJsonReferences,
       [],
       "generated runtime files should not expose stale --request-json procedure input",
+    );
+    assert.deepEqual(
+      bareProcedureSeparators,
+      [],
+      "generated runtime procedure commands should not end with a bare -- separator",
     );
   });
 
