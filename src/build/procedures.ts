@@ -60,17 +60,37 @@ function normalizeSeparators(path: string): string {
   return path.replaceAll("\\", "/");
 }
 
-function normalizeProcedureTarget(target: string): string {
-  const normalized = normalizeSeparators(target).replace(/\.ts$/u, ".mjs");
+export function validateProcedureTargetValue(owner: string, target: unknown): void {
+  if (typeof target !== "string" || target.trim() === "") {
+    throw new Error(`${owner} target must be a non-empty string when defined`);
+  }
+  if (target.includes("\\")) {
+    throw new Error(`${owner} target must use POSIX / separators: ${target}`);
+  }
+  const normalized = target.replace(/\.ts$/u, ".mjs");
   if (
     normalized.startsWith("/") ||
+    normalized === "." ||
     normalized === ".." ||
+    normalized.startsWith("./") ||
     normalized.startsWith("../") ||
-    normalized.includes("/../")
+    normalized.includes("/./") ||
+    normalized.includes("/../") ||
+    normalized.includes("..") ||
+    normalized.endsWith("/")
   ) {
-    throw new Error(`Invalid procedure target: ${target}`);
+    throw new Error(`${owner} target must be a relative file path without traversal: ${target}`);
   }
-  return normalized;
+}
+
+export function validateProcedureTarget(procedure: ProcedureDefinition): void {
+  if (procedure.target === undefined) return;
+  validateProcedureTargetValue(`Procedure ${procedure.id}`, procedure.target);
+}
+
+function normalizeProcedureTarget(target: string): string {
+  validateProcedureTargetValue("Procedure", target);
+  return target.replace(/\.ts$/u, ".mjs");
 }
 
 function toProcedureTarget(procedure: ProcedureDefinition): string {

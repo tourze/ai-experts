@@ -37,7 +37,7 @@ import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks
 import { materializeRegistry } from "./registry";
 import { listProcedureUses } from "./procedure-uses";
 import type { ResolvedProcedureUse } from "./procedure-uses";
-import { emitProcedureRuntime } from "./procedures";
+import { emitProcedureRuntime, validateProcedureTarget } from "./procedures";
 import {
   emitSkill,
   skillSourceRoot,
@@ -480,6 +480,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!existsSync(toAbsolutePath(procedure.entry))) {
       throw new Error(`Procedure ${procedure.id} entry is missing: ${displayPath(procedure.entry)}`);
     }
+    validateProcedureTarget(procedure);
     validateProcedureSchema(procedure, "args");
     validateProcedureSchema(procedure, "output");
 

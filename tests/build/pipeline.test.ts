@@ -401,6 +401,30 @@ describe("build/pipeline modules", () => {
       "Procedure fixture-procedure platforms contain unsupported platform(s): unknown-cli",
     );
 
+    const emptyProcedureTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{ ...fixture.procedure, target: "" }],
+    };
+    expect(() => validateRegistry(emptyProcedureTargetRegistry)).toThrow(
+      "Procedure fixture-procedure target must be a non-empty string when defined",
+    );
+
+    const traversalProcedureTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{ ...fixture.procedure, target: "../bad.mjs" }],
+    };
+    expect(() => validateRegistry(traversalProcedureTargetRegistry)).toThrow(
+      "Procedure fixture-procedure target must be a relative file path without traversal: ../bad.mjs",
+    );
+
+    const windowsProcedureTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{ ...fixture.procedure, target: "scripts\\bad.mjs" }],
+    };
+    expect(() => validateRegistry(windowsProcedureTargetRegistry)).toThrow(
+      "Procedure fixture-procedure target must use POSIX / separators: scripts\\bad.mjs",
+    );
+
     const invalidProcedureArgsTypeNameRegistry: ComponentRegistry = {
       ...fixture.registry,
       procedures: [{
