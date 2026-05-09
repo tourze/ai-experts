@@ -352,6 +352,28 @@ describe("component source conventions", () => {
     );
   });
 
+  test("data analysis exports require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/data-analysis/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的导出文件/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
+
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/data-analysis/analyze.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"--overwrite"/u);
+    assert.match(procedureSource, /output file already exists/u);
+    assert.match(procedureSource, /existsSync\(target\) && !overwrite/u);
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "data analysis examples should not teach overwrite bypasses",
+    );
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

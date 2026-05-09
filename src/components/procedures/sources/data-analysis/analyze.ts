@@ -51,6 +51,12 @@ export const procedure = defineCliProcedure({
       description: "导出结果文件路径（仅 .csv/.json/.md）",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的导出文件；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: { args: ["--files", "data.csv", "--action", "inspect"] },
@@ -707,11 +713,21 @@ function csvEscape(value: any): any {
   const text = formatValue(value);
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
-function exportResults(rows: any, outputFile: any): any {
+export function exportResults(rows: any, outputFile: any, overwrite: any = false): any {
   const columns = rowsToColumns(rows);
   const target = resolve(outputFile);
-  mkdirSync(resolve(target, ".."), { recursive: true });
   const ext = extname(target).toLowerCase();
+  if (![".csv", ".json", ".md"].includes(ext)) {
+    throw new Error(
+      `Unsupported output format: ${ext}. Use .csv, .json, or .md`,
+    );
+  }
+  if (existsSync(target) && !overwrite) {
+    throw new Error(
+      `output file already exists: ${target}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+  mkdirSync(resolve(target, ".."), { recursive: true });
   if (ext === ".csv") {
     writeFileSync(
       target,
@@ -735,10 +751,6 @@ function exportResults(rows: any, outputFile: any): any {
       ),
     ];
     writeFileSync(target, lines.join("\n") + "\n", "utf8");
-  } else {
-    throw new Error(
-      `Unsupported output format: ${ext}. Use .csv, .json, or .md`,
-    );
   }
   return `Results exported to ${target} (${rows.length} rows)`;
 }
@@ -746,11 +758,12 @@ export function actionQuery(
   context: any,
   sql: any,
   outputFile: any = null,
+  overwrite: any = false,
 ): any {
   try {
     const rows = runQuery(sql, context);
     if (outputFile) {
-      const message = exportResults(rows, outputFile);
+      const message = exportResults(rows, outputFile, overwrite);
       console.log(message);
       return message;
     }
@@ -874,6 +887,7 @@ export function parseArgs(argv: readonly string[]): any {
     sql: null,
     table: null,
     outputFile: null,
+    overwrite: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -890,6 +904,8 @@ export function parseArgs(argv: readonly string[]): any {
       args.table = argv[++index];
     } else if (arg === "--output-file") {
       args.outputFile = argv[++index];
+    } else if (arg === "--overwrite") {
+      args.overwrite = true;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }
@@ -909,7 +925,7 @@ export function main(argv: readonly string[]): any {
     args = parseArgs(argv);
   } catch (error: any) {
     console.error(
-      `${error.message}\nUsage: node scripts/analyze.mjs --files <file...> --action inspect|query|summary [--sql SQL] [--table TABLE] [--output-file PATH]`,
+      `${error.message}\nUsage: node scripts/analyze.mjs --files <file...> --action inspect|query|summary [--sql SQL] [--table TABLE] [--output-file PATH] [--overwrite]`,
     );
     return 1;
   }
@@ -924,7 +940,7 @@ export function main(argv: readonly string[]): any {
   );
   if (args.action === "inspect") actionInspect(context);
   else if (args.action === "query")
-    actionQuery(context, args.sql, args.outputFile);
+    actionQuery(context, args.sql, args.outputFile, args.overwrite);
   else actionSummary(context, args.table);
   return 0;
 }
