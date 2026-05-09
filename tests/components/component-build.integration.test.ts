@@ -745,6 +745,40 @@ describe("component build integration", () => {
     assert.deepEqual(missingFinalNewline, [], "generated text files should end with a final newline");
   });
 
+  test("generated Markdown code fences are closed", () => {
+    const unclosedFences: string[] = [];
+    const findUnclosedFence = (source: string): { marker: string; length: number; line: number } | null => {
+      let open: { marker: string; length: number; line: number } | null = null;
+      const lines = source.split(/\r?\n/u);
+      for (let index = 0; index < lines.length; index += 1) {
+        const match = lines[index]?.match(/^( {0,3})(`{3,}|~{3,})/u);
+        if (!match?.[2]) continue;
+        const marker = match[2][0] ?? "";
+        const length = match[2].length;
+        if (!open) {
+          open = { marker, length, line: index + 1 };
+        } else if (marker === open.marker && length >= open.length) {
+          open = null;
+        }
+      }
+      return open;
+    };
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const markdownFile of collectFiles(platformRoot, (file) => file.endsWith(".md"))) {
+        const open = findUnclosedFence(readFileSync(markdownFile, "utf-8"));
+        if (open) {
+          unclosedFences.push(
+            `${platform}/${relative(platformRoot, markdownFile).split("\\").join("/")}: opened ${open.marker.repeat(open.length)} at line ${open.line}`,
+          );
+        }
+      }
+    }
+
+    assert.deepEqual(unclosedFences, [], "generated Markdown should not contain unclosed code fences");
+  });
+
   test("emits reproducible manifests and procedure bundles", () => {
     const secondDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-b-"));
     try {

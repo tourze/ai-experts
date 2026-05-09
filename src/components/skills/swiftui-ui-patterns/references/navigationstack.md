@@ -140,6 +140,7 @@ final class TabRouter {
     return Binding(get: { router.path }, set: { router.path = $0 })
   }
 }
+```
 
 ## 要保留的设计选择
 
