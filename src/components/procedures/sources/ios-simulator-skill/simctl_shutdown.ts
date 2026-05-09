@@ -69,7 +69,7 @@ export const procedure = defineCliProcedure({
     },
   ],
 
-  exampleArgs: { args: ["--all"] },
+  exampleArgs: { args: ["--udid", "<device-udid>", "--verify"] },
 });
 
 export class SimulatorShutdown {
