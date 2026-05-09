@@ -120,9 +120,10 @@ describe("component source conventions", () => {
       join(repoRoot, "src/components/skills/android-device-automation/index.ts"),
       "utf-8",
     );
+    assert.match(androidSkillSource, /强停应用或清空 logcat/u);
     assert.match(androidSkillSource, /只有用户明确确认包名、serial 和影响范围后才传 `--yes`/u);
 
-    for (const sourceFile of ["app_launcher.ts", "emulator_manage.ts"]) {
+    for (const sourceFile of ["app_launcher.ts", "diagnose_app.ts", "emulator_manage.ts"]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/android-device-automation", sourceFile),
         "utf-8",

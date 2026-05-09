@@ -19,7 +19,6 @@ node scripts/app_launcher.mjs --state com.example.app
 node scripts/diagnose_app.mjs \
   --package com.example.app \
   --activity .MainActivity \
-  --force-stop \
   --grep AndroidRuntime \
   --out /tmp/android-diagnose-example
 ```
@@ -31,6 +30,8 @@ node scripts/diagnose_app.mjs \
 - `ui.xml`：`uiautomator dump` 结果
 - `logcat.txt` / `logcat-filtered.txt`：启动后日志窗口
 - `dumpsys-window.txt` / `dumpsys-activity-top.txt`：前台窗口和 Activity 状态
+
+`diagnose_app` 默认保留既有 logcat；只有用户明确确认会丢弃现有设备日志时，才传 `--clear-logcat --yes`。需要强停应用复现冷启动时，先确认目标包名和设备，再传 `--force-stop --yes`。
 
 ## UI 导航闭环
 

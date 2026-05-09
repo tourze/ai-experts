@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { defineCliProcedure, procedureEntry } from "../../definition";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, realpathSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ADB_PATH, resolveSerial, runAdbCommand } from "./common";
@@ -54,13 +54,25 @@ export const procedure = defineCliProcedure({
     {
       flag: "--force-stop",
       type: "",
-      description: "启动前强制停止应用，传此标志即启用",
+      description: "启动前强制停止应用；仅在用户已明确确认包名和目标设备后使用",
+      required: false,
+    },
+    {
+      flag: "--clear-logcat",
+      type: "",
+      description: "采集前清除设备 logcat；仅在用户已明确确认会丢弃现有日志后使用",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过 force-stop / clear-logcat 确认；仅在用户已明确确认影响范围后使用",
       required: false,
     },
     {
       flag: "--no-clear-logcat",
       type: "",
-      description: "不清除 logcat，传此标志即启用",
+      description: "兼容旧参数；当前默认已不清除 logcat",
       required: false,
     },
     {
@@ -148,8 +160,10 @@ Options:
   --grep <pattern>       Keep matching logcat lines
   --tail <lines>         Logcat line window (default: 500)
   --wait-ms <ms>         Wait after launch before collecting evidence (default: 3000)
-  --force-stop           Force-stop the package before launch
-  --no-clear-logcat      Do not clear logcat before launch
+  --force-stop           Force-stop the package before launch after explicit approval
+  --clear-logcat         Clear existing device logcat after explicit approval
+  --yes                  Skip force-stop / clear-logcat confirmation after explicit approval
+  --no-clear-logcat      Compatibility no-op; logcat is preserved by default
   --no-launch            Skip launch and collect current state only
   --serial, -s <serial>  Device serial
   --help                 Show this help
@@ -164,7 +178,8 @@ export function parseArgs(argv: readonly string[]): any {
     tail: 500,
     waitMs: 3000,
     forceStop: false,
-    clearLogcat: true,
+    clearLogcat: false,
+    yes: false,
     launch: true,
     serial: null,
     help: false,
@@ -177,6 +192,14 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--force-stop") {
       args.forceStop = true;
+      continue;
+    }
+    if (arg === "--clear-logcat") {
+      args.clearLogcat = true;
+      continue;
+    }
+    if (arg === "--yes") {
+      args.yes = true;
       continue;
     }
     if (arg === "--no-clear-logcat") {
@@ -303,6 +326,16 @@ export async function main(
     files: {},
     errors: [],
   };
+  if (
+    (args.clearLogcat || args.forceStop) &&
+    !args.yes &&
+    !readConfirmation(
+      `Run diagnose reset steps for ${args.packageName} on device ${serial}? (type 'yes' to confirm): `,
+    )
+  ) {
+    console.log("Diagnose reset steps cancelled: confirmation required");
+    return 1;
+  }
   if (args.clearLogcat) {
     runTextEvidence(
       "clearLogcat",
@@ -408,4 +441,14 @@ export async function main(
   console.log(`Diagnosis written to ${outDir}`);
   console.log(`Summary: ${summaryPath}`);
   return 0;
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }

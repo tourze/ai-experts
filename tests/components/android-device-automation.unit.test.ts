@@ -1,5 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { parseArgs as parseAppLauncherArgs } from "../../src/components/procedures/sources/android-device-automation/app_launcher.ts";
+import { parseArgs as parseDiagnoseArgs } from "../../src/components/procedures/sources/android-device-automation/diagnose_app.ts";
 import { parseArgs as parseEmulatorManageArgs } from "../../src/components/procedures/sources/android-device-automation/emulator_manage.ts";
 
 describe("android device automation procedures", () => {
@@ -23,5 +24,20 @@ describe("android device automation procedures", () => {
       shutdown: "emulator-5554",
       yes: true,
     });
+  });
+
+  test("keeps diagnose logcat preservation as the default", () => {
+    expect(parseDiagnoseArgs(["--package", "com.example.app"])).toMatchObject({
+      packageName: "com.example.app",
+      clearLogcat: false,
+      forceStop: false,
+      yes: false,
+    });
+    expect(parseDiagnoseArgs(["--package", "com.example.app", "--clear-logcat", "--force-stop", "--yes"]))
+      .toMatchObject({
+        clearLogcat: true,
+        forceStop: true,
+        yes: true,
+      });
   });
 });
