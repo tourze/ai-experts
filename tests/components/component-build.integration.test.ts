@@ -1200,6 +1200,24 @@ describe("component build integration", () => {
       [],
       "Claude skill packages should not include Codex openai.yaml metadata",
     );
+
+    for (const skillId of ["remote-ssh-command", "prlctl-vm-control"]) {
+      const claudeSkill = readFileSync(join(tmpDistDir, "claude/skills", skillId, "SKILL.md"), "utf-8");
+      const codexMetadata = readFileSync(
+        join(tmpDistDir, "codex/skills", skillId, "agents/openai.yaml"),
+        "utf-8",
+      );
+      assert.match(
+        claudeSkill,
+        /disable-model-invocation: true/,
+        `${skillId} should not be model-invoked implicitly on Claude`,
+      );
+      assert.match(
+        codexMetadata,
+        /allow_implicit_invocation: false/,
+        `${skillId} should not be model-invoked implicitly on Codex`,
+      );
+    }
   });
 
   test("renders representative skill/agent/instruction outputs", () => {

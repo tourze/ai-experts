@@ -38,7 +38,7 @@ export const remoteSshCommandSkill = defineSkill({
       pass: "配置走 JSON，命令走 stdin",
     }),
   ],
-  invocation: InvocationPolicy.ImplicitAndExplicit,
+  invocation: InvocationPolicy.ExplicitOnly,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
   workflow: defineWorkflow({

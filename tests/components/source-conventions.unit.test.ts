@@ -7,7 +7,7 @@ import { describe, test } from "vitest";
 import { validateRegistry } from "../../src/build/platform.ts";
 import { collectPlatformProcedures } from "../../src/build/procedures.ts";
 import { registry } from "../../src/components/registry.ts";
-import { Platform } from "../../src/components/sdk.ts";
+import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
 import {
   collectFiles,
   extractPropertyArray,
@@ -78,6 +78,19 @@ function collectMarkdownAnchors(source: string): Set<string> {
 }
 
 describe("component source conventions", () => {
+  test("high-risk executable skills require explicit invocation", () => {
+    const highRiskSkillIds = ["remote-ssh-command", "prlctl-vm-control"];
+    const skillsById = new Map(registry.skills.map((skill) => [skill.id, skill]));
+
+    for (const skillId of highRiskSkillIds) {
+      assert.equal(
+        skillsById.get(skillId)?.invocation,
+        InvocationPolicy.ExplicitOnly,
+        `${skillId} should not be implicitly invoked because it can affect remote hosts or virtual machines`,
+      );
+    }
+  });
+
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
       const filePath = join(repoRoot, fileName);

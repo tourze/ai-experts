@@ -67,7 +67,7 @@ export const prlctlVmControlSkill = defineSkill({
       pass: "--password-env",
     }),
   ],
-  invocation: InvocationPolicy.ImplicitAndExplicit,
+  invocation: InvocationPolicy.ExplicitOnly,
   platforms: [Platform.Claude, Platform.Codex],
   sourceDir: new URL("./", import.meta.url),
   workflow: defineWorkflow({
