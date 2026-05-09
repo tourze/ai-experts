@@ -63,7 +63,7 @@ function renderSkillFrontmatter(skill: SkillDefinition, platform: PlatformType):
     if (skill.argumentHint) {
       frontmatter["argument-hint"] = skill.argumentHint;
     }
-    const params = skill.parameters ?? [];
+    const params = validateParameters(skill);
     if (params.length > 0) {
       frontmatter.arguments = params.map((param) => param.name);
     }
@@ -310,6 +310,11 @@ export function validateParameters(skill: SkillDefinition): readonly SkillParame
     if (typeof param.name !== "string" || param.name.trim() === "") {
       throw new Error(`Skill ${skill.id} parameters[${index}].name must be a non-empty string`);
     }
+    if (!/^[A-Za-z][A-Za-z0-9_-]*$/u.test(param.name.trim())) {
+      throw new Error(
+        `Skill ${skill.id} parameters[${index}].name must start with a letter and only contain letters, numbers, "_", or "-"`,
+      );
+    }
     if (typeof param.description !== "string" || param.description.trim() === "") {
       throw new Error(`Skill ${skill.id} parameters[${index}].description must be a non-empty string`);
     }
@@ -378,7 +383,7 @@ export function validateSkillOutputs(skill: SkillDefinition): SkillOutputsDefini
 }
 
 function renderUserInput(skill: SkillDefinition, platform: PlatformType): string {
-  const params = skill.parameters ?? [];
+  const params = validateParameters(skill);
   if (params.length === 0) return "";
   if (platform === Platform.Claude) {
     const names = params.map((p) => `$${p.name}`).join(" ");

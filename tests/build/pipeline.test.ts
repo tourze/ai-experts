@@ -16,7 +16,7 @@ import {
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
 import { byId, compileRegistry, materializeRegistry } from "../../src/build/registry.ts";
-import { emitSkill, renderSkillMd, validateAntiPatterns, validateSkillWorkflow, validateTextList } from "../../src/build/skills.ts";
+import { emitSkill, renderSkillMd, validateAntiPatterns, validateParameters, validateSkillWorkflow, validateTextList } from "../../src/build/skills.ts";
 import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import type { ComponentRegistry } from "../../src/build/types.ts";
 import { renderWorkflowMermaidSource } from "../../src/build/workflows.ts";
@@ -382,6 +382,12 @@ describe("build/pipeline modules", () => {
     expect(renderSkillMd(parameterSkill, Platform.Codex, procedureMap)).toContain(
       "| `scope` | string | 是 | 包含 A \\| B<br>换行 |",
     );
+    expect(() =>
+      validateParameters({
+        ...fixture.skill,
+        parameters: [{ name: "bad name", description: "invalid name" }],
+      })
+    ).toThrow("parameters[0].name must start with a letter");
     expect(existsSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"))).toBe(true);
     const referenceIndex = readFileSync(join(codexRoot, "skills", fixture.skill.id, "references", "index.md"), "utf-8");
     expect(referenceIndex).toContain("Fixture \\| Ref");
@@ -1555,6 +1561,10 @@ describe("build/pipeline modules", () => {
       ...fixture.registry,
       agents: [{ ...fixture.agent, inputs: [defineAgentInput({ name: "", description: "missing name" })] }],
     })).toThrow("inputs[0].name");
+    expect(() => validateRegistry({
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, inputs: [defineAgentInput({ name: "bad name", description: "invalid name" })] }],
+    })).toThrow("inputs[0].name must start with a letter");
 
     const out = createTempDir("ai-experts-agent-out-");
     await emitAgent(fixture.agent, out, Platform.Claude);

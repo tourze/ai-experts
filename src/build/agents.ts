@@ -70,6 +70,11 @@ export function validateAgentInputs(agent: AgentDefinition): readonly AgentInput
     if (typeof input.name !== "string" || input.name.trim() === "") {
       throw new Error(`Agent ${agent.id} inputs[${index}].name must be a non-empty string`);
     }
+    if (!/^[A-Za-z][A-Za-z0-9_-]*$/u.test(input.name.trim())) {
+      throw new Error(
+        `Agent ${agent.id} inputs[${index}].name must start with a letter and only contain letters, numbers, "_", or "-"`,
+      );
+    }
     const inputName = input.name.trim();
     if (seen.has(inputName)) {
       throw new Error(`Agent ${agent.id} contains duplicate input: ${inputName}`);
