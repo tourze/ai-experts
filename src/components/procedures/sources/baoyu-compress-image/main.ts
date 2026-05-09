@@ -38,7 +38,19 @@ export const procedure = defineCliProcedure({
       description: "压缩质量（默认 80）",
       required: false,
     },
-    { flag: "--keep", type: "", description: "保留原始文件", required: false },
+    { flag: "--keep", type: "", description: "保留原始文件（默认行为）", required: false },
+    {
+      flag: "--delete-original",
+      type: "",
+      description: "成功转码后删除原始文件；仅在用户确认源文件可删除后使用",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出文件；仅在确认目标文件可覆盖后使用",
+      required: false,
+    },
     {
       flag: "--recursive",
       type: "",
@@ -196,7 +208,7 @@ async function compress(
       break;
   }
 }
-function getOutputPath(
+export function getOutputPath(
   input: any,
   format: any,
   keep: any,
@@ -236,6 +248,13 @@ async function processFile(
   await compress(compressor, absInput, tempOutput, opts.format, opts.quality);
   const outputSize = statSync(tempOutput).size;
   if (existsSync(output)) {
+    const replacingInput = output === absInput && !opts.keep;
+    if (!replacingInput && !opts.overwrite) {
+      unlinkSync(tempOutput);
+      throw new Error(
+        `output file already exists: ${output}; pass --overwrite only after confirming it can be replaced`,
+      );
+    }
     unlinkSync(output);
   }
   renameSync(tempOutput, output);
@@ -274,20 +293,26 @@ Options:
   -o, --output <path>   Output path
   -f, --format <fmt>    Output format: webp, png, jpeg (default: webp)
   -q, --quality <n>     Quality 0-100 (default: 80)
-  -k, --keep            Keep original file
+  -k, --keep            Keep original file (default)
+      --delete-original Delete original file after successful conversion (confirm first)
+      --overwrite       Replace an existing output file (confirm first)
   -r, --recursive       Process directories recursively
       --json            JSON output
   -h, --help            Show help`);
 }
-function parseArgs(args: any): any {
+export function parseArgs(args: any): any {
   const opts: Record<string, any> = {
     input: "",
     format: "webp",
     quality: 80,
-    keep: false,
+    keep: true,
+    deleteOriginal: false,
+    overwrite: false,
     recursive: false,
     json: false,
   };
+  let sawKeep = false;
+  let sawDeleteOriginal = false;
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "-h" || arg === "--help") {
@@ -312,6 +337,13 @@ function parseArgs(args: any): any {
       opts.quality = q;
     } else if (arg === "-k" || arg === "--keep") {
       opts.keep = true;
+      sawKeep = true;
+    } else if (arg === "--delete-original") {
+      opts.keep = false;
+      opts.deleteOriginal = true;
+      sawDeleteOriginal = true;
+    } else if (arg === "--overwrite") {
+      opts.overwrite = true;
     } else if (arg === "-r" || arg === "--recursive") {
       opts.recursive = true;
     } else if (arg === "--json") {
@@ -319,6 +351,10 @@ function parseArgs(args: any): any {
     } else if (!arg.startsWith("-") && !opts.input) {
       opts.input = arg;
     }
+  }
+  if (sawKeep && sawDeleteOriginal) {
+    console.error("Error: --keep and --delete-original cannot be used together");
+    return null;
   }
   if (!opts.input) {
     console.error("Error: Input file or directory required");

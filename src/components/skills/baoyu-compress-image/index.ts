@@ -22,7 +22,8 @@ export const baoyuCompressImageSkill = defineSkill({
   constraints: [
     "使用 Node.js 直接运行 `baoyu-compress-image-main` procedure。",
     "`--output` 只支持单文件输入；目录批处理时禁止传自定义输出路径。",
-    "默认 `--keep=false`，表示成功转码后删除原文件；只有显式加 `--keep` 才保留源文件。",
+    "默认保留源文件；只有用户明确确认源文件可删除后才传 `--delete-original`。",
+    "默认不会覆盖已存在的输出文件；只有确认目标可替换后才传 `--overwrite`。",
     "目录模式默认不递归；需要跨子目录时必须显式加 `--recursive`。",
     "压缩后端按“系统工具优先、`sharp` 兜底”顺序选择；如果没有任何后端，先补依赖再运行。",
   ],
@@ -31,7 +32,8 @@ export const baoyuCompressImageSkill = defineSkill({
     "目录模式下没有误传 `--output`。",
     "`quality` 在 `0-100` 范围内。",
     "选择的输出格式与后缀一致：`webp`、`png`、`jpeg`。",
-    "若未传 `--keep`，已确认源文件会在成功转码后删除。",
+    "若传 `--delete-original`，已确认源文件会在成功转码后删除。",
+    "若传 `--overwrite`，已确认目标输出文件可替换。",
     "若需要链到文章配图流程，先做图片生成再做统一压缩。",
   ],
   antiPatterns: [
@@ -59,7 +61,7 @@ export const baoyuCompressImageSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-3",
-        label: "默认 keep=false，成功转码后会删除原文件；只有用户明确要求保留时才传 --keep。",
+        label: "默认保留原文件且不覆盖输出；只有用户明确确认删除或替换时才传 --delete-original / --overwrite。",
       }),
       defineWorkflowStep({
         id: "step-4",
@@ -75,7 +77,7 @@ export const baoyuCompressImageSkill = defineSkill({
     items: [
       "输入类型、输出格式、quality、keep/recursive/output 参数和实际执行的 procedure。",
       "每个文件的 input、output、压缩比例、后端选择和失败原因。",
-      "源文件删除风险、批处理限制和需要补依赖的压缩后端问题。",
+      "源文件删除/输出覆盖风险、批处理限制和需要补依赖的压缩后端问题。",
     ],
   }),
   procedures: [

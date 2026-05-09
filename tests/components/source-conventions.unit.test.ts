@@ -329,6 +329,29 @@ describe("component source conventions", () => {
     }
   });
 
+  test("baoyu compress image defaults preserve originals and reject overwrites", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/baoyu-compress-image/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认保留源文件/u);
+    assert.match(skillSource, /默认不会覆盖已存在的输出文件/u);
+    assert.doesNotMatch(skillSource, /默认 `--keep=false`/u);
+
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/baoyu-compress-image/main.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"--delete-original"/u);
+    assert.match(procedureSource, /flag:\s+"--overwrite"/u);
+    assert.match(procedureSource, /output file already exists/u);
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--delete-original"/u,
+      "baoyu compress examples should not teach source deletion bypasses",
+    );
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))
