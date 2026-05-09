@@ -36,11 +36,17 @@ export function parseArgs(argv: readonly string[]): ParsedBuildArgs {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--check") args.check = true;
-    else if (arg === "--out-dir" && argv[index + 1] !== undefined) {
-      args.outDir = resolve(argv[index + 1] as string);
+    else if (arg === "--out-dir") {
+      const value = argv[index + 1];
+      if (value === undefined || value === "" || value.startsWith("--")) {
+        throw new Error("--out-dir requires a value");
+      }
+      args.outDir = resolve(value);
       index += 1;
     } else if (arg.startsWith("--out-dir=")) {
-      args.outDir = resolve(arg.slice("--out-dir=".length));
+      const value = arg.slice("--out-dir=".length);
+      if (value === "") throw new Error("--out-dir requires a value");
+      args.outDir = resolve(value);
     } else if (arg === "-h" || arg === "--help") {
       args.help = true;
     } else {
