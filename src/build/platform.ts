@@ -324,6 +324,12 @@ function validateHookMatcher(hook: HookDefinition): void {
       if (typeof matcher.source !== "string" || matcher.source.trim() === "") {
         throw new Error(`Hook ${hook.id} matcher[${index}] regex.source must be a non-empty string`);
       }
+      try {
+        // Match runtime behavior: dispatch uses /^(?:<matcher>)$/ for tool-name filtering.
+        void new RegExp(`^(?:${matcher.source})$`);
+      } catch {
+        throw new Error(`Hook ${hook.id} matcher[${index}] regex.source must be a valid regex pattern`);
+      }
       continue;
     }
     throw new Error(`Hook ${hook.id} matcher[${index}] uses unsupported matcher kind: ${(matcher as { kind?: unknown }).kind}`);

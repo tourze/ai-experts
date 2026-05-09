@@ -859,6 +859,18 @@ describe("build/pipeline modules", () => {
       "Hook fixture-hook matcher[0] regex.source must be a non-empty string",
     );
 
+    const invalidHookRegexSyntaxRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "regex", source: "[" } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookRegexSyntaxRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] regex.source must be a valid regex pattern",
+    );
+
     const invalidHookMatcherKindRegistry: ComponentRegistry = {
       ...fixture.registry,
       hooks: [{
