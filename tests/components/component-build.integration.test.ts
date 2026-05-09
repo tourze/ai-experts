@@ -42,6 +42,47 @@ function normalizeMarkdownReferenceLabel(label: string): string {
   return label.trim().replace(/\s+/gu, " ").toLowerCase();
 }
 
+function githubStyleHeadingSlug(text: string): string {
+  return text
+    .replace(/`[^`]*`/gu, "")
+    .trim()
+    .toLowerCase()
+    .replace(/<[^>]*>/gu, "")
+    .replace(/[\t\n\r ]+/gu, "-")
+    .replace(/[^\p{Letter}\p{Number}\p{Mark}\p{Connector_Punctuation}-]/gu, "");
+}
+
+function decodeMarkdownAnchor(anchor: string): string {
+  try {
+    return decodeURIComponent(anchor);
+  } catch {
+    return anchor;
+  }
+}
+
+function collectMarkdownAnchors(source: string): Set<string> {
+  const slugCounts = new Map<string, number>();
+  const anchors = new Set<string>();
+
+  for (const line of source.split(/\r?\n/u)) {
+    const heading = /^(#{1,6})\s+(.+?)\s*#*\s*$/u.exec(line);
+    if (heading) {
+      const baseSlug = githubStyleHeadingSlug(heading[2]);
+      if (baseSlug) {
+        const count = slugCounts.get(baseSlug) ?? 0;
+        slugCounts.set(baseSlug, count + 1);
+        anchors.add(count === 0 ? baseSlug : `${baseSlug}-${count}`);
+      }
+    }
+
+    for (const match of line.matchAll(/<a\s+[^>]*(?:id|name)=["']([^"']+)["'][^>]*>/giu)) {
+      anchors.add(match[1].toLowerCase());
+    }
+  }
+
+  return anchors;
+}
+
 function isLikelyLocalDefinitionPath(href: string): boolean {
   return href.startsWith("./")
     || href.startsWith("../")
@@ -2602,13 +2643,34 @@ describe("component build integration", () => {
       const markdownFiles = collectFiles(join(tmpDistDir, platform), (file) => file.endsWith(".md"));
       const brokenLocalLinks: string[] = [];
       const directoryLinks: string[] = [];
+      const brokenAnchors: string[] = [];
+      const anchorCache = new Map<string, Set<string>>();
+
+      const checkAnchor = (markdownFile: string, href: string, resolvedPath: string): void => {
+        const hashIndex = href.indexOf("#");
+        if (hashIndex === -1 || !href.slice(hashIndex + 1) || !resolvedPath.endsWith(".md")) return;
+        let targetAnchors = anchorCache.get(resolvedPath);
+        if (!targetAnchors) {
+          targetAnchors = collectMarkdownAnchors(readFileSync(resolvedPath, "utf-8"));
+          anchorCache.set(resolvedPath, targetAnchors);
+        }
+
+        const target = decodeMarkdownAnchor(href.slice(hashIndex + 1)).toLowerCase();
+        if (!targetAnchors.has(target)) {
+          brokenAnchors.push(`${markdownFile}: ${href} missing #${target}`);
+        }
+      };
 
       for (const markdownFile of markdownFiles) {
         const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
 
         for (const match of markdown.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
           const href = markdownDestination(match[1] as string);
-          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href)) continue;
+          if (href.startsWith("#")) {
+            checkAnchor(markdownFile, href, markdownFile);
+            continue;
+          }
+          if (/^[a-z][a-z0-9+.-]*:|^\//iu.test(href)) continue;
           const [pathWithoutAnchor] = href.split("#", 1);
           if (!pathWithoutAnchor) continue;
           const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
@@ -2616,6 +2678,8 @@ describe("component build integration", () => {
             brokenLocalLinks.push(`${markdownFile}: ${href}`);
           } else if (statSync(resolvedPath).isDirectory()) {
             directoryLinks.push(`${markdownFile}: ${href}`);
+          } else {
+            checkAnchor(markdownFile, href, resolvedPath);
           }
         }
 
@@ -2623,7 +2687,11 @@ describe("component build integration", () => {
           const label = (match[1] ?? "").trim();
           if (label.startsWith("^")) continue;
           const href = markdownDestination(match[2] as string);
-          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
+          if (href.startsWith("#")) {
+            checkAnchor(markdownFile, `[${label}] -> ${href}`, markdownFile);
+            continue;
+          }
+          if (/^[a-z][a-z0-9+.-]*:|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
           const [pathWithoutAnchor] = href.split("#", 1);
           if (!pathWithoutAnchor) continue;
           const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
@@ -2631,6 +2699,8 @@ describe("component build integration", () => {
             brokenLocalLinks.push(`${markdownFile}: [${label}] -> ${href}`);
           } else if (statSync(resolvedPath).isDirectory()) {
             directoryLinks.push(`${markdownFile}: [${label}] -> ${href}`);
+          } else {
+            checkAnchor(markdownFile, `[${label}] -> ${href}`, resolvedPath);
           }
         }
       }
@@ -2644,6 +2714,11 @@ describe("component build integration", () => {
         directoryLinks,
         [],
         `${platform} generated Markdown should not link local directories directly`,
+      );
+      assert.deepEqual(
+        brokenAnchors,
+        [],
+        `${platform} generated Markdown anchors should match generated heading slugs or explicit HTML anchors`,
       );
     }
   });
