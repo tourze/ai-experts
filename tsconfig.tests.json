@@ -12,6 +12,7 @@
   "include": [
     "src/build.ts",
     "src/build/**/*.ts",
+    "src/components/procedures/ambient-modules.d.ts",
     "tests/**/*.ts"
   ],
   "exclude": [

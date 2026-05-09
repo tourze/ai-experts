@@ -1,3 +1,4 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * Localization helper module for App Store Optimization.
  * Manages multi-language ASO optimization strategies.
@@ -5,10 +6,34 @@
 
 import { getNumber, getString, runJsonProcedure } from "./cli";
 
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-localization-helper",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "规划多语言 ASO 策略，包含目标市场推荐、翻译校验、关键词适配和 ROI 分析。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/localization_helper.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description:
+        "包含 currentMarket、budgetLevel、monthlyDownloads 的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "localization_input.json"] },
+});
+
 type AnyRecord = Record<string, any>;
 
 export class LocalizationHelper {
-  static readonly PRIORITY_MARKETS: Record<string, Array<{ language: string; market: string; revenue_share: number }>> = {
+  static readonly PRIORITY_MARKETS: Record<
+    string,
+    Array<{ language: string; market: string; revenue_share: number }>
+  > = {
     tier_1: [
       { language: "en-US", market: "United States", revenue_share: 0.25 },
       { language: "zh-CN", market: "China", revenue_share: 0.2 },
@@ -53,7 +78,11 @@ export class LocalizationHelper {
     this.appCategory = appCategory;
   }
 
-  identifyTargetMarkets(currentMarket = "en-US", budgetLevel = "medium", targetMarketCount = 5): AnyRecord {
+  identifyTargetMarkets(
+    currentMarket = "en-US",
+    budgetLevel = "medium",
+    targetMarketCount = 5,
+  ): AnyRecord {
     let priorityTiers: string[] = [];
     let maxMarkets = targetMarketCount;
 
@@ -74,14 +103,21 @@ export class LocalizationHelper {
         recommendedMarkets.push({
           ...market,
           tier,
-          estimated_translation_cost: this.estimateTranslationCost(market.language),
+          estimated_translation_cost: this.estimateTranslationCost(
+            market.language,
+          ),
         });
       }
     }
 
-    recommendedMarkets.sort((a, b) => Number(b.revenue_share) - Number(a.revenue_share));
+    recommendedMarkets.sort(
+      (a, b) => Number(b.revenue_share) - Number(a.revenue_share),
+    );
     const limited = recommendedMarkets.slice(0, maxMarkets);
-    const totalPotentialRevenueShare = limited.reduce((sum, market) => sum + Number(market.revenue_share), 0);
+    const totalPotentialRevenueShare = limited.reduce(
+      (sum, market) => sum + Number(market.revenue_share),
+      0,
+    );
 
     return {
       recommended_markets: limited,
@@ -99,7 +135,8 @@ export class LocalizationHelper {
     platform = "apple",
   ): AnyRecord {
     const targetLangCode = targetLanguage.split("-")[0];
-    const charMultiplier = LocalizationHelper.CHAR_MULTIPLIERS[targetLangCode] ?? 1;
+    const charMultiplier =
+      LocalizationHelper.CHAR_MULTIPLIERS[targetLangCode] ?? 1;
 
     const limits: Record<string, number> =
       platform === "apple"
@@ -121,7 +158,12 @@ export class LocalizationHelper {
         estimated_target_length: estimatedLength,
         character_limit: limit,
         fits_within_limit: estimatedLength <= limit,
-        translation_notes: this.getTranslationNotes(field, targetLanguage, estimatedLength, limit),
+        translation_notes: this.getTranslationNotes(
+          field,
+          targetLanguage,
+          estimatedLength,
+          limit,
+        ),
       };
 
       if (estimatedLength > limit) {
@@ -138,7 +180,10 @@ export class LocalizationHelper {
       localized_fields: localizedFields,
       character_multiplier: charMultiplier,
       warnings,
-      recommendations: this.generateTranslationRecommendations(targetLanguage, warnings),
+      recommendations: this.generateTranslationRecommendations(
+        targetLanguage,
+        warnings,
+      ),
     };
   }
 
@@ -153,7 +198,10 @@ export class LocalizationHelper {
 
     const adaptedKeywords = sourceKeywords.map((keyword, index) => ({
       source_keyword: keyword,
-      adaptation_strategy: this.determineAdaptationStrategy(keyword, targetMarket),
+      adaptation_strategy: this.determineAdaptationStrategy(
+        keyword,
+        targetMarket,
+      ),
       cultural_considerations: culturalNotes,
       priority: index < 3 ? "high" : "medium",
     }));
@@ -207,15 +255,22 @@ export class LocalizationHelper {
 
       if (!isWithinLimit) {
         validation.is_valid = false;
-        validation.errors.push(`${field} exceeds limit: ${actualLength}/${limit} characters`);
+        validation.errors.push(
+          `${field} exceeds limit: ${actualLength}/${limit} characters`,
+        );
       }
     }
 
-    const qualityIssues = this.checkTranslationQuality(translatedMetadata, targetLanguage);
+    const qualityIssues = this.checkTranslationQuality(
+      translatedMetadata,
+      targetLanguage,
+    );
     validation.quality_checks = qualityIssues;
 
     if (qualityIssues.length > 0) {
-      validation.warnings.push(...qualityIssues.map((issue: string) => `Quality issue: ${issue}`));
+      validation.warnings.push(
+        ...qualityIssues.map((issue: string) => `Quality issue: ${issue}`),
+      );
     }
 
     return validation;
@@ -234,8 +289,12 @@ export class LocalizationHelper {
       const marketInfo = this.findMarketByCode(marketCode);
       if (!marketInfo) continue;
 
-      const marketDownloads = Math.floor(currentMonthlyDownloads * marketInfo.revenue_share);
-      const expectedIncrease = Math.floor(marketDownloads * expectedLiftPercentage);
+      const marketDownloads = Math.floor(
+        currentMonthlyDownloads * marketInfo.revenue_share,
+      );
+      const expectedIncrease = Math.floor(
+        marketDownloads * expectedLiftPercentage,
+      );
       totalExpectedLift += expectedIncrease;
 
       marketData.push({
@@ -248,7 +307,10 @@ export class LocalizationHelper {
 
     const revenuePerDownload = 2;
     const monthlyAdditionalRevenue = totalExpectedLift * revenuePerDownload;
-    const paybackMonths = monthlyAdditionalRevenue > 0 ? localizationCost / monthlyAdditionalRevenue : Number.POSITIVE_INFINITY;
+    const paybackMonths =
+      monthlyAdditionalRevenue > 0
+        ? localizationCost / monthlyAdditionalRevenue
+        : Number.POSITIVE_INFINITY;
 
     return {
       markets_analyzed: marketData.length,
@@ -256,7 +318,9 @@ export class LocalizationHelper {
       total_expected_monthly_lift: totalExpectedLift,
       expected_monthly_revenue_increase: formatMoney(monthlyAdditionalRevenue),
       localization_cost: formatMoney(localizationCost),
-      payback_period_months: Number.isFinite(paybackMonths) ? roundTo(paybackMonths, 1) : "N/A",
+      payback_period_months: Number.isFinite(paybackMonths)
+        ? roundTo(paybackMonths, 1)
+        : "N/A",
       annual_roi: Number.isFinite(paybackMonths)
         ? `${(((monthlyAdditionalRevenue * 12 - localizationCost) / Math.max(localizationCost, 1)) * 100).toFixed(1)}%`
         : "Negative",
@@ -291,7 +355,10 @@ export class LocalizationHelper {
       screenshots: 50,
     };
 
-    const totalWords = Object.values(typicalWordCounts).reduce((sum, value) => sum + value, 0);
+    const totalWords = Object.values(typicalWordCounts).reduce(
+      (sum, value) => sum + value,
+      0,
+    );
     const estimatedCost = totalWords * baseCostPerWord * multiplier;
 
     return {
@@ -303,7 +370,8 @@ export class LocalizationHelper {
 
   private estimateTotalLocalizationCost(markets: AnyRecord[]): string {
     const total = markets.reduce(
-      (sum, market) => sum + Number(market.estimated_translation_cost?.estimated_cost ?? 0),
+      (sum, market) =>
+        sum + Number(market.estimated_translation_cost?.estimated_cost ?? 0),
       0,
     );
     return formatMoney(total);
@@ -351,28 +419,39 @@ export class LocalizationHelper {
     const notes: string[] = [];
 
     if (estimatedLength > limit) {
-      notes.push(`Condensing required - aim for ${limit - 10} characters to allow buffer`);
+      notes.push(
+        `Condensing required - aim for ${limit - 10} characters to allow buffer`,
+      );
     }
 
     if (field === "title" && targetLanguage.startsWith("zh")) {
-      notes.push("Chinese characters convey more meaning - may need fewer characters");
+      notes.push(
+        "Chinese characters convey more meaning - may need fewer characters",
+      );
     }
 
     if (field === "keywords" && targetLanguage.startsWith("de")) {
-      notes.push("German compound words may be longer - prioritize shorter keywords");
+      notes.push(
+        "German compound words may be longer - prioritize shorter keywords",
+      );
     }
 
     return notes;
   }
 
-  private generateTranslationRecommendations(targetLanguage: string, warnings: string[]): string[] {
+  private generateTranslationRecommendations(
+    targetLanguage: string,
+    warnings: string[],
+  ): string[] {
     const recommendations = [
       "Use professional native speakers for translation",
       "Test translations with local users before finalizing",
     ];
 
     if (warnings.length > 0) {
-      recommendations.push("Work with translator to condense text while preserving meaning");
+      recommendations.push(
+        "Work with translator to condense text while preserving meaning",
+      );
     }
 
     if (targetLanguage.startsWith("zh") || targetLanguage.startsWith("ja")) {
@@ -384,10 +463,22 @@ export class LocalizationHelper {
 
   private getCulturalKeywordConsiderations(targetMarket: string): string[] {
     const considerations: Record<string, string[]> = {
-      China: ["Avoid politically sensitive terms", "Consider local alternatives to blocked services"],
-      Japan: ["Honorific language important", "Technical terms often use katakana"],
-      Germany: ["Privacy and security terms resonate", "Efficiency and quality valued"],
-      France: ["French language protection laws", "Prefer French terms over English"],
+      China: [
+        "Avoid politically sensitive terms",
+        "Consider local alternatives to blocked services",
+      ],
+      Japan: [
+        "Honorific language important",
+        "Technical terms often use katakana",
+      ],
+      Germany: [
+        "Privacy and security terms resonate",
+        "Efficiency and quality valued",
+      ],
+      France: [
+        "French language protection laws",
+        "Prefer French terms over English",
+      ],
       default: ["Research local search behavior", "Test with native speakers"],
     };
 
@@ -396,8 +487,14 @@ export class LocalizationHelper {
 
   private getSearchPatterns(targetMarket: string): string[] {
     const patterns: Record<string, string[]> = {
-      China: ["Use both simplified characters and romanization", "Brand names often romanized"],
-      Japan: ["Mix of kanji, hiragana, and katakana", "English words common in tech"],
+      China: [
+        "Use both simplified characters and romanization",
+        "Brand names often romanized",
+      ],
+      Japan: [
+        "Mix of kanji, hiragana, and katakana",
+        "English words common in tech",
+      ],
       Germany: ["Compound words common", "Specific technical terminology"],
       default: ["Research local search trends", "Monitor competitor keywords"],
     };
@@ -405,17 +502,29 @@ export class LocalizationHelper {
     return patterns[targetMarket] ?? patterns.default;
   }
 
-  private determineAdaptationStrategy(_keyword: string, targetMarket: string): string {
-    if (["China", "Japan", "Korea"].includes(targetMarket)) return "full_localization";
-    if (["Germany", "France", "Spain"].includes(targetMarket)) return "adapt_and_translate";
+  private determineAdaptationStrategy(
+    _keyword: string,
+    targetMarket: string,
+  ): string {
+    if (["China", "Japan", "Korea"].includes(targetMarket))
+      return "full_localization";
+    if (["Germany", "France", "Spain"].includes(targetMarket))
+      return "adapt_and_translate";
     return "direct_translation";
   }
 
-  private checkTranslationQuality(translatedMetadata: Record<string, string>, _targetLanguage: string): string[] {
+  private checkTranslationQuality(
+    translatedMetadata: Record<string, string>,
+    _targetLanguage: string,
+  ): string[] {
     const issues: string[] = [];
 
     for (const [field, text] of Object.entries(translatedMetadata)) {
-      if (text.includes("[") || text.includes("{") || text.toUpperCase().includes("TODO")) {
+      if (
+        text.includes("[") ||
+        text.includes("{") ||
+        text.toUpperCase().includes("TODO")
+      ) {
         issues.push(`${field} contains placeholder text`);
       }
       if ((text.match(/!/g) ?? []).length > 3) {
@@ -429,7 +538,8 @@ export class LocalizationHelper {
   private generateRoiRecommendation(paybackMonths: number): string {
     if (paybackMonths <= 3) return "Excellent ROI - proceed immediately";
     if (paybackMonths <= 6) return "Good ROI - recommended investment";
-    if (paybackMonths <= 12) return "Moderate ROI - consider if strategic market";
+    if (paybackMonths <= 12)
+      return "Moderate ROI - consider if strategic market";
     return "Low ROI - reconsider or focus on higher-priority markets first";
   }
 }
@@ -441,13 +551,25 @@ export function planLocalizationStrategy(
 ): AnyRecord {
   const helper = new LocalizationHelper();
 
-  const targetMarkets = helper.identifyTargetMarkets(currentMarket, budgetLevel);
-  const marketCodes = (targetMarkets.recommended_markets ?? []).map((market: AnyRecord) => String(market.language));
+  const targetMarkets = helper.identifyTargetMarkets(
+    currentMarket,
+    budgetLevel,
+  );
+  const marketCodes = (targetMarkets.recommended_markets ?? []).map(
+    (market: AnyRecord) => String(market.language),
+  );
 
-  const estimatedCostRaw = String(targetMarkets.estimated_cost ?? "$0").replace(/[$,]/g, "");
+  const estimatedCostRaw = String(targetMarkets.estimated_cost ?? "$0").replace(
+    /[$,]/g,
+    "",
+  );
   const estimatedCost = Number(estimatedCostRaw) || 0;
 
-  const roiAnalysis = helper.calculateLocalizationRoi(marketCodes, monthlyDownloads, estimatedCost);
+  const roiAnalysis = helper.calculateLocalizationRoi(
+    marketCodes,
+    monthlyDownloads,
+    estimatedCost,
+  );
 
   return {
     target_markets: targetMarkets,
@@ -457,7 +579,7 @@ export function planLocalizationStrategy(
 
 export const plan_localization_strategy = planLocalizationStrategy;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
     planLocalizationStrategy(
       getString(request, ["currentMarket", "current_market"]),

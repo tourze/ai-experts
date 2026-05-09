@@ -1,9 +1,30 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * Keyword analysis module for App Store Optimization.
  * Analyzes keyword search volume, competition, and relevance for app discovery.
  */
 
 import { getArray, runJsonProcedure } from "./cli";
+
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-keyword-analyzer",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "分析关键词搜索量、竞争度、相关性和长尾机会，为 ASO 关键词策略提供数据支持。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/keyword_analyzer.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description: "包含 keywordsData 数组的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "keyword_input.json"] },
+});
 
 type AnyRecord = Record<string, any>;
 
@@ -32,8 +53,15 @@ export class KeywordAnalyzer {
   ): AnyRecord {
     const competitionLevel = this.calculateCompetitionLevel(competingApps);
     const volumeCategory = this.categorizeSearchVolume(searchVolume);
-    const difficultyScore = this.calculateKeywordDifficulty(searchVolume, competingApps);
-    const potentialScore = this.calculatePotentialScore(searchVolume, competingApps, relevanceScore);
+    const difficultyScore = this.calculateKeywordDifficulty(
+      searchVolume,
+      competingApps,
+    );
+    const potentialScore = this.calculatePotentialScore(
+      searchVolume,
+      competingApps,
+      relevanceScore,
+    );
 
     const keywordLength = keyword.trim().split(/\s+/).filter(Boolean).length;
     const analysis = {
@@ -45,7 +73,11 @@ export class KeywordAnalyzer {
       relevance_score: relevanceScore,
       difficulty_score: difficultyScore,
       potential_score: potentialScore,
-      recommendation: this.generateRecommendation(potentialScore, difficultyScore, relevanceScore),
+      recommendation: this.generateRecommendation(
+        potentialScore,
+        difficultyScore,
+        relevanceScore,
+      ),
       keyword_length: keywordLength,
       is_long_tail: keywordLength >= 3,
     };
@@ -64,15 +96,22 @@ export class KeywordAnalyzer {
       ),
     );
 
-    const rankedKeywords = [...analyses].sort((a, b) => b.potential_score - a.potential_score);
+    const rankedKeywords = [...analyses].sort(
+      (a, b) => b.potential_score - a.potential_score,
+    );
 
     const primaryKeywords = rankedKeywords.filter(
       (kw) => kw.potential_score >= 70 && kw.relevance_score >= 0.8,
     );
     const secondaryKeywords = rankedKeywords.filter(
-      (kw) => kw.potential_score >= 50 && kw.potential_score < 70 && kw.relevance_score >= 0.6,
+      (kw) =>
+        kw.potential_score >= 50 &&
+        kw.potential_score < 70 &&
+        kw.relevance_score >= 0.6,
     );
-    const longTailKeywords = rankedKeywords.filter((kw) => kw.is_long_tail && kw.relevance_score >= 0.7);
+    const longTailKeywords = rankedKeywords.filter(
+      (kw) => kw.is_long_tail && kw.relevance_score >= 0.7,
+    );
 
     return {
       total_keywords_analyzed: analyses.length,
@@ -80,11 +119,18 @@ export class KeywordAnalyzer {
       primary_keywords: primaryKeywords.slice(0, 5),
       secondary_keywords: secondaryKeywords.slice(0, 10),
       long_tail_keywords: longTailKeywords.slice(0, 10),
-      summary: this.generateComparisonSummary(primaryKeywords, secondaryKeywords, longTailKeywords),
+      summary: this.generateComparisonSummary(
+        primaryKeywords,
+        secondaryKeywords,
+        longTailKeywords,
+      ),
     };
   }
 
-  findLongTailOpportunities(baseKeyword: string, modifiers: string[]): AnyRecord[] {
+  findLongTailOpportunities(
+    baseKeyword: string,
+    modifiers: string[],
+  ): AnyRecord[] {
     const longTailKeywords: AnyRecord[] = [];
 
     for (const modifier of modifiers) {
@@ -115,7 +161,10 @@ export class KeywordAnalyzer {
     return longTailKeywords;
   }
 
-  extractKeywordsFromText(text: string, minWordLength = 3): Array<[string, number]> {
+  extractKeywordsFromText(
+    text: string,
+    minWordLength = 3,
+  ): Array<[string, number]> {
     const normalized = text.toLowerCase().replace(/[^\w\s]/g, " ");
     const words = normalized
       .split(/\s+/)
@@ -163,13 +212,19 @@ export class KeywordAnalyzer {
     return allKeywords.slice(0, 50);
   }
 
-  calculateKeywordDensity(text: string, targetKeywords: string[]): Record<string, number> {
+  calculateKeywordDensity(
+    text: string,
+    targetKeywords: string[],
+  ): Record<string, number> {
     const textLower = text.toLowerCase();
     const totalWords = textLower.split(/\s+/).filter(Boolean).length;
     const densities: Record<string, number> = {};
 
     for (const keyword of targetKeywords) {
-      const occurrences = this.countOccurrences(textLower, keyword.toLowerCase());
+      const occurrences = this.countOccurrences(
+        textLower,
+        keyword.toLowerCase(),
+      );
       const density = totalWords > 0 ? (occurrences / totalWords) * 100 : 0;
       densities[keyword] = roundTo(density, 2);
     }
@@ -178,21 +233,29 @@ export class KeywordAnalyzer {
   }
 
   private calculateCompetitionLevel(competingApps: number): string {
-    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.low) return "low";
-    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.medium) return "medium";
-    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.high) return "high";
+    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.low)
+      return "low";
+    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.medium)
+      return "medium";
+    if (competingApps < KeywordAnalyzer.COMPETITION_THRESHOLDS.high)
+      return "high";
     return "very_high";
   }
 
   private categorizeSearchVolume(searchVolume: number): string {
-    if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.very_low) return "very_low";
+    if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.very_low)
+      return "very_low";
     if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.low) return "low";
-    if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.medium) return "medium";
+    if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.medium)
+      return "medium";
     if (searchVolume < KeywordAnalyzer.VOLUME_CATEGORIES.high) return "high";
     return "very_high";
   }
 
-  private calculateKeywordDifficulty(searchVolume: number, competingApps: number): number {
+  private calculateKeywordDifficulty(
+    searchVolume: number,
+    competingApps: number,
+  ): number {
     if (competingApps === 0) return 0;
     const competitionFactor = Math.min(competingApps / 50000, 1);
     const volumeFactor = Math.min(searchVolume / 1000000, 1);
@@ -205,9 +268,13 @@ export class KeywordAnalyzer {
     relevanceScore: number,
   ): number {
     const volumeScore = Math.min((searchVolume / 100000) * 40, 40);
-    const competitionScore = competingApps > 0 ? Math.max(30 - competingApps / 500, 0) : 30;
+    const competitionScore =
+      competingApps > 0 ? Math.max(30 - competingApps / 500, 0) : 30;
     const relevancePoints = relevanceScore * 30;
-    return roundTo(Math.min(volumeScore + competitionScore + relevancePoints, 100), 1);
+    return roundTo(
+      Math.min(volumeScore + competitionScore + relevancePoints, 100),
+      1,
+    );
   }
 
   private generateRecommendation(
@@ -222,7 +289,8 @@ export class KeywordAnalyzer {
         ? "Good opportunity - include in metadata"
         : "Competitive - use in description, not title";
     }
-    if (potentialScore >= 30) return "Secondary keyword - use for long-tail variations";
+    if (potentialScore >= 30)
+      return "Secondary keyword - use for long-tail variations";
     return "Low potential - deprioritize";
   }
 
@@ -232,7 +300,9 @@ export class KeywordAnalyzer {
     longTailKeywords: AnyRecord[],
   ): string {
     const summaryParts: string[] = [];
-    summaryParts.push(`Identified ${primaryKeywords.length} high-priority primary keywords.`);
+    summaryParts.push(
+      `Identified ${primaryKeywords.length} high-priority primary keywords.`,
+    );
 
     if (primaryKeywords.length > 0) {
       summaryParts.push(
@@ -265,9 +335,15 @@ export function analyzeKeywordSet(keywordsData: AnyRecord[]): AnyRecord {
 
 export const analyze_keyword_set = analyzeKeywordSet;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
-    analyzeKeywordSet(getArray<AnyRecord>(request, ["keywordsData", "keywords_data", "keywords"])),
+    analyzeKeywordSet(
+      getArray<AnyRecord>(request, [
+        "keywordsData",
+        "keywords_data",
+        "keywords",
+      ]),
+    ),
   );
 }
 

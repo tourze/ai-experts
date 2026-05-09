@@ -1,19 +1,85 @@
 #!/usr/bin/env node
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * 为 eval 结果生成并提供 review 页面。
  */
 
-import { readFileSync, readdirSync, statSync, existsSync, writeFileSync, mkdirSync } from "node:fs";
+import {
+  readFileSync,
+  readdirSync,
+  statSync,
+  existsSync,
+  writeFileSync,
+  mkdirSync,
+} from "node:fs";
 import { dirname, extname, join, relative, resolve } from "node:path";
-import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import {
+  createServer,
+  type IncomingMessage,
+  type ServerResponse,
+} from "node:http";
 import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
 
+export const procedure = defineCliProcedure({
+  id: "skill-creator-generate-review",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "启动 eval 结果审查 HTTP viewer 或生成静态 HTML：展示 runs 的 outputs、grading、benchmark 和 feedback，支持交互式评分和上一轮 feedback 对比。",
+  owners: { skillIds: ["skill-creator"] },
+  target: "scripts/generate_review.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "[workspace]",
+      type: "路径",
+      description: "Eval workspace 目录路径（必填）",
+      required: true,
+    },
+    {
+      flag: "--static",
+      type: "路径",
+      description: "输出静态 viewer HTML 文件路径（不启动 HTTP 服务器）",
+      required: false,
+    },
+    {
+      flag: "--skill-name",
+      type: "字符串",
+      description: "Skill 名称，用于 viewer 标题",
+      required: false,
+    },
+    {
+      flag: "--port",
+      type: "数字",
+      description: "HTTP 服务端口（默认 3117）",
+      required: false,
+    },
+    {
+      flag: "--previous-workspace",
+      type: "路径",
+      description: "上一轮 iteration 的 workspace 目录，加载之前的 feedback",
+      required: false,
+    },
+    {
+      flag: "--benchmark",
+      type: "路径",
+      description: "Benchmark JSON 文件路径，嵌入 viewer 展示",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["path/to/workspace", "--static", "review.html"] },
+});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const METADATA_FILES = new Set(["transcript.md", "user_notes.md", "metrics.json"]);
+const METADATA_FILES = new Set([
+  "transcript.md",
+  "user_notes.md",
+  "metrics.json",
+]);
 
 const TEXT_EXTENSIONS = new Set([
   ".txt",
@@ -44,13 +110,22 @@ const TEXT_EXTENSIONS = new Set([
   ".toml",
 ]);
 
-const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp"]);
+const IMAGE_EXTENSIONS = new Set([
+  ".png",
+  ".jpg",
+  ".jpeg",
+  ".gif",
+  ".svg",
+  ".webp",
+]);
 
 const MIME_OVERRIDES: Record<string, string> = {
   ".svg": "image/svg+xml",
   ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".docx":
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ".pptx":
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
 };
 
 function getMimeType(path: string): string {
@@ -62,7 +137,8 @@ function getMimeType(path: string): string {
   if (ext === ".md") return "text/markdown";
   if (ext === ".html") return "text/html";
   if (ext === ".pdf") return "application/pdf";
-  if (IMAGE_EXTENSIONS.has(ext)) return `image/${ext.replace(".", "") === "jpg" ? "jpeg" : ext.replace(".", "")}`;
+  if (IMAGE_EXTENSIONS.has(ext))
+    return `image/${ext.replace(".", "") === "jpg" ? "jpeg" : ext.replace(".", "")}`;
 
   return "application/octet-stream";
 }
@@ -70,8 +146,14 @@ function getMimeType(path: string): string {
 function resolveViewerTemplatePath(): string {
   const candidates = [
     join(__dirname, "viewer.html"),
-    join(__dirname, "../../../skills/skill-creator/assets/eval-viewer/viewer.html"),
-    join(__dirname, "../../skills/skill-creator/assets/eval-viewer/viewer.html"),
+    join(
+      __dirname,
+      "../../../skills/skill-creator/assets/eval-viewer/viewer.html",
+    ),
+    join(
+      __dirname,
+      "../../skills/skill-creator/assets/eval-viewer/viewer.html",
+    ),
   ];
   for (const candidate of candidates) {
     if (existsSync(candidate)) return candidate;
@@ -83,8 +165,12 @@ export function findRuns(workspace: string): any[] {
   const runs: any[] = [];
   findRunsRecursive(workspace, workspace, runs);
   runs.sort((a, b) => {
-    const aEval = Number.isFinite(a.eval_id) ? a.eval_id : Number.POSITIVE_INFINITY;
-    const bEval = Number.isFinite(b.eval_id) ? b.eval_id : Number.POSITIVE_INFINITY;
+    const aEval = Number.isFinite(a.eval_id)
+      ? a.eval_id
+      : Number.POSITIVE_INFINITY;
+    const bEval = Number.isFinite(b.eval_id)
+      ? b.eval_id
+      : Number.POSITIVE_INFINITY;
     if (aEval !== bEval) return aEval - bEval;
     return String(a.id).localeCompare(String(b.id));
   });
@@ -101,7 +187,13 @@ function findRunsRecursive(root: string, current: string, runs: any[]): void {
     return;
   }
 
-  const skip = new Set(["node_modules", ".git", "__pycache__", "skill", "inputs"]);
+  const skip = new Set([
+    "node_modules",
+    ".git",
+    "__pycache__",
+    "skill",
+    "inputs",
+  ]);
   for (const childName of safeReadDir(current)) {
     if (skip.has(childName)) continue;
     const childPath = join(current, childName);
@@ -115,12 +207,17 @@ function buildRun(root: string, runDir: string): any | null {
   let prompt = "";
   let evalId: number | null = null;
 
-  for (const candidate of [join(runDir, "eval_metadata.json"), join(resolve(runDir, ".."), "eval_metadata.json")]) {
+  for (const candidate of [
+    join(runDir, "eval_metadata.json"),
+    join(resolve(runDir, ".."), "eval_metadata.json"),
+  ]) {
     if (!existsSync(candidate)) continue;
     try {
       const metadata = JSON.parse(readFileSync(candidate, "utf8"));
       prompt = String(metadata.prompt ?? "");
-      evalId = Number.isFinite(metadata.eval_id) ? Number(metadata.eval_id) : null;
+      evalId = Number.isFinite(metadata.eval_id)
+        ? Number(metadata.eval_id)
+        : null;
       if (prompt) break;
     } catch {
       // ignore
@@ -128,7 +225,10 @@ function buildRun(root: string, runDir: string): any | null {
   }
 
   if (!prompt) {
-    for (const candidate of [join(runDir, "transcript.md"), join(runDir, "outputs", "transcript.md")]) {
+    for (const candidate of [
+      join(runDir, "transcript.md"),
+      join(runDir, "outputs", "transcript.md"),
+    ]) {
       if (!existsSync(candidate)) continue;
       try {
         const text = readFileSync(candidate, "utf8");
@@ -147,7 +247,9 @@ function buildRun(root: string, runDir: string): any | null {
     prompt = "（未找到 prompt）";
   }
 
-  const runId = relative(root, runDir).replaceAll("/", "-").replaceAll("\\", "-");
+  const runId = relative(root, runDir)
+    .replaceAll("/", "-")
+    .replaceAll("\\", "-");
   const outputsDir = join(runDir, "outputs");
   const outputFiles: any[] = [];
 
@@ -161,7 +263,10 @@ function buildRun(root: string, runDir: string): any | null {
   }
 
   let grading: any = null;
-  for (const candidate of [join(runDir, "grading.json"), join(resolve(runDir, ".."), "grading.json")]) {
+  for (const candidate of [
+    join(runDir, "grading.json"),
+    join(resolve(runDir, ".."), "grading.json"),
+  ]) {
     if (!existsSync(candidate)) continue;
     try {
       grading = JSON.parse(readFileSync(candidate, "utf8"));
@@ -192,7 +297,11 @@ function embedFile(path: string): any {
         content: readFileSync(path, "utf8"),
       };
     } catch {
-      return { name: fileName(path), type: "error", content: "（读取文件失败）" };
+      return {
+        name: fileName(path),
+        type: "error",
+        content: "（读取文件失败）",
+      };
     }
   }
 
@@ -206,7 +315,11 @@ function embedFile(path: string): any {
         data_uri: `data:${mime};base64,${b64}`,
       };
     } catch {
-      return { name: fileName(path), type: "error", content: "（读取文件失败）" };
+      return {
+        name: fileName(path),
+        type: "error",
+        content: "（读取文件失败）",
+      };
     }
   }
 
@@ -219,7 +332,11 @@ function embedFile(path: string): any {
         data_uri: `data:${mime};base64,${b64}`,
       };
     } catch {
-      return { name: fileName(path), type: "error", content: "（读取文件失败）" };
+      return {
+        name: fileName(path),
+        type: "error",
+        content: "（读取文件失败）",
+      };
     }
   }
 
@@ -232,7 +349,11 @@ function embedFile(path: string): any {
         data_b64: b64,
       };
     } catch {
-      return { name: fileName(path), type: "error", content: "（读取文件失败）" };
+      return {
+        name: fileName(path),
+        type: "error",
+        content: "（读取文件失败）",
+      };
     }
   }
 
@@ -249,7 +370,9 @@ function embedFile(path: string): any {
   }
 }
 
-export function loadPreviousIteration(workspace: string): Record<string, { feedback: string; outputs: any[] }> {
+export function loadPreviousIteration(
+  workspace: string,
+): Record<string, { feedback: string; outputs: any[] }> {
   const result: Record<string, { feedback: string; outputs: any[] }> = {};
 
   const feedbackMap: Record<string, string> = {};
@@ -316,12 +439,18 @@ export function generateHtml(
     embedded.benchmark = benchmark;
   }
 
-  return template.replace("/*__EMBEDDED_DATA__*/", `const EMBEDDED_DATA = ${JSON.stringify(embedded)};`);
+  return template.replace(
+    "/*__EMBEDDED_DATA__*/",
+    `const EMBEDDED_DATA = ${JSON.stringify(embedded)};`,
+  );
 }
 
 function killPort(port: number): void {
   try {
-    const result = spawnSync("lsof", ["-ti", `:${port}`], { encoding: "utf8", timeout: 5000 });
+    const result = spawnSync("lsof", ["-ti", `:${port}`], {
+      encoding: "utf8",
+      timeout: 5000,
+    });
     const pids = result.stdout
       .split(/\r?\n/)
       .map((line) => line.trim())
@@ -344,14 +473,29 @@ function serve(
   port: number,
 ): void {
   const server = createServer((req, res) => {
-    handleRequest(req, res, workspace, skillName, feedbackPath, previous, benchmarkPath);
+    handleRequest(
+      req,
+      res,
+      workspace,
+      skillName,
+      feedbackPath,
+      previous,
+      benchmarkPath,
+    );
   });
 
   server.once("error", () => {
     server.listen(0, "127.0.0.1", () => {
       const address = server.address();
-      const finalPort = typeof address === "object" && address ? address.port : port;
-      printServerBanner(finalPort, workspace, feedbackPath, previous, benchmarkPath);
+      const finalPort =
+        typeof address === "object" && address ? address.port : port;
+      printServerBanner(
+        finalPort,
+        workspace,
+        feedbackPath,
+        previous,
+        benchmarkPath,
+      );
       openBrowser(`http://localhost:${finalPort}`);
     });
   });
@@ -414,14 +558,24 @@ function handleRequest(
 
   if (req.method === "POST" && path === "/api/feedback") {
     const chunks: Buffer[] = [];
-    req.on("data", (chunk) => chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)));
+    req.on("data", (chunk) =>
+      chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)),
+    );
     req.on("end", () => {
       try {
         const payload = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-        if (!payload || typeof payload !== "object" || !("reviews" in payload)) {
+        if (
+          !payload ||
+          typeof payload !== "object" ||
+          !("reviews" in payload)
+        ) {
           throw new Error("期望收到包含 'reviews' key 的 JSON object");
         }
-        writeFileSync(feedbackPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+        writeFileSync(
+          feedbackPath,
+          `${JSON.stringify(payload, null, 2)}\n`,
+          "utf8",
+        );
 
         const ok = Buffer.from('{"ok":true}', "utf8");
         res.statusCode = 200;
@@ -429,7 +583,10 @@ function handleRequest(
         res.setHeader("Content-Length", String(ok.length));
         res.end(ok);
       } catch (error) {
-        const body = Buffer.from(JSON.stringify({ error: String((error as Error).message ?? error) }), "utf8");
+        const body = Buffer.from(
+          JSON.stringify({ error: String((error as Error).message ?? error) }),
+          "utf8",
+        );
         res.statusCode = 500;
         res.setHeader("Content-Type", "application/json");
         res.setHeader("Content-Length", String(body.length));
@@ -467,7 +624,9 @@ function printServerBanner(
   console.log(`  Workspace: ${workspace}`);
   console.log(`  Feedback:  ${feedbackPath}`);
   if (Object.keys(previous).length > 0) {
-    console.log(`  Previous:  loaded (${Object.keys(previous).length} 个 runs)`);
+    console.log(
+      `  Previous:  loaded (${Object.keys(previous).length} 个 runs)`,
+    );
   }
   if (benchmarkPath) {
     console.log(`  Benchmark: ${benchmarkPath}`);
@@ -526,15 +685,22 @@ function parseCliArgs(): GenerateReviewCliArgs {
   }
 
   const port = Number(parsed.values.port ?? "3117");
-  const skillName = String(parsed.values["skill-name"] ?? fileName(workspace).replace(/-workspace$/, ""));
+  const skillName = String(
+    parsed.values["skill-name"] ??
+      fileName(workspace).replace(/-workspace$/, ""),
+  );
   const feedbackPath = join(workspace, "feedback.json");
 
   let previous: Record<string, { feedback: string; outputs: any[] }> = {};
   if (parsed.values["previous-workspace"]) {
-    previous = loadPreviousIteration(resolve(String(parsed.values["previous-workspace"])));
+    previous = loadPreviousIteration(
+      resolve(String(parsed.values["previous-workspace"])),
+    );
   }
 
-  const benchmarkPath = parsed.values.benchmark ? resolve(String(parsed.values.benchmark)) : null;
+  const benchmarkPath = parsed.values.benchmark
+    ? resolve(String(parsed.values.benchmark))
+    : null;
   let benchmark: any = null;
   if (benchmarkPath && existsSync(benchmarkPath)) {
     try {
@@ -544,7 +710,9 @@ function parseCliArgs(): GenerateReviewCliArgs {
     }
   }
 
-  const staticOutputPath = parsed.values.static ? resolve(String(parsed.values.static)) : null;
+  const staticOutputPath = parsed.values.static
+    ? resolve(String(parsed.values.static))
+    : null;
 
   return {
     workspace,
@@ -559,11 +727,13 @@ function parseCliArgs(): GenerateReviewCliArgs {
   };
 }
 
-export function main(): void {
+export function main(argv: readonly string[]): void {
   const args = parseCliArgs();
 
   if (args.help) {
-    console.log("Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]");
+    console.log(
+      "Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]",
+    );
     return;
   }
 
@@ -617,8 +787,4 @@ function isFile(path: string): boolean {
 
 function fileName(path: string): string {
   return path.split(/[\\/]/).filter(Boolean).pop() ?? path;
-}
-
-if (process.argv[1] && resolve(process.argv[1]) === __filename) {
-  main();
 }

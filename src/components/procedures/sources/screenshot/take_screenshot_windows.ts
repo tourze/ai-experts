@@ -1,11 +1,63 @@
 #!/usr/bin/env node
+import { defineCliProcedure, procedureEntry } from "../../definition";
 import fs, { realpathSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+
+export const procedure = defineCliProcedure({
+  id: "screenshot-take-screenshot-windows",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "Windows 平台截图：使用 PowerShell 屏幕捕获，支持 mode、path 和 region 参数。",
+  owners: { skillIds: ["screenshot"] },
+  target: "scripts/take_screenshot_windows.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--path",
+      type: "路径",
+      description: "输出文件路径或目录",
+      required: false,
+    },
+    {
+      flag: "--mode",
+      type: "default|temp",
+      description: "输出模式（默认 default）",
+      required: false,
+    },
+    {
+      flag: "--format",
+      type: "png|jpg|jpeg|bmp",
+      description: "输出图片格式（默认 png）",
+      required: false,
+    },
+    {
+      flag: "--region",
+      type: "x,y,w,h",
+      description: "截取指定像素区域",
+      required: false,
+    },
+    {
+      flag: "--active-window",
+      type: "",
+      description: "截取前台窗口，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--window-handle",
+      type: "数字",
+      description: "截取指定原生窗口句柄",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--path", "screenshot.png"] },
+});
+
 function showHelp(): any {
-    console.log(`Windows screenshot helper
+  console.log(`Windows screenshot helper
 
 Usage:
   node scripts/take_screenshot_windows.mjs --mode temp
@@ -20,82 +72,78 @@ Options:
   --active-window, -ActiveWindow       Capture the foreground window
   --window-handle, -WindowHandle <id>  Capture a specific native window handle`);
 }
-function parseArgs(argv: any): any {
-    const options: Record<string, any> = {
-        path: "",
-        mode: "default",
-        format: "png",
-        region: "",
-        activeWindow: false,
-        windowHandle: 0,
-    };
-    for (let i = 0; i < argv.length; i += 1) {
-        const arg = argv[i];
-        if (["--help", "-h", "-Help"].includes(arg)) {
-            options.help = true;
-        }
-        else if (["--path", "-Path"].includes(arg)) {
-            options.path = argv[++i] || "";
-        }
-        else if (["--mode", "-Mode"].includes(arg)) {
-            options.mode = argv[++i] || "default";
-        }
-        else if (["--format", "-Format"].includes(arg)) {
-            options.format = argv[++i] || "png";
-        }
-        else if (["--region", "-Region"].includes(arg)) {
-            options.region = argv[++i] || "";
-        }
-        else if (["--active-window", "-ActiveWindow"].includes(arg)) {
-            options.activeWindow = true;
-        }
-        else if (["--window-handle", "-WindowHandle"].includes(arg)) {
-            options.windowHandle = Number.parseInt(argv[++i] || "0", 10);
-        }
-        else {
-            throw new Error(`Unknown argument: ${arg}`);
-        }
+function parseArgs(argv: readonly string[]): any {
+  const options: Record<string, any> = {
+    path: "",
+    mode: "default",
+    format: "png",
+    region: "",
+    activeWindow: false,
+    windowHandle: 0,
+  };
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (["--help", "-h", "-Help"].includes(arg)) {
+      options.help = true;
+    } else if (["--path", "-Path"].includes(arg)) {
+      options.path = argv[++i] || "";
+    } else if (["--mode", "-Mode"].includes(arg)) {
+      options.mode = argv[++i] || "default";
+    } else if (["--format", "-Format"].includes(arg)) {
+      options.format = argv[++i] || "png";
+    } else if (["--region", "-Region"].includes(arg)) {
+      options.region = argv[++i] || "";
+    } else if (["--active-window", "-ActiveWindow"].includes(arg)) {
+      options.activeWindow = true;
+    } else if (["--window-handle", "-WindowHandle"].includes(arg)) {
+      options.windowHandle = Number.parseInt(argv[++i] || "0", 10);
+    } else {
+      throw new Error(`Unknown argument: ${arg}`);
     }
-    return options;
+  }
+  return options;
 }
 function validateOptions(options: any): any {
-    if (!["default", "temp"].includes(options.mode)) {
-        throw new Error("Mode must be default or temp");
-    }
-    if (!["png", "jpg", "jpeg", "bmp"].includes(options.format.toLowerCase())) {
-        throw new Error(`Unsupported format: ${options.format}`);
-    }
-    if (options.region && options.activeWindow) {
-        throw new Error("Choose either --region or --active-window");
-    }
-    if (options.region && options.windowHandle) {
-        throw new Error("Choose either --region or --window-handle");
-    }
-    if (options.activeWindow && options.windowHandle) {
-        throw new Error("Choose either --active-window or --window-handle");
-    }
+  if (!["default", "temp"].includes(options.mode)) {
+    throw new Error("Mode must be default or temp");
+  }
+  if (!["png", "jpg", "jpeg", "bmp"].includes(options.format.toLowerCase())) {
+    throw new Error(`Unsupported format: ${options.format}`);
+  }
+  if (options.region && options.activeWindow) {
+    throw new Error("Choose either --region or --active-window");
+  }
+  if (options.region && options.windowHandle) {
+    throw new Error("Choose either --region or --window-handle");
+  }
+  if (options.activeWindow && options.windowHandle) {
+    throw new Error("Choose either --active-window or --window-handle");
+  }
 }
 function findExecutable(command: any): any {
-    const names = path.extname(command)
-        ? [command]
-        : (process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM").split(";").map((ext: any) => `${command}${ext}`);
-    for (const dir of (process.env.PATH || "").split(path.delimiter).filter(Boolean)) {
-        for (const name of names) {
-            const candidate = path.join(dir, name);
-            try {
-                if (fs.statSync(candidate).isFile()) {
-                    return candidate;
-                }
-            }
-            catch {
-                // Keep scanning PATH.
-            }
+  const names = path.extname(command)
+    ? [command]
+    : (process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM")
+        .split(";")
+        .map((ext: any) => `${command}${ext}`);
+  for (const dir of (process.env.PATH || "")
+    .split(path.delimiter)
+    .filter(Boolean)) {
+    for (const name of names) {
+      const candidate = path.join(dir, name);
+      try {
+        if (fs.statSync(candidate).isFile()) {
+          return candidate;
         }
+      } catch {
+        // Keep scanning PATH.
+      }
     }
-    return "";
+  }
+  return "";
 }
 function powershellScript(payload: any): any {
-    return `
+  return `
 $ErrorActionPreference = "Stop"
 $opts = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String("${payload}")) | ConvertFrom-Json
 
@@ -225,40 +273,50 @@ try {
 Write-Output $outputPath
 `;
 }
-export function main(argv: any = process.argv.slice(2)): any {
-    let options;
-    try {
-        options = parseArgs(argv);
-        if (options.help) {
-            showHelp();
-            return 0;
-        }
-        validateOptions(options);
+export function main(argv: readonly string[]): any {
+  let options;
+  try {
+    options = parseArgs(argv);
+    if (options.help) {
+      showHelp();
+      return 0;
     }
-    catch (error: any) {
-        console.error(error.message);
-        return 1;
-    }
-    if (process.platform !== "win32") {
-        console.error("take_screenshot_windows.mjs only supports Windows");
-        return 1;
-    }
-    const shell = findExecutable("powershell.exe") || findExecutable("pwsh.exe");
-    if (!shell) {
-        console.error("PowerShell is required for Windows screenshot capture");
-        return 1;
-    }
-    const payload = Buffer.from(JSON.stringify(options), "utf8").toString("base64");
-    const result = spawnSync(shell, ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", powershellScript(payload)], {
-        encoding: "utf8",
-    });
-    if (result.status !== 0) {
-        process.stderr.write(result.stderr || result.stdout || "Windows screenshot capture failed\n");
-        return result.status ?? 1;
-    }
-    process.stdout.write(result.stdout);
-    return 0;
-}
-if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
-    process.exitCode = main();
+    validateOptions(options);
+  } catch (error: any) {
+    console.error(error.message);
+    return 1;
+  }
+  if (process.platform !== "win32") {
+    console.error("take_screenshot_windows.mjs only supports Windows");
+    return 1;
+  }
+  const shell = findExecutable("powershell.exe") || findExecutable("pwsh.exe");
+  if (!shell) {
+    console.error("PowerShell is required for Windows screenshot capture");
+    return 1;
+  }
+  const payload = Buffer.from(JSON.stringify(options), "utf8").toString(
+    "base64",
+  );
+  const result = spawnSync(
+    shell,
+    [
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-Command",
+      powershellScript(payload),
+    ],
+    {
+      encoding: "utf8",
+    },
+  );
+  if (result.status !== 0) {
+    process.stderr.write(
+      result.stderr || result.stdout || "Windows screenshot capture failed\n",
+    );
+    return result.status ?? 1;
+  }
+  process.stdout.write(result.stdout);
+  return 0;
 }

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync, lstatSync, readdirSync, readFileSync, readlinkSync } from "node:fs";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import ts from "typescript";
 import { describe, test } from "vitest";
 import { validateRegistry } from "../../src/build/platform.ts";
 import { collectPlatformProcedures } from "../../src/build/procedures.ts";
@@ -1224,57 +1225,218 @@ describe("component source conventions", () => {
     );
   });
 
-  test("guarded procedure sources export main for bundled invocation", () => {
-    const guardedWithoutExport = collectFiles(
-      join(repoRoot, "src/components/procedures/sources"),
-      (file) => file.endsWith(".ts"),
-    ).filter((file) => {
-      const source = readFileSync(file, "utf-8");
-      const hasMainGuard =
-        /process\.argv\[1\][\s\S]{0,120}(?:fileURLToPath\(import\.meta\.url\)|__filename)/.test(source) ||
-        /const\s+isMain\s*=\s*process\.argv\[1\]/.test(source);
-      const exportsMain = /\bexport\s+(?:async\s+)?function\s+main\b|\bexport\s+const\s+main\b/.test(source);
-      return hasMainGuard && !exportsMain;
-    });
-
-    assert.deepEqual(
-      guardedWithoutExport,
-      [],
-      "procedures guarded by an is-main check must export main() so procedures.js can invoke only the selected module",
-    );
-  });
-
-  test("registered procedures are executable entries, not helper-only modules", () => {
+  test("registered procedures export main and do not execute at module top level", () => {
     function procedurePath(entry: URL | string): string {
       return entry instanceof URL ? fileURLToPath(entry) : entry;
     }
 
-    function hasRunnableEntry(source: string): boolean {
-      const exportsMain = /\bexport\s+(?:async\s+)?function\s+main\b|\bexport\s+const\s+main\b/.test(source);
-      const invokesMain =
-        /(?:^|\n)\s*(?:process\.exitCode\s*=\s*)?(?:await\s+)?main\(/.test(source) ||
-        /(?:^|\n)\s*main\(\)\.(?:then|catch)\(/.test(source);
-      const topLevelOutputOrExit =
-        /(?:^|\n)(?:console\.(?:log|error|warn)|process\.(?:stdout|stderr)\.write|process\.exitCode\s*=|process\.exit\()/.test(source);
-      return exportsMain || invokesMain || topLevelOutputOrExit;
+    function exportsProcedure(sourceFile: ts.SourceFile): boolean {
+      return sourceFile.statements.some((statement) =>
+        ts.isVariableStatement(statement) &&
+        statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword) &&
+        statement.declarationList.declarations.some((declaration) =>
+          ts.isIdentifier(declaration.name) &&
+          declaration.name.text === "procedure" &&
+          declaration.initializer !== undefined &&
+          ts.isCallExpression(declaration.initializer) &&
+          declaration.initializer.expression.getText(sourceFile) === "defineCliProcedure"
+        )
+      );
     }
 
-    const helperOnlyProcedures = registry.procedures
+    function sourceLocalProcedureEntry(sourceFile: ts.SourceFile): string | null {
+      for (const statement of sourceFile.statements) {
+        if (!ts.isVariableStatement(statement)) continue;
+        for (const declaration of statement.declarationList.declarations) {
+          if (
+            !ts.isIdentifier(declaration.name) ||
+            declaration.name.text !== "procedure" ||
+            !declaration.initializer ||
+            !ts.isCallExpression(declaration.initializer)
+          ) continue;
+          const objectArg = declaration.initializer.arguments[0];
+          if (!objectArg || !ts.isObjectLiteralExpression(objectArg)) continue;
+          for (const property of objectArg.properties) {
+            if (
+              ts.isPropertyAssignment(property) &&
+              ts.isIdentifier(property.name) &&
+              property.name.text === "entry"
+            ) {
+              if (
+                ts.isCallExpression(property.initializer) &&
+                property.initializer.expression.getText(sourceFile) === "procedureEntry" &&
+                property.initializer.arguments[0]?.getText(sourceFile) === "import.meta.url"
+              ) {
+                return "__self__";
+              }
+              if (
+                ts.isNewExpression(property.initializer) &&
+                property.initializer.expression.getText(sourceFile) === "URL"
+              ) {
+                const [firstArg] = property.initializer.arguments ?? [];
+                if (firstArg && ts.isStringLiteral(firstArg)) return firstArg.text;
+              }
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    function exportsMain(sourceFile: ts.SourceFile): boolean {
+      return sourceFile.statements.some((statement) =>
+        (ts.isFunctionDeclaration(statement) &&
+          statement.name?.text === "main" &&
+          statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword)) ||
+        (ts.isVariableStatement(statement) &&
+          statement.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.ExportKeyword) &&
+          statement.declarationList.declarations.some((declaration) =>
+            ts.isIdentifier(declaration.name) && declaration.name.text === "main"
+          ))
+      );
+    }
+
+    const procedureRegistrySource = readFileSync(join(repoRoot, "src/components/procedures/registry.ts"), "utf-8");
+    assert.doesNotMatch(
+      procedureRegistrySource,
+      /\bdefineCliProcedure\s*\(/,
+      "procedure metadata should live beside the source implementation, not in the central registry",
+    );
+
+    const missingProcedureExport = registry.procedures
       .map((procedure) => {
         const path = procedurePath(procedure.entry);
+        const source = readFileSync(path, "utf-8");
+        const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
         return {
           id: procedure.id,
           path,
-          source: readFileSync(path, "utf-8"),
+          sourceFile,
         };
       })
-      .filter(({ source }) => !hasRunnableEntry(source))
+      .filter(({ sourceFile }) => !exportsProcedure(sourceFile))
       .map(({ id, path }) => `${id}: ${relative(repoRoot, path)}`);
 
     assert.deepEqual(
-      helperOnlyProcedures,
+      missingProcedureExport,
       [],
-      "registered Procedure entries must be callable procedures; import-only helper modules should stay unregistered",
+      "registered Procedure entries must export their defineCliProcedure metadata from the entry source module",
+    );
+
+    const mismatchedProcedureEntries = registry.procedures
+      .map((procedure) => {
+        const path = procedurePath(procedure.entry);
+        const source = readFileSync(path, "utf-8");
+        const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+        const localEntry = sourceLocalProcedureEntry(sourceFile);
+        const expected = resolve(path);
+        const actual = localEntry === "__self__" ? expected : localEntry ? resolve(dirname(path), localEntry) : null;
+        return { id: procedure.id, path, expected, actual };
+      })
+      .filter(({ expected, actual }) => expected !== actual)
+      .map(({ id, path }) => `${id}: ${relative(repoRoot, path)}`);
+
+    assert.deepEqual(
+      mismatchedProcedureEntries,
+      [],
+      "source-local Procedure metadata entry should point at its own source file",
+    );
+
+    function mainFunctionProblem(sourceFile: ts.SourceFile): string | null {
+      for (const statement of sourceFile.statements) {
+        if (ts.isFunctionDeclaration(statement) && statement.name?.text === "main") {
+          const argvParam = statement.parameters[0];
+          if (!argvParam) return "main does not accept argv";
+          if (!ts.isIdentifier(argvParam.name) || argvParam.name.text !== "argv") return "first main parameter is not argv";
+          if (argvParam.initializer) return "main argv parameter has a default value";
+          if (argvParam.type?.getText(sourceFile) !== "readonly string[]") return "main argv is not typed as readonly string[]";
+          if (statement.getText(sourceFile).includes("process.argv")) return "main reads process.argv";
+        }
+        if (ts.isVariableStatement(statement)) {
+          for (const declaration of statement.declarationList.declarations) {
+            if (ts.isIdentifier(declaration.name) && declaration.name.text === "main") {
+              if (statement.getText(sourceFile).includes("process.argv")) return "main reads process.argv";
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    function statementText(source: string, statement: ts.Statement): string {
+      return source.slice(statement.getFullStart(), statement.getEnd());
+    }
+
+    function topLevelExecutionReason(source: string, statement: ts.Statement): string | null {
+      const text = statementText(source, statement);
+      if (ts.isExpressionStatement(statement)) return "top-level expression statement";
+      if (ts.isIfStatement(statement)) return "top-level if statement";
+      if (ts.isTryStatement(statement)) return "top-level try/catch statement";
+      if (ts.isForStatement(statement) || ts.isForInStatement(statement) || ts.isForOfStatement(statement)) {
+        return "top-level loop";
+      }
+      if (ts.isWhileStatement(statement) || ts.isDoStatement(statement)) return "top-level loop";
+      if (ts.isThrowStatement(statement) || ts.isReturnStatement(statement)) return "top-level control flow";
+      if (ts.isVariableStatement(statement) && /process\.argv|process\.exit|console\.|spawnSync\(|execFileSync\(|readFileSync\(0/.test(text)) {
+        return "top-level runtime-dependent variable initializer";
+      }
+      return null;
+    }
+
+    const missingExportMain = registry.procedures
+      .map((procedure) => {
+        const path = procedurePath(procedure.entry);
+        const source = readFileSync(path, "utf-8");
+        const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+        return {
+          id: procedure.id,
+          path,
+          sourceFile,
+        };
+      })
+      .filter(({ sourceFile }) => !exportsMain(sourceFile))
+      .map(({ id, path }) => `${id}: ${relative(repoRoot, path)}`);
+
+    assert.deepEqual(
+      missingExportMain,
+      [],
+      "registered Procedure entries must export main(); import-only helper modules should stay unregistered",
+    );
+
+    const invalidMainContracts = registry.procedures
+      .map((procedure) => {
+        const path = procedurePath(procedure.entry);
+        const source = readFileSync(path, "utf-8");
+        const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+        return {
+          id: procedure.id,
+          path,
+          problem: mainFunctionProblem(sourceFile),
+        };
+      })
+      .filter((item) => item.problem !== null)
+      .map(({ id, path, problem }) => `${id}: ${relative(repoRoot, path)} (${problem})`);
+
+    assert.deepEqual(
+      invalidMainContracts,
+      [],
+      "registered Procedure main(argv) must accept runtime-provided args and must not read process.argv directly",
+    );
+
+    const topLevelExecution = registry.procedures.flatMap((procedure) => {
+      const path = procedurePath(procedure.entry);
+      const source = readFileSync(path, "utf-8");
+      const sourceFile = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+      return sourceFile.statements
+        .map((statement) => topLevelExecutionReason(source, statement))
+        .filter((reason): reason is string => reason !== null)
+        .map((reason) => `${procedure.id}: ${relative(repoRoot, path)} (${reason})`);
+    });
+
+    assert.deepEqual(
+      topLevelExecution,
+      [],
+      "registered Procedure modules must not execute logic at import time; put runtime work inside exported main()",
     );
 
     const sourceSideTestProcedures = registry.procedures

@@ -10,7 +10,10 @@ function parseJsonObject(raw: string, source: string): AnyRecord {
   return parsed as AnyRecord;
 }
 
-function optionValue(argv: readonly string[], names: readonly string[]): string | null {
+function optionValue(
+  argv: readonly string[],
+  names: readonly string[],
+): string | null {
   for (let index = 0; index < argv.length; index += 1) {
     if (!names.includes(argv[index])) continue;
     const value = argv[index + 1];
@@ -24,9 +27,10 @@ function optionValue(argv: readonly string[], names: readonly string[]): string 
 
 export function readProcedureRequest(argv: readonly string[]): AnyRecord {
   const envRaw = process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON;
-  const request = envRaw && envRaw.trim()
-    ? parseJsonObject(envRaw, "AI_EXPERTS_PROCEDURE_REQUEST_JSON")
-    : {};
+  const request =
+    envRaw && envRaw.trim()
+      ? parseJsonObject(envRaw, "AI_EXPERTS_PROCEDURE_REQUEST_JSON")
+      : {};
 
   const inputFile = optionValue(argv, ["--input", "-i"]);
   if (!inputFile) return request;
@@ -104,14 +108,18 @@ export function runJsonProcedure(
 ): number {
   try {
     if (argv.includes("--help") || argv.includes("-h")) {
-      console.log("Pass procedure input as --request-json or --input <json-file>.");
+      console.log(
+        "Pass procedure input as --request-json or --input <json-file>.",
+      );
       return 0;
     }
     const result = handler(readProcedureRequest(argv));
     console.log(JSON.stringify(result, null, 2));
     return 0;
   } catch (error) {
-    console.error(`Error: ${error instanceof Error ? error.message : String(error)}`);
+    console.error(
+      `Error: ${error instanceof Error ? error.message : String(error)}`,
+    );
     return 1;
   }
 }

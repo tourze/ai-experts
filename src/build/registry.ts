@@ -1,9 +1,9 @@
-import { cpSync } from "node:fs";
+import { cpSync, existsSync, symlinkSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import * as esbuild from "esbuild";
-import { collectFiles, rewriteCompiledJsImports, sourceRoot, writeText } from "./core";
+import { collectFiles, repoRoot, rewriteCompiledJsImports, sourceRoot, writeText } from "./core";
 import { listProcedureUses } from "./procedure-uses";
 import type {
   AgentDefinition,
@@ -59,6 +59,10 @@ export async function compileRegistry(): Promise<{ registry: ComponentRegistry; 
   const tempComponentsRoot = join(tempDir, "components");
   cpSync(sourceRoot, tempComponentsRoot, { recursive: true, force: true });
   writeText(join(tempDir, "package.json"), JSON.stringify({ type: "module" }, null, 2) + "\n");
+  const repoNodeModules = join(repoRoot, "node_modules");
+  if (existsSync(repoNodeModules)) {
+    symlinkSync(repoNodeModules, join(tempDir, "node_modules"), "junction");
+  }
 
   const entryPoints = collectFiles(tempComponentsRoot, (file) => file.endsWith(".ts"));
   await esbuild.build({

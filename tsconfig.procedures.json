@@ -9,6 +9,7 @@
     "skipLibCheck": true
   },
   "include": [
+    "src/components/procedures/ambient-modules.d.ts",
     "src/components/procedures/sources/**/*.d.ts",
     "src/components/procedures/sources/**/*.ts"
   ]

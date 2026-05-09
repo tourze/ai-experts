@@ -1,9 +1,30 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * Metadata optimization module for App Store Optimization.
  * Optimizes titles, descriptions, and keyword fields with platform-specific limits.
  */
 
 import { getArray, getRecord, getString, runJsonProcedure } from "./cli";
+
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-metadata-optimizer",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "优化 App Store / Google Play 元数据：标题、描述、关键词字段，支持平台字符限制校验。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/metadata_optimizer.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description: "包含 platform、appInfo、targetKeywords 的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "metadata_input.json"] },
+});
 
 type AnyRecord = Record<string, any>;
 type Platform = "apple" | "google";
@@ -37,7 +58,11 @@ export class MetadataOptimizer {
     this.limits = CHAR_LIMITS[platform];
   }
 
-  optimizeTitle(appName: string, targetKeywords: string[], includeBrand = true): AnyRecord {
+  optimizeTitle(
+    appName: string,
+    targetKeywords: string[],
+    includeBrand = true,
+  ): AnyRecord {
     const maxLength = this.limits.title;
     const options: AnyRecord[] = [];
 
@@ -72,7 +97,11 @@ export class MetadataOptimizer {
 
     if (targetKeywords.length > 1) {
       const twoKeywords = targetKeywords.slice(0, 2);
-      const option = this.buildTitleWithKeywords(appName, twoKeywords, maxLength);
+      const option = this.buildTitleWithKeywords(
+        appName,
+        twoKeywords,
+        maxLength,
+      );
       if (option) {
         options.push({
           title: option,
@@ -121,9 +150,15 @@ export class MetadataOptimizer {
     return this.optimizeFullDescription(appInfo, targetKeywords);
   }
 
-  optimizeKeywordField(targetKeywords: string[], appTitle = "", appDescription = ""): AnyRecord {
+  optimizeKeywordField(
+    targetKeywords: string[],
+    appTitle = "",
+    appDescription = "",
+  ): AnyRecord {
     if (this.platform !== "apple") {
-      return { error: "Keyword field optimization only applies to Apple App Store" };
+      return {
+        error: "Keyword field optimization only applies to Apple App Store",
+      };
     }
 
     const maxLength = this.limits.keywords;
@@ -158,7 +193,9 @@ export class MetadataOptimizer {
       remaining_chars: maxLength - keywordField.length,
       keywords_included: included,
       keywords_count: included.length,
-      keywords_excluded: targetKeywords.filter((kw) => !keywordField.toLowerCase().includes(kw.toLowerCase())),
+      keywords_excluded: targetKeywords.filter(
+        (kw) => !keywordField.toLowerCase().includes(kw.toLowerCase()),
+      ),
       description_coverage: coverage,
       optimization_tips: [
         "Keywords in title are auto-indexed - no need to repeat",
@@ -179,7 +216,9 @@ export class MetadataOptimizer {
 
     for (const [fieldName, value] of Object.entries(metadata)) {
       if (!(fieldName in this.limits)) {
-        validation.warnings.push(`Unknown field '${fieldName}' for ${this.platform} platform`);
+        validation.warnings.push(
+          `Unknown field '${fieldName}' for ${this.platform} platform`,
+        );
         continue;
       }
 
@@ -198,9 +237,13 @@ export class MetadataOptimizer {
 
       if (actualLength > maxLength) {
         validation.is_valid = false;
-        validation.errors.push(`'${fieldName}' exceeds limit: ${actualLength}/${maxLength} chars`);
+        validation.errors.push(
+          `'${fieldName}' exceeds limit: ${actualLength}/${maxLength} chars`,
+        );
       } else if (remaining > maxLength * 0.2) {
-        validation.warnings.push(`'${fieldName}' under-utilizes space: ${remaining} chars remaining`);
+        validation.warnings.push(
+          `'${fieldName}' under-utilizes space: ${remaining} chars remaining`,
+        );
       }
     }
 
@@ -213,7 +256,10 @@ export class MetadataOptimizer {
 
     const keywordDensities: Record<string, AnyRecord> = {};
     for (const keyword of targetKeywords) {
-      const occurrences = countOccurrences(normalizedText, keyword.toLowerCase());
+      const occurrences = countOccurrences(
+        normalizedText,
+        keyword.toLowerCase(),
+      );
       const density = totalWords > 0 ? (occurrences / totalWords) * 100 : 0;
 
       keywordDensities[keyword] = {
@@ -227,7 +273,8 @@ export class MetadataOptimizer {
       (sum, item) => sum + Number(item.occurrences ?? 0),
       0,
     );
-    const overallDensity = totalWords > 0 ? (totalOccurrences / totalWords) * 100 : 0;
+    const overallDensity =
+      totalWords > 0 ? (totalOccurrences / totalWords) * 100 : 0;
 
     return {
       total_words: totalWords,
@@ -238,7 +285,11 @@ export class MetadataOptimizer {
     };
   }
 
-  private buildTitleWithKeywords(appName: string, keywords: string[], maxLength: number): string | null {
+  private buildTitleWithKeywords(
+    appName: string,
+    keywords: string[],
+    maxLength: number,
+  ): string | null {
     const separators = [" - ", ": ", " | "];
     for (const separator of separators) {
       for (const keyword of keywords) {
@@ -251,27 +302,38 @@ export class MetadataOptimizer {
     return null;
   }
 
-  private optimizeShortDescription(appInfo: AnyRecord, targetKeywords: string[]): AnyRecord {
+  private optimizeShortDescription(
+    appInfo: AnyRecord,
+    targetKeywords: string[],
+  ): AnyRecord {
     const maxLength = this.limits.short_description;
     const uniqueValue = String(appInfo.unique_value ?? "");
     const primaryKeyword = targetKeywords[0] ?? "";
-    const shortDescription = `${titleCase(primaryKeyword)} - ${uniqueValue}`.slice(0, maxLength);
+    const shortDescription =
+      `${titleCase(primaryKeyword)} - ${uniqueValue}`.slice(0, maxLength);
 
     return {
       short_description: shortDescription,
       length: shortDescription.length,
       remaining_chars: maxLength - shortDescription.length,
-      keywords_included: shortDescription.toLowerCase().includes(primaryKeyword.toLowerCase())
+      keywords_included: shortDescription
+        .toLowerCase()
+        .includes(primaryKeyword.toLowerCase())
         ? [primaryKeyword]
         : [],
       strategy: "keyword_value_proposition",
     };
   }
 
-  private optimizeSubtitle(appInfo: AnyRecord, targetKeywords: string[]): AnyRecord {
+  private optimizeSubtitle(
+    appInfo: AnyRecord,
+    targetKeywords: string[],
+  ): AnyRecord {
     const maxLength = this.limits.subtitle;
     const primaryKeyword = targetKeywords[0] ?? "";
-    const keyFeature = Array.isArray(appInfo.key_features) ? String(appInfo.key_features[0] ?? "") : "";
+    const keyFeature = Array.isArray(appInfo.key_features)
+      ? String(appInfo.key_features[0] ?? "")
+      : "";
 
     const options = [
       primaryKeyword.slice(0, maxLength),
@@ -286,15 +348,23 @@ export class MetadataOptimizer {
     };
   }
 
-  private optimizeFullDescription(appInfo: AnyRecord, targetKeywords: string[]): AnyRecord {
-    const maxLength = this.limits.description ?? this.limits.full_description ?? 4000;
+  private optimizeFullDescription(
+    appInfo: AnyRecord,
+    targetKeywords: string[],
+  ): AnyRecord {
+    const maxLength =
+      this.limits.description ?? this.limits.full_description ?? 4000;
     const sections: string[] = [];
 
     const primaryKeyword = targetKeywords[0] ?? "";
     const uniqueValue = String(appInfo.unique_value ?? "");
-    sections.push(`${uniqueValue} ${titleCase(primaryKeyword)} that helps you achieve more.\n\n`);
+    sections.push(
+      `${uniqueValue} ${titleCase(primaryKeyword)} that helps you achieve more.\n\n`,
+    );
 
-    const features = Array.isArray(appInfo.key_features) ? appInfo.key_features : [];
+    const features = Array.isArray(appInfo.key_features)
+      ? appInfo.key_features
+      : [];
     if (features.length > 0) {
       sections.push("KEY FEATURES:\n");
       for (let index = 0; index < Math.min(features.length, 5); index += 1) {
@@ -315,7 +385,9 @@ export class MetadataOptimizer {
     const targetAudience = String(appInfo.target_audience ?? "users");
     sections.push(`PERFECT FOR:\n${targetAudience}\n\n`);
     sections.push("WHY USERS LOVE US:\n");
-    sections.push("Join thousands of satisfied users who have transformed their workflow.\n\n");
+    sections.push(
+      "Join thousands of satisfied users who have transformed their workflow.\n\n",
+    );
     sections.push("Download now and start experiencing the difference!");
 
     let fullDescription = sections.join("");
@@ -327,7 +399,10 @@ export class MetadataOptimizer {
       full_description: fullDescription,
       length: fullDescription.length,
       remaining_chars: maxLength - fullDescription.length,
-      keyword_analysis: this.calculateKeywordDensity(fullDescription, targetKeywords),
+      keyword_analysis: this.calculateKeywordDensity(
+        fullDescription,
+        targetKeywords,
+      ),
       structure: {
         has_hook: true,
         has_features: features.length > 0,
@@ -370,7 +445,10 @@ export class MetadataOptimizer {
     return keywordField;
   }
 
-  private calculateCoverage(keywords: string[], text: string): Record<string, number> {
+  private calculateCoverage(
+    keywords: string[],
+    text: string,
+  ): Record<string, number> {
     const normalized = text.toLowerCase();
     const coverage: Record<string, number> = {};
     for (const keyword of keywords) {
@@ -386,17 +464,24 @@ export class MetadataOptimizer {
   }
 
   private assessOverallDensity(density: number): string {
-    if (density < 2) return "Under-optimized: Consider adding more keyword variations";
-    if (density <= 5) return "Optimal: Good keyword integration without stuffing";
-    if (density <= 8) return "High: Approaching keyword stuffing - reduce keyword usage";
+    if (density < 2)
+      return "Under-optimized: Consider adding more keyword variations";
+    if (density <= 5)
+      return "Optimal: Good keyword integration without stuffing";
+    if (density <= 8)
+      return "High: Approaching keyword stuffing - reduce keyword usage";
     return "Too High: Keyword stuffing detected - rewrite for natural flow";
   }
 
-  private generateDensityRecommendations(keywordDensities: Record<string, AnyRecord>): string[] {
+  private generateDensityRecommendations(
+    keywordDensities: Record<string, AnyRecord>,
+  ): string[] {
     const recommendations: string[] = [];
     for (const [keyword, data] of Object.entries(keywordDensities)) {
       if (data.status === "too_low") {
-        recommendations.push(`Increase usage of '${keyword}' - currently only ${data.occurrences} times`);
+        recommendations.push(
+          `Increase usage of '${keyword}' - currently only ${data.occurrences} times`,
+        );
       } else if (data.status === "too_high") {
         recommendations.push(
           `Reduce usage of '${keyword}' - appears ${data.occurrences} times (keyword stuffing risk)`,
@@ -414,7 +499,9 @@ export class MetadataOptimizer {
   private recommendTitleOption(options: AnyRecord[]): string {
     if (options.length === 0) return "No valid options available";
 
-    const preferred = options.find((option) => option.strategy === "brand_plus_primary");
+    const preferred = options.find(
+      (option) => option.strategy === "brand_plus_primary",
+    );
     if (preferred) {
       return `Recommended: '${preferred.title}' (Balance of brand and SEO)`;
     }
@@ -423,25 +510,36 @@ export class MetadataOptimizer {
   }
 }
 
-export function optimizeAppMetadata(platform: Platform, appInfo: AnyRecord, targetKeywords: string[]): AnyRecord {
+export function optimizeAppMetadata(
+  platform: Platform,
+  appInfo: AnyRecord,
+  targetKeywords: string[],
+): AnyRecord {
   const optimizer = new MetadataOptimizer(platform);
 
   return {
     platform,
     title: optimizer.optimizeTitle(String(appInfo.name ?? ""), targetKeywords),
     description: optimizer.optimizeDescription(appInfo, targetKeywords, "full"),
-    keyword_field: platform === "apple" ? optimizer.optimizeKeywordField(targetKeywords) : null,
+    keyword_field:
+      platform === "apple"
+        ? optimizer.optimizeKeywordField(targetKeywords)
+        : null,
   };
 }
 
 export const optimize_app_metadata = optimizeAppMetadata;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
     optimizeAppMetadata(
       getString(request, ["platform"], "apple") as Platform,
       getRecord(request, ["appInfo", "app_info", "app"]),
-      getArray<string>(request, ["targetKeywords", "target_keywords", "keywords"]).map(String),
+      getArray<string>(request, [
+        "targetKeywords",
+        "target_keywords",
+        "keywords",
+      ]).map(String),
     ),
   );
 }
@@ -462,6 +560,9 @@ function titleCase(value: string): string {
   return value
     .split(/\s+/)
     .filter(Boolean)
-    .map((word) => `${word.slice(0, 1).toUpperCase()}${word.slice(1).toLowerCase()}`)
+    .map(
+      (word) =>
+        `${word.slice(0, 1).toUpperCase()}${word.slice(1).toLowerCase()}`,
+    )
     .join(" ");
 }

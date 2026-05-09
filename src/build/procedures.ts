@@ -296,27 +296,6 @@ function installProcedureGlobals(procedure, trigger) {
   globalThis.__aiExpertsOwnerRoot = ownerRoot;
 }
 
-function interceptProcedureOutput() {
-  let wroteOutput = false;
-  const originalStdoutWrite = process.stdout.write;
-  const originalStderrWrite = process.stderr.write;
-  process.stdout.write = function (...args) {
-    wroteOutput = true;
-    return originalStdoutWrite.apply(this, args);
-  };
-  process.stderr.write = function (...args) {
-    wroteOutput = true;
-    return originalStderrWrite.apply(this, args);
-  };
-  return {
-    wroteOutput: () => wroteOutput,
-    restore: () => {
-      process.stdout.write = originalStdoutWrite;
-      process.stderr.write = originalStderrWrite;
-    },
-  };
-}
-
 function printResult(payload) {
   process.stdout.write(JSON.stringify(payload) + "\\n");
 }
@@ -359,21 +338,13 @@ async function runProcedureChild(payload) {
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_AGENT = payload.triggerAgent ?? "";
   process.env.AI_EXPERTS_PROCEDURE_PLATFORM = platform;
   process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON = JSON.stringify(payload.requestPayload ?? {});
-  const output = interceptProcedureOutput();
-  try {
-    const module = await loader();
-    if (typeof module.main === "function") {
-      const result = await module.main(payload.args.map(String));
-      if (typeof result === "number") {
-        process.exitCode = result;
-      }
-      return;
-    }
-    if (!output.wroteOutput() && process.exitCode == null) {
-      throw new Error("procedure " + procedure.id + " did not export main() or produce output");
-    }
-  } finally {
-    output.restore();
+  const module = await loader();
+  if (typeof module.main !== "function") {
+    throw new Error("procedure " + procedure.id + " did not export main()");
+  }
+  const result = await module.main(payload.args.map(String));
+  if (typeof result === "number") {
+    process.exitCode = result;
   }
 }
 

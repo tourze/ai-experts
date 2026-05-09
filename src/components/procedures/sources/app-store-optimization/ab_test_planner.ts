@@ -1,9 +1,31 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * A/B testing module for App Store Optimization.
  * Plans and tracks A/B tests for metadata and visual assets.
  */
 
 import { getNumber, getRecord, getString, runJsonProcedure } from "./cli";
+
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-ab-test-planner",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "设计元数据和视觉素材的 A/B 测试方案，包括样本量估算、统计显著性和测试跟踪。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/ab_test_planner.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description:
+        "包含 testType、variantA、variantB、hypothesis、baselineConversion 的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "ab_test_input.json"] },
+});
 
 type AnyRecord = Record<string, any>;
 
@@ -63,9 +85,13 @@ export class ABTestPlanner {
     confidenceLevel = "standard",
     power = 0.8,
   ): AnyRecord {
-    const alpha = 1 - (ABTestPlanner.CONFIDENCE_LEVELS[confidenceLevel] ?? ABTestPlanner.CONFIDENCE_LEVELS.standard);
+    const alpha =
+      1 -
+      (ABTestPlanner.CONFIDENCE_LEVELS[confidenceLevel] ??
+        ABTestPlanner.CONFIDENCE_LEVELS.standard);
 
-    const expectedConversionB = baselineConversion * (1 + minimumDetectableEffect);
+    const expectedConversionB =
+      baselineConversion * (1 + minimumDetectableEffect);
     const zAlpha = this.getZScore(1 - alpha / 2);
     const zBeta = this.getZScore(power);
 
@@ -73,12 +99,16 @@ export class ABTestPlanner {
     const sdPooled = Math.sqrt(2 * pooled * (1 - pooled));
 
     const denominator = (expectedConversionB - baselineConversion) ** 2;
-    const nPerVariant = denominator > 0
-      ? Math.ceil(((zAlpha + zBeta) ** 2 * sdPooled ** 2) / denominator)
-      : 0;
+    const nPerVariant =
+      denominator > 0
+        ? Math.ceil(((zAlpha + zBeta) ** 2 * sdPooled ** 2) / denominator)
+        : 0;
 
     const totalSampleSize = nPerVariant * 2;
-    const durationEstimates = this.estimateTestDuration(totalSampleSize, baselineConversion);
+    const durationEstimates = this.estimateTestDuration(
+      totalSampleSize,
+      baselineConversion,
+    );
 
     return {
       sample_size_per_variant: nPerVariant,
@@ -89,7 +119,10 @@ export class ABTestPlanner {
       confidence_level: confidenceLevel,
       statistical_power: power,
       duration_estimates: durationEstimates,
-      recommendations: this.generateSampleSizeRecommendations(nPerVariant, durationEstimates),
+      recommendations: this.generateSampleSizeRecommendations(
+        nPerVariant,
+        durationEstimates,
+      ),
     };
   }
 
@@ -99,14 +132,22 @@ export class ABTestPlanner {
     variantBConversions: number,
     variantBVisitors: number,
   ): AnyRecord {
-    const rateA = variantAVisitors > 0 ? variantAConversions / variantAVisitors : 0;
-    const rateB = variantBVisitors > 0 ? variantBConversions / variantBVisitors : 0;
+    const rateA =
+      variantAVisitors > 0 ? variantAConversions / variantAVisitors : 0;
+    const rateB =
+      variantBVisitors > 0 ? variantBConversions / variantBVisitors : 0;
 
     const relativeImprovement = rateA > 0 ? (rateB - rateA) / rateA : 0;
     const absoluteImprovement = rateB - rateA;
 
-    const seA = variantAVisitors > 0 ? Math.sqrt((rateA * (1 - rateA)) / variantAVisitors) : 0;
-    const seB = variantBVisitors > 0 ? Math.sqrt((rateB * (1 - rateB)) / variantBVisitors) : 0;
+    const seA =
+      variantAVisitors > 0
+        ? Math.sqrt((rateA * (1 - rateA)) / variantAVisitors)
+        : 0;
+    const seB =
+      variantBVisitors > 0
+        ? Math.sqrt((rateB * (1 - rateB)) / variantBVisitors)
+        : 0;
     const seDiff = Math.sqrt(seA ** 2 + seB ** 2);
 
     const zScore = seDiff > 0 ? absoluteImprovement / seDiff : 0;
@@ -142,7 +183,11 @@ export class ABTestPlanner {
         p_value: roundTo(pValue, 4),
         is_significant_95: isSignificant95,
         is_significant_90: isSignificant90,
-        confidence_level: isSignificant95 ? "95%" : isSignificant90 ? "90%" : "Not significant",
+        confidence_level: isSignificant95
+          ? "95%"
+          : isSignificant90
+            ? "90%"
+            : "Not significant",
       },
       decision,
     };
@@ -161,9 +206,14 @@ export class ABTestPlanner {
       Number(resultsData.variant_b_visitors ?? 0),
     );
 
-    const totalVisitors = Number(resultsData.variant_a_visitors ?? 0) + Number(resultsData.variant_b_visitors ?? 0);
+    const totalVisitors =
+      Number(resultsData.variant_a_visitors ?? 0) +
+      Number(resultsData.variant_b_visitors ?? 0);
     const requiredSample = Number(resultsData.required_sample_size ?? 10000);
-    const progressPercentage = Math.min((totalVisitors / Math.max(requiredSample, 1)) * 100, 100);
+    const progressPercentage = Math.min(
+      (totalVisitors / Math.max(requiredSample, 1)) * 100,
+      100,
+    );
 
     return {
       test_id: testId,
@@ -175,7 +225,11 @@ export class ABTestPlanner {
         is_complete: progressPercentage >= 100,
       },
       current_results: significance,
-      recommendations: this.generateTrackingRecommendations(significance, progressPercentage, test.test_type),
+      recommendations: this.generateTrackingRecommendations(
+        significance,
+        progressPercentage,
+        test.test_type,
+      ),
       next_steps: this.determineNextSteps(significance, progressPercentage),
     };
   }
@@ -253,7 +307,10 @@ export class ABTestPlanner {
     return practicesMap[testType] ?? ["Test one variable at a time"];
   }
 
-  private estimateTestDuration(requiredSampleSize: number, _baselineConversion: number): AnyRecord {
+  private estimateTestDuration(
+    requiredSampleSize: number,
+    _baselineConversion: number,
+  ): AnyRecord {
     const trafficScenarios = {
       low: 100,
       medium: 1000,
@@ -273,11 +330,16 @@ export class ABTestPlanner {
     return estimates;
   }
 
-  private generateSampleSizeRecommendations(sampleSize: number, durationEstimates: AnyRecord): string[] {
+  private generateSampleSizeRecommendations(
+    sampleSize: number,
+    durationEstimates: AnyRecord,
+  ): string[] {
     const recommendations: string[] = [];
 
     if (sampleSize > 50000) {
-      recommendations.push("Large sample size required - consider testing smaller effect size or increasing traffic");
+      recommendations.push(
+        "Large sample size required - consider testing smaller effect size or increasing traffic",
+      );
     }
 
     if (Number(durationEstimates.medium?.estimated_days ?? 0) > 30) {
@@ -293,7 +355,9 @@ export class ABTestPlanner {
     }
 
     if (recommendations.length === 0) {
-      recommendations.push("Sample size and duration are reasonable for this test");
+      recommendations.push(
+        "Sample size and duration are reasonable for this test",
+      );
     }
 
     return recommendations;
@@ -318,7 +382,8 @@ export class ABTestPlanner {
     const p =
       d *
       t *
-      (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+      (0.3193815 +
+        t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
 
     return z > 0 ? 1 - p : p;
   }
@@ -332,7 +397,8 @@ export class ABTestPlanner {
     if (totalVisitors < 1000) {
       return {
         decision: "continue",
-        rationale: "Insufficient data - continue test to reach minimum sample size",
+        rationale:
+          "Insufficient data - continue test to reach minimum sample size",
         action: "Keep test running",
       };
     }
@@ -374,16 +440,24 @@ export class ABTestPlanner {
     };
   }
 
-  private generateTrackingRecommendations(significance: AnyRecord, progress: number, _testType: string): string[] {
+  private generateTrackingRecommendations(
+    significance: AnyRecord,
+    progress: number,
+    _testType: string,
+  ): string[] {
     const recommendations: string[] = [];
 
     if (progress < 50) {
-      recommendations.push(`Test is ${progress.toFixed(0)}% complete - continue collecting data`);
+      recommendations.push(
+        `Test is ${progress.toFixed(0)}% complete - continue collecting data`,
+      );
     }
 
     if (progress >= 100) {
       if (Boolean(significance.statistical_analysis?.is_significant_95)) {
-        recommendations.push("Sufficient data collected with significant results - ready to conclude test");
+        recommendations.push(
+          "Sufficient data collected with significant results - ready to conclude test",
+        );
       } else {
         recommendations.push(
           "Sample size reached but no significant difference - consider extending test or concluding",
@@ -394,7 +468,10 @@ export class ABTestPlanner {
     return recommendations;
   }
 
-  private determineNextSteps(significance: AnyRecord, progress: number): string {
+  private determineNextSteps(
+    significance: AnyRecord,
+    progress: number,
+  ): string {
     if (progress < 100) {
       return `Continue test until reaching 100% sample size (currently ${progress.toFixed(0)}%)`;
     }
@@ -410,9 +487,15 @@ export class ABTestPlanner {
     return "Test inconclusive - either keep A or design new test";
   }
 
-  private generateTestInsights(test: AnyRecord, significance: AnyRecord, _results: AnyRecord): string[] {
+  private generateTestInsights(
+    test: AnyRecord,
+    significance: AnyRecord,
+    _results: AnyRecord,
+  ): string[] {
     const insights: string[] = [];
-    const improvement = Number(significance.improvement?.relative_percentage ?? 0);
+    const improvement = Number(
+      significance.improvement?.relative_percentage ?? 0,
+    );
 
     if (Boolean(significance.statistical_analysis?.is_significant_95)) {
       insights.push(
@@ -423,13 +506,18 @@ export class ABTestPlanner {
     insights.push(`Tested ${test.test_type} changes: ${test.hypothesis}`);
 
     if (test.test_type === "icon" && improvement > 5) {
-      insights.push("Icon change had substantial impact - visual first impression is critical");
+      insights.push(
+        "Icon change had substantial impact - visual first impression is critical",
+      );
     }
 
     return insights;
   }
 
-  private createImplementationPlan(test: AnyRecord, significance: AnyRecord): AnyRecord[] {
+  private createImplementationPlan(
+    test: AnyRecord,
+    significance: AnyRecord,
+  ): AnyRecord[] {
     if (String(significance.decision?.decision ?? "") !== "implement_b") {
       return [];
     }
@@ -441,7 +529,8 @@ export class ABTestPlanner {
       },
       {
         step: "2. Monitor metrics",
-        details: "Track conversion rate for 2 weeks to confirm sustained improvement",
+        details:
+          "Track conversion rate for 2 weeks to confirm sustained improvement",
       },
       {
         step: "3. Document learnings",
@@ -451,11 +540,17 @@ export class ABTestPlanner {
   }
 
   private extractLearnings(test: AnyRecord, significance: AnyRecord): string[] {
-    const improvement = Math.abs(Number(significance.improvement?.relative_percentage ?? 0));
-    const learnings = [`Testing ${test.test_type} can yield ${improvement.toFixed(1)}% conversion change`];
+    const improvement = Math.abs(
+      Number(significance.improvement?.relative_percentage ?? 0),
+    );
+    const learnings = [
+      `Testing ${test.test_type} can yield ${improvement.toFixed(1)}% conversion change`,
+    ];
 
     if (test.test_type === "title") {
-      learnings.push("Title changes affect search visibility and user perception");
+      learnings.push(
+        "Title changes affect search visibility and user perception",
+      );
     } else if (test.test_type === "screenshot") {
       learnings.push("First 2-3 screenshots are critical for conversion");
     }
@@ -473,7 +568,12 @@ export function planAbTest(
 ): AnyRecord {
   const planner = new ABTestPlanner();
 
-  const testDesign = planner.designTest(testType, variantA, variantB, hypothesis);
+  const testDesign = planner.designTest(
+    testType,
+    variantA,
+    variantB,
+    hypothesis,
+  );
   const sampleSize = planner.calculateSampleSize(
     baselineConversion,
     ABTestPlanner.MIN_EFFECT_SIZES[testType] ?? 0.05,
@@ -487,7 +587,7 @@ export function planAbTest(
 
 export const plan_ab_test = planAbTest;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
     planAbTest(
       getString(request, ["testType", "test_type"]),

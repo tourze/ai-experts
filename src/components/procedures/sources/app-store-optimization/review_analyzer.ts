@@ -1,9 +1,29 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * Review analysis module for App Store Optimization.
  * Analyzes user reviews for sentiment, issues, and feature requests.
  */
 
 import { getArray, getString, runJsonProcedure } from "./cli";
+
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-review-analyzer",
+  entry: procedureEntry(import.meta.url),
+  description: "分析用户评论情感、常见主题、问题分类、功能请求和情感趋势。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/review_analyzer.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description: "包含 appName、reviews 数组的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "review_input.json"] },
+});
 
 type AnyRecord = Record<string, any>;
 
@@ -100,13 +120,19 @@ export class ReviewAnalyzer {
 
     const total = reviews.length;
     const distribution = {
-      positive: total > 0 ? roundTo((sentimentCounts.positive / total) * 100, 1) : 0,
-      neutral: total > 0 ? roundTo((sentimentCounts.neutral / total) * 100, 1) : 0,
-      negative: total > 0 ? roundTo((sentimentCounts.negative / total) * 100, 1) : 0,
+      positive:
+        total > 0 ? roundTo((sentimentCounts.positive / total) * 100, 1) : 0,
+      neutral:
+        total > 0 ? roundTo((sentimentCounts.neutral / total) * 100, 1) : 0,
+      negative:
+        total > 0 ? roundTo((sentimentCounts.negative / total) * 100, 1) : 0,
     };
 
     const averageRating =
-      total > 0 ? reviews.reduce((sum, review) => sum + Number(review.rating ?? 0), 0) / total : 0;
+      total > 0
+        ? reviews.reduce((sum, review) => sum + Number(review.rating ?? 0), 0) /
+          total
+        : 0;
 
     return {
       total_reviews_analyzed: total,
@@ -142,7 +168,9 @@ export class ReviewAnalyzer {
     ]);
 
     for (const review of reviews) {
-      const text = String(review.text ?? "").toLowerCase().replace(/[^\w\s]/g, " ");
+      const text = String(review.text ?? "")
+        .toLowerCase()
+        .replace(/[^\w\s]/g, " ");
       const words = text
         .split(/\s+/)
         .filter(Boolean)
@@ -155,8 +183,12 @@ export class ReviewAnalyzer {
       }
     }
 
-    const commonWords = topCounts(allWords, 30, minMentions).map(([word, mentions]) => ({ word, mentions }));
-    const commonPhrases = topCounts(allPhrases, 20, minMentions).map(([phrase, mentions]) => ({ phrase, mentions }));
+    const commonWords = topCounts(allWords, 30, minMentions).map(
+      ([word, mentions]) => ({ word, mentions }),
+    );
+    const commonPhrases = topCounts(allPhrases, 20, minMentions).map(
+      ([phrase, mentions]) => ({ phrase, mentions }),
+    );
     const themes = this.categorizeThemes(commonWords, commonPhrases);
 
     return {
@@ -175,7 +207,9 @@ export class ReviewAnalyzer {
       if (rating > ratingThreshold) continue;
 
       const text = String(review.text ?? "").toLowerCase();
-      const mentionedIssues = ISSUE_KEYWORDS.filter((keyword) => text.includes(keyword));
+      const mentionedIssues = ISSUE_KEYWORDS.filter((keyword) =>
+        text.includes(keyword),
+      );
 
       if (mentionedIssues.length === 0) continue;
 
@@ -196,7 +230,10 @@ export class ReviewAnalyzer {
     }
 
     const categorizedIssues = this.categorizeIssues(issues);
-    const severityScores = this.calculateIssueSeverity(categorizedIssues, reviews.length);
+    const severityScores = this.calculateIssueSeverity(
+      categorizedIssues,
+      reviews.length,
+    );
 
     return {
       total_issues_found: issues.length,
@@ -206,7 +243,10 @@ export class ReviewAnalyzer {
       categorized_issues: categorizedIssues,
       severity_scores: severityScores,
       top_issues: this.rankIssuesBySeverity(severityScores),
-      recommendations: this.generateIssueRecommendations(categorizedIssues, severityScores),
+      recommendations: this.generateIssueRecommendations(
+        categorizedIssues,
+        severityScores,
+      ),
     };
   }
 
@@ -217,7 +257,8 @@ export class ReviewAnalyzer {
       const text = String(review.text ?? "").toLowerCase();
       const rating = Number(review.rating ?? 3);
 
-      if (!FEATURE_REQUEST_KEYWORDS.some((keyword) => text.includes(keyword))) continue;
+      if (!FEATURE_REQUEST_KEYWORDS.some((keyword) => text.includes(keyword)))
+        continue;
 
       featureRequests.push({
         review_id: review.id ?? "",
@@ -235,11 +276,14 @@ export class ReviewAnalyzer {
       total_feature_requests: featureRequests.length,
       clustered_requests: clustered,
       prioritized_requests: prioritized,
-      implementation_recommendations: this.generateFeatureRecommendations(prioritized),
+      implementation_recommendations:
+        this.generateFeatureRecommendations(prioritized),
     };
   }
 
-  trackSentimentTrends(reviewsByPeriod: Record<string, AnyRecord[]>): AnyRecord {
+  trackSentimentTrends(
+    reviewsByPeriod: Record<string, AnyRecord[]>,
+  ): AnyRecord {
     const trends: AnyRecord[] = [];
 
     for (const [period, reviews] of Object.entries(reviewsByPeriod)) {
@@ -257,9 +301,14 @@ export class ReviewAnalyzer {
     if (trends.length >= 2) {
       const first = trends[0];
       const last = trends[trends.length - 1];
-      const ratingChange = Number(last.average_rating) - Number(first.average_rating);
-      const sentimentChange = Number(last.positive_percentage) - Number(first.positive_percentage);
-      trendDirection = this.determineTrendDirection(ratingChange, sentimentChange);
+      const ratingChange =
+        Number(last.average_rating) - Number(first.average_rating);
+      const sentimentChange =
+        Number(last.positive_percentage) - Number(first.positive_percentage);
+      trendDirection = this.determineTrendDirection(
+        ratingChange,
+        sentimentChange,
+      );
     }
 
     return {
@@ -325,15 +374,21 @@ export class ReviewAnalyzer {
   private calculateSentimentScore(text: string, rating: number): number {
     const ratingScore = (rating - 3) / 2;
 
-    const positiveCount = POSITIVE_KEYWORDS.filter((keyword) => text.includes(keyword)).length;
-    const negativeCount = NEGATIVE_KEYWORDS.filter((keyword) => text.includes(keyword)).length;
+    const positiveCount = POSITIVE_KEYWORDS.filter((keyword) =>
+      text.includes(keyword),
+    ).length;
+    const negativeCount = NEGATIVE_KEYWORDS.filter((keyword) =>
+      text.includes(keyword),
+    ).length;
     const textScore = (positiveCount - negativeCount) / 10;
 
     const finalScore = ratingScore * 0.6 + textScore * 0.4;
     return Math.max(Math.min(finalScore, 1), -1);
   }
 
-  private categorizeSentiment(score: number): "positive" | "neutral" | "negative" {
+  private categorizeSentiment(
+    score: number,
+  ): "positive" | "neutral" | "negative" {
     if (score > 0.3) return "positive";
     if (score < -0.3) return "negative";
     return "neutral";
@@ -350,7 +405,10 @@ export class ReviewAnalyzer {
     return "mixed";
   }
 
-  private categorizeThemes(commonWords: AnyRecord[], _commonPhrases: AnyRecord[]): Record<string, string[]> {
+  private categorizeThemes(
+    commonWords: AnyRecord[],
+    _commonPhrases: AnyRecord[],
+  ): Record<string, string[]> {
     const themes: Record<string, string[]> = {
       features: [],
       performance: [],
@@ -360,28 +418,64 @@ export class ReviewAnalyzer {
     };
 
     const featureKeywords = ["feature", "functionality", "option", "tool"];
-    const performanceKeywords = ["fast", "slow", "crash", "lag", "speed", "performance"];
-    const usabilityKeywords = ["easy", "difficult", "intuitive", "confusing", "interface", "design"];
-    const supportKeywords = ["support", "help", "customer", "service", "response"];
-    const pricingKeywords = ["price", "cost", "expensive", "cheap", "subscription", "free"];
+    const performanceKeywords = [
+      "fast",
+      "slow",
+      "crash",
+      "lag",
+      "speed",
+      "performance",
+    ];
+    const usabilityKeywords = [
+      "easy",
+      "difficult",
+      "intuitive",
+      "confusing",
+      "interface",
+      "design",
+    ];
+    const supportKeywords = [
+      "support",
+      "help",
+      "customer",
+      "service",
+      "response",
+    ];
+    const pricingKeywords = [
+      "price",
+      "cost",
+      "expensive",
+      "cheap",
+      "subscription",
+      "free",
+    ];
 
     for (const wordData of commonWords) {
       const word = String(wordData.word ?? "");
-      if (featureKeywords.some((kw) => word.includes(kw))) themes.features.push(word);
-      else if (performanceKeywords.some((kw) => word.includes(kw))) themes.performance.push(word);
-      else if (usabilityKeywords.some((kw) => word.includes(kw))) themes.usability.push(word);
-      else if (supportKeywords.some((kw) => word.includes(kw))) themes.support.push(word);
-      else if (pricingKeywords.some((kw) => word.includes(kw))) themes.pricing.push(word);
+      if (featureKeywords.some((kw) => word.includes(kw)))
+        themes.features.push(word);
+      else if (performanceKeywords.some((kw) => word.includes(kw)))
+        themes.performance.push(word);
+      else if (usabilityKeywords.some((kw) => word.includes(kw)))
+        themes.usability.push(word);
+      else if (supportKeywords.some((kw) => word.includes(kw)))
+        themes.support.push(word);
+      else if (pricingKeywords.some((kw) => word.includes(kw)))
+        themes.pricing.push(word);
     }
 
-    return Object.fromEntries(Object.entries(themes).filter(([, value]) => value.length > 0));
+    return Object.fromEntries(
+      Object.entries(themes).filter(([, value]) => value.length > 0),
+    );
   }
 
   private generateThemeInsights(themes: Record<string, string[]>): string[] {
     const insights: string[] = [];
     for (const [category, keywords] of Object.entries(themes)) {
       if (keywords.length > 0) {
-        insights.push(`${titleCase(category)}: Users frequently mention ${keywords.slice(0, 3).join(", ")}`);
+        insights.push(
+          `${titleCase(category)}: Users frequently mention ${keywords.slice(0, 3).join(", ")}`,
+        );
       }
     }
     return insights.slice(0, 5);
@@ -397,8 +491,13 @@ export class ReviewAnalyzer {
 
     for (const issue of issues) {
       const keywords = issue.issue_keywords as string[];
-      if (keywords.includes("crash") || keywords.includes("freezes")) categories.crashes.push(issue);
-      else if (keywords.includes("bug") || keywords.includes("error") || keywords.includes("broken")) {
+      if (keywords.includes("crash") || keywords.includes("freezes"))
+        categories.crashes.push(issue);
+      else if (
+        keywords.includes("bug") ||
+        keywords.includes("error") ||
+        keywords.includes("broken")
+      ) {
         categories.bugs.push(issue);
       } else if (keywords.includes("slow") || keywords.includes("laggy")) {
         categories.performance.push(issue);
@@ -407,16 +506,25 @@ export class ReviewAnalyzer {
       }
     }
 
-    return Object.fromEntries(Object.entries(categories).filter(([, value]) => value.length > 0));
+    return Object.fromEntries(
+      Object.entries(categories).filter(([, value]) => value.length > 0),
+    );
   }
 
-  private calculateIssueSeverity(categorizedIssues: Record<string, AnyRecord[]>, totalReviews: number): AnyRecord {
+  private calculateIssueSeverity(
+    categorizedIssues: Record<string, AnyRecord[]>,
+    totalReviews: number,
+  ): AnyRecord {
     const severityScores: AnyRecord = {};
 
     for (const [category, issues] of Object.entries(categorizedIssues)) {
       const count = issues.length;
       const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
-      const avgRating = count > 0 ? issues.reduce((sum, issue) => sum + Number(issue.rating ?? 0), 0) / count : 0;
+      const avgRating =
+        count > 0
+          ? issues.reduce((sum, issue) => sum + Number(issue.rating ?? 0), 0) /
+            count
+          : 0;
       const severity = Math.min(percentage * 10 + (5 - avgRating) * 10, 100);
 
       severityScores[category] = {
@@ -424,7 +532,8 @@ export class ReviewAnalyzer {
         percentage: roundTo(percentage, 2),
         average_rating: roundTo(avgRating, 2),
         severity_score: roundTo(severity, 1),
-        priority: severity > 70 ? "critical" : severity > 40 ? "high" : "medium",
+        priority:
+          severity > 70 ? "critical" : severity > 40 ? "high" : "medium",
       };
     }
 
@@ -433,7 +542,10 @@ export class ReviewAnalyzer {
 
   private rankIssuesBySeverity(severityScores: AnyRecord): AnyRecord[] {
     return Object.entries(severityScores)
-      .map(([category, data]) => ({ category, ...(data as { severity_score?: number } & AnyRecord) }))
+      .map(([category, data]) => ({
+        category,
+        ...(data as { severity_score?: number } & AnyRecord),
+      }))
       .sort(
         (a: { severity_score?: number }, b: { severity_score?: number }) =>
           Number(b.severity_score ?? 0) - Number(a.severity_score ?? 0),
@@ -453,7 +565,9 @@ export class ReviewAnalyzer {
           `URGENT: Address ${category} issues immediately - affecting ${data.percentage}% of reviews`,
         );
       } else if (data.priority === "high") {
-        recommendations.push(`HIGH PRIORITY: Focus on ${category} issues in next update`);
+        recommendations.push(
+          `HIGH PRIORITY: Focus on ${category} issues in next update`,
+        );
       }
     }
 
@@ -463,7 +577,9 @@ export class ReviewAnalyzer {
   private extractFeatureRequestText(text: string): string {
     const sentences = text.split(".");
     for (const sentence of sentences) {
-      if (FEATURE_REQUEST_KEYWORDS.some((keyword) => sentence.includes(keyword))) {
+      if (
+        FEATURE_REQUEST_KEYWORDS.some((keyword) => sentence.includes(keyword))
+      ) {
         return sentence.trim();
       }
     }
@@ -499,13 +615,17 @@ export class ReviewAnalyzer {
     }));
   }
 
-  private prioritizeFeatureRequests(clusteredRequests: AnyRecord[]): AnyRecord[] {
+  private prioritizeFeatureRequests(
+    clusteredRequests: AnyRecord[],
+  ): AnyRecord[] {
     return [...clusteredRequests]
       .sort((a, b) => Number(b.request_count) - Number(a.request_count))
       .slice(0, 10);
   }
 
-  private generateFeatureRecommendations(prioritizedRequests: AnyRecord[]): string[] {
+  private generateFeatureRecommendations(
+    prioritizedRequests: AnyRecord[],
+  ): string[] {
     const recommendations: string[] = [];
 
     if (prioritizedRequests.length > 0) {
@@ -516,25 +636,37 @@ export class ReviewAnalyzer {
     }
 
     if (prioritizedRequests.length > 1) {
-      recommendations.push(`Also consider: ${prioritizedRequests[1].feature_theme}`);
+      recommendations.push(
+        `Also consider: ${prioritizedRequests[1].feature_theme}`,
+      );
     }
 
     return recommendations;
   }
 
-  private determineTrendDirection(ratingChange: number, sentimentChange: number): string {
+  private determineTrendDirection(
+    ratingChange: number,
+    sentimentChange: number,
+  ): string {
     if (ratingChange > 0.2 && sentimentChange > 5) return "improving";
     if (ratingChange < -0.2 && sentimentChange < -5) return "declining";
     return "stable";
   }
 
-  private generateTrendInsights(trends: AnyRecord[], trendDirection: string): string[] {
+  private generateTrendInsights(
+    trends: AnyRecord[],
+    trendDirection: string,
+  ): string[] {
     const insights: string[] = [];
 
     if (trendDirection === "improving") {
-      insights.push("Positive trend: User satisfaction is increasing over time");
+      insights.push(
+        "Positive trend: User satisfaction is increasing over time",
+      );
     } else if (trendDirection === "declining") {
-      insights.push("WARNING: User satisfaction is declining - immediate action needed");
+      insights.push(
+        "WARNING: User satisfaction is declining - immediate action needed",
+      );
     } else {
       insights.push("Sentiment is stable - maintain current quality");
     }
@@ -543,7 +675,9 @@ export class ReviewAnalyzer {
       const recent = Number(trends[trends.length - 1].total_reviews ?? 0);
       const previous = Number(trends[trends.length - 2].total_reviews ?? 0);
       if (recent > previous * 1.5) {
-        insights.push("Review volume increasing - growing user base or recent controversy");
+        insights.push(
+          "Review volume increasing - growing user base or recent controversy",
+        );
       }
     }
 
@@ -551,7 +685,10 @@ export class ReviewAnalyzer {
   }
 }
 
-export function analyzeReviews(appName: string, reviews: AnyRecord[]): AnyRecord {
+export function analyzeReviews(
+  appName: string,
+  reviews: AnyRecord[],
+): AnyRecord {
   const analyzer = new ReviewAnalyzer(appName);
   return {
     sentiment_analysis: analyzer.analyzeSentiment(reviews),
@@ -563,7 +700,7 @@ export function analyzeReviews(appName: string, reviews: AnyRecord[]): AnyRecord
 
 export const analyze_reviews = analyzeReviews;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
     analyzeReviews(
       getString(request, ["appName", "app_name"], "App"),
@@ -572,7 +709,11 @@ export function main(argv: string[] = process.argv.slice(2)): number {
   );
 }
 
-function topCounts(items: string[], limit: number, minMentions: number): Array<[string, number]> {
+function topCounts(
+  items: string[],
+  limit: number,
+  minMentions: number,
+): Array<[string, number]> {
   const counts = new Map<string, number>();
   for (const item of items) {
     counts.set(item, (counts.get(item) ?? 0) + 1);

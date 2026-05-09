@@ -1,9 +1,30 @@
+import { defineCliProcedure, procedureEntry } from "../../definition";
 /**
  * Competitor analysis module for App Store Optimization.
  * Analyzes top competitors' ASO strategies and identifies opportunities.
  */
 
 import { getArray, getString, runJsonProcedure } from "./cli";
+
+export const procedure = defineCliProcedure({
+  id: "app-store-optimization-competitor-analyzer",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "分析竞品 ASO 策略，包括标题、描述、关键词、评分对比和差距识别。",
+  owners: { skillIds: ["app-store-optimization"] },
+  target: "scripts/competitor_analyzer.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--input",
+      type: "路径",
+      description: "包含 category、competitorsData、platform 的 JSON 输入文件",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--input", "competitor_input.json"] },
+});
 
 type AnyRecord = Record<string, any>;
 
@@ -23,19 +44,29 @@ export class CompetitorAnalyzer {
     const description = String(appData.description ?? "");
     const rating = Number(appData.rating ?? 0);
     const ratingsCount = Number(appData.ratings_count ?? 0);
-    const keywords = Array.isArray(appData.keywords) ? appData.keywords.map(String) : [];
+    const keywords = Array.isArray(appData.keywords)
+      ? appData.keywords.map(String)
+      : [];
 
     const analysis = {
       app_name: appName,
       title_analysis: this.analyzeTitle(title),
       description_analysis: this.analyzeDescription(description),
-      keyword_strategy: this.extractKeywordStrategy(title, description, keywords),
+      keyword_strategy: this.extractKeywordStrategy(
+        title,
+        description,
+        keywords,
+      ),
       rating_metrics: {
         rating,
         ratings_count: ratingsCount,
         rating_quality: this.assessRatingQuality(rating, ratingsCount),
       },
-      competitive_strength: this.calculateCompetitiveStrength(rating, ratingsCount, description.length),
+      competitive_strength: this.calculateCompetitiveStrength(
+        rating,
+        ratingsCount,
+        description.length,
+      ),
       key_differentiators: this.identifyDifferentiators(description),
     };
 
@@ -44,7 +75,9 @@ export class CompetitorAnalyzer {
   }
 
   compareCompetitors(competitorsData: AnyRecord[]): AnyRecord {
-    const analyses = competitorsData.map((data) => this.analyzeCompetitor(data));
+    const analyses = competitorsData.map((data) =>
+      this.analyzeCompetitor(data),
+    );
 
     const allKeywords: string[] = [];
     for (const analysis of analyses) {
@@ -70,30 +103,49 @@ export class CompetitorAnalyzer {
       keyword_gaps: keywordGaps,
       rating_analysis: ratingAnalysis,
       best_practices: bestPractices,
-      opportunities: this.identifyOpportunities(analyses, commonKeywords, keywordGaps),
+      opportunities: this.identifyOpportunities(
+        analyses,
+        commonKeywords,
+        keywordGaps,
+      ),
     };
   }
 
-  identifyGaps(yourAppData: AnyRecord, competitorsData: AnyRecord[]): AnyRecord {
+  identifyGaps(
+    yourAppData: AnyRecord,
+    competitorsData: AnyRecord[],
+  ): AnyRecord {
     const yourAnalysis = this.analyzeCompetitor(yourAppData);
     const comparison = this.compareCompetitors(competitorsData);
 
-    const yourKeywords = new Set<string>(yourAnalysis.keyword_strategy.primary_keywords);
+    const yourKeywords = new Set<string>(
+      yourAnalysis.keyword_strategy.primary_keywords,
+    );
     const competitorKeywords = new Set<string>(comparison.common_keywords);
     const missingKeywords = new Set<string>(
-      Array.from(competitorKeywords).filter((keyword) => !yourKeywords.has(keyword)),
+      Array.from(competitorKeywords).filter(
+        (keyword) => !yourKeywords.has(keyword),
+      ),
     );
 
-    const avgCompetitorRating = Number(comparison.rating_analysis.average_rating ?? 0);
-    const ratingGap = avgCompetitorRating - Number(yourAnalysis.rating_metrics.rating ?? 0);
+    const avgCompetitorRating = Number(
+      comparison.rating_analysis.average_rating ?? 0,
+    );
+    const ratingGap =
+      avgCompetitorRating - Number(yourAnalysis.rating_metrics.rating ?? 0);
 
     const ranked: AnyRecord[] = comparison.ranked_competitors;
     const avgDescLength =
       ranked.length > 0
-        ? ranked.reduce((sum, comp) => sum + String(comp.description_analysis.text ?? "").length, 0) /
-          ranked.length
+        ? ranked.reduce(
+            (sum, comp) =>
+              sum + String(comp.description_analysis.text ?? "").length,
+            0,
+          ) / ranked.length
         : 0;
-    const yourDescLength = String(yourAnalysis.description_analysis.text ?? "").length;
+    const yourDescLength = String(
+      yourAnalysis.description_analysis.text ?? "",
+    ).length;
     const descLengthGap = avgDescLength - yourDescLength;
 
     return {
@@ -114,7 +166,10 @@ export class CompetitorAnalyzer {
         gap: Math.floor(descLengthGap),
         recommendations: this.generateContentRecommendations(descLengthGap),
       },
-      competitive_positioning: this.assessCompetitivePosition(yourAnalysis, comparison),
+      competitive_positioning: this.assessCompetitivePosition(
+        yourAnalysis,
+        comparison,
+      ),
     };
   }
 
@@ -135,11 +190,14 @@ export class CompetitorAnalyzer {
     const lines = description.split(/\r?\n/);
     const wordCount = description.split(/\s+/).filter(Boolean).length;
 
-    const hasBulletPoints = description.includes("•") || description.includes("*");
-    const hasSections = lines.some((line) => line.trim().length > 0 && line === line.toUpperCase());
+    const hasBulletPoints =
+      description.includes("•") || description.includes("*");
+    const hasSections = lines.some(
+      (line) => line.trim().length > 0 && line === line.toUpperCase(),
+    );
     const lowered = description.toLowerCase();
-    const hasCallToAction = ["download", "try", "get", "start", "join"].some((keyword) =>
-      lowered.includes(keyword),
+    const hasCallToAction = ["download", "try", "get", "start", "join"].some(
+      (keyword) => lowered.includes(keyword),
     );
 
     return {
@@ -152,17 +210,23 @@ export class CompetitorAnalyzer {
         has_call_to_action: hasCallToAction,
       },
       features_mentioned: this.extractFeatures(description),
-      readability: wordCount >= 50 && wordCount <= 300 ? "good" : "needs_improvement",
+      readability:
+        wordCount >= 50 && wordCount <= 300 ? "good" : "needs_improvement",
     };
   }
 
-  private extractKeywordStrategy(title: string, description: string, explicitKeywords: string[]): AnyRecord {
+  private extractKeywordStrategy(
+    title: string,
+    description: string,
+    explicitKeywords: string[],
+  ): AnyRecord {
     const titleKeywords = title
       .toLowerCase()
       .split(/\s+/)
       .filter((word) => word.length > 3);
 
-    const descWords = (description.toLowerCase().match(/\b\w{4,}\b/g) ?? []) as string[];
+    const descWords = (description.toLowerCase().match(/\b\w{4,}\b/g) ??
+      []) as string[];
     const freq = new Map<string, number>();
     for (const word of descWords) {
       freq.set(word, (freq.get(word) ?? 0) + 1);
@@ -174,7 +238,11 @@ export class CompetitorAnalyzer {
       .slice(0, 15)
       .map(([word]) => word);
 
-    const allKeywords = new Set([...titleKeywords, ...frequentWords, ...explicitKeywords]);
+    const allKeywords = new Set([
+      ...titleKeywords,
+      ...frequentWords,
+      ...explicitKeywords,
+    ]);
 
     return {
       primary_keywords: titleKeywords,
@@ -193,7 +261,11 @@ export class CompetitorAnalyzer {
     return "poor";
   }
 
-  private calculateCompetitiveStrength(rating: number, ratingsCount: number, descriptionLength: number): number {
+  private calculateCompetitiveStrength(
+    rating: number,
+    ratingsCount: number,
+    descriptionLength: number,
+  ): number {
     const ratingScore = (rating / 5) * 40;
     const volumeScore = Math.min((ratingsCount / 10000) * 30, 30);
     const metadataScore = Math.min((descriptionLength / 2000) * 30, 30);
@@ -217,7 +289,9 @@ export class CompetitorAnalyzer {
     return description
       .split(".")
       .map((sentence) => sentence.trim())
-      .filter((sentence) => keywords.some((keyword) => sentence.toLowerCase().includes(keyword)))
+      .filter((sentence) =>
+        keywords.some((keyword) => sentence.toLowerCase().includes(keyword)),
+      )
       .slice(0, 5);
   }
 
@@ -238,7 +312,9 @@ export class CompetitorAnalyzer {
     const allKeywordsByApp: Record<string, Set<string>> = {};
 
     for (const analysis of analyses) {
-      allKeywordsByApp[analysis.app_name] = new Set(analysis.keyword_strategy.primary_keywords);
+      allKeywordsByApp[analysis.app_name] = new Set(
+        analysis.keyword_strategy.primary_keywords,
+      );
     }
 
     const allKeywords = new Set<string>();
@@ -258,23 +334,39 @@ export class CompetitorAnalyzer {
         gaps.push({
           keyword,
           used_by: usingApps,
-          usage_percentage: roundTo((usingApps.length / analyses.length) * 100, 1),
+          usage_percentage: roundTo(
+            (usingApps.length / analyses.length) * 100,
+            1,
+          ),
         });
       }
     }
 
-    return gaps.sort((a, b) => b.usage_percentage - a.usage_percentage).slice(0, 15);
+    return gaps
+      .sort((a, b) => b.usage_percentage - a.usage_percentage)
+      .slice(0, 15);
   }
 
   private analyzeRatingDistribution(analyses: AnyRecord[]): AnyRecord {
-    const ratings = analyses.map((item) => Number(item.rating_metrics.rating ?? 0));
-    const counts = analyses.map((item) => Number(item.rating_metrics.ratings_count ?? 0));
+    const ratings = analyses.map((item) =>
+      Number(item.rating_metrics.rating ?? 0),
+    );
+    const counts = analyses.map((item) =>
+      Number(item.rating_metrics.ratings_count ?? 0),
+    );
 
     return {
-      average_rating: roundTo(ratings.reduce((sum, value) => sum + value, 0) / Math.max(ratings.length, 1), 2),
+      average_rating: roundTo(
+        ratings.reduce((sum, value) => sum + value, 0) /
+          Math.max(ratings.length, 1),
+        2,
+      ),
       highest_rating: Math.max(...ratings),
       lowest_rating: Math.min(...ratings),
-      average_ratings_count: Math.floor(counts.reduce((sum, value) => sum + value, 0) / Math.max(counts.length, 1)),
+      average_ratings_count: Math.floor(
+        counts.reduce((sum, value) => sum + value, 0) /
+          Math.max(counts.length, 1),
+      ),
       total_ratings_in_category: counts.reduce((sum, value) => sum + value, 0),
     };
   }
@@ -286,15 +378,21 @@ export class CompetitorAnalyzer {
     const practices: string[] = [];
 
     if (top.title_analysis.has_keywords) {
-      practices.push(`Title Strategy: Include primary keyword in title (e.g., '${top.title_analysis.title}')`);
+      practices.push(
+        `Title Strategy: Include primary keyword in title (e.g., '${top.title_analysis.title}')`,
+      );
     }
 
     if (top.description_analysis.structure.has_bullet_points) {
-      practices.push("Description: Use bullet points to highlight key features");
+      practices.push(
+        "Description: Use bullet points to highlight key features",
+      );
     }
 
     if (top.description_analysis.structure.has_sections) {
-      practices.push("Description: Organize content with clear section headers");
+      practices.push(
+        "Description: Organize content with clear section headers",
+      );
     }
 
     if (["excellent", "good"].includes(top.rating_metrics.rating_quality)) {
@@ -319,20 +417,28 @@ export class CompetitorAnalyzer {
         .map((gap) => String(gap.keyword));
 
       if (underutilized.length > 0) {
-        opportunities.push(`Target underutilized keywords: ${underutilized.slice(0, 5).join(", ")}`);
+        opportunities.push(
+          `Target underutilized keywords: ${underutilized.slice(0, 5).join(", ")}`,
+        );
       }
     }
 
-    const avgRating = analyses.reduce((sum, item) => sum + Number(item.rating_metrics.rating ?? 0), 0) /
-      Math.max(analyses.length, 1);
+    const avgRating =
+      analyses.reduce(
+        (sum, item) => sum + Number(item.rating_metrics.rating ?? 0),
+        0,
+      ) / Math.max(analyses.length, 1);
     if (avgRating < 4.5) {
       opportunities.push(
         `Category average rating is ${avgRating.toFixed(1)} - opportunity to differentiate with higher ratings`,
       );
     }
 
-    const avgDescLength = analyses.reduce((sum, item) => sum + Number(item.description_analysis.length ?? 0), 0) /
-      Math.max(analyses.length, 1);
+    const avgDescLength =
+      analyses.reduce(
+        (sum, item) => sum + Number(item.description_analysis.length ?? 0),
+        0,
+      ) / Math.max(analyses.length, 1);
     if (avgDescLength < 1500) {
       opportunities.push(
         "Competitors have relatively short descriptions - opportunity to provide more comprehensive information",
@@ -360,14 +466,21 @@ export class CompetitorAnalyzer {
     return features.slice(0, 10);
   }
 
-  private assessKeywordFocus(titleKeywords: string[], descriptionKeywords: string[]): string {
-    const overlap = new Set(titleKeywords.filter((keyword) => descriptionKeywords.includes(keyword)));
+  private assessKeywordFocus(
+    titleKeywords: string[],
+    descriptionKeywords: string[],
+  ): string {
+    const overlap = new Set(
+      titleKeywords.filter((keyword) => descriptionKeywords.includes(keyword)),
+    );
     if (overlap.size >= 3) return "consistent_focus";
     if (overlap.size >= 1) return "moderate_focus";
     return "broad_focus";
   }
 
-  private generateKeywordRecommendations(missingKeywords: Set<string>): string[] {
+  private generateKeywordRecommendations(
+    missingKeywords: Set<string>,
+  ): string[] {
     if (missingKeywords.size === 0) {
       return ["Your keyword coverage is comprehensive"];
     }
@@ -391,10 +504,15 @@ export class CompetitorAnalyzer {
     }
 
     if (ratingGap > 0.2) {
-      return ["Focus on incremental improvements to close rating gap", "Optimize timing of rating requests"];
+      return [
+        "Focus on incremental improvements to close rating gap",
+        "Optimize timing of rating requests",
+      ];
     }
 
-    return ["Ratings are competitive - maintain quality and continue improvements"];
+    return [
+      "Ratings are competitive - maintain quality and continue improvements",
+    ];
   }
 
   private generateContentRecommendations(descLengthGap: number): string[] {
@@ -416,20 +534,29 @@ export class CompetitorAnalyzer {
     return ["Description length is competitive"];
   }
 
-  private assessCompetitivePosition(yourAnalysis: AnyRecord, competitorComparison: AnyRecord): string {
+  private assessCompetitivePosition(
+    yourAnalysis: AnyRecord,
+    competitorComparison: AnyRecord,
+  ): string {
     const yourStrength = Number(yourAnalysis.competitive_strength ?? 0);
-    const competitors: AnyRecord[] = competitorComparison.ranked_competitors ?? [];
+    const competitors: AnyRecord[] =
+      competitorComparison.ranked_competitors ?? [];
 
     if (competitors.length === 0) {
       return "No comparison data available";
     }
 
-    const betterThanCount = competitors.filter((comp) => yourStrength > Number(comp.competitive_strength ?? 0)).length;
+    const betterThanCount = competitors.filter(
+      (comp) => yourStrength > Number(comp.competitive_strength ?? 0),
+    ).length;
     const positionPercentage = (betterThanCount / competitors.length) * 100;
 
-    if (positionPercentage >= 75) return "Strong Position: Top quartile in competitive strength";
-    if (positionPercentage >= 50) return "Competitive Position: Above average, opportunities for improvement";
-    if (positionPercentage >= 25) return "Challenging Position: Below average, requires strategic improvements";
+    if (positionPercentage >= 75)
+      return "Strong Position: Top quartile in competitive strength";
+    if (positionPercentage >= 50)
+      return "Competitive Position: Above average, opportunities for improvement";
+    if (positionPercentage >= 25)
+      return "Challenging Position: Below average, requires strategic improvements";
     return "Weak Position: Bottom quartile, major ASO overhaul needed";
   }
 }
@@ -445,11 +572,15 @@ export function analyzeCompetitorSet(
 
 export const analyze_competitor_set = analyzeCompetitorSet;
 
-export function main(argv: string[] = process.argv.slice(2)): number {
+export function main(argv: readonly string[]): number {
   return runJsonProcedure(argv, (request) =>
     analyzeCompetitorSet(
       getString(request, ["category"]),
-      getArray<AnyRecord>(request, ["competitorsData", "competitors_data", "competitors"]),
+      getArray<AnyRecord>(request, [
+        "competitorsData",
+        "competitors_data",
+        "competitors",
+      ]),
       getString(request, ["platform"], "apple"),
     ),
   );

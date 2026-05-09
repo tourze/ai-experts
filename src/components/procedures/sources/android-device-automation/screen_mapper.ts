@@ -1,129 +1,179 @@
 #!/usr/bin/env node
+import { defineCliProcedure, procedureEntry } from "../../definition";
 import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { resolveSerial, runAdbCommand } from "./common";
+
+export const procedure = defineCliProcedure({
+  id: "android-device-automation-screen-mapper",
+  entry: procedureEntry(import.meta.url),
+  description:
+    "转储并解析当前 Android 屏幕 UI 层级：输出按钮、文本字段、可交互元素的分类摘要，支持 JSON 输出。",
+  owners: { skillIds: ["android-device-automation"] },
+  target: "scripts/screen_mapper.mjs",
+  runtime: "node",
+  params: [
+    {
+      flag: "--json",
+      type: "",
+      description: "输出完整 JSON 分析结果，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--verbose",
+      type: "",
+      description: "详细输出（预留）",
+      required: false,
+    },
+    {
+      flag: "--serial",
+      type: "字符串",
+      description: "目标设备序列号",
+      required: false,
+    },
+  ],
+
+  exampleArgs: { args: ["--json"] },
+});
+
 export class ScreenMapper {
-    serial: any;
-    tempFile: any;
-    constructor(serial: any = null, tempFile: any = join(tmpdir(), "window_dump.xml")) {
-        this.serial = serial;
-        this.tempFile = tempFile;
+  serial: any;
+  tempFile: any;
+  constructor(
+    serial: any = null,
+    tempFile: any = join(tmpdir(), "window_dump.xml"),
+  ) {
+    this.serial = serial;
+    this.tempFile = tempFile;
+  }
+  dumpUi(): any {
+    runAdbCommand(
+      ["shell", "uiautomator", "dump", "/sdcard/window_dump.xml"],
+      this.serial,
+    );
+    runAdbCommand(
+      ["pull", "/sdcard/window_dump.xml", this.tempFile],
+      this.serial,
+    );
+  }
+  analyze(): any {
+    this.dumpUi();
+    if (!existsSync(this.tempFile)) {
+      return { error: "Failed to dump UI" };
     }
-    dumpUi(): any {
-        runAdbCommand(["shell", "uiautomator", "dump", "/sdcard/window_dump.xml"], this.serial);
-        runAdbCommand(["pull", "/sdcard/window_dump.xml", this.tempFile], this.serial);
-    }
-    analyze(): any {
-        this.dumpUi();
-        if (!existsSync(this.tempFile)) {
-            return { error: "Failed to dump UI" };
-        }
-        return analyzeXml(readFileSync(this.tempFile, "utf8"));
-    }
-    formatSummary(analysis: any): any {
-        return formatSummary(analysis);
-    }
+    return analyzeXml(readFileSync(this.tempFile, "utf8"));
+  }
+  formatSummary(analysis: any): any {
+    return formatSummary(analysis);
+  }
 }
 export function parseBounds(bounds: any): any {
-    const match = String(bounds).match(/^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$/);
-    if (!match)
-        return null;
-    const [, x1Text, y1Text, x2Text, y2Text] = match;
-    const x1 = Number.parseInt(x1Text, 10);
-    const y1 = Number.parseInt(y1Text, 10);
-    const x2 = Number.parseInt(x2Text, 10);
-    const y2 = Number.parseInt(y2Text, 10);
-    return {
-        x: x1,
-        y: y1,
-        width: x2 - x1,
-        height: y2 - y1,
-        center_x: Math.trunc((x1 + x2) / 2),
-        center_y: Math.trunc((y1 + y2) / 2),
-    };
+  const match = String(bounds).match(/^\[(\d+),(\d+)\]\[(\d+),(\d+)\]$/);
+  if (!match) return null;
+  const [, x1Text, y1Text, x2Text, y2Text] = match;
+  const x1 = Number.parseInt(x1Text, 10);
+  const y1 = Number.parseInt(y1Text, 10);
+  const x2 = Number.parseInt(x2Text, 10);
+  const y2 = Number.parseInt(y2Text, 10);
+  return {
+    x: x1,
+    y: y1,
+    width: x2 - x1,
+    height: y2 - y1,
+    center_x: Math.trunc((x1 + x2) / 2),
+    center_y: Math.trunc((y1 + y2) / 2),
+  };
 }
 function decodeXmlAttribute(value: any): any {
-    return value
-        .replaceAll("&quot;", "\"")
-        .replaceAll("&apos;", "'")
-        .replaceAll("&lt;", "<")
-        .replaceAll("&gt;", ">")
-        .replaceAll("&amp;", "&");
+  return value
+    .replaceAll("&quot;", '"')
+    .replaceAll("&apos;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&amp;", "&");
 }
 export function parseNodeAttributes(source: any): any {
-    const attributes: Record<string, any> = {};
-    const attrPattern = /([\w:-]+)="([^"]*)"/g;
-    let match = attrPattern.exec(source);
-    while (match) {
-        attributes[match[1]] = decodeXmlAttribute(match[2]);
-        match = attrPattern.exec(source);
-    }
-    return attributes;
+  const attributes: Record<string, any> = {};
+  const attrPattern = /([\w:-]+)="([^"]*)"/g;
+  let match = attrPattern.exec(source);
+  while (match) {
+    attributes[match[1]] = decodeXmlAttribute(match[2]);
+    match = attrPattern.exec(source);
+  }
+  return attributes;
 }
 export function elementFromAttributes(attributes: any): any {
-    return {
-        class: attributes.class ?? "",
-        text: attributes.text ?? "",
-        "resource-id": attributes["resource-id"] ?? "",
-        "content-desc": attributes["content-desc"] ?? "",
-        package: attributes.package ?? "",
-        clickable: attributes.clickable === "true",
-        enabled: attributes.enabled === "true",
-        focused: attributes.focused === "true",
-        scrollable: attributes.scrollable === "true",
-        bounds: parseBounds(attributes.bounds ?? ""),
-    };
+  return {
+    class: attributes.class ?? "",
+    text: attributes.text ?? "",
+    "resource-id": attributes["resource-id"] ?? "",
+    "content-desc": attributes["content-desc"] ?? "",
+    package: attributes.package ?? "",
+    clickable: attributes.clickable === "true",
+    enabled: attributes.enabled === "true",
+    focused: attributes.focused === "true",
+    scrollable: attributes.scrollable === "true",
+    bounds: parseBounds(attributes.bounds ?? ""),
+  };
 }
 export function analyzeXml(xml: any): any {
-    const analysis: Record<string, any> = {
-        buttons: [],
-        text_fields: [],
-        interactive: [],
-        all_elements: [],
-    };
-    const buttons = new Set();
-    const nodePattern = /<node\b([^>]*)>/g;
-    let match = nodePattern.exec(xml);
-    while (match) {
-        const element = elementFromAttributes(parseNodeAttributes(match[1]));
-        if (element.class.endsWith("Button") || element.clickable) {
-            const label = element.text || element["content-desc"] || element["resource-id"];
-            if (label)
-                buttons.add(label);
-        }
-        if (element.class.endsWith("EditText")) {
-            analysis.text_fields.push(element);
-        }
-        if (element.clickable || element.scrollable || element.class.endsWith("EditText")) {
-            analysis.interactive.push(element);
-        }
-        analysis.all_elements.push(element);
-        match = nodePattern.exec(xml);
+  const analysis: Record<string, any> = {
+    buttons: [],
+    text_fields: [],
+    interactive: [],
+    all_elements: [],
+  };
+  const buttons = new Set();
+  const nodePattern = /<node\b([^>]*)>/g;
+  let match = nodePattern.exec(xml);
+  while (match) {
+    const element = elementFromAttributes(parseNodeAttributes(match[1]));
+    if (element.class.endsWith("Button") || element.clickable) {
+      const label =
+        element.text || element["content-desc"] || element["resource-id"];
+      if (label) buttons.add(label);
     }
-    analysis.buttons = [...buttons];
-    return analysis;
+    if (element.class.endsWith("EditText")) {
+      analysis.text_fields.push(element);
+    }
+    if (
+      element.clickable ||
+      element.scrollable ||
+      element.class.endsWith("EditText")
+    ) {
+      analysis.interactive.push(element);
+    }
+    analysis.all_elements.push(element);
+    match = nodePattern.exec(xml);
+  }
+  analysis.buttons = [...buttons];
+  return analysis;
 }
 export function formatSummary(analysis: any): any {
-    const lines: any[] = [`Screen: ${analysis.all_elements.length} elements (${analysis.interactive.length} interactive)`];
-    if (analysis.buttons.length) {
-        const buttons = analysis.buttons.slice(0, 5);
-        lines.push(`Buttons: ${buttons.join(", ")}`);
-        if (analysis.buttons.length > 5) {
-            lines.push(`  ... +${analysis.buttons.length - 5} more`);
-        }
+  const lines: any[] = [
+    `Screen: ${analysis.all_elements.length} elements (${analysis.interactive.length} interactive)`,
+  ];
+  if (analysis.buttons.length) {
+    const buttons = analysis.buttons.slice(0, 5);
+    lines.push(`Buttons: ${buttons.join(", ")}`);
+    if (analysis.buttons.length > 5) {
+      lines.push(`  ... +${analysis.buttons.length - 5} more`);
     }
-    if (analysis.text_fields.length) {
-        lines.push(`TextFields: ${analysis.text_fields.length}`);
-        for (const textField of analysis.text_fields) {
-            lines.push(`  - ${textField.text || textField["resource-id"] || "Unnamed"}`);
-        }
+  }
+  if (analysis.text_fields.length) {
+    lines.push(`TextFields: ${analysis.text_fields.length}`);
+    for (const textField of analysis.text_fields) {
+      lines.push(
+        `  - ${textField.text || textField["resource-id"] || "Unnamed"}`,
+      );
     }
-    return lines.join("\n");
+  }
+  return lines.join("\n");
 }
 function usage(): any {
-    return `Map Android UI elements.
+  return `Map Android UI elements.
 
 Usage: node scripts/screen_mapper.mjs [options]
 
@@ -134,57 +184,52 @@ Options:
   --help                 Show this help
 `;
 }
-export function parseArgs(argv: any = process.argv.slice(2)): any {
-    const args: Record<string, any> = { json: false, verbose: false, serial: null, help: false };
-    for (let index = 0; index < argv.length; index += 1) {
-        const arg = argv[index];
-        if (arg === "--help" || arg === "-h") {
-            args.help = true;
-            continue;
-        }
-        if (arg === "--json") {
-            args.json = true;
-            continue;
-        }
-        if (arg === "--verbose") {
-            args.verbose = true;
-            continue;
-        }
-        if (arg === "--serial" || arg === "-s") {
-            const value = argv[index + 1];
-            if (value == null || value.startsWith("--"))
-                throw new Error(`${arg} requires a value`);
-            args.serial = value;
-            index += 1;
-            continue;
-        }
-        throw new Error(`unrecognized argument: ${arg}`);
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    json: false,
+    verbose: false,
+    serial: null,
+    help: false,
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--help" || arg === "-h") {
+      args.help = true;
+      continue;
     }
-    return args;
+    if (arg === "--json") {
+      args.json = true;
+      continue;
+    }
+    if (arg === "--verbose") {
+      args.verbose = true;
+      continue;
+    }
+    if (arg === "--serial" || arg === "-s") {
+      const value = argv[index + 1];
+      if (value == null || value.startsWith("--"))
+        throw new Error(`${arg} requires a value`);
+      args.serial = value;
+      index += 1;
+      continue;
+    }
+    throw new Error(`unrecognized argument: ${arg}`);
+  }
+  return args;
 }
-export function main(argv: any = process.argv.slice(2)): any {
-    const args = parseArgs(argv);
-    if (args.help) {
-        console.log(usage());
-        return 0;
-    }
-    const serial = resolveSerial(args.serial);
-    const mapper = new ScreenMapper(serial);
-    const analysis = mapper.analyze();
-    if (args.json) {
-        console.log(JSON.stringify(analysis, null, 2));
-    }
-    else {
-        console.log(formatSummary(analysis));
-    }
+export function main(argv: readonly string[]): any {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
     return 0;
-}
-if (process.argv[1] && realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
-    try {
-        process.exitCode = main();
-    }
-    catch (error: any) {
-        console.error(`Error: ${error.message}`);
-        process.exitCode = 1;
-    }
+  }
+  const serial = resolveSerial(args.serial);
+  const mapper = new ScreenMapper(serial);
+  const analysis = mapper.analyze();
+  if (args.json) {
+    console.log(JSON.stringify(analysis, null, 2));
+  } else {
+    console.log(formatSummary(analysis));
+  }
+  return 0;
 }
