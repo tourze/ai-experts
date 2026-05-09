@@ -527,12 +527,14 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
 
     const seenReferences = new Set<string>();
+    const seenReferenceTargets = new Set<string>();
     for (const reference of skill.references ?? []) {
       validateId(reference.id, `reference in ${skill.id}`);
       if (seenReferences.has(reference.id)) throw new Error(`Duplicate reference id in ${skill.id}: ${reference.id}`);
       seenReferences.add(reference.id);
       const referenceSource = toAbsolutePath(reference.source);
       const referenceTarget = defaultReferenceTarget(reference);
+      const normalizedReferenceTarget = referenceTarget.replace(/\/+$/u, "");
       if (
         reference.id === "evals" ||
         referenceTarget === "references/evals" ||
@@ -549,12 +551,18 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       ) {
         throw new Error(`Skill ${skill.id} reference ${reference.id} target must stay under references/: ${referenceTarget}`);
       }
+      if (normalizedReferenceTarget === "references/index.md") {
+        throw new Error(`Skill ${skill.id} reference ${reference.id} target is reserved: references/index.md`);
+      }
+      if (seenReferenceTargets.has(normalizedReferenceTarget)) {
+        throw new Error(`Duplicate reference target in ${skill.id}: ${normalizedReferenceTarget}`);
+      }
+      seenReferenceTargets.add(normalizedReferenceTarget);
       if (!existsSync(referenceSource)) {
         throw new Error(`Skill ${skill.id} reference is missing: ${displayPath(reference.source)}`);
       }
       const sourceStat = statSync(referenceSource);
-      const normalizedTarget = referenceTarget.replace(/\/+$/u, "");
-      const targetLooksFile = /\.[^/]+$/u.test(normalizedTarget);
+      const targetLooksFile = /\.[^/]+$/u.test(normalizedReferenceTarget);
       if (sourceStat.isDirectory() && targetLooksFile) {
         throw new Error(
           `Skill ${skill.id} reference ${reference.id} source is a directory but target looks like a file: ${referenceTarget}`,

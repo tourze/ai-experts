@@ -579,6 +579,54 @@ describe("build/pipeline modules", () => {
       "target must stay under references/: references/../reference.md",
     );
 
+    const reservedReferenceIndexTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "reserved-reference-index-target",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "references/index.md",
+            title: "Reserved Reference Target",
+            summary: "reserved reference target",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(reservedReferenceIndexTargetRegistry)).toThrow(
+      "target is reserved: references/index.md",
+    );
+
+    const duplicateReferenceTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        references: [
+          defineReference({
+            id: "duplicate-reference-target-a",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "references/shared.md",
+            title: "Duplicate Reference Target A",
+            summary: "duplicate reference target",
+            loadWhen: "never",
+          }),
+          defineReference({
+            id: "duplicate-reference-target-b",
+            source: pathToFileURL(join(fixture.root, "skill", "references", "reference.md")),
+            target: "references/shared.md",
+            title: "Duplicate Reference Target B",
+            summary: "duplicate reference target",
+            loadWhen: "never",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateReferenceTargetRegistry)).toThrow(
+      "Duplicate reference target in fixture-skill: references/shared.md",
+    );
+
     const invalidInstructionPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       instructions: [{ ...fixture.instruction, platforms: ["unsupported-instruction-cli"] as any }],
