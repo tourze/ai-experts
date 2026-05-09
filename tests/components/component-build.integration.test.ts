@@ -728,6 +728,23 @@ describe("component build integration", () => {
     assert.deepEqual(leakedPaths, [], "generated runtime files should not leak maintainer-local absolute paths");
   });
 
+  test("generated text files end with a final newline", () => {
+    const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
+    const missingFinalNewline: string[] = [];
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
+        const source = readFileSync(generatedFile, "utf-8");
+        if (!source.endsWith("\n")) {
+          missingFinalNewline.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}`);
+        }
+      }
+    }
+
+    assert.deepEqual(missingFinalNewline, [], "generated text files should end with a final newline");
+  });
+
   test("emits reproducible manifests and procedure bundles", () => {
     const secondDistDir = mkdtempSync(join(tmpdir(), "ai-experts-repro-b-"));
     try {

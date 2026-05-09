@@ -5,6 +5,7 @@ import {
   readdirSync,
   readFileSync,
   rmSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
 import { basename, dirname, extname, isAbsolute, join, relative, resolve } from "node:path";
@@ -60,9 +61,32 @@ export function ensureDir(path: string): void {
   mkdirSync(path, { recursive: true });
 }
 
+const textFileExtensions = new Set([
+  ".css",
+  ".html",
+  ".js",
+  ".json",
+  ".md",
+  ".mjs",
+  ".toml",
+  ".ts",
+  ".tsx",
+  ".txt",
+  ".yaml",
+  ".yml",
+]);
+
+function isTextFilePath(path: string): boolean {
+  return textFileExtensions.has(extname(path).toLowerCase());
+}
+
+function withFinalNewline(content: string): string {
+  return content.endsWith("\n") ? content : `${content}\n`;
+}
+
 export function writeText(path: string, content: string): void {
   ensureDir(dirname(path));
-  writeFileSync(path, content, "utf-8");
+  writeFileSync(path, withFinalNewline(content), "utf-8");
 }
 
 export type FilePredicate = (path: string) => boolean;
@@ -156,6 +180,14 @@ export function copyComponentPath(source: ComponentFile, target: string): void {
     force: true,
     dereference: false,
   });
+  const copiedTextFiles = statSync(target).isFile()
+    ? (isTextFilePath(target) ? [target] : [])
+    : collectFiles(target, isTextFilePath);
+  for (const file of copiedTextFiles) {
+    const source = readFileSync(file, "utf-8");
+    const normalized = withFinalNewline(source);
+    if (normalized !== source) writeFileSync(file, normalized, "utf-8");
+  }
 }
 
 export function removeFiles(root: string, predicate: FilePredicate): void {

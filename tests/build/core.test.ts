@@ -102,12 +102,12 @@ describe("build/core", () => {
     writeText(join(root, "entry.txt"), "hello");
     const sourceUrl = new URL(`file://${join(root, "entry.txt")}`);
     expect(toAbsolutePath(sourceUrl)).toBe(join(root, "entry.txt"));
-    expect(readComponentText(sourceUrl)).toBe("hello");
+    expect(readComponentText(sourceUrl)).toBe("hello\n");
     expect(displayPath(sourceUrl)).toBe(join(root, "entry.txt"));
     expect(displayPath("README.md")).toBe("README.md");
 
     copyComponentPath(sourceUrl, join(root, "copy", "entry.txt"));
-    expect(readFileSync(join(root, "copy", "entry.txt"), "utf-8")).toBe("hello");
+    expect(readFileSync(join(root, "copy", "entry.txt"), "utf-8")).toBe("hello\n");
     expect(() => copyComponentPath(new URL("file:///tmp/not-found.txt"), join(root, "target"))).toThrow("Missing source path");
 
     expect(isSameOrInsidePath(join(root, "copy", "entry.txt"), root)).toBe(true);
