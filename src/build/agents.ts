@@ -134,13 +134,21 @@ function validateStringArray(
   return value;
 }
 
-function validateJsonValue(value: unknown): boolean {
+function validateJsonValue(value: unknown, seen: WeakSet<object>): boolean {
   if (value === null) return true;
   if (typeof value === "string" || typeof value === "boolean") return true;
   if (typeof value === "number") return Number.isFinite(value);
-  if (Array.isArray(value)) return value.every(validateJsonValue);
+  if (Array.isArray(value)) {
+    if (seen.has(value)) return false;
+    seen.add(value);
+    return value.every((item) => validateJsonValue(item, seen));
+  }
   if (typeof value === "object") {
-    return Object.values(value as Record<string, unknown>).every(validateJsonValue);
+    if (seen.has(value)) return false;
+    seen.add(value);
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) return false;
+    return Object.values(value as Record<string, unknown>).every((item) => validateJsonValue(item, seen));
   }
   return false;
 }
@@ -202,7 +210,7 @@ export function validateAgentOutputFormat(
     ) {
       throw new Error(`Agent ${agent.id} outputFormat.introduction must be non-empty when defined`);
     }
-    if (!validateJsonValue(format.example)) {
+    if (!validateJsonValue(format.example, new WeakSet<object>())) {
       throw new Error(`Agent ${agent.id} outputFormat.example must be JSON-serializable`);
     }
     validateStringArray(agent.id, format.notes, "outputFormat.notes");

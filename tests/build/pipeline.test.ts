@@ -1561,6 +1561,14 @@ describe("build/pipeline modules", () => {
         },
       })
     ).toThrow("outputFormat.title must be a single line");
+    const circularExample: any = {};
+    circularExample.self = circularExample;
+    expect(() =>
+      validateAgentOutputFormat({
+        ...fixture.agent,
+        outputFormat: { kind: "json", example: circularExample },
+      })
+    ).toThrow("outputFormat.example must be JSON-serializable");
     expect(() => validateAgentWorkflow({ ...fixture.agent, workflow: { steps: [] } })).toThrow();
     expect(() =>
       validateAgentWorkflow({
