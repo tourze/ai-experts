@@ -281,6 +281,11 @@ function validateProcedureUsePlatforms(
 
   const procedurePlatforms = procedure.platforms;
   if (!procedurePlatforms) return;
+  if (!procedureUse.platforms) {
+    throw new Error(
+      `${component.kind} ${component.id} references platform-limited procedure ${procedureUse.id} without explicit procedure use platforms`,
+    );
+  }
   const missingPlatforms = usePlatforms.filter((platform) => !procedurePlatforms.includes(platform));
   if (missingPlatforms.length > 0) {
     throw new Error(
