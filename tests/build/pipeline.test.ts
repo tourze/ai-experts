@@ -1369,6 +1369,38 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidReasonRegistry)).toThrow("reason must be a non-empty string");
 
+    const invalidExampleArgsRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        procedures: [
+          defineProcedureUse({
+            id: fixture.procedure.id,
+            exampleArgs: { args: [Number.NaN] },
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidExampleArgsRegistry)).toThrow(
+      "procedure reference fixture-procedure exampleArgs must be JSON-serializable",
+    );
+
+    const invalidExpectedOutputRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        procedures: [
+          defineProcedureUse({
+            id: fixture.procedure.id,
+            expectedOutput: { run: () => "ok" } as any,
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidExpectedOutputRegistry)).toThrow(
+      "procedure reference fixture-procedure expectedOutput must be JSON-serializable",
+    );
+
     expect(() => procedureUse(debugMethodologyDebugChecklist)).not.toThrow();
     expect(() =>
       procedureUse({

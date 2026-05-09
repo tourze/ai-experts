@@ -28,6 +28,44 @@ function validateOptionalNonEmptyString(
   return value;
 }
 
+function validateJsonValue(id: string, property: "exampleArgs" | "expectedOutput", value: unknown, seen: WeakSet<object>): void {
+  if (value === null || typeof value === "string" || typeof value === "boolean") return;
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      throw new Error(`procedure reference ${id} ${property} must be JSON-serializable`);
+    }
+    return;
+  }
+  if (Array.isArray(value)) {
+    for (const item of value) validateJsonValue(id, property, item, seen);
+    return;
+  }
+  if (typeof value === "object") {
+    if (seen.has(value)) {
+      throw new Error(`procedure reference ${id} ${property} must be JSON-serializable`);
+    }
+    seen.add(value);
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) {
+      throw new Error(`procedure reference ${id} ${property} must be JSON-serializable`);
+    }
+    for (const item of Object.values(value)) validateJsonValue(id, property, item, seen);
+    return;
+  }
+  throw new Error(`procedure reference ${id} ${property} must be JSON-serializable`);
+}
+
+function validateJsonObject(
+  id: string,
+  property: "exampleArgs" | "expectedOutput",
+  value: unknown,
+): void {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error(`procedure reference ${id} ${property} must be a JSON object when provided`);
+  }
+  validateJsonValue(id, property, value, new WeakSet<object>());
+}
+
 export function resolveProcedureUse(procedureUse: ProcedureUseReference): ResolvedProcedureUse {
   if (!procedureUse || typeof procedureUse !== "object" || Array.isArray(procedureUse)) {
     throw new Error("procedure reference must be { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput? }");
@@ -51,19 +89,9 @@ export function resolveProcedureUse(procedureUse: ProcedureUseReference): Resolv
   const when = validateOptionalNonEmptyString(id, "when", procedureUse.when);
   const reason = validateOptionalNonEmptyString(id, "reason", procedureUse.reason);
   const exampleArgs = procedureUse.exampleArgs;
-  if (
-    exampleArgs !== undefined &&
-    (exampleArgs === null || typeof exampleArgs !== "object" || Array.isArray(exampleArgs))
-  ) {
-    throw new Error(`procedure reference ${id} exampleArgs must be a JSON object when provided`);
-  }
+  if (exampleArgs !== undefined) validateJsonObject(id, "exampleArgs", exampleArgs);
   const expectedOutput = procedureUse.expectedOutput;
-  if (
-    expectedOutput !== undefined &&
-    (expectedOutput === null || typeof expectedOutput !== "object" || Array.isArray(expectedOutput))
-  ) {
-    throw new Error(`procedure reference ${id} expectedOutput must be a JSON object when provided`);
-  }
+  if (expectedOutput !== undefined) validateJsonObject(id, "expectedOutput", expectedOutput);
   return {
     id,
     platforms,
