@@ -119,8 +119,16 @@ export const modernWebDesignSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(modernWebDesignDesignAudit),
-    procedureUse(modernWebDesignPatternGenerator),
+    procedureUse(modernWebDesignDesignAudit, {
+      label: "设计审计",
+      when: "需要评估现有 HTML 页面的可访问性、性能、SEO、响应式和现代实践质量时。",
+      reason: "自动多维度审计并输出结构化评分报告，避免逐项手动检查可访问性、SEO 和性能。",
+    }),
+    procedureUse(modernWebDesignPatternGenerator, {
+      label: "设计模式生成",
+      when: "需要快速生成 hero/card/navigation/form 等标准 Web 组件 HTML 骨架时。",
+      reason: "快速产出标准组件骨架，避免每次都从零手写 HTML/CSS 组件模板。",
+    }),
   ],
   references: [
     defineReference({

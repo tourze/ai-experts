@@ -679,7 +679,7 @@ describe("component build integration", () => {
 
       for (const commandSource of commandSources) {
         const source = readFileSync(commandSource, "utf-8");
-        for (const match of source.matchAll(/--procedure-id\s+([A-Za-z0-9-]+)[^\n]*/g)) {
+        for (const match of source.matchAll(/--procedure-id\s+([A-Za-z0-9-]+)[\s\S]*?(?=\n```)/g)) {
           const procedureId = match[1];
           const commandText = match[0];
           const procedure = proceduresById.get(procedureId);
@@ -934,14 +934,16 @@ describe("component build integration", () => {
 
     const screenshotSkill = readFileSync(join(tmpDistDir, "codex/skills/screenshot/SKILL.md"), "utf-8");
     assert.match(screenshotSkill, /Procedure 调用说明/);
-    assert.match(screenshotSkill, /\| Procedure \| 用法 \| 何时调用 \| 调用目的 \| 参数 \| 返回值 \| 示例命令 \|/);
+    assert.match(screenshotSkill, /### `screenshot-take-screenshot` — 截图主入口/);
     assert.match(screenshotSkill, /screenshot-take-screenshot/);
     assert.match(screenshotSkill, /截图主入口/);
     assert.match(screenshotSkill, /--path output\/screen\.png/);
     assert.match(screenshotSkill, /--active-window/);
-    assert.match(screenshotSkill, /CliProcedureRequest/);
-    assert.match(screenshotSkill, /RuntimeProcedureResult/);
-    assert.match(screenshotSkill, /node ~\/\.codex\/procedures\.js --procedure-id screenshot-take-screenshot/);
+    assert.match(screenshotSkill, /node ~\/\.codex\/procedures\.js/);
+    assert.match(screenshotSkill, /--procedure-id screenshot-take-screenshot/);
+    assert.match(screenshotSkill, /--trigger-skill screenshot/);
+    assert.match(screenshotSkill, /何时调用/);
+    assert.match(screenshotSkill, /参数/);
     assert.doesNotMatch(screenshotSkill, /node \.\.\/\.\.\/procedures\.js/);
     assert.doesNotMatch(screenshotSkill, /node scripts\/take_screenshot\.mjs/);
     assert.equal(existsSync(join(tmpDistDir, "codex/procedures.js")), true);
@@ -1021,9 +1023,10 @@ describe("component build integration", () => {
       "utf-8",
     );
     assert.match(codexMetadata, /allow_implicit_invocation: true/);
-    assert.match(tsSkill, /node ~\/\.claude\/procedures\.js --procedure-id typescript-type-safety-extract-ts-errors/);
-    assert.match(tsSkill, /ExtractTsErrorsArgs/);
-    assert.match(tsSkill, /ExtractTsErrorsSummary/);
+    assert.match(tsSkill, /node ~\/\.claude\/procedures\.js/);
+    assert.match(tsSkill, /--procedure-id typescript-type-safety-extract-ts-errors/);
+    assert.match(tsSkill, /归组 tsc 错误/);
+    assert.match(tsSkill, /tsc-output\.txt/);
 
     const claudeManifestWithScripts = JSON.parse(readFileSync(
       join(tmpDistDir, "claude/manifest.json"),

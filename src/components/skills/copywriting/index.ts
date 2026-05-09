@@ -91,7 +91,11 @@ export const copywritingSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(copywritingContentFilter),
+    procedureUse(copywritingContentFilter, {
+      label: "过滤营销内容安全",
+      when: "需要检测文案是否含有敏感或营销违规内容。",
+      reason: "自动检测敏感和违规内容，避免含有违规素材的文案在社交平台被驳回或触发审查。",
+    }),
   ],
   references: [
     defineReference({

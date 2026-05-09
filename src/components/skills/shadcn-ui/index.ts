@@ -101,7 +101,11 @@ export const shadcnUiSkill = defineSkill({
     KnownTool.WebFetch,
   ],
   procedures: [
-    procedureUse(shadcnUiVerifySetup),
+    procedureUse(shadcnUiVerifySetup, {
+      label: "项目配置验证",
+      when: "需要检查 shadcn/ui 项目配置是否完整，或排解组件集成问题时。",
+      reason: "一键验证 shadcn/ui 项目配置完整性，避免手动逐个核对 components.json 和别名设置。",
+    }),
   ],
   references: [
     defineReference({

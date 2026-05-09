@@ -85,10 +85,26 @@ export const canvasDesignSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch),
-    procedureUse(canvasDesignConceptToImageRenderToImage),
-    procedureUse(canvasDesignConceptToVideoAddAudio),
-    procedureUse(canvasDesignConceptToVideoRenderVideo),
+    procedureUse(canvasDesignBaoyuArticleIllustratorBuildBatch, {
+      label: "文章插图批量生成",
+      when: "需要根据文章大纲和提示词目录批量生成插图 baoyu-imagine 任务配置文件时。",
+      reason: "自动解析大纲并匹配提示词文件生成结构化 batch.json，避免手工逐一编写插图任务配置。",
+    }),
+    procedureUse(canvasDesignConceptToImageRenderToImage, {
+      label: "HTML 渲染为图片",
+      when: "需要将 HTML 设计稿渲染为 PNG 截图或提取矢量 SVG 时。",
+      reason: "一键将 HTML/CSS 设计稿渲染为 PNG 或提取 SVG，避免手写 Playwright 脚本。",
+    }),
+    procedureUse(canvasDesignConceptToVideoAddAudio, {
+      label: "视频叠加音频",
+      when: "需要为 Manim 渲染视频添加背景音乐、旁白或音效轨道时。",
+      reason: "自动处理 ffmpeg 复杂滤镜链（音量、淡入淡出、裁剪），避免手写 ffmpeg 参数。",
+    }),
+    procedureUse(canvasDesignConceptToVideoRenderVideo, {
+      label: "Manim 视频渲染",
+      when: "需要将 Manim Python 场景文件渲染为 mp4/gif/webm 视频时。",
+      reason: "自动检查 Manim 环境并定位输出文件，避免手写 manim 渲染命令和文件路径推断。",
+    }),
   ],
   assets: [
     defineAsset({

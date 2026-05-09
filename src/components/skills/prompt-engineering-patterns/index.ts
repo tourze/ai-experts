@@ -106,7 +106,11 @@ export const promptEngineeringPatternsSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(promptEngineeringPatternsOptimizePrompt),
+    procedureUse(promptEngineeringPatternsOptimizePrompt, {
+      label: "Prompt 优化演示",
+      when: "需要快速演示 prompt 变体评估和迭代优化流程时。",
+      reason: "内置测试集快速评估 prompt 变体，避免手动构造测试用例和逐条对比输出质量。",
+    }),
   ],
   references: [
     defineReference({

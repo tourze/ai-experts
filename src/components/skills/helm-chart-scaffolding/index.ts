@@ -89,7 +89,11 @@ export const helmChartScaffoldingSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(helmChartScaffoldingValidateChart),
+    procedureUse(helmChartScaffoldingValidateChart, {
+      label: "校验 Helm Chart",
+      when: "需要验证 Helm Chart 的结构完整性和最佳实践合规性。",
+      reason: "一次性完成 lint、模板渲染和 dry-run 检查，避免分别运行 helm 多条命令。",
+    }),
   ],
   references: [
     defineReference({

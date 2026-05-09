@@ -5,9 +5,7 @@ import { stringify as stringifyYaml } from "yaml";
 import type {
   AntiPatternDefinition,
   Platform as PlatformType,
-  ProcedureArgsDefinition,
   ProcedureDefinition,
-  ProcedureOutputDefinition,
   RelatedSkillDefinition,
   SkillDefinition,
   SkillGoalDefinition,
@@ -86,28 +84,66 @@ function renderProcedureRegistry(
     .filter((procedureUse) => procedureUseAppliesToPlatform(procedureUse, platform))
     .filter((procedureUse) => proceduresById.has(procedureUse.id));
   if (procedureUses.length === 0) return "";
-  const columns = ["Procedure", "用法", "何时调用", "调用目的", "参数", "返回值", "示例命令"];
-  const header = `| ${columns.join(" | ")} |`;
-  const divider = `| ${columns.map(() => "----------").join(" | ")} |`;
-  const rows = [
-    header,
-    divider,
-    ...procedureUses.map((procedureUse) => {
-      const procedureId = procedureUse.id;
-      const procedure = proceduresById.get(procedureId);
-      const cells = [
-        `\`${procedureId}\``,
-        procedureUse.label ?? procedureUse.useId ?? "默认",
-        procedureUse.when ?? "按 skill 主流程需要调用时",
-        procedureUse.reason ?? procedure?.description ?? "执行该 procedure 对应步骤",
-        renderProcedureArgs(procedure),
-        renderProcedureOutput(procedure),
-        renderProcedureCommand(skill, platform, procedureUse),
-      ];
-      return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
-    }),
-  ];
-  return `\n## Procedure 调用说明\n\n${rows.join("\n")}\n`;
+
+  const entries = procedureUses.map((procedureUse) => {
+    const procedure = proceduresById.get(procedureUse.id);
+    return renderProcedureEntry(skill, platform, procedureUse, procedure);
+  });
+
+  return `\n## Procedure 调用说明\n\n${entries.join("\n\n")}\n`;
+}
+
+function renderProcedureEntry(
+  skill: SkillDefinition,
+  platform: PlatformType,
+  procedureUse: ResolvedProcedureUse,
+  procedure: ProcedureDefinition | undefined,
+): string {
+  const lines: string[] = [];
+
+  const heading = procedureUse.label
+    ? `### \`${procedureUse.id}\` — ${procedureUse.label}`
+    : `### \`${procedureUse.id}\``;
+  lines.push(heading);
+
+  const description = procedureUse.reason ?? procedure?.description ?? "";
+  if (description) {
+    lines.push("");
+    lines.push(description);
+  }
+
+  if (procedureUse.when) {
+    lines.push("");
+    lines.push(`**何时调用：** ${procedureUse.when}`);
+  }
+
+  const paramsSection = renderProcedureParams(procedure);
+  if (paramsSection) {
+    lines.push("");
+    lines.push(paramsSection);
+  }
+
+  lines.push("");
+  lines.push("**调用示例：**");
+  lines.push("");
+  lines.push(renderProcedureCommand(skill, platform, procedureUse, procedure));
+
+  return lines.join("\n");
+}
+
+function renderProcedureParams(procedure: ProcedureDefinition | undefined): string {
+  if (!procedure?.params || procedure.params.length === 0) return "";
+
+  const header = "| 参数 | 取值 | 必填 | 说明 |";
+  const divider = "|------|------|------|------|";
+  const rows = procedure.params.map((p) => {
+    const flag = `\`${p.flag}\``;
+    const type = p.type || "—";
+    const required = p.required === false ? "否" : "是";
+    const description = p.description;
+    return `| ${flag} | ${type} | ${required} | ${description} |`;
+  });
+  return `**参数：**\n\n${[header, divider, ...rows].join("\n")}`;
 }
 
 function procedureRuntimePath(platform: PlatformType): string {
@@ -122,45 +158,29 @@ function skillRuntimeRoot(platform: PlatformType): string {
   return platform === Platform.Claude ? "~/.claude/skills" : "~/.agents/skills";
 }
 
-function renderProcedureFields<TValue>(schema: ProcedureArgsDefinition<TValue> | ProcedureOutputDefinition<TValue> | undefined): string {
-  if (!schema) return "未声明";
-  const fields = Object.entries(schema.fields).map(([name, definition]) => {
-    const required = definition.required === false ? "可选" : "必填";
-    return `\`${name}\`: ${definition.type} (${required}) - ${definition.description}`;
-  });
-  if (fields.length === 0) return `\`${schema.typeName}\``;
-  return `\`${schema.typeName}\`: ${fields.join("; ")}`;
-}
-
-function renderProcedureArgs(procedure: ProcedureDefinition | undefined): string {
-  return renderProcedureFields(procedure?.args);
-}
-
-function renderProcedureOutput(procedure: ProcedureDefinition | undefined): string {
-  return renderProcedureFields(procedure?.output);
-}
-
-function shellSingleQuote(value: string): string {
-  return `'${value.replaceAll("'", "'\\''")}'`;
-}
-
 function renderProcedureCommand(
   skill: SkillDefinition,
   platform: PlatformType,
   procedureUse: ResolvedProcedureUse,
+  procedure: ProcedureDefinition | undefined,
 ): string {
-  const requestPayload = procedureUse.exampleArgs ?? { args: [] };
-  const requestJson = JSON.stringify(requestPayload);
-  return [
-    "node",
-    procedureRuntimePath(platform),
-    "--procedure-id",
-    procedureUse.id,
-    "--trigger-skill",
-    skill.id,
-    "--request-json",
-    shellSingleQuote(requestJson),
-  ].join(" ");
+  const exampleArgs = procedure?.exampleArgs ?? procedureUse.exampleArgs;
+  const argsArray: unknown[] = (exampleArgs != null && typeof exampleArgs === "object" && "args" in exampleArgs)
+    ? (exampleArgs as Record<string, unknown>).args as unknown[] ?? []
+    : [];
+  const procedureArgs = Array.isArray(argsArray) && argsArray.length > 0
+    ? argsArray.map(String)
+    : [];
+  const runtimePath = procedureRuntimePath(platform);
+  const parts = [
+    `node ${runtimePath}`,
+    `--procedure-id ${procedureUse.id}`,
+    `--trigger-skill ${skill.id}`,
+  ];
+  if (procedureArgs.length > 0) {
+    parts.push(procedureArgs.join(" "));
+  }
+  return "```bash\n" + parts.join(" \\\n  ") + "\n```";
 }
 
 function renderReferenceMap(skill: SkillDefinition): string {

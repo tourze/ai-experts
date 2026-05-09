@@ -79,17 +79,36 @@ export const screenshotSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(screenshotEnsureMacosPermissions),
-    procedureUse(screenshotMacosDisplayInfo),
-    procedureUse(screenshotMacosPermissions),
-    procedureUse(screenshotMacosWindowInfo),
+    procedureUse(screenshotEnsureMacosPermissions, {
+      label: "权限检查",
+      when: "macOS 上首次截图前或截图命令返回权限错误时。",
+      reason: "自动检测屏幕录制权限状态，必要时提示用户授权，避免截图命令静默失败。",
+    }),
+    procedureUse(screenshotMacosDisplayInfo, {
+      label: "显示器信息",
+      when: "需要确定多显示器布局、分辨率或选择截图目标显示器时。",
+      reason: "快速获取多显示器布局信息，避免在多屏环境下凭猜测选择截图目标。",
+    }),
+    procedureUse(screenshotMacosPermissions, {
+      label: "权限状态",
+      when: "需要检查或请求 macOS 屏幕录制权限（含主动弹窗）时。",
+      reason: "底层权限检测与弹窗触发，在截图失败时可用来诊断权限根因。",
+    }),
+    procedureUse(screenshotMacosWindowInfo, {
+      label: "窗口信息",
+      when: "需要列出可用窗口、按应用名/窗口名过滤或获取 window id 时。",
+      reason: "快速列出所有可用窗口和 ID，避免在多个重叠窗口中凭猜测截图。",
+    }),
     procedureUse(screenshotTakeScreenshot, {
       label: "截图主入口",
       when: "需要截取临时截图、指定路径、指定区域、应用窗口、window id 或活动窗口时。",
-      reason: "按参数选择截图目标和输出位置。",
-      exampleArgs: { args: ["--mode", "temp"] },
+      reason: "统一入口自动处理 macOS/Linux/Windows 跨平台截图差异，避免手写不同平台的截图命令。",
     }),
-    procedureUse(screenshotTakeScreenshotWindows),
+    procedureUse(screenshotTakeScreenshotWindows, {
+      label: "Windows 截图",
+      when: "在 Windows 平台需要截图时。",
+      reason: "统一 PowerShell 屏幕捕获入口，避免在 Windows 上手写不同截图命令。",
+    }),
   ],
   assets: [
     defineAsset({

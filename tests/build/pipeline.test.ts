@@ -1470,10 +1470,10 @@ describe("build/pipeline modules", () => {
       Platform.Claude,
       new Map([[fixture.procedure.id, fixture.procedure]]),
     );
-    expect(skillMd).toContain("调用目的");
-    expect(skillMd).toContain("参数");
-    expect(skillMd).toContain("返回值");
     expect(skillMd).toContain("用于 fixture 场景校验");
+    expect(skillMd).toContain("## Procedure 调用说明");
+    expect(skillMd).toContain("### `fixture-procedure`");
+    expect(skillMd).toContain("**调用示例：**");
 
     const duplicateProcedureUsesRegistry: ComponentRegistry = {
       ...fixture.registry,

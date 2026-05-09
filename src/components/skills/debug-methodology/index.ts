@@ -91,7 +91,6 @@ export const debugMethodologySkill = defineSkill({
       label: "生成调试检查清单",
       when: "问题边界还不清楚，需要先生成六步调试骨架时。",
       reason: "强制补齐复现、假设、证据、修复和回归验证。",
-      exampleArgs: { args: ["--title", "fixture-checklist"] },
     }),
   ],
   references: [

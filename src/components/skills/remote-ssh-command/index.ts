@@ -69,7 +69,15 @@ export const remoteSshCommandSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(remoteSshCommandInstallSshpass),
-    procedureUse(remoteSshCommandSshExec),
+    procedureUse(remoteSshCommandInstallSshpass, {
+      label: "安装 sshpass",
+      when: "本地缺少 sshpass 工具时。",
+      reason: "自动检测操作系统和包管理器并安装 sshpass，避免手写多条安装命令。",
+    }),
+    procedureUse(remoteSshCommandSshExec, {
+      label: "远端命令执行",
+      when: "需要通过 SSH 在远端机器执行运维命令时。",
+      reason: "统一管理主机凭据和执行审计，避免每次手写 ssh 命令和拼接密码参数。",
+    }),
   ],
 });

@@ -86,6 +86,10 @@ export const youtubeSearchSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(youtubeSearchSearchYoutube),
+    procedureUse(youtubeSearchSearchYoutube, {
+      label: "YouTube 搜索",
+      when: "需要按关键词搜索 YouTube 视频、找教程、列候选清单时。",
+      reason: "自动搜索并规范化视频元数据，避免手写 yt-dlp 搜索命令解析 JSON 输出。",
+    }),
   ],
 });

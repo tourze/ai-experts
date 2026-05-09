@@ -88,9 +88,21 @@ export const mdToPdfSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(mdToPdfKatexRender),
-    procedureUse(mdToPdfMdToPdf),
-    procedureUse(mdToPdfSetup),
+    procedureUse(mdToPdfKatexRender, {
+      label: "KaTeX 数学公式渲染",
+      when: "HTML 中包含 pandoc 生成的 <span class='math'>LaTeX 公式未渲染时。",
+      reason: "服务端把 LaTeX 标签原地替换为 KaTeX HTML，无需客户端 JS。",
+    }),
+    procedureUse(mdToPdfMdToPdf, {
+      label: "Markdown 转 PDF",
+      when: "已有完整 Markdown 源文档，需要渲染为可打印/可分发的 PDF 时。",
+      reason: "集成完整渲染管线（pandoc + KaTeX + Mermaid + Playwright），避免分步手动调用各工具。",
+    }),
+    procedureUse(mdToPdfSetup, {
+      label: "依赖检查与安装",
+      when: "首次使用 md-to-pdf 或渲染报错提示缺少依赖时。",
+      reason: "一键检查所有渲染依赖，避免在渲染过程中才逐一发现缺失工具。",
+    }),
   ],
   references: [
     defineReference({

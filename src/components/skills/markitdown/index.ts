@@ -102,9 +102,21 @@ export const markitdownSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(markitdownBatchConvert),
-    procedureUse(markitdownConvertLiterature),
-    procedureUse(markitdownConvertWithAi),
+    procedureUse(markitdownBatchConvert, {
+      label: "批量转换",
+      when: "需要批量处理目录下的 Office/图片/HTML/音频等文件为 Markdown 时。",
+      reason: "并发批量转换并保留原始目录结构，避免逐个文件运行转换命令。",
+    }),
+    procedureUse(markitdownConvertLiterature, {
+      label: "学术文献转换",
+      when: "需要批量处理 PDF 学术论文并提取元数据（作者、年份、标题）时。",
+      reason: "自动解析元数据并归档索引，避免手动为每篇学术文献整理目录信息。",
+    }),
+    procedureUse(markitdownConvertWithAi, {
+      label: "AI 图片描述增强",
+      when: "文档中包含需要 AI 理解的图片/图表，且可获取 OpenRouter API key 时。",
+      reason: "AI 自动为图片生成描述文案，避免手动逐张查看图片并撰写替代文本。",
+    }),
   ],
   references: [
     defineReference({

@@ -112,7 +112,11 @@ export const webPerformanceDiagnosisSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(webPerformanceDiagnosisAnalyze),
+    procedureUse(webPerformanceDiagnosisAnalyze, {
+      label: "HTML 质量审计",
+      when: "需要批量检查 HTML 文件的 doctype、charset、viewport、lang、图片 alt 等基本质量问题时。",
+      reason: "自动批量审计 HTML 质量并输出结构化报告，避免手动逐文件检查基本质量问题。",
+    }),
   ],
   references: [
     defineReference({

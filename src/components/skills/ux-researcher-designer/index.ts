@@ -107,7 +107,11 @@ export const uxResearcherDesignerSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(uxResearcherDesignerPersonaGenerator),
+    procedureUse(uxResearcherDesignerPersonaGenerator, {
+      label: "Persona 生成器",
+      when: "需要从用户行为数据或访谈洞察中生成结构化 Persona 时。",
+      reason: "基于真实数据自动生成结构化 Persona，避免从零手写角色定义和用户特征归纳。",
+    }),
   ],
   references: [
     defineReference({

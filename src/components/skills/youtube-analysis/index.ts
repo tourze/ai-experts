@@ -93,8 +93,16 @@ export const youtubeAnalysisSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(youtubeAnalysisAnalyzeVideo),
-    procedureUse(youtubeAnalysisFetchTranscript),
+    procedureUse(youtubeAnalysisAnalyzeVideo, {
+      label: "视频分析脚手架",
+      when: "需要为 YouTube 视频生成结构化的分析脚手架 Markdown 文件时。",
+      reason: "自动生成结构化分析脚手架，避免手动从元数据和字幕中逐项整理分析框架。",
+    }),
+    procedureUse(youtubeAnalysisFetchTranscript, {
+      label: "字幕获取",
+      when: "需要获取 YouTube 视频的字幕和元数据原始 JSON 时。",
+      reason: "自动提取字幕和元数据 JSON，避免手写 yt-dlp 命令解析字幕分段。",
+    }),
   ],
   references: [
     defineReference({

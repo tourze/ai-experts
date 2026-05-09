@@ -74,14 +74,46 @@ export const pdfSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(pdfCheckBoundingBoxes),
-    procedureUse(pdfCheckFillableFields),
-    procedureUse(pdfConvertPdfToImages),
-    procedureUse(pdfCreateValidationImage),
-    procedureUse(pdfExtractFormFieldInfo),
-    procedureUse(pdfExtractFormStructure),
-    procedureUse(pdfFillFillableFields),
-    procedureUse(pdfFillPdfFormWithAnnotations),
+    procedureUse(pdfCheckBoundingBoxes, {
+      label: "Bounding box 校验",
+      when: "需要检查视觉型 PDF 表单的标签框和录入框是否重叠或高度不足时。",
+      reason: "自动检测相交矩形和高度不足的问题，避免字段错位。",
+    }),
+    procedureUse(pdfCheckFillableFields, {
+      label: "可填写字段检测",
+      when: "需要快速判断 PDF 是否包含可填写 AcroForm 字段时。",
+      reason: "区分可填写表单与视觉型表单，决定后续使用哪条处理链路。",
+    }),
+    procedureUse(pdfConvertPdfToImages, {
+      label: "PDF 转图片",
+      when: "需要将 PDF 各页渲染为 PNG 图片用于验证或标注时。",
+      reason: "自动缩放以适应页面尺寸，避免手写 PDF 渲染代码。",
+    }),
+    procedureUse(pdfCreateValidationImage, {
+      label: "校验图生成",
+      when: "需要在页面图片上叠加 bounding box 框线进行人工校验时。",
+      reason: "可视化字段位置，红色标注录入框、蓝色标注标签框。",
+    }),
+    procedureUse(pdfExtractFormFieldInfo, {
+      label: "表单字段提取",
+      when: "需要提取可填写 PDF 表单的字段类型、页码、位置和选项值时。",
+      reason: "自动识别文本框、复选框、单选组和下拉框的详细信息。",
+    }),
+    procedureUse(pdfExtractFormStructure, {
+      label: "视觉表单结构提取",
+      when: "需要分析视觉型 PDF 表单的文本标签、水平分隔线和复选框布局时。",
+      reason: "使用 pdfjs-dist 解析绘制命令，提取语义结构的行边界。",
+    }),
+    procedureUse(pdfFillFillableFields, {
+      label: "可填写表单回填",
+      when: "需要根据 JSON 字段值自动填写 PDF 可填写表单时。",
+      reason: "支持文本框、复选框、单选组和下拉框，自动校验合法取值。",
+    }),
+    procedureUse(pdfFillPdfFormWithAnnotations, {
+      label: "视觉表单批注写入",
+      when: "需要在视觉型 PDF 表单上根据 bounding box 坐标写入文本内容时。",
+      reason: "按坐标框精确定位，支持自定义字体大小和颜色。",
+    }),
   ],
   references: [
     defineReference({

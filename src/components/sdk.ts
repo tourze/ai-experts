@@ -63,6 +63,13 @@ export type ProcedureFieldDefinition = {
   required?: boolean;
 };
 
+export type ProcedureParamDefinition = {
+  flag: string;
+  type: string;
+  description: string;
+  required?: boolean;
+};
+
 export type ProcedureFieldMap<TValue> = TValue extends object
   ? { readonly [Key in keyof TValue]-?: ProcedureFieldDefinition }
   : Record<string, ProcedureFieldDefinition>;
@@ -91,6 +98,8 @@ export type ProcedureDefinition<
   bundle?: boolean;
   args?: ProcedureArgsDefinition<TArgs>;
   output?: ProcedureOutputDefinition<TResult>;
+  params?: readonly ProcedureParamDefinition[];
+  exampleArgs?: { args?: readonly string[] };
 };
 
 export type ProcedureArgs<TProcedure> =
@@ -485,6 +494,10 @@ export function defineProcedureArgs<TArgs>(
 export function defineProcedureOutput<TResult>(
   definition: ProcedureOutputDefinition<TResult>,
 ): ProcedureOutputDefinition<TResult> {
+  return definition;
+}
+
+export function defineProcedureParam(definition: ProcedureParamDefinition): ProcedureParamDefinition {
   return definition;
 }
 

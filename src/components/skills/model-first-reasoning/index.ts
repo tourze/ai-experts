@@ -90,7 +90,11 @@ export const modelFirstReasoningSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(modelFirstReasoningValidateModel),
+    procedureUse(modelFirstReasoningValidateModel, {
+      label: "校验模型结构",
+      when: "Phase 1 模型产出后需要确认结构完整性。",
+      reason: "Phase 1 模型的结构完整性由自动化校验保障，避免带着未解决的 unknowns 进入编码阶段。",
+    }),
   ],
   assets: [
     defineAsset({

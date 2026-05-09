@@ -169,13 +169,11 @@ const runtimeRoot = dirname(runtimeFile);
 
 function parseCliArgs(argv) {
   const parsed = {
-    requestJson: null,
-    sessionId: null,
-    triggerSkill: null,
-    triggerAgent: null,
-    procedureId: null,
-    passthroughArgs: [],
+    requestJson: null, sessionId: null, triggerSkill: null, triggerAgent: null,
+    procedureId: null, passthroughArgs: [],
   };
+  let hasProcedureId = false;
+  let hasTrigger = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -195,14 +193,18 @@ function parseCliArgs(argv) {
       index += 1;
       if (arg === "--request-json") parsed.requestJson = value;
       if (arg === "--session-id") parsed.sessionId = value;
-      if (arg === "--trigger-skill") parsed.triggerSkill = value;
-      if (arg === "--trigger-agent") parsed.triggerAgent = value;
-      if (arg === "--procedure-id") parsed.procedureId = value;
+      if (arg === "--trigger-skill") { parsed.triggerSkill = value; hasTrigger = true; }
+      if (arg === "--trigger-agent") { parsed.triggerAgent = value; hasTrigger = true; }
+      if (arg === "--procedure-id") { parsed.procedureId = value; hasProcedureId = true; }
+      continue;
+    }
+    // After both procedure-id and trigger are known, treat unknowns as procedure args
+    if (hasProcedureId && hasTrigger) {
+      parsed.passthroughArgs.push(arg);
       continue;
     }
     throw new Error("unknown argument: " + String(arg) + "; use -- to pass through procedure args");
   }
-
   return parsed;
 }
 

@@ -91,10 +91,26 @@ export const securityOwnershipMapSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(securityOwnershipMapBuildOwnershipMap),
-    procedureUse(securityOwnershipMapCommunityMaintainers),
-    procedureUse(securityOwnershipMapQueryOwnership),
-    procedureUse(securityOwnershipMapRunOwnershipMap),
+    procedureUse(securityOwnershipMapBuildOwnershipMap, {
+      label: "构建所有权图谱",
+      when: "需要从 git 历史全量构建安全所有权图谱（含社区检测、共改分析、GraphML 输出）时。",
+      reason: "一键构建完整安全所有权图谱及社区结构，避免手写 git log 分析脚本。",
+    }),
+    procedureUse(securityOwnershipMapCommunityMaintainers, {
+      label: "社区维护者分析",
+      when: "需要快速分析社区维护者分布和共改关系时。",
+      reason: "仅需少量参数即可识别维护者分布和共改关系，避免在完整参数中逐项配置。",
+    }),
+    procedureUse(securityOwnershipMapQueryOwnership, {
+      label: "查询所有权结果",
+      when: "已运行所有权分析并生成 CSV/JSON 产物，需要查询人员/文件/共改/标签信息时。",
+      reason: "从已生成的分析产物中按需查询人员/文件/共改信息，避免重新全量分析。",
+    }),
+    procedureUse(securityOwnershipMapRunOwnershipMap, {
+      label: "快速运行所有权分析",
+      when: "需要快速运行简化的所有权分析（不深入调整社区/共改参数）时。",
+      reason: "快速运行简化所有权分析，避免在只需基础数据时加载完整参数配置。",
+    }),
   ],
   references: [
     defineReference({

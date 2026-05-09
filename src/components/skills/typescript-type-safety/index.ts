@@ -84,8 +84,7 @@ export const typescriptTypeSafetySkill = defineSkill({
     procedureUse(typescriptTypeSafetyExtractTsErrors, {
       label: "归组 tsc 错误",
       when: "已有完整 `tsc --noEmit` 输出文件，需要按文件和错误码归组时。",
-      reason: "先定位上游类型合同错误，再决定修复顺序。",
-      exampleArgs: { args: ["--input", "tsc-output.txt"] },
+      reason: "自动按文件和错误码归组编译错误，避免在大量 tsc 输出中手动分类定位。",
     }),
   ],
   references: [

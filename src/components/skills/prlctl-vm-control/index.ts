@@ -98,7 +98,11 @@ export const prlctlVmControlSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(prlctlVmControlPrlctlHelper),
+    procedureUse(prlctlVmControlPrlctlHelper, {
+      label: "虚拟机统一管理",
+      when: "需要列出/解析/开关机/执行客体命令/传输文件或管理 Parallels Desktop 虚拟机快照时。",
+      reason: "统一封装 prlctl CLI，避免手写多段 prlctl 命令出错。",
+    }),
   ],
   references: [
     defineReference({

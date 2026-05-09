@@ -72,7 +72,11 @@ export const analyticsTrackingSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(analyticsTrackingTrackingPlanGenerator),
+    procedureUse(analyticsTrackingTrackingPlanGenerator, {
+      label: "生成埋点方案",
+      when: "需要从零搭建 GA4/GTM 埋点计划或审计现有事件时。",
+      reason: "自动生成结构化事件分类、GTM 配置和维度建议，避免从零手写完整埋点方案。",
+    }),
   ],
   references: [
     defineReference({

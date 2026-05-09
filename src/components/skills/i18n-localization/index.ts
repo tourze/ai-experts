@@ -101,6 +101,10 @@ export const i18nLocalizationSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(i18nLocalizationI18nChecker),
+    procedureUse(i18nLocalizationI18nChecker, {
+      label: "扫描国际化问题",
+      when: "需要检查项目中是否有硬编码文案或翻译文件键缺失。",
+      reason: "自动扫描硬编码文案和缺失翻译键，避免未本地化的文案遗漏上线。",
+    }),
   ],
 });

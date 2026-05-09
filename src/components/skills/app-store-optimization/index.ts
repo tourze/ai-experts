@@ -109,15 +109,51 @@ export const appStoreOptimizationSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(appStoreOptimizationAbTestPlanner),
-    procedureUse(appStoreOptimizationAsoScorer),
-    procedureUse(appStoreOptimizationCompetitorAnalyzer),
-    procedureUse(appStoreOptimizationCollectReleaseChanges),
-    procedureUse(appStoreOptimizationKeywordAnalyzer),
-    procedureUse(appStoreOptimizationLaunchChecklist),
-    procedureUse(appStoreOptimizationLocalizationHelper),
-    procedureUse(appStoreOptimizationMetadataOptimizer),
-    procedureUse(appStoreOptimizationReviewAnalyzer),
+    procedureUse(appStoreOptimizationAbTestPlanner, {
+      label: "A/B 测试规划",
+      when: "需要设计元数据或素材的 A/B 测试方案、估算样本量或分析测试结果时。",
+      reason: "提供完整的测试设计、统计显著性和实施计划，避免手动计算样本量和置信度。",
+    }),
+    procedureUse(appStoreOptimizationAsoScorer, {
+      label: "ASO 健康分评估",
+      when: "需要综合评估元数据质量、评分评论、关键词表现和转化指标的健康状况时。",
+      reason: "四维加权评分自动识别优势和薄弱环节，给出优先级改进建议。",
+    }),
+    procedureUse(appStoreOptimizationCompetitorAnalyzer, {
+      label: "竞品 ASO 分析",
+      when: "需要分析竞品标题、描述、关键词策略和评分，找出差距和机会时。",
+      reason: "自动对比竞品关键词覆盖和评分表现，识别未被利用的关键词缺口。",
+    }),
+    procedureUse(appStoreOptimizationCollectReleaseChanges, {
+      label: "发版改动采集",
+      when: "需要从 Git 历史提取最近版本到当前版本的提交记录和文件改动时。",
+      reason: "自动查找最近 tag 并输出结构化的提交清单，比手写 git log 更高效。",
+    }),
+    procedureUse(appStoreOptimizationKeywordAnalyzer, {
+      label: "关键词分析",
+      when: "需要评估关键词搜索量、竞争度和相关性，或发现长尾关键词机会时。",
+      reason: "按潜力评分排序并自动分组为主/次/长尾关键词，支持密度分析和文本提取。",
+    }),
+    procedureUse(appStoreOptimizationLaunchChecklist, {
+      label: "上线检查清单",
+      when: "需要生成 App Store / Google Play 预发布检查清单或合规校验时。",
+      reason: "自动生成平台适配的检查项、合规校验和上线时间线，覆盖 Apple 和 Google 差异。",
+    }),
+    procedureUse(appStoreOptimizationLocalizationHelper, {
+      label: "本地化策略规划",
+      when: "需要规划多语言 ASO 策略、评估目标市场或校验翻译质量时。",
+      reason: "按市场优先级排序，自动估算翻译成本和 ROI，避免盲目本地化。",
+    }),
+    procedureUse(appStoreOptimizationMetadataOptimizer, {
+      label: "元数据优化",
+      when: "需要优化 App Store / Google Play 的标题、描述、关键词字段并校验字符限制时。",
+      reason: "按平台差异生成多个标题方案，自动校验字符限制和关键词密度。",
+    }),
+    procedureUse(appStoreOptimizationReviewAnalyzer, {
+      label: "评论分析",
+      when: "需要分析用户评论情感、提取常见主题、识别问题和功能请求时。",
+      reason: "自动分类情感、聚类主题、计算严重度并生成回复模板，避免逐条阅读。",
+    }),
   ],
   references: [
     defineReference({

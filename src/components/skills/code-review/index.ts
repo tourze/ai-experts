@@ -97,8 +97,16 @@ export const codeReviewSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(codeReviewAssessCode),
-    procedureUse(codeReviewAssessTests),
+    procedureUse(codeReviewAssessCode, {
+      label: "代码质量评估",
+      when: "需要对指定代码文件或项目目录进行全面的正确性、性能、错误处理、并发、可测试性和可维护性预扫描时。",
+      reason: "自动化六维度代码检查，标记 TODO/FIXME、同步 I/O、空捕获块、全局状态等常见问题，避免人工遗漏。",
+    }),
+    procedureUse(codeReviewAssessTests, {
+      label: "测试质量评估",
+      when: "需要对测试目录执行覆盖率、边界用例、可读性、速度、稳定性和隔离性评估时。",
+      reason: "自动运行覆盖率检查、多次运行检测 flaky test、检查测试命名和边界用例覆盖，避免脆弱的测试套件。",
+    }),
   ],
   references: [
     defineReference({

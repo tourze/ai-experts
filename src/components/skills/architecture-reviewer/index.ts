@@ -98,7 +98,11 @@ export const architectureReviewerSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(architectureReviewerScanCodebase),
+    procedureUse(architectureReviewerScanCodebase, {
+      label: "扫描代码库结构",
+      when: "需要快速获取代码库结构指纹用于架构评审。",
+      reason: "一键输出结构化代码库指纹，避免每轮评审重复手动收集语言分布和架构指标。",
+    }),
   ],
   references: [
     defineReference({

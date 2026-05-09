@@ -68,6 +68,10 @@ export const skillsPruneAndSyncReadmeSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(skillsPruneAndSyncReadmeCurateSkills),
+    procedureUse(skillsPruneAndSyncReadmeCurateSkills, {
+      label: "Skill 治理与同步",
+      when: "需要审计低质量/重复/冲突 skill、按名单删除 skill 或更新 README Skill 清单时。",
+      reason: "审计、删除和文档同步一站式完成，避免在多处手动更新 README 和组件清单。",
+    }),
   ],
 });

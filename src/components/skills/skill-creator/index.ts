@@ -83,14 +83,48 @@ export const skillCreatorSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(skillCreatorAggregateBenchmark),
-    procedureUse(skillCreatorGenerateReview),
-    procedureUse(skillCreatorGenerateReport),
-    procedureUse(skillCreatorImproveDescription),
-    procedureUse(skillCreatorPackageSkill),
-    procedureUse(skillCreatorQuickValidate),
-    procedureUse(skillCreatorRunEval, { platforms: [Platform.Claude] }),
-    procedureUse(skillCreatorRunLoop, { platforms: [Platform.Claude] }),
+    procedureUse(skillCreatorAggregateBenchmark, {
+      label: "汇总 benchmark 报告",
+      when: "多次 eval 运行完毕后，需要聚合所有 eval 的 pass rate 和 delta 对比时。",
+      reason: "生成 benchmark JSON 和 Markdown 报告，直观对比 with-skill vs baseline 表现。",
+    }),
+    procedureUse(skillCreatorGenerateReport, {
+      label: "生成 description 优化 HTML 报告",
+      when: "description optimization 完成后，需要可视化展示每轮 iteration 和每个 query 的触发情况时。",
+      reason: "将优化结果渲染为 HTML 表格，方便人工审查和分享。",
+    }),
+    procedureUse(skillCreatorGenerateReview, {
+      label: "启动 eval 审查 viewer",
+      when: "eval 运行结束后，需要交互式审查 runs 的输出、grading 和用户反馈时。",
+      reason: "提供 HTTP viewer 或静态 HTML，嵌入 benchmark 数据和上一轮 feedback 进行对比。",
+    }),
+    procedureUse(skillCreatorImproveDescription, {
+      label: "LLM 改进 description",
+      when: "eval 结果显示有 FAIL case，需要由 LLM 自动生成改进版 description 时。",
+      reason: "利用 eval 失败数据自动生成改进候选，避免人工逐条分析 FAIL 原因修改 description。",
+    }),
+    procedureUse(skillCreatorPackageSkill, {
+      label: "打包 skill 为 .skill 文件",
+      when: "skill 开发完成且验证通过，需要分发给其他 Claude Code 用户时。",
+      reason: "自动校验 frontmatter 并打包，避免手动压缩和遗漏必需文件。",
+    }),
+    procedureUse(skillCreatorQuickValidate, {
+      label: "快速校验 skill frontmatter",
+      when: "创建或修改 SKILL.md 后，需要快速检查 frontmatter 字段完整性时。",
+      reason: "确保 name、description 等必需字段格式正确避免 skill 加载失败。",
+    }),
+    procedureUse(skillCreatorRunEval, {
+      label: "运行 trigger eval",
+      when: "创建或修改 skill description 后，需要量化评估其触发准确率时。",
+      reason: "自动化多 query 并行评估，避免手动逐条测试 description 的触发准确率。",
+      platforms: [Platform.Claude],
+    }),
+    procedureUse(skillCreatorRunLoop, {
+      label: "自动优化 description 循环",
+      when: "需要自动迭代优化 skill description 以获得最佳触发准确率时。",
+      reason: "全自动迭代优化 description，避免人工逐一调整和多次手动运行 eval 的重复劳动。",
+      platforms: [Platform.Claude],
+    }),
   ],
   references: [
     defineReference({

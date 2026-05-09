@@ -95,6 +95,10 @@ export const dataAnalysisSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(dataAnalysisAnalyze),
+    procedureUse(dataAnalysisAnalyze, {
+      label: "分析表格数据",
+      when: "需要读取 CSV/XLSX 文件的结构、执行 SQL 查询或生成统计汇总。",
+      reason: "无需安装 Python/Pandas 即可完成本地表格的结构探索和 SQL 分析。",
+    }),
   ],
 });

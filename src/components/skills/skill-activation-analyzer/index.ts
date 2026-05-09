@@ -77,7 +77,11 @@ export const skillActivationAnalyzerSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(skillActivationAnalyzerCsoAudit),
+    procedureUse(skillActivationAnalyzerCsoAudit, {
+      label: "Skill Description 审计",
+      when: "需要批量审查 skill 的 description 文本质量，识别 workflow_leak、output_leak、missing_trigger 等违规时。",
+      reason: "自动批量审查 skill description 质量并按严重度分级排序，避免逐一打开文件人工检查。",
+    }),
   ],
   references: [
     defineReference({

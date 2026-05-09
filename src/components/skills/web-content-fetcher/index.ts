@@ -85,7 +85,11 @@ export const webContentFetcherSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(webContentFetcherFetch),
+    procedureUse(webContentFetcherFetch, {
+      label: "网页正文抓取",
+      when: "用户给出具体 URL，需要抓取网页正文并转为 Markdown 时。",
+      reason: "自动适配不同站点的内容提取策略，避免手动调整请求头和降级逻辑。",
+    }),
   ],
   references: [
     defineReference({

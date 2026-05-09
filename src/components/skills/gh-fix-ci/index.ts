@@ -78,7 +78,11 @@ export const ghFixCiSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(ghFixCiInspectPrChecks),
+    procedureUse(ghFixCiInspectPrChecks, {
+      label: "检查 PR 失败原因",
+      when: "需要排查 GitHub Actions PR 检查失败的具体日志和上下文。",
+      reason: "自动提取失败 job、关键日志片段和 run URL，避免逐个 gh CLI 命令手动排查。",
+    }),
   ],
   references: [
     defineReference({

@@ -83,11 +83,31 @@ export const financialAnalystSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(financialAnalystBudgetVarianceAnalyzer),
-    procedureUse(financialAnalystDcfValuation),
-    procedureUse(financialAnalystForecastBuilder),
-    procedureUse(financialAnalystRatioCalculator),
-    procedureUse(financialAnalystRatioInputValidation),
+    procedureUse(financialAnalystBudgetVarianceAnalyzer, {
+      label: "预算偏差分析",
+      when: "需要对比实际 vs 预算 vs 上年同期数据，按重要性阈值筛选有利/不利偏差时。",
+      reason: "自动计算偏差百分比和金额、按部门/类别归类汇总，避免手动在 Excel 中逐条计算。",
+    }),
+    procedureUse(financialAnalystDcfValuation, {
+      label: "DCF 估值分析",
+      when: "需要计算企业折现现金流、股权价值、每股价值，或做 WACC 与终值增长率的双变量敏感性分析时。",
+      reason: "自动完成 WACC 计算、现金流入预测、终值估算和敏感性矩阵，避免手工搭建 DCF 模型。",
+    }),
+    procedureUse(financialAnalystForecastBuilder, {
+      label: "滚动预测",
+      when: "需要做驱动因子收入预测、13 周滚动现金流或 base/bull/bear 多情景对比时。",
+      reason: "支持驱动因子和纯增长率两种模式，含趋势分析和季节性指数，避免手写预测脚本。",
+    }),
+    procedureUse(financialAnalystRatioCalculator, {
+      label: "财务比率计算",
+      when: "需要计算盈利、流动性、杠杆、效率或估值五大类财务比率并附带同业基准解读时。",
+      reason: "自动从财报结构化数据计算所有常用比率并输出行业基准评价，避免手算公式。",
+    }),
+    procedureUse(financialAnalystRatioInputValidation, {
+      label: "比率输入校验",
+      when: "计算比率前需要确认 income_statement/balance_sheet/cash_flow/market_data 输入字段完整时。",
+      reason: "预检缺失或无效字段，避免比率计算返回零值导致误判。",
+    }),
   ],
   references: [
     defineReference({

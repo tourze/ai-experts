@@ -91,8 +91,16 @@ export const preLandingReviewSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(preLandingReviewCollectDiff),
-    procedureUse(preLandingReviewRenderReport),
+    procedureUse(preLandingReviewCollectDiff, {
+      label: "收集 diff 元信息",
+      when: "需要获取当前分支与 origin/main 的 diff 文件列表和行数统计时。",
+      reason: "输出结构化 JSON 变更范围，避免手写 git diff 命令解析文件列表和行数。",
+    }),
+    procedureUse(preLandingReviewRenderReport, {
+      label: "渲染审查报告",
+      when: "已有结构化 findings JSON，需要生成标准格式的落地前审查 Markdown 报告时。",
+      reason: "统一输出阻断项/建议项/门禁结论格式，确保审查结果可读可审计。",
+    }),
   ],
   references: [
     defineReference({

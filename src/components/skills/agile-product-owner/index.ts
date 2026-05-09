@@ -83,7 +83,11 @@ export const agileProductOwnerSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(agileProductOwnerUserStoryGenerator),
+    procedureUse(agileProductOwnerUserStoryGenerator, {
+      label: "生成用户故事示例",
+      when: "需要快速生成示例 Backlog 或 Sprint 计划的骨架数据。",
+      reason: "快速生成示例 Backlog 骨架，避免从零手写初始故事和 Sprint 计划。",
+    }),
   ],
   references: [
     defineReference({

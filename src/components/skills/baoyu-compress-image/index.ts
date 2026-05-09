@@ -79,6 +79,10 @@ export const baoyuCompressImageSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(baoyuCompressImageMain),
+    procedureUse(baoyuCompressImageMain, {
+      label: "压缩图片",
+      when: "需要将单张或一批图片压缩为更小的体积或转换格式。",
+      reason: "自动选择最优压缩后端完成转码，避免手写 imagemagick/ffmpeg 命令链。",
+    }),
   ],
 });

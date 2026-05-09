@@ -77,10 +77,26 @@ export const speckitBaselineSkill = defineSkill({
   ],
   argumentHint: "[用户输入]",
   procedures: [
-    procedureUse(speckitBaselineBootstrapSpecify),
-    procedureUse(speckitBaselineCheckPrerequisites),
-    procedureUse(speckitBaselineCreateNewFeature),
-    procedureUse(speckitBaselineSetupPlan),
+    procedureUse(speckitBaselineBootstrapSpecify, {
+      label: "初始化 .specify 目录",
+      when: ".specify/scripts 或 .specify/templates 缺失时。",
+      reason: "自动部署 .specify 目录结构和模板文件，避免手动复制和配置基础设施。",
+    }),
+    procedureUse(speckitBaselineCheckPrerequisites, {
+      label: "前置条件检查",
+      when: "需要验证 feature 目录、分支规范、plan.md 是否就绪时。",
+      reason: "一次性验证 feature 目录和分支规范，避免在流程中途才发现前置条件未满足。",
+    }),
+    procedureUse(speckitBaselineCreateNewFeature, {
+      label: "创建新 Feature",
+      when: "需要为新的功能需求创建 feature 目录结构时。",
+      reason: "自动生成 slug 和目录结构，避免手动创建 feature 目录和配置文件。",
+    }),
+    procedureUse(speckitBaselineSetupPlan, {
+      label: "初始化实现计划",
+      when: "需要为 feature 创建实现计划 plan.md 时。",
+      reason: "快速从模板生成实现计划并校验分支规范，避免手动复制模板和核对分支。",
+    }),
   ],
   assets: [
     defineAsset({

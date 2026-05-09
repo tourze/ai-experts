@@ -104,7 +104,11 @@ export const complexityReducerSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(complexityReducerComplexityReport),
+    procedureUse(complexityReducerComplexityReport, {
+      label: "分析代码复杂度",
+      when: "需要定量评估代码库中函数的认知复杂度和嵌套深度。",
+      reason: "定量揭示认知复杂度热点，避免全凭直觉猜测哪段代码最需要简化。",
+    }),
   ],
   references: [
     defineReference({

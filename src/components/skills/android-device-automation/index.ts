@@ -73,16 +73,56 @@ export const androidDeviceAutomationSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(androidDeviceAutomationAppLauncher),
-    procedureUse(androidDeviceAutomationBuildAndTest),
-    procedureUse(androidDeviceAutomationDiagnoseApp),
-    procedureUse(androidDeviceAutomationEmuHealthCheck),
-    procedureUse(androidDeviceAutomationEmulatorManage),
-    procedureUse(androidDeviceAutomationGesture),
-    procedureUse(androidDeviceAutomationKeyboard),
-    procedureUse(androidDeviceAutomationLogMonitor),
-    procedureUse(androidDeviceAutomationNavigator),
-    procedureUse(androidDeviceAutomationScreenMapper),
+    procedureUse(androidDeviceAutomationAppLauncher, {
+      label: "应用管理主入口",
+      when: "需要启动/终止/安装/卸载应用、列出已安装包或查询应用运行状态时。",
+      reason: "统一管理 Android 应用生命周期，避免手写 adb am/pm 命令。",
+    }),
+    procedureUse(androidDeviceAutomationBuildAndTest, {
+      label: "构建与测试",
+      when: "需要在 Android 项目中执行 Gradle 构建或运行 connectedAndroidTest 时。",
+      reason: "自动查找 gradlew、收集错误摘要，避免手写多步 Gradle 命令链。",
+    }),
+    procedureUse(androidDeviceAutomationDiagnoseApp, {
+      label: "应用诊断",
+      when: "需要采集运行中应用的完整诊断包（logcat、截图、UI 层级、dumpsys）时。",
+      reason: "一键采集所有诊断证据并输出 summary.json，避免手工逐条跑 adb 命令。",
+    }),
+    procedureUse(androidDeviceAutomationEmuHealthCheck, {
+      label: "环境健康检查",
+      when: "首次使用或怀疑 Android 开发环境配置有问题时。",
+      reason: "五项指标一次性检查，快速定位环境配置缺口，避免逐一验证各依赖。",
+    }),
+    procedureUse(androidDeviceAutomationEmulatorManage, {
+      label: "模拟器管理",
+      when: "需要列出、启动或关闭 Android 虚拟设备（AVD）时。",
+      reason: "统一管理 AVD 生命周期，避免手写 emulator 命令。",
+    }),
+    procedureUse(androidDeviceAutomationGesture, {
+      label: "手势操作",
+      when: "需要在设备上执行滑动或滚动手势时。",
+      reason: "无需手动计算设备屏幕坐标即可完成 swipe/scroll，避免手写带像素坐标的 adb shell 命令。",
+    }),
+    procedureUse(androidDeviceAutomationKeyboard, {
+      label: "键盘输入",
+      when: "需要向设备发送按键事件（home/back/enter/音量等）或输入文本时。",
+      reason: "避免手动拼写 ADB shell input keyevent 命令并处理转义，统一文本和按键输入。",
+    }),
+    procedureUse(androidDeviceAutomationLogMonitor, {
+      label: "日志监控",
+      when: "需要实时流式查看 Android logcat 并按包名/tag/优先级/grep 过滤时。",
+      reason: "实时按包名和标签过滤 logcat，避免在大量无关日志中手动搜索关键信息。",
+    }),
+    procedureUse(androidDeviceAutomationNavigator, {
+      label: "UI 导航",
+      when: "需要按文本/resource-id/类名查找屏幕元素并执行点击或文本输入时。",
+      reason: "基于 UI 层级语义定位元素，避免使用脆弱且不易维护的像素坐标点击。",
+    }),
+    procedureUse(androidDeviceAutomationScreenMapper, {
+      label: "屏幕分析",
+      when: "需要获取当前屏幕 UI 层级摘要（按钮、文本字段、可交互元素）或结构化 JSON 时。",
+      reason: "自动解析 UI 层级为可读元素摘要，避免手动逐段阅读原始 uiautomator dump XML。",
+    }),
   ],
   references: [
     defineReference({

@@ -94,6 +94,10 @@ export const iconRetrievalSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(iconRetrievalSearch),
+    procedureUse(iconRetrievalSearch, {
+      label: "搜索 SVG 图标",
+      when: "需要根据业务概念搜索匹配的 SVG 图标。",
+      reason: "从图标集中快速匹配业务概念对应的 SVG 候选，避免在庞大图标库中手动逐组筛选。",
+    }),
   ],
 });
