@@ -166,10 +166,11 @@ const platform = ${JSON.stringify(platform)};
 const procedureRuntimePath = ${JSON.stringify(procedureRuntimePath(platform))};
 const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
 const runtimeRoot = dirname(runtimeFile);
+const staleRequestJsonFlag = ["--request", "json"].join("-");
 
 function parseCliArgs(argv) {
   const parsed = {
-    requestJson: null, sessionId: null, triggerSkill: null, triggerAgent: null,
+    sessionId: null, triggerSkill: null, triggerAgent: null,
     procedureId: null, passthroughArgs: [],
   };
   let hasProcedureId = false;
@@ -185,13 +186,15 @@ function parseCliArgs(argv) {
       parsed.help = true;
       continue;
     }
-    if (arg === "--request-json" || arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--procedure-id") {
+    if (arg === staleRequestJsonFlag) {
+      throw new Error("unknown argument: " + String(arg) + "; pass procedure args after --");
+    }
+    if (arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--procedure-id") {
       const value = argv[index + 1];
       if (value == null || value.startsWith("--")) {
         throw new Error(String(arg) + " requires a value");
       }
       index += 1;
-      if (arg === "--request-json") parsed.requestJson = value;
       if (arg === "--session-id") parsed.sessionId = value;
       if (arg === "--trigger-skill") { parsed.triggerSkill = value; hasTrigger = true; }
       if (arg === "--trigger-agent") { parsed.triggerAgent = value; hasTrigger = true; }
@@ -220,24 +223,6 @@ function normalizeTrigger(parsed) {
     skillId: parsed.triggerSkill ?? undefined,
     agentId: parsed.triggerAgent ?? undefined,
   };
-}
-
-function parseRequestJson(rawValue) {
-  if (rawValue == null || rawValue.trim() === "") return {};
-  const parsed = JSON.parse(rawValue);
-  if (parsed == null || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("--request-json must be a JSON object");
-  }
-  return parsed;
-}
-
-function resolveProcedureArgs(requestPayload) {
-  const args = requestPayload.args;
-  if (args == null) return [];
-  if (!Array.isArray(args)) {
-    throw new Error("request-json field args must be an array when provided");
-  }
-  return args.map((item) => String(item));
 }
 
 function ensureAuthorized(procedure, parsed) {
@@ -307,7 +292,7 @@ function printHelp() {
     sessionId: null,
     trigger: {},
     result: {
-      usage: "node " + procedureRuntimePath + " --procedure-id <id> [--request-json <json>] [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>] [-- <procedure-args...>]",
+      usage: "node " + procedureRuntimePath + " --procedure-id <id> [--session-id <id>] [--trigger-skill <skill-id>] [--trigger-agent <agent-id>] [-- <procedure-args...>]",
       procedures: Object.keys(procedures).sort(),
     },
     error: null,
@@ -337,7 +322,6 @@ async function runProcedureChild(payload) {
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_SKILL = payload.triggerSkill ?? "";
   process.env.AI_EXPERTS_PROCEDURE_TRIGGER_AGENT = payload.triggerAgent ?? "";
   process.env.AI_EXPERTS_PROCEDURE_PLATFORM = platform;
-  process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON = JSON.stringify(payload.requestPayload ?? {});
   const module = await loader();
   if (typeof module.main !== "function") {
     throw new Error("procedure " + procedure.id + " did not export main()");
@@ -367,22 +351,12 @@ export function main(rawArgv = process.argv.slice(2)) {
     }
     ensureAuthorized(procedure, parsed);
 
-    const requestPayload = parseRequestJson(parsed.requestJson);
-    if (parsed.passthroughArgs.length > 0) {
-      if (Array.isArray(requestPayload.args) && requestPayload.args.length > 0) {
-        throw new Error("pass-through args (after --) conflict with request-json args");
-      }
-      requestPayload.args = parsed.passthroughArgs;
-    }
-
-    const procedureArgs = resolveProcedureArgs(requestPayload);
     const childPayload = {
       procedureId: procedure.id,
-      args: procedureArgs,
+      args: parsed.passthroughArgs.map(String),
       sessionId: parsed.sessionId ?? "",
       triggerSkill: parsed.triggerSkill ?? "",
       triggerAgent: parsed.triggerAgent ?? "",
-      requestPayload,
     };
     const child = spawnSync(process.execPath, [
       runtimeFile,

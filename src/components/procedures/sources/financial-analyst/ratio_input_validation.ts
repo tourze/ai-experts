@@ -13,8 +13,7 @@ export const procedure = defineCliProcedure({
     {
       flag: "--input",
       type: "路径",
-      description:
-        "输入 JSON 文件路径（也可通过 AI_EXPERTS_PROCEDURE_REQUEST_JSON 环境变量传入）",
+      description: "输入 JSON 文件路径",
       required: false,
     },
     {
@@ -136,37 +135,11 @@ function parseArgs(argv: readonly string[]): {
   return args;
 }
 
-function readRequestPayload(): Record<string, any> {
-  const raw = process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON;
-  if (!raw || raw.trim() === "") {
-    return {};
-  }
-  const parsed = JSON.parse(raw);
-  if (parsed == null || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("AI_EXPERTS_PROCEDURE_REQUEST_JSON must be a JSON object");
-  }
-  return parsed;
-}
-
-function readInputData(
-  args: { inputFile?: string },
-  request: Record<string, any>,
-): any {
+function readInputData(args: { inputFile?: string }): any {
   if (args.inputFile) {
     return JSON.parse(readFileSync(args.inputFile, "utf-8"));
   }
-  if (request.data !== undefined) {
-    return request.data;
-  }
-  if (request.financialData !== undefined) {
-    return request.financialData;
-  }
-  if (request.financial_data !== undefined) {
-    return request.financial_data;
-  }
-  throw new Error(
-    "missing input data; pass --input <json-file> or request JSON field data",
-  );
+  throw new Error("missing input data; pass --input <json-file>");
 }
 
 export function main(argv: readonly string[]): number {
@@ -178,9 +151,8 @@ export function main(argv: readonly string[]): number {
       );
       return 0;
     }
-    const request = readRequestPayload();
-    const category = args.category ?? request.category ?? null;
-    validateRatioInput(readInputData(args, request), category);
+    const category = args.category ?? null;
+    validateRatioInput(readInputData(args), category);
     console.log(JSON.stringify({ ok: true, category }, null, 2));
     return 0;
   } catch (error) {

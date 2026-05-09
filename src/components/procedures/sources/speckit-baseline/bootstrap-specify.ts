@@ -81,8 +81,8 @@ function main(argv) {
     procedureId,
     "--trigger-skill",
     triggerSkill,
-    "--request-json",
-    JSON.stringify({ args: argv }),
+    "--",
+    ...argv,
   ], {
     cwd: process.cwd(),
     encoding: "utf8",

@@ -6,13 +6,13 @@ A local AI skill that converts Markdown files to professionally styled PDF docum
 
 ```bash
 # 1. Check dependencies
-node <runtime-root>/procedures.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf --request-json '{"args":[]}'
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-setup --trigger-skill md-to-pdf
 
 # 2. Convert
-node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["input.md","output.pdf"]}'
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf -- input.md output.pdf
 
 # 3. With options
-node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["input.md","output.pdf","--format","Letter","--header-footer","--landscape"]}'
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf -- input.md output.pdf --format Letter --header-footer --landscape
 ```
 
 ## Runtime Layout
@@ -71,7 +71,7 @@ Do not assume these tools are pre-installed. Run the `md-to-pdf-setup` procedure
 ## Testing
 
 ```bash
-node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf --request-json '{"args":["references/test-document.md","test_output.pdf","--header-footer"]}'
+node <runtime-root>/procedures.js --procedure-id md-to-pdf-md-to-pdf --trigger-skill md-to-pdf -- references/test-document.md test_output.pdf --header-footer
 ```
 
 The test document exercises all supported features: 4 Mermaid diagram types, inline + display math, tables, code blocks in 3 languages, footnotes, definition lists, blockquotes, and text formatting.

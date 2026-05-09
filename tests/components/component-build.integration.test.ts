@@ -757,6 +757,27 @@ describe("component build integration", () => {
     }
   });
 
+  test("generated runtime materials use direct procedure arguments", () => {
+    const staleRequestJsonReferences: string[] = [];
+    const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
+        const source = readFileSync(generatedFile, "utf-8");
+        if (/request-json/u.test(source)) {
+          staleRequestJsonReferences.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      staleRequestJsonReferences,
+      [],
+      "generated runtime files should not expose stale --request-json procedure input",
+    );
+  });
+
   test("generated runtime files do not leak maintainer-local absolute paths", () => {
     const localPathPattern = /(?:^|[\s"'`(])(?:file:\/\/)?(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
@@ -1470,8 +1491,9 @@ describe("component build integration", () => {
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "screenshot",
-      "--request-json",
-      "{\"args\":[\"--title\",\"owner-mismatch\"]}",
+      "--",
+      "--title",
+      "owner-mismatch",
     ]);
     assert.equal(ownerMismatchResult.status, 1);
     const ownerMismatch = ownerMismatchResult.payload;
@@ -1494,18 +1516,18 @@ describe("component build integration", () => {
     assert.match(childOwnerMismatch.stderr, /not callable by trigger skill: screenshot/);
     assert.doesNotMatch(childOwnerMismatch.stdout, /Debug Checklist: child-owner-mismatch/);
 
-    const invalidJsonResult = runProcedureProcess([
+    const staleRequestJsonResult = runProcedureProcess([
       "--procedure-id",
       "debug-methodology-debug-checklist",
       "--trigger-skill",
       "debug-methodology",
       "--request-json",
-      "{not-json}",
+      "{\"args\":[\"--title\",\"stale\"]}",
     ]);
-    assert.equal(invalidJsonResult.status, 1);
-    const invalidJson = invalidJsonResult.payload;
-    assert.equal(invalidJson.ok, false);
-    assert.match(invalidJson.error.message, /Unexpected token|JSON/i);
+    assert.equal(staleRequestJsonResult.status, 1);
+    const staleRequestJson = staleRequestJsonResult.payload;
+    assert.equal(staleRequestJson.ok, false);
+    assert.match(staleRequestJson.error.message, /unknown argument: --request-json/);
 
     const success = JSON.parse(execFileSync(process.execPath, [
       proceduresPath,
@@ -1515,8 +1537,9 @@ describe("component build integration", () => {
       "debug-methodology",
       "--session-id",
       "fixture-session",
-      "--request-json",
-      "{\"args\":[\"--title\",\"fixture-checklist\"]}",
+      "--",
+      "--title",
+      "fixture-checklist",
     ], { encoding: "utf-8" }));
     assert.equal(success.ok, true);
     assert.equal(success.procedureId, "debug-methodology-debug-checklist");
@@ -1531,8 +1554,8 @@ describe("component build integration", () => {
       "web-content-fetcher-fetch",
       "--trigger-skill",
       "web-content-fetcher",
-      "--request-json",
-      "{\"args\":[\"--invalid\"]}",
+      "--",
+      "--invalid",
     ]);
     assert.notEqual(executionFailureResult.status, 0);
     const executionFailure = executionFailureResult.payload;
@@ -1579,6 +1602,7 @@ describe("component build integration", () => {
       runtimeHelp.result.usage,
       /node ~\/\.claude\/procedures\.js --procedure-id <id>/,
     );
+    assert.doesNotMatch(runtimeHelp.result.usage, /request-json/);
   });
 
   test("executes representative bundled procedures with real fixtures", () => {
@@ -1609,19 +1633,23 @@ describe("component build integration", () => {
         id,
         "--trigger-skill",
         skillId,
-        "--request-json",
-        JSON.stringify({ args }),
+        "--",
+        ...args,
       ]);
     }
 
+    let requestCounter = 0;
     function runProcedureRequest(id: string, skillId: string, request: Record<string, unknown>): any {
+      const requestFile = join(runtimeTmp, `request-${requestCounter += 1}.json`);
+      writeFileSync(requestFile, JSON.stringify(request));
       return runProcedureCommand([
         "--procedure-id",
         id,
         "--trigger-skill",
         skillId,
-        "--request-json",
-        JSON.stringify(request),
+        "--",
+        "--input",
+        requestFile,
       ]);
     }
 
@@ -1631,8 +1659,8 @@ describe("component build integration", () => {
         id,
         "--trigger-skill",
         skillId,
-        "--request-json",
-        JSON.stringify({ args }),
+        "--",
+        ...args,
       ], { env: { ...process.env, ...env } });
     }
 
@@ -1642,8 +1670,8 @@ describe("component build integration", () => {
         id,
         "--trigger-skill",
         skillId,
-        "--request-json",
-        JSON.stringify({ args }),
+        "--",
+        ...args,
       ], { cwd });
     }
 

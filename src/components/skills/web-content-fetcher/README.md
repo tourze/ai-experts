@@ -10,16 +10,16 @@
 
 ```bash
 # 默认 fast，内容过短时自动回退到 stealth
-node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher --request-json '{"args":["https://sspai.com/post/73145"]}'
+node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher -- https://sspai.com/post/73145
 
 # 对请求头更敏感的站点可先强制 stealth
-node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher --request-json '{"args":["https://mp.weixin.qq.com/s/xxx","--stealth"]}'
+node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher -- https://mp.weixin.qq.com/s/xxx --stealth
 
 # 控制输出长度
-node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher --request-json '{"args":["https://example.com/article","15000"]}'
+node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher -- https://example.com/article 15000
 
 # 结构化 JSON 输出
-node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher --request-json '{"args":["https://example.com/article","--json"]}'
+node <runtime-root>/procedures.js --procedure-id web-content-fetcher-fetch --trigger-skill web-content-fetcher -- https://example.com/article --json
 ```
 
 ## 路由建议

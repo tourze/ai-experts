@@ -26,19 +26,10 @@ function optionValue(
 }
 
 export function readProcedureRequest(argv: readonly string[]): AnyRecord {
-  const envRaw = process.env.AI_EXPERTS_PROCEDURE_REQUEST_JSON;
-  const request =
-    envRaw && envRaw.trim()
-      ? parseJsonObject(envRaw, "AI_EXPERTS_PROCEDURE_REQUEST_JSON")
-      : {};
-
   const inputFile = optionValue(argv, ["--input", "-i"]);
-  if (!inputFile) return request;
+  if (!inputFile) return {};
 
-  return {
-    ...request,
-    ...parseJsonObject(readFileSync(inputFile, "utf-8"), inputFile),
-  };
+  return parseJsonObject(readFileSync(inputFile, "utf-8"), inputFile);
 }
 
 export function getField<TValue>(
@@ -109,7 +100,7 @@ export function runJsonProcedure(
   try {
     if (argv.includes("--help") || argv.includes("-h")) {
       console.log(
-        "Pass procedure input as --request-json or --input <json-file>.",
+        "Pass procedure input as --input <json-file>.",
       );
       return 0;
     }
