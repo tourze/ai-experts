@@ -326,8 +326,11 @@ function validateSkillAssets(skill: SkillDefinition): void {
     }
 
     const target = defaultAssetTarget(asset);
-    if (!target.startsWith("assets/") || target.includes("..") || target.startsWith("/")) {
+    if (!target.startsWith("assets/") || target.includes("..") || target.startsWith("/") || target.includes("\\")) {
       throw new Error(`Skill ${skill.id} asset ${asset.id} target must stay under assets/: ${target}`);
+    }
+    if (target.replace(/\/+$/u, "") === "assets/index.md") {
+      throw new Error(`Skill ${skill.id} asset ${asset.id} target is reserved: assets/index.md`);
     }
     if (seenAssetTargets.has(target)) {
       throw new Error(`Duplicate asset target in ${skill.id}: ${target}`);

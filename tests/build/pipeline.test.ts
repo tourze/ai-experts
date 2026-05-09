@@ -499,6 +499,40 @@ describe("build/pipeline modules", () => {
       "source is a file but target must not end with /: assets/archive/",
     );
 
+    const reservedAssetIndexTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "reserved-asset-index-target",
+            source: pathToFileURL(join(fixture.root, "skill", "assets", "asset.txt")),
+            target: "assets/index.md",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(reservedAssetIndexTargetRegistry)).toThrow(
+      "target is reserved: assets/index.md",
+    );
+
+    const invalidAssetBackslashTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        assets: [
+          defineAsset({
+            id: "invalid-asset-backslash-target",
+            source: pathToFileURL(join(fixture.root, "skill", "assets", "asset.txt")),
+            target: "assets\\windows.txt",
+          }),
+        ],
+      }],
+    };
+    expect(() => validateRegistry(invalidAssetBackslashTargetRegistry)).toThrow(
+      "target must stay under assets/: assets\\windows.txt",
+    );
+
     const invalidDirectoryReferenceTargetRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
