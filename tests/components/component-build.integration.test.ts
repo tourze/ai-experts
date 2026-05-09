@@ -1307,6 +1307,22 @@ describe("component build integration", () => {
     assert.equal(ownerMismatch.ok, false);
     assert.match(ownerMismatch.error.message, /not callable by trigger skill/);
 
+    const childOwnerMismatch = spawnSync(process.execPath, [
+      proceduresPath,
+      "--__procedure-child",
+      JSON.stringify({
+        procedureId: "debug-methodology-debug-checklist",
+        triggerSkill: "screenshot",
+        triggerAgent: "",
+        sessionId: "",
+        requestPayload: { args: ["--title", "child-owner-mismatch"] },
+        args: ["--title", "child-owner-mismatch"],
+      }),
+    ], { encoding: "utf-8" });
+    assert.equal(childOwnerMismatch.status, 1);
+    assert.match(childOwnerMismatch.stderr, /not callable by trigger skill: screenshot/);
+    assert.doesNotMatch(childOwnerMismatch.stdout, /Debug Checklist: child-owner-mismatch/);
+
     const invalidJsonResult = runProcedureProcess([
       "--procedure-id",
       "debug-methodology-debug-checklist",

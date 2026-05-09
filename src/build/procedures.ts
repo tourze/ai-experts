@@ -341,6 +341,10 @@ async function runProcedureChild(payload) {
   if (!procedure || !loader) {
     throw new Error("procedure not found: " + payload.procedureId);
   }
+  ensureAuthorized(procedure, {
+    triggerSkill: payload.triggerSkill || null,
+    triggerAgent: payload.triggerAgent || null,
+  });
   const trigger = {
     skillId: payload.triggerSkill ?? undefined,
     agentId: payload.triggerAgent ?? undefined,
