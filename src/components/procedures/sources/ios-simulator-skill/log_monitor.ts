@@ -4,6 +4,7 @@ import { spawn } from "node:child_process";
 import { mkdirSync, writeFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertOutputFilesWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-log-monitor",
@@ -66,6 +67,12 @@ export const procedure = defineCliProcedure({
       flag: "--json",
       type: "",
       description: "输出为 JSON，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有日志输出文件后使用",
       required: false,
     },
   ],
@@ -251,14 +258,17 @@ export class LogMonitor {
       sample_logs: this.logLines.slice(-50),
     };
   }
-  saveLogs(outputDir: any): any {
+  saveLogs(outputDir: any, {
+    overwrite = false,
+    now = new Date(),
+  }: any = {}): any {
     mkdirSync(outputDir, { recursive: true });
-    const timestamp = timestampForFile(new Date());
-    const appName = this.appBundleId
-      ? this.appBundleId.split(".").at(-1)
-      : "simulator";
-    const logFile = join(outputDir, `${appName}-${timestamp}.log`);
-    const jsonFile = join(outputDir, `${appName}-${timestamp}-summary.json`);
+    const [logFile, jsonFile] = plannedLogOutputFiles(
+      outputDir,
+      this.appBundleId,
+      now,
+    );
+    assertOutputFilesWritable([logFile, jsonFile], overwrite);
     writeFileSync(logFile, this.logLines.join("\n"));
     writeFileSync(
       jsonFile,
@@ -350,8 +360,21 @@ Options:
   --output <dir>            Save logs to directory
   --verbose                 Show detailed output
   --json                    Output as JSON
+  --overwrite               Replace existing log output files after confirmation
   --help                    Show this help
 `;
+}
+export function plannedLogOutputFiles(
+  outputDir: any,
+  appBundleId: any,
+  now: any,
+): any {
+  const timestamp = timestampForFile(now);
+  const appName = appBundleId ? appBundleId.split(".").at(-1) : "simulator";
+  return [
+    join(outputDir, `${appName}-${timestamp}.log`),
+    join(outputDir, `${appName}-${timestamp}-summary.json`),
+  ];
 }
 export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
@@ -364,6 +387,7 @@ export function parseArgs(argv: readonly string[]): any {
     output: null,
     verbose: false,
     json: false,
+    overwrite: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -372,6 +396,7 @@ export function parseArgs(argv: readonly string[]): any {
     else if (arg === "--follow") args.follow = true;
     else if (arg === "--verbose") args.verbose = true;
     else if (arg === "--json") args.json = true;
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (
       [
         "--app",
@@ -438,7 +463,9 @@ export async function main(argv: readonly string[]): Promise<any> {
   });
   if (!success) return 1;
   if (args.output) {
-    const logFile = monitor.saveLogs(args.output);
+    const logFile = monitor.saveLogs(args.output, {
+      overwrite: args.overwrite,
+    });
     console.error(`\nLogs saved to: ${logFile}`);
   }
   if (!args.follow) {

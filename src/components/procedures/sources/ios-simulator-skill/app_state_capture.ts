@@ -10,6 +10,7 @@ import {
 } from "./interaction_common";
 import { captureScreenshot } from "./screenshot_common";
 import { runXcrunSimctl } from "./simctl_common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-app-state-capture",
@@ -60,6 +61,12 @@ export const procedure = defineCliProcedure({
       flag: "--app-name",
       type: "字符串",
       description: "应用名称，用于语义化截图命名",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 app state 输出目录后使用",
       required: false,
     },
   ],
@@ -126,17 +133,22 @@ export class AppStateCapture {
     if (result.status !== 0) return {};
     return parseDeviceInfo(result.stdout ?? "");
   }
-  captureAll(
-    outputDir: any,
-    { logLines = 100, appName = null }: any = {},
-  ): any {
-    const timestamp = formatTimestamp(new Date());
+  captureAll(outputDir: any, {
+    logLines = 100,
+    appName = null,
+    overwrite = false,
+    now = new Date(),
+  }: any = {}): any {
+    const timestamp = formatTimestamp(now);
     const captureDir = this.inline
       ? null
       : join(outputDir, `app-state-${timestamp}`);
-    if (captureDir) mkdirSync(captureDir, { recursive: true });
+    if (captureDir) {
+      assertOutputWritable(captureDir, overwrite);
+      mkdirSync(captureDir, { recursive: true });
+    }
     const summary: Record<string, any> = {
-      timestamp: new Date().toISOString(),
+      timestamp: now.toISOString(),
       screenshot_mode: this.inline ? "inline" : "file",
     };
     if (captureDir) summary.output_dir = captureDir;
@@ -221,6 +233,9 @@ export function summarizeLogLines(lines: any): any {
       .length,
   };
 }
+export function plannedAppStateCaptureDir(outputDir: any, now: any): any {
+  return join(outputDir, `app-state-${formatTimestamp(now)}`);
+}
 export function createSummaryMarkdown(summary: any): any {
   const lines: any[] = [
     "# App State Capture",
@@ -282,12 +297,14 @@ export function parseArgs(argv: readonly string[]): any {
     inline: false,
     size: "half",
     appName: null,
+    overwrite: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--inline") args.inline = true;
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (
       [
         "--app-bundle-id",
@@ -331,6 +348,7 @@ Options:
   --inline              Return screenshots as base64
   --size <preset>       full, half, quarter, or thumb
   --app-name <name>     App name for semantic screenshot naming
+  --overwrite           Replace an existing app state output directory after confirmation
   --help                Show this help
 `;
 }
@@ -357,6 +375,7 @@ export function main(argv: readonly string[]): any {
     const summary = capturer.captureAll(args.output, {
       logLines: args.logLines,
       appName: args.appName,
+      overwrite: args.overwrite,
     });
     if (summary.output_dir)
       console.log(`State captured: ${summary.output_dir}/`);

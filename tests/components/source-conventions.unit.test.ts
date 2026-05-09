@@ -245,7 +245,13 @@ describe("component source conventions", () => {
     assert.match(skillSource, /默认不会覆盖已存在的报告、截图或 diff 产物/u);
     assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
-    for (const sourceFile of ["accessibility_audit.ts", "visual_diff.ts"]) {
+    for (const sourceFile of [
+      "accessibility_audit.ts",
+      "app_state_capture.ts",
+      "log_monitor.ts",
+      "test_recorder.ts",
+      "visual_diff.ts",
+    ]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
         "utf-8",
@@ -265,6 +271,19 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(visualDiffSource, /plannedVisualDiffOutputFiles/u);
+
+    const plannedOutputSources = [
+      ["app_state_capture.ts", /plannedAppStateCaptureDir/u],
+      ["log_monitor.ts", /plannedLogOutputFiles/u],
+      ["test_recorder.ts", /plannedTestRecorderOutputDir/u],
+    ] as const;
+    for (const [sourceFile, pattern] of plannedOutputSources) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, pattern);
+    }
 
     const guardSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/ios-simulator-skill/output_guard.ts"),

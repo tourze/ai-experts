@@ -9,6 +9,7 @@ import {
   resolveUdid,
 } from "./interaction_common";
 import { captureScreenshot } from "./screenshot_common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-test-recorder",
@@ -55,6 +56,12 @@ export const procedure = defineCliProcedure({
       description: "应用名称，用于语义化截图命名",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有测试产物目录后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: { args: ["--test-name", "login-flow", "--size", "half"] },
@@ -82,6 +89,7 @@ export class TestRecorder {
     screenshotSize = "half",
     appName = null,
     now = (): any => new Date(),
+    overwrite = false,
     output = console.log,
   }: any) {
     this.testName = testName;
@@ -94,8 +102,8 @@ export class TestRecorder {
     this.startTime = Date.now();
     this.steps = [];
     this.currentStep = 0;
-    const timestamp = formatTimestamp(now());
-    this.outputDir = join(outputDir, `${safeTestName(testName)}-${timestamp}`);
+    this.outputDir = plannedTestRecorderOutputDir(outputDir, testName, now());
+    assertOutputWritable(this.outputDir, overwrite);
     mkdirSync(this.outputDir, { recursive: true });
     this.screenshotsDir = inline ? null : join(this.outputDir, "screenshots");
     if (this.screenshotsDir)
@@ -267,6 +275,13 @@ export function safeTestName(value: any): any {
 export function safeStepName(value: any): any {
   return value.toLowerCase().replaceAll(" ", "-");
 }
+export function plannedTestRecorderOutputDir(
+  outputDir: any,
+  testName: any,
+  now: any,
+): any {
+  return join(outputDir, `${safeTestName(testName)}-${formatTimestamp(now)}`);
+}
 export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     testName: null,
@@ -275,12 +290,14 @@ export function parseArgs(argv: readonly string[]): any {
     inline: false,
     size: "half",
     appName: null,
+    overwrite: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--inline") args.inline = true;
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (
       ["--test-name", "--output", "--udid", "--size", "--app-name"].includes(
         arg,
@@ -316,6 +333,7 @@ Options:
   --inline            Return screenshots as base64
   --size <preset>     full, half, quarter, or thumb
   --app-name <name>   App name for semantic screenshot naming
+  --overwrite         Replace an existing test artifact directory after confirmation
   --help              Show this help
 `;
 }
@@ -339,6 +357,7 @@ export function main(argv: readonly string[]): any {
     inline: args.inline,
     screenshotSize: args.size,
     appName: args.appName,
+    overwrite: args.overwrite,
   });
   console.log("Test recorder initialized. Use the following methods:");
   console.log('  recorder.step("description") - Record a test step');
