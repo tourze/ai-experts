@@ -1,13 +1,13 @@
 **重要：你必须按顺序完成这些步骤。不要跳到编写代码。**
 
 如果你需要填写 PDF 表单，首先检查 PDF 是否有可填写的表单字段。在此文件所在目录运行以下脚本：
- `node scripts/check_fillable_fields.mjs <file.pdf>`，根据结果进入"可填字段"或"不可填字段"部分，并按照说明操作。
+ `node scripts/check_fillable_fields.mjs '<file.pdf>'`，根据结果进入"可填字段"或"不可填字段"部分，并按照说明操作。
 
 基于 Node 的 PDF 辅助工具需要 `pdf-lib`、`pdfjs-dist`、`@pdfme/converter` 和 `sharp` 可由 Node.js 解析；如果脚本报告缺少模块，使用 `npm install -g pdf-lib pdfjs-dist @pdfme/converter sharp` 安装它们。
 
 # 可填字段
 如果 PDF 有可填写的表单字段：
-- 在此文件所在目录运行此脚本：`node scripts/extract_form_field_info.mjs <input.pdf> <field_info.json>`。它将创建一个包含字段列表的 JSON 文件，格式如下：
+- 在此文件所在目录运行此脚本：`node scripts/extract_form_field_info.mjs '<input.pdf>' '<field_info.json>'`。它将创建一个包含字段列表的 JSON 文件，格式如下：
 ```
 [
   {
@@ -53,7 +53,7 @@
 ]
 ```
 - 使用此脚本将 PDF 转换为 PNG（每页一张图片）（在此文件所在目录运行）：
-`node scripts/convert_pdf_to_images.mjs <file.pdf> <output_directory>`
+`node scripts/convert_pdf_to_images.mjs '<file.pdf>' '<output_directory>'`
 然后分析图片以确定每个表单字段的用途（确保将边界框 PDF 坐标转换为图片坐标）。
 - 创建 `field_values.json` 文件，格式如下，包含要填入每个字段的值：
 ```
@@ -74,7 +74,7 @@
 ]
 ```
 - 在此文件所在目录运行 `fill_fillable_fields.mjs` 脚本以创建已填写的 PDF：
-`node scripts/fill_fillable_fields.mjs <input pdf> <field_values.json> <output pdf>`
+`node scripts/fill_fillable_fields.mjs '<input.pdf>' '<field_values.json>' '<output.pdf>'`
 此脚本将验证你提供的字段 ID 和值是否有效；如果打印了错误信息，请更正相应字段后重试。
 
 # 不可填字段
@@ -83,7 +83,7 @@
 ## 步骤 1：先尝试结构提取
 
 运行此脚本以提取文本标签、线条和复选框及其精确的 PDF 坐标：
-`node scripts/extract_form_structure.mjs <input.pdf> form_structure.json`
+`node scripts/extract_form_structure.mjs '<input.pdf>' form_structure.json`
 
 这将创建一个包含以下内容的 JSON 文件：
 - **labels**：每个文本元素的精确坐标（x0, top, x1, bottom，以 PDF 点为单位）
@@ -177,7 +177,7 @@
 
 ### B.1：将 PDF 转换为图片
 
-`node scripts/convert_pdf_to_images.mjs <input.pdf> <images_dir/>`
+`node scripts/convert_pdf_to_images.mjs '<input.pdf>' '<images_dir/>'`
 
 ### B.2：初始字段识别
 
@@ -283,12 +283,12 @@ magick images_dir/page_1.png -crop 300x80+50+120 +repage crops/name_field.png
 ## 步骤 3：填写表单
 
 填写脚本自动检测坐标系并处理转换：
-`node scripts/fill_pdf_form_with_annotations.mjs <input.pdf> fields.json <output.pdf>`
+`node scripts/fill_pdf_form_with_annotations.mjs '<input.pdf>' fields.json '<output.pdf>'`
 
 ## 步骤 4：验证输出
 
 将填写的 PDF 转换为图片并验证文本位置：
-`node scripts/convert_pdf_to_images.mjs <output.pdf> <verify_images/>`
+`node scripts/convert_pdf_to_images.mjs '<output.pdf>' '<verify_images/>'`
 
 如果文本位置不正确：
 - **方法 A**：检查你是否使用了来自 form_structure.json 的 PDF 坐标，带 `pdf_width`/`pdf_height`

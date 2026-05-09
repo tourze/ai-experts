@@ -2069,6 +2069,7 @@ describe("component build integration", () => {
     for (const platform of ["claude", "codex"]) {
       const legacyRuntimeScriptCommands: string[] = [];
       const leakedRuntimePlaceholders: string[] = [];
+      const unquotedProcedurePlaceholders: string[] = [];
       const skillsRoot = join(tmpDistDir, platform, "skills");
       for (const markdownFile of collectFiles(skillsRoot, (file) => file.endsWith(".md"))) {
         const markdown = readFileSync(markdownFile, "utf-8");
@@ -2077,6 +2078,14 @@ describe("component build integration", () => {
         }
         for (const match of markdown.matchAll(/<(?:runtime-root|skills-dir)>/gu)) {
           leakedRuntimePlaceholders.push(`${markdownFile}: ${match[0]}`);
+        }
+        const lines = markdown.split(/\r?\n/u);
+        for (let index = 0; index < lines.length; index += 1) {
+          const line = lines[index];
+          if (!line.includes("procedures.js")) continue;
+          for (const match of line.matchAll(/(?<!['"])<[^>\n]+>(?!['"])/gu)) {
+            unquotedProcedurePlaceholders.push(`${markdownFile}:${index + 1}: ${match[0]}`);
+          }
         }
       }
       assert.deepEqual(
@@ -2088,6 +2097,11 @@ describe("component build integration", () => {
         leakedRuntimePlaceholders,
         [],
         `${platform} Markdown should rewrite generated runtime path placeholders`,
+      );
+      assert.deepEqual(
+        unquotedProcedurePlaceholders,
+        [],
+        `${platform} Markdown procedure commands should quote angle-bracket placeholders`,
       );
 
       const sourceProcedureEntrypointReferences: string[] = [];
