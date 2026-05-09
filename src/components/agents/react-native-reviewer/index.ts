@@ -20,7 +20,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 
 export const reactNativeReviewerAgent = defineAgent({
   id: "react-native-reviewer",
-  description: "当需要只读审查 React Native 架构、导航、列表性能、JSI/Bridge、原生模块和平台分叉 时使用。",
+  description: "当需要只读审查 React Native 架构、导航、列表性能、JSI/Bridge、原生模块和平台分叉时使用。",
   role: `你是资深 React Native 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({

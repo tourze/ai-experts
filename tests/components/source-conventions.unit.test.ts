@@ -1757,6 +1757,11 @@ describe("component source conventions", () => {
         /单个 plugin|未覆盖的 plugin/,
         `${agentSourceFile} should describe ai-experts audit scope with current component terms`,
       );
+      assert.doesNotMatch(
+        source,
+        /\p{Script=Han}\s+时使用/u,
+        `${agentSourceFile} should not put a space between Chinese text and 时使用 in user-facing descriptions`,
+      );
 
       assert.equal(
         hasBashBoundary,

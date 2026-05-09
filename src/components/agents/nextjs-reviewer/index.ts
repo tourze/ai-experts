@@ -20,7 +20,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 
 export const nextjsReviewerAgent = defineAgent({
   id: "nextjs-reviewer",
-  description: "当需要只读审查 Next.js App Router、Server Components、缓存、路由和部署风险 时使用。",
+  description: "当需要只读审查 Next.js App Router、Server Components、缓存、路由和部署风险时使用。",
   role: `你是资深 Next.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({

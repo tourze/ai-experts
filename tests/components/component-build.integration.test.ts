@@ -825,6 +825,26 @@ describe("component build integration", () => {
     );
   });
 
+  test("generated Chinese runtime prose does not split 时使用 from Chinese text", () => {
+    const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
+    const spacingIssues: string[] = [];
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
+        const source = readFileSync(generatedFile, "utf-8");
+        source.split(/\r?\n/u).forEach((line, index) => {
+          if (/\p{Script=Han}\s+时使用/u.test(line)) {
+            const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
+            spacingIssues.push(`${platform}/${generatedPath}:${index + 1}`);
+          }
+        });
+      }
+    }
+
+    assert.deepEqual(spacingIssues, [], "generated runtime prose should not contain `中文 时使用` spacing");
+  });
+
   test("generated runtime files do not leak maintainer-local absolute paths", () => {
     const localPathPattern = /(?:^|[\s"'`(])(?:file:\/\/)?(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;

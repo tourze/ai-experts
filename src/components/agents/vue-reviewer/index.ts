@@ -18,7 +18,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 
 export const vueReviewerAgent = defineAgent({
   id: "vue-reviewer",
-  description: "当需要只读审查 Vue 3 Composition API、响应式、组件设计、Pinia、Router 和模板性能 时使用。",
+  description: "当需要只读审查 Vue 3 Composition API、响应式、组件设计、Pinia、Router 和模板性能时使用。",
   role: `你是资深 Vue.js 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({

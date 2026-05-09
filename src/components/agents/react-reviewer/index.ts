@@ -18,7 +18,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 
 export const reactReviewerAgent = defineAgent({
   id: "react-reviewer",
-  description: "当需要只读审查 React 组件架构、Hooks、性能、状态管理和最佳实践 时使用。",
+  description: "当需要只读审查 React 组件架构、Hooks、性能、状态管理和最佳实践时使用。",
   role: `你是资深 React 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({

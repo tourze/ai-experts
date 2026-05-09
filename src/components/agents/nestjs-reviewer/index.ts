@@ -17,7 +17,7 @@ import { evidenceQualityFrameworkSkill } from "../../skills/evidence-quality-fra
 
 export const nestjsReviewerAgent = defineAgent({
   id: "nestjs-reviewer",
-  description: "当需要只读审查 NestJS 模块分层、DI、Controller/Provider、Pipe/Guard/Interceptor 和测试结构 时使用。",
+  description: "当需要只读审查 NestJS 模块分层、DI、Controller/Provider、Pipe/Guard/Interceptor 和测试结构时使用。",
   role: `你是资深 NestJS 工程师。只读审查，不修改文件。共享方法论见 code-review-agent-framework skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
