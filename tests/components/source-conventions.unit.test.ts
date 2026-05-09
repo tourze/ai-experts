@@ -193,12 +193,15 @@ describe("component source conventions", () => {
       skillSource,
       /只有用户明确确认虚拟机、动作和影响范围后才传 `--yes`/u,
     );
+    assert.match(skillSource, /默认拒绝覆盖本地或客体目标文件/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
     const procedureSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/prlctl-vm-control/prlctl_helper.ts"),
       "utf-8",
     );
     assert.match(procedureSource, /flag:\s+"--yes"/u);
+    assert.match(procedureSource, /flag:\s+"--overwrite"/u);
     assert.match(procedureSource, /仅在用户已明确确认虚拟机和动作后使用/u);
     assert.match(procedureSource, /isHighRiskPowerAction/u);
     assert.match(procedureSource, /Power action cancelled: confirmation required/u);
@@ -208,6 +211,21 @@ describe("component source conventions", () => {
       /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--yes"/u,
       "prlctl examples should not teach confirmation bypasses",
     );
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "prlctl examples should not teach overwrite bypasses",
+    );
+
+    const fileTransferSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/prlctl-vm-control/file_transfer.ts"),
+      "utf-8",
+    );
+    assert.match(fileTransferSource, /parseFileTransferArgs/u);
+    assert.match(fileTransferSource, /assertLocalDownloadWritable/u);
+    assert.match(fileTransferSource, /assertGuestUploadWritable/u);
+    assert.match(fileTransferSource, /output file already exists/u);
+    assert.match(fileTransferSource, /guest file already exists/u);
   });
 
   test("ios simulator optional brew installs require user confirmation wording", () => {

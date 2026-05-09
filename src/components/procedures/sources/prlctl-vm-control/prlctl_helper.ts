@@ -73,6 +73,12 @@ export const procedure = defineCliProcedure({
       required: false,
     },
     {
+      flag: "--overwrite",
+      type: "",
+      description: "上传/下载文件时仅在已确认可替换目标文件后使用",
+      required: false,
+    },
+    {
       flag: "--option",
       type: "字符串",
       description: "传递给 prlctl 的额外选项（需配合 power 子命令；也支持 --option=VALUE）",
@@ -600,8 +606,8 @@ function printUsage(): any {
   node prlctl_helper.mjs status <selector> [--json]
   node prlctl_helper.mjs info <selector>
   node prlctl_helper.mjs exec <selector> [options] -- <command>
-  node prlctl_helper.mjs upload <selector> [options] -- <local-path> <guest-path>
-  node prlctl_helper.mjs download <selector> [options] -- <guest-path> <local-path>
+  node prlctl_helper.mjs upload <selector> [options] [--overwrite] -- <local-path> <guest-path>
+  node prlctl_helper.mjs download <selector> [options] [--overwrite] -- <guest-path> <local-path>
   node prlctl_helper.mjs power <selector> <action> [--option VALUE|--option=VALUE] [--yes] [--dry-run]
   node prlctl_helper.mjs snapshots <selector>`);
 }

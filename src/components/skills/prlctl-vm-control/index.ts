@@ -31,14 +31,14 @@ export const prlctlVmControlSkill = defineSkill({
     "优先把任务拆成多个可验证的小命令；失败时先保留 stdout / stderr，再缩小范围重试。",
     "如果任务依赖 GUI、剪贴板、浏览器会话或登录态，不要假定 `prlctl exec` 默认上下文正确，必须先做身份验证。",
     "Windows 文本输出优先走 `--shell powershell`，helper 会用 Base64 envelope 规避中文输出在 `prlctl` / 终端链路中的编码损坏；只有需要完全手写进程参数时才用 `--shell raw`。",
-    "文件传输走 `prlctl-helper` 的 `upload` / `download` 子命令，默认会分片传输并覆盖目标文件；传输敏感文件前先确认目标路径和登录上下文。",
+    "文件传输走 `prlctl-helper` 的 `upload` / `download` 子命令，默认拒绝覆盖本地或客体目标文件；确认目标可替换后才传 `--overwrite`。",
     "诊断 helper 挂起时只输出 PID、PPID、状态、运行时长和可执行文件名等摘要；不要把当前 CLI 临时任务输出、完整 `ps aux` 长命令行或 PowerShell/Base64 payload 直接贴回对话。",
   ],
   checklist: [
     "目标虚拟机是否已经通过 `resolve` 变成唯一结果。",
     "执行动作前是否已采集 `status` / `info` 作为基线证据。",
     "Windows 客体任务是否确认了执行上下文：服务态、当前登录用户，还是显式账户。",
-    "文件传输是否确认了方向、源路径、目标路径和覆盖风险。",
+    "文件传输是否确认了方向、源路径、目标路径和覆盖许可。",
     "排查挂起时是否避免读取平台临时任务输出文件或输出完整长命令行。",
     "使用 `--user` 时是否同时提供了 `--password-env`，并确认密码来自环境变量而非命令行明文。",
     "高风险动作前是否确认快照、回滚路径和用户授权。",
@@ -82,7 +82,7 @@ export const prlctlVmControlSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-3",
-        label: "上传和下载统一走 `prlctl-helper` 的文件传输子命令，执行前确认方向、源路径、目标路径和覆盖风险。",
+        label: "上传和下载统一走 `prlctl-helper` 的文件传输子命令，执行前确认方向、源路径、目标路径和覆盖许可。",
       }),
       defineWorkflowStep({
         id: "step-4",

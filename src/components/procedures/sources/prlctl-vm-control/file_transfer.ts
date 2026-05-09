@@ -1,5 +1,6 @@
 import {
   appendFileSync,
+  existsSync,
   mkdirSync,
   readFileSync,
   statSync,
@@ -30,6 +31,7 @@ export function parseFileTransferArgs(
     resolvePaths: false,
     advancedTerminal: false,
     dryRun: false,
+    overwrite: false,
     chunkSize: DEFAULT_CHUNK_SIZE,
     localPath: null,
     guestPath: null,
@@ -54,6 +56,8 @@ export function parseFileTransferArgs(
       options.advancedTerminal = true;
     } else if (current === "--dry-run") {
       options.dryRun = true;
+    } else if (current === "--overwrite") {
+      options.overwrite = true;
     } else if (current === "--chunk-size") {
       options.chunkSize = parseChunkSize(
         readValue(args, i++, ErrorClass),
@@ -119,6 +123,9 @@ function buildPowerShellUploadChunk(guestPath: any, chunkBase64: any): any {
 function buildPowerShellSizeCommand(guestPath: any): any {
   return `$p=${psString(guestPath)};if(!(Test-Path -LiteralPath $p -PathType Leaf)){throw \"Guest file not found: $p\"};(New-Object IO.FileInfo $p).Length`;
 }
+function buildPowerShellExistsCommand(guestPath: any): any {
+  return `$p=${psString(guestPath)};if(Test-Path -LiteralPath $p -PathType Leaf){'1'}else{'0'}`;
+}
 function buildPowerShellDownloadChunk(
   guestPath: any,
   offset: any,
@@ -157,6 +164,9 @@ function buildShUploadChunk(guestPath: any, chunkBase64: any): any {
 function buildShSizeCommand(guestPath: any): any {
   return `wc -c < ${shQuote(guestPath)} | tr -d '[:space:]'`;
 }
+function buildShExistsCommand(guestPath: any): any {
+  return `[ -f ${shQuote(guestPath)} ] && printf 1 || printf 0`;
+}
 function buildShDownloadChunk(guestPath: any, offset: any, count: any): any {
   return `dd if=${shQuote(guestPath)} bs=1 skip=${offset} count=${count} 2>/dev/null | base64 | tr -d '\\n'`;
 }
@@ -174,6 +184,11 @@ function buildSizeCommand(shell: any, guestPath: any): any {
   return shell === "powershell"
     ? buildPowerShellSizeCommand(guestPath)
     : buildShSizeCommand(guestPath);
+}
+export function buildGuestFileExistsCommand(shell: any, guestPath: any): any {
+  return shell === "powershell"
+    ? buildPowerShellExistsCommand(guestPath)
+    : buildShExistsCommand(guestPath);
 }
 function buildDownloadChunk(
   shell: any,
@@ -222,6 +237,52 @@ function runUploadCommand(
   }
   return runners.runGuestCommand(vm, options, command, { check: true });
 }
+export function assertLocalDownloadWritable(
+  localPath: any,
+  overwrite: any = false,
+  ErrorClass: any = Error,
+): any {
+  if (existsSync(localPath) && !overwrite) {
+    fail(
+      ErrorClass,
+      `output file already exists: ${localPath}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+}
+export function guestFileExists(
+  vm: any,
+  options: any,
+  runners: any,
+  ErrorClass: any,
+): any {
+  try {
+    const result = runners.runGuestCommand(
+      vm,
+      options,
+      buildGuestFileExistsCommand(options.shell, options.guestPath),
+      { check: true },
+    );
+    return String(result.stdout ?? "").trim() === "1";
+  } catch (error: any) {
+    fail(
+      ErrorClass,
+      `无法确认客体目标文件是否存在: ${options.guestPath}\n错误: ${error.message}`,
+    );
+  }
+}
+export function assertGuestUploadWritable(
+  vm: any,
+  options: any,
+  runners: any,
+  ErrorClass: any,
+): any {
+  if (!options.overwrite && guestFileExists(vm, options, runners, ErrorClass)) {
+    fail(
+      ErrorClass,
+      `guest file already exists: ${options.guestPath}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+}
 export function uploadFile(
   vm: any,
   options: any,
@@ -241,6 +302,7 @@ export function uploadFile(
   const chunks = Math.ceil(file.length / options.chunkSize);
   if (options.dryRun)
     return summarize("upload", vm, options, file.length, chunks);
+  assertGuestUploadWritable(vm, options, runners, ErrorClass);
   runUploadCommand(
     vm,
     options,
@@ -268,6 +330,11 @@ export function downloadFile(
 ): any {
   assertTransferShell(options.shell, ErrorClass);
   if (options.dryRun) return summarize("download", vm, options, null, null);
+  assertLocalDownloadWritable(
+    options.localPath,
+    options.overwrite,
+    ErrorClass,
+  );
   const sizeResult = runners.runGuestCommand(
     vm,
     options,
