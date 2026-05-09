@@ -137,11 +137,13 @@ function renderProcedureParams(procedure: ProcedureDefinition | undefined): stri
   const header = "| 参数 | 取值 | 必填 | 说明 |";
   const divider = "|------|------|------|------|";
   const rows = procedure.params.map((p) => {
-    const flag = `\`${p.flag}\``;
-    const type = p.type || "—";
-    const required = p.required === false ? "否" : "是";
-    const description = p.description;
-    return `| ${flag} | ${type} | ${required} | ${description} |`;
+    const cells = [
+      `\`${p.flag}\``,
+      p.type || "—",
+      p.required === false ? "否" : "是",
+      p.description,
+    ];
+    return `| ${cells.map(renderMarkdownTableCell).join(" | ")} |`;
   });
   return `**参数：**\n\n${[header, divider, ...rows].join("\n")}`;
 }

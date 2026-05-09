@@ -10,7 +10,7 @@
 
 | 字段       | 如何捕获                              | 示例                                                    |
 | ---------- | ------------------------------------- | ------------------------------------------------------- |
-| CPU 型号   | `lscpu                               | grep "Model name"` 或 `sysctl -n machdep.cpu.brand_string` | Apple M2 Pro, Intel i9-13900K |
+| CPU 型号   | <code>lscpu &#124; grep "Model name"</code> 或 `sysctl -n machdep.cpu.brand_string` | Apple M2 Pro, Intel i9-13900K |
 | CPU 核心数 | `nproc` 或 `sysctl -n hw.ncpu`       | 12 核 (8P + 4E)                                        |
 | 内存       | `free -h` 或 `sysctl -n hw.memsize`  | 32 GB                                                   |
 | GPU        | `nvidia-smi` 或系统分析工具           | NVIDIA A100 40GB                                        |
@@ -20,8 +20,8 @@
 
 | 字段             | 如何捕获                     |
 | ---------------- | ---------------------------- |
-| CPU 频率         | `lscpu                       | grep MHz`  |
-| CPU 缓存大小     | `lscpu                       | grep cache` |
+| CPU 频率         | <code>lscpu &#124; grep MHz</code>  |
+| CPU 缓存大小     | <code>lscpu &#124; grep cache</code> |
 | NUMA 拓扑        | `numactl --hardware`         |
 | 热状态           | `sensors` 或 CPU 温度监控    |
 

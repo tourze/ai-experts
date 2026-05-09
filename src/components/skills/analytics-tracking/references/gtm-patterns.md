@@ -23,7 +23,7 @@ SaaS 应用的常见 Google Tag Manager 配置。
 | `CON - GA4 Measurement ID` | 常量 | `G-XXXXXXXXXX` |
 | `CON - Environment` | 常量 | `production` |
 | `JS - Page Path` | 自定义 JavaScript | `function() { return window.location.pathname; }` |
-| `JS - User ID` | 自定义 JavaScript | `function() { return window.currentUserId || undefined; }` |
+| `JS - User ID` | 自定义 JavaScript | <code>function() { return window.currentUserId &#124;&#124; undefined; }</code> |
 
 ### GA4 配置标签
 

@@ -148,6 +148,18 @@ function collectMermaidCodeBlocks(markdown: string): string[] {
   return blocks;
 }
 
+function countMarkdownTablePipes(line: string): number {
+  let count = 0;
+  for (let index = 0; index < line.length; index += 1) {
+    if (line[index] === "|" && line[index - 1] !== "\\") count += 1;
+  }
+  return count;
+}
+
+function isMarkdownTableSeparator(line: string): boolean {
+  return /^\s*\|?\s*:?-{3,}:?\s*(?:\|\s*:?-{3,}:?\s*)+\|?\s*$/u.test(line);
+}
+
 function parseMarkdownFrontmatter(file: string): any {
   const source = readFileSync(file, "utf-8");
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
@@ -813,6 +825,51 @@ describe("component build integration", () => {
     }
 
     assert.deepEqual(unclosedFences, [], "generated Markdown should not contain unclosed code fences");
+  });
+
+  test("generated Markdown table rows keep consistent column counts", () => {
+    const tableIssues: string[] = [];
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const markdownFile of collectFiles(platformRoot, (file) => file.endsWith(".md"))) {
+        const label = `${platform}/${relative(platformRoot, markdownFile).split("\\").join("/")}`;
+        const lines = readFileSync(markdownFile, "utf-8").split(/\r?\n/u);
+        let inFence = false;
+
+        for (let index = 0; index < lines.length; index += 1) {
+          const line = lines[index] ?? "";
+          if (/^\s*(?:```|~~~)/u.test(line)) {
+            inFence = !inFence;
+            continue;
+          }
+          if (inFence || !isMarkdownTableSeparator(line)) continue;
+
+          const expectedPipes = countMarkdownTablePipes(line);
+          const checkLine = (lineIndex: number): void => {
+            const actualPipes = countMarkdownTablePipes(lines[lineIndex] ?? "");
+            if (actualPipes !== expectedPipes) {
+              tableIssues.push(
+                `${label}:${lineIndex + 1}: expected ${expectedPipes} table pipes, got ${actualPipes}`,
+              );
+            }
+          };
+
+          for (let lineIndex = index - 1; lineIndex >= 0; lineIndex -= 1) {
+            const candidate = lines[lineIndex] ?? "";
+            if (!candidate.includes("|") || candidate.trim() === "") break;
+            checkLine(lineIndex);
+          }
+          for (let lineIndex = index + 1; lineIndex < lines.length; lineIndex += 1) {
+            const candidate = lines[lineIndex] ?? "";
+            if (!candidate.includes("|") || candidate.trim() === "") break;
+            checkLine(lineIndex);
+          }
+        }
+      }
+    }
+
+    assert.deepEqual(tableIssues, [], "generated Markdown tables should keep a stable column count");
   });
 
   test("generated Markdown Mermaid code blocks parse", async () => {

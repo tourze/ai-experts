@@ -182,7 +182,7 @@ function payAmount(employee) {
 | 空值检查 | `if (input == null) return defaultValue;` |
 | 空集合检查 | `if (items.length === 0) return [];` |
 | 权限检查 | `if (!user.canEdit) throw new ForbiddenError();` |
-| 边界检查 | `if (index < 0 || index >= size) throw new RangeError();` |
+| 边界检查 | <code>if (index &lt; 0 &#124;&#124; index &gt;= size) throw new RangeError();</code> |
 | 状态检查 | `if (order.isCancelled) return zeroPay();` |
 
 ### "单一返回" vs. 卫语句
