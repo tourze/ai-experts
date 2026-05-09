@@ -5,6 +5,11 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import {
+  assertOutputFilesWritable,
+  parseOverwriteArgs,
+  type OverwriteArgs,
+} from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "pdf-convert-pdf-to-images",
@@ -26,6 +31,12 @@ export const procedure = defineCliProcedure({
       type: "路径",
       description: "输出图片目录路径",
       required: true,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的页面 PNG 输出；仅在确认目标文件可替换后使用",
+      required: false,
     },
   ],
 
@@ -59,7 +70,10 @@ const requireFromScript = createRequire(import.meta.url);
 const MAX_DIMENSION = 1000;
 const SOURCE_DPI_SCALE = 200 / 72;
 function usage(): string {
-  return "Usage: convert_pdf_to_images.mjs [input pdf] [output directory]";
+  return "Usage: convert_pdf_to_images.mjs [input pdf] [output directory] [--overwrite]";
+}
+export function parseArgs(argv: readonly string[]): OverwriteArgs {
+  return parseOverwriteArgs(argv, 2);
 }
 function npmGlobalRoot(): string {
   const result = spawnSync("npm", ["root", "-g"], { encoding: "utf8" });
@@ -110,11 +124,19 @@ function scaleForPage(
   }
   return Math.min(SOURCE_DPI_SCALE, maxDimension / largestDimension);
 }
-async function convert(pdfPath: string, outputDir: string): Promise<void> {
+async function convert(
+  pdfPath: string,
+  outputDir: string,
+  options: { overwrite?: boolean } = {},
+): Promise<void> {
   const { pdf2img, pdf2size } = await importPdfmeConverter();
   const pdf = bufferToArrayBuffer(readFileSync(pdfPath));
-  mkdirSync(outputDir, { recursive: true });
   const pageSizes = await pdf2size(pdf, { scale: 1 });
+  assertOutputFilesWritable(
+    pageSizes.map((_, pageIndex) => join(outputDir, `page_${pageIndex + 1}.png`)),
+    Boolean(options.overwrite),
+  );
+  mkdirSync(outputDir, { recursive: true });
   for (let pageIndex = 0; pageIndex < pageSizes.length; pageIndex += 1) {
     const pageNumber = pageIndex + 1;
     const scale = scaleForPage(pageSizes[pageIndex]);
@@ -138,10 +160,16 @@ async function convert(pdfPath: string, outputDir: string): Promise<void> {
   console.log(`Converted ${pageSizes.length} pages to PNG images`);
 }
 export async function main(argv: readonly string[]): Promise<number> {
-  if (argv.length !== 2) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  if (args.error) {
+    console.error(`Error: ${args.error}`);
     console.log(usage());
     return 1;
   }
-  await convert(argv[0], argv[1]);
+  await convert(args.positional[0], args.positional[1], args);
   return 0;
 }

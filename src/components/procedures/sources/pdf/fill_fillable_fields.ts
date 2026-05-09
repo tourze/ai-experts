@@ -4,6 +4,11 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
+import {
+  assertOutputWritable,
+  parseOverwriteArgs,
+  type OverwriteArgs,
+} from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "pdf-fill-fillable-fields",
@@ -31,6 +36,12 @@ export const procedure = defineCliProcedure({
       type: "路径",
       description: "输出 PDF 文件路径",
       required: true,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出 PDF；仅在确认目标文件可替换后使用",
+      required: false,
     },
   ],
 
@@ -130,7 +141,10 @@ type PdfPage = {
 };
 const requireFromScript = createRequire(import.meta.url);
 function usage(): string {
-  return "Usage: fill_fillable_fields.mjs [input pdf] [field_values.json] [output pdf]";
+  return "Usage: fill_fillable_fields.mjs [input pdf] [field_values.json] [output pdf] [--overwrite]";
+}
+export function parseArgs(argv: readonly string[]): OverwriteArgs {
+  return parseOverwriteArgs(argv, 3);
 }
 function npmGlobalRoot(): string {
   const result = spawnSync("npm", ["root", "-g"], { encoding: "utf8" });
@@ -345,7 +359,9 @@ async function fillPdfFields(
   inputPdfPath: string,
   fieldsJsonPath: string,
   outputPdfPath: string,
+  options: { overwrite?: boolean } = {},
 ): Promise<void> {
+  assertOutputWritable(outputPdfPath, Boolean(options.overwrite));
   const fields = JSON.parse(
     readFileSync(fieldsJsonPath, "utf8"),
   ) as FieldValue[];
@@ -406,10 +422,16 @@ async function fillPdfFields(
   writeFileSync(outputPdfPath, await pdfDoc.save());
 }
 export async function main(argv: readonly string[]): Promise<number> {
-  if (argv.length !== 3) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  if (args.error) {
+    console.error(`Error: ${args.error}`);
     console.log(usage());
     return 1;
   }
-  await fillPdfFields(argv[0], argv[1], argv[2]);
+  await fillPdfFields(args.positional[0], args.positional[1], args.positional[2], args);
   return 0;
 }

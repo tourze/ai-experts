@@ -4,6 +4,11 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
+import {
+  assertOutputWritable,
+  parseOverwriteArgs,
+  type OverwriteArgs,
+} from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "pdf-extract-form-field-info",
@@ -25,6 +30,12 @@ export const procedure = defineCliProcedure({
       type: "路径",
       description: "输出字段信息 JSON 文件路径",
       required: true,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出 JSON；仅在确认目标文件可替换后使用",
+      required: false,
     },
   ],
 
@@ -120,7 +131,10 @@ type PdfPage = {
 };
 const requireFromScript = createRequire(import.meta.url);
 function usage(): string {
-  return "Usage: extract_form_field_info.mjs [input pdf] [output json]";
+  return "Usage: extract_form_field_info.mjs [input pdf] [output json] [--overwrite]";
+}
+export function parseArgs(argv: readonly string[]): OverwriteArgs {
+  return parseOverwriteArgs(argv, 2);
 }
 function npmGlobalRoot(): string {
   const result = spawnSync("npm", ["root", "-g"], { encoding: "utf8" });
@@ -311,12 +325,20 @@ export async function getFieldInfo(pdfPath: string): Promise<FieldInfo[]> {
   return fieldInfo;
 }
 export async function main(argv: readonly string[]): Promise<number> {
-  if (argv.length !== 2) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  if (args.error) {
+    console.error(`Error: ${args.error}`);
     console.log(usage());
     return 1;
   }
-  const fieldInfo = await getFieldInfo(argv[0]);
-  writeFileSync(argv[1], `${JSON.stringify(fieldInfo, null, 2)}\n`, "utf8");
-  console.log(`Wrote ${fieldInfo.length} fields to ${argv[1]}`);
+  const [inputPdfPath, outputJsonPath] = args.positional;
+  assertOutputWritable(outputJsonPath, args.overwrite);
+  const fieldInfo = await getFieldInfo(inputPdfPath);
+  writeFileSync(outputJsonPath, `${JSON.stringify(fieldInfo, null, 2)}\n`, "utf8");
+  console.log(`Wrote ${fieldInfo.length} fields to ${outputJsonPath}`);
   return 0;
 }

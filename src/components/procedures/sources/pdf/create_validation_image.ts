@@ -4,6 +4,11 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
+import {
+  assertOutputWritable,
+  parseOverwriteArgs,
+  type OverwriteArgs,
+} from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "pdf-create-validation-image",
@@ -38,6 +43,12 @@ export const procedure = defineCliProcedure({
       description: "输出校验图片路径",
       required: true,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出图片；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -69,7 +80,10 @@ type SharpFactory = (input: string | Buffer) => {
 };
 const requireFromScript = createRequire(import.meta.url);
 function usage(): string {
-  return "Usage: create_validation_image.mjs [page number] [fields.json file] [input image path] [output image path]";
+  return "Usage: create_validation_image.mjs [page number] [fields.json file] [input image path] [output image path] [--overwrite]";
+}
+export function parseArgs(argv: readonly string[]): OverwriteArgs {
+  return parseOverwriteArgs(argv, 4);
 }
 function npmGlobalRoot(): string {
   const result = spawnSync("npm", ["root", "-g"], { encoding: "utf8" });
@@ -119,7 +133,9 @@ async function createValidationImage(
   fieldsJsonPath: string,
   inputPath: string,
   outputPath: string,
+  options: { overwrite?: boolean } = {},
 ): Promise<void> {
+  assertOutputWritable(outputPath, Boolean(options.overwrite));
   const sharpModule = requireNodeModule<
     | SharpFactory
     | {
@@ -160,17 +176,24 @@ async function createValidationImage(
   );
 }
 export async function main(argv: readonly string[]): Promise<number> {
-  if (argv.length !== 4) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  if (args.error) {
+    console.error(`Error: ${args.error}`);
     console.log(usage());
     return 1;
   }
-  const pageNumber = Number.parseInt(argv[0], 10);
+  const [pageNumberArg, fieldsJsonPath, inputPath, outputPath] = args.positional;
+  const pageNumber = Number.parseInt(pageNumberArg, 10);
   if (!Number.isInteger(pageNumber)) {
-    throw new Error(`Invalid page number: ${argv[0]}`);
+    throw new Error(`Invalid page number: ${pageNumberArg}`);
   }
-  if (!existsSync(argv[2])) {
-    throw new Error(`Input image not found: ${argv[2]}`);
+  if (!existsSync(inputPath)) {
+    throw new Error(`Input image not found: ${inputPath}`);
   }
-  await createValidationImage(pageNumber, argv[1], argv[2], argv[3]);
+  await createValidationImage(pageNumber, fieldsJsonPath, inputPath, outputPath, args);
   return 0;
 }

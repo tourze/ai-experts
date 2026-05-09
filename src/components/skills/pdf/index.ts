@@ -25,6 +25,7 @@ export const pdfSkill = defineSkill({
     "填表前必须先跑字段发现脚本，确认字段 ID、页码和合法值。",
     "视觉型 PDF 的写入坐标要经过图片标注或抽样核对，不能凭感觉填。",
     "PDF 写回后至少人工检查一页关键字段，避免字段错位或字体异常。",
+    "默认不会覆盖已存在的 PDF、JSON 或 PNG 输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "是否区分了可填写表单与视觉型表单。",
@@ -32,6 +33,7 @@ export const pdfSkill = defineSkill({
     "对复选框、单选组、下拉框是否检查了合法取值，而不是直接塞文本。",
     "若走视觉型写入，是否结合标注图或页面截图做了位置核验。",
     "只需抽取文本/表格时，是否切换到 [pdf-extraction](references/pdf-extraction.md)。",
+    "是否确认输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   antiPatterns: [
     defineAntiPattern({

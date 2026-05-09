@@ -255,6 +255,46 @@ describe("component source conventions", () => {
     assert.match(literatureSource, /assertIndexOutputsWritable/u);
   });
 
+  test("pdf output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/pdf/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 PDF、JSON 或 PNG 输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    const sourceFiles = [
+      "convert_pdf_to_images.ts",
+      "create_validation_image.ts",
+      "extract_form_field_info.ts",
+      "extract_form_structure.ts",
+      "fill_fillable_fields.ts",
+      "fill_pdf_form_with_annotations.ts",
+    ];
+
+    for (const sourceFile of sourceFiles) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/pdf", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /parseArgs/u, `${sourceFile} should parse overwrite-aware argv`);
+      assert.match(source, /assertOutput(?:Files)?Writable/u, `${sourceFile} should guard existing output files`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/pdf/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+    assert.match(guardSource, /pass --overwrite only after confirming/u);
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

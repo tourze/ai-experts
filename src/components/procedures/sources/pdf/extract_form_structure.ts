@@ -4,6 +4,11 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
+import {
+  assertOutputWritable,
+  parseOverwriteArgs,
+  type OverwriteArgs,
+} from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "pdf-extract-form-structure",
@@ -25,6 +30,12 @@ export const procedure = defineCliProcedure({
       type: "路径",
       description: "输出结构 JSON 文件路径",
       required: true,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出 JSON；仅在确认目标文件可替换后使用",
+      required: false,
     },
   ],
 
@@ -100,7 +111,10 @@ type FormStructure = {
   }>;
 };
 function usage(): string {
-  return "Usage: extract_form_structure.mjs <input.pdf> <output.json>";
+  return "Usage: extract_form_structure.mjs <input.pdf> <output.json> [--overwrite]";
+}
+export function parseArgs(argv: readonly string[]): OverwriteArgs {
+  return parseOverwriteArgs(argv, 2);
 }
 function npmGlobalRoot(): string {
   const result = spawnSync("npm", ["root", "-g"], { encoding: "utf8" });
@@ -304,19 +318,27 @@ export async function extractFormStructure(
   return structure;
 }
 export async function main(argv: readonly string[]): Promise<number> {
-  if (argv.length !== 2) {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  if (args.error) {
+    console.error(`Error: ${args.error}`);
     console.log(usage());
     return 1;
   }
-  console.log(`Extracting structure from ${argv[0]}...`);
-  const structure = await extractFormStructure(argv[0]);
-  writeFileSync(argv[1], `${JSON.stringify(structure, null, 2)}\n`, "utf8");
+  const [inputPdfPath, outputJsonPath] = args.positional;
+  assertOutputWritable(outputJsonPath, args.overwrite);
+  console.log(`Extracting structure from ${inputPdfPath}...`);
+  const structure = await extractFormStructure(inputPdfPath);
+  writeFileSync(outputJsonPath, `${JSON.stringify(structure, null, 2)}\n`, "utf8");
   console.log("Found:");
   console.log(`  - ${structure.pages.length} pages`);
   console.log(`  - ${structure.labels.length} text labels`);
   console.log(`  - ${structure.lines.length} horizontal lines`);
   console.log(`  - ${structure.checkboxes.length} checkboxes`);
   console.log(`  - ${structure.row_boundaries.length} row boundaries`);
-  console.log(`Saved to ${argv[1]}`);
+  console.log(`Saved to ${outputJsonPath}`);
   return 0;
 }
