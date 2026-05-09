@@ -22,6 +22,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     "优先用 `screen-mapper` / `navigator` 的语义节点操作界面，坐标点击只能作为兜底并说明坐标来源。",
     "每个会改变设备或应用状态的操作之后，都要用截图、UI dump、前台包名或日志验证结果。",
     "卸载应用、关闭模拟器、强停应用或清空 logcat 会改变本地设备状态；只有用户明确确认包名、serial 和影响范围后才传 `--yes`，清空 logcat 还必须显式传 `--clear`。",
+    "diagnose-app 默认不会覆盖输出目录内已存在的诊断文件；确认目标可替换后才传 `--overwrite`。",
     "需要直接 ADB 命令时先读取 `adb-runbook` reference；能用 procedure 覆盖的场景不要手写一串临时命令。",
   ],
   antiPatterns: [
@@ -71,6 +72,7 @@ export const androidDeviceAutomationSkill = defineSkill({
       "实际调用的 procedure、关键参数和退出结果。",
       "截图、UI dump、前台状态、日志或诊断包等验证证据。",
       "未能自动化的步骤、坐标兜底依据和后续排查建议。",
+      "若复用诊断输出目录，说明目标文件不存在或已获得覆盖许可。",
     ],
   }),
   procedures: [

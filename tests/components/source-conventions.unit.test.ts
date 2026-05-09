@@ -123,6 +123,7 @@ describe("component source conventions", () => {
     );
     assert.match(androidSkillSource, /强停应用或清空 logcat/u);
     assert.match(androidSkillSource, /只有用户明确确认包名、serial 和影响范围后才传 `--yes`，清空 logcat 还必须显式传 `--clear`/u);
+    assert.match(androidSkillSource, /diagnose-app 默认不会覆盖输出目录内已存在的诊断文件/u);
 
     for (const sourceFile of ["app_launcher.ts", "diagnose_app.ts", "emulator_manage.ts", "log_monitor.ts"]) {
       const source = readFileSync(
@@ -133,6 +134,19 @@ describe("component source conventions", () => {
       assert.match(source, /仅在用户已明确确认/u, `${sourceFile} should describe when --yes is allowed`);
       assert.match(source, /readConfirmation/u, `${sourceFile} should ask for confirmation when --yes is absent`);
     }
+
+    const diagnoseSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/android-device-automation/diagnose_app.ts"),
+      "utf-8",
+    );
+    assert.match(diagnoseSource, /flag:\s+"--overwrite"/u);
+    assert.match(diagnoseSource, /plannedDiagnosisOutputFiles/u);
+    assert.match(diagnoseSource, /output file already exists/u);
+    assert.doesNotMatch(
+      diagnoseSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "android diagnose examples should not teach overwrite bypasses",
+    );
   });
 
   test("local installation procedures require explicit confirmation flags", () => {

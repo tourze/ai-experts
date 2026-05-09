@@ -1,6 +1,13 @@
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { parseArgs as parseAppLauncherArgs } from "../../src/components/procedures/sources/android-device-automation/app_launcher.ts";
-import { parseArgs as parseDiagnoseArgs } from "../../src/components/procedures/sources/android-device-automation/diagnose_app.ts";
+import {
+  assertOutputFilesWritable as assertDiagnoseOutputFilesWritable,
+  parseArgs as parseDiagnoseArgs,
+  plannedDiagnosisOutputFiles,
+} from "../../src/components/procedures/sources/android-device-automation/diagnose_app.ts";
 import { parseArgs as parseEmulatorManageArgs } from "../../src/components/procedures/sources/android-device-automation/emulator_manage.ts";
 import { parseArgs as parseLogMonitorArgs } from "../../src/components/procedures/sources/android-device-automation/log_monitor.ts";
 
@@ -32,14 +39,41 @@ describe("android device automation procedures", () => {
       packageName: "com.example.app",
       clearLogcat: false,
       forceStop: false,
+      overwrite: false,
       yes: false,
     });
-    expect(parseDiagnoseArgs(["--package", "com.example.app", "--clear-logcat", "--force-stop", "--yes"]))
+    expect(parseDiagnoseArgs(["--package", "com.example.app", "--clear-logcat", "--force-stop", "--yes", "--overwrite"]))
       .toMatchObject({
         clearLogcat: true,
         forceStop: true,
+        overwrite: true,
         yes: true,
       });
+  });
+
+  test("refuses to overwrite existing diagnose output files by default", () => {
+    const workDir = mkdtempSync(join(tmpdir(), "ai-experts-android-diagnose-"));
+    try {
+      const args = parseDiagnoseArgs([
+        "--package",
+        "com.example.app",
+        "--out",
+        workDir,
+        "--grep",
+        "ERROR",
+        "--no-launch",
+      ]);
+      const plannedFiles = plannedDiagnosisOutputFiles(args, workDir);
+      expect(plannedFiles).toContain(join(workDir, "summary.json"));
+      expect(plannedFiles).toContain(join(workDir, "logcat-filtered.txt"));
+      expect(plannedFiles).not.toContain(join(workDir, "launch.txt"));
+
+      writeFileSync(join(workDir, "summary.json"), "keep\n", "utf8");
+      expect(() => assertDiagnoseOutputFilesWritable(plannedFiles)).toThrow(/output file already exists/);
+      expect(() => assertDiagnoseOutputFilesWritable(plannedFiles, true)).not.toThrow();
+    } finally {
+      rmSync(workDir, { recursive: true, force: true });
+    }
   });
 
   test("tracks explicit --yes state for logcat clearing", () => {

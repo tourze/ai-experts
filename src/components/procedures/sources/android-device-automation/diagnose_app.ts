@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 import { defineCliProcedure, procedureEntry } from "../../definition";
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ADB_PATH, resolveSerial, runAdbCommand } from "./common";
@@ -31,6 +37,12 @@ export const procedure = defineCliProcedure({
       flag: "--out",
       type: "路径",
       description: "输出目录路径",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖输出目录内已存在的诊断文件；仅在确认目标可替换后使用",
       required: false,
     },
     {
@@ -157,6 +169,7 @@ Options:
   --package <name>       Package name to diagnose
   --activity <activity>  Activity to launch with am start
   --out <dir>            Output directory
+  --overwrite            Replace existing diagnosis files after confirmation
   --grep <pattern>       Keep matching logcat lines
   --tail <lines>         Logcat line window (default: 500)
   --wait-ms <ms>         Wait after launch before collecting evidence (default: 3000)
@@ -174,6 +187,7 @@ export function parseArgs(argv: readonly string[]): any {
     packageName: null,
     activity: null,
     out: null,
+    overwrite: false,
     grep: null,
     tail: 500,
     waitMs: 3000,
@@ -200,6 +214,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--yes") {
       args.yes = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (arg === "--no-clear-logcat") {
@@ -243,6 +261,36 @@ export function parseArgs(argv: readonly string[]): any {
   if (!Number.isInteger(args.waitMs) || args.waitMs < 0)
     throw new Error("--wait-ms must be a non-negative integer");
   return args;
+}
+export function plannedDiagnosisOutputFiles(args: any, outDir: any): any {
+  const names: any[] = [];
+  if (args.clearLogcat) names.push("logcat-clear.txt");
+  if (args.forceStop) names.push("force-stop.txt");
+  if (args.launch) names.push("launch.txt");
+  names.push(
+    "pidof.txt",
+    "logcat.txt",
+    "dumpsys-window.txt",
+    "dumpsys-activity-top.txt",
+    "screen.png",
+    "uiautomator-dump.txt",
+    "ui.xml",
+    "summary.json",
+  );
+  if (args.grep) names.push("logcat-filtered.txt");
+  return names.map((name) => join(outDir, name));
+}
+export function assertOutputFilesWritable(
+  paths: any,
+  overwrite: any = false,
+): any {
+  for (const path of paths) {
+    if (existsSync(path) && !overwrite) {
+      throw new Error(
+        `output file already exists: ${path}; pass --overwrite only after confirming it can be replaced`,
+      );
+    }
+  }
 }
 function writeText(outDir: any, name: any, text: any): any {
   const filePath = join(outDir, name);
@@ -312,10 +360,14 @@ export async function main(
     console.log(usage());
     return 0;
   }
-  const serial = resolveSerial(args.serial);
   const outDir = args.out
     ? resolve(args.out)
     : defaultOutputDir(args.packageName);
+  assertOutputFilesWritable(
+    plannedDiagnosisOutputFiles(args, outDir),
+    args.overwrite,
+  );
+  const serial = resolveSerial(args.serial);
   mkdirSync(outDir, { recursive: true });
   const summary: Record<string, any> = {
     packageName: args.packageName,
