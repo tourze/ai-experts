@@ -48,11 +48,11 @@ node scripts/diagnose_app.mjs --package com.example.app --no-launch --grep React
 ## 日志与性能下钻
 
 ```bash
-node scripts/log_monitor.mjs --package com.example.app --clear --priority E
+node scripts/log_monitor.mjs --package com.example.app --priority E
 adb shell dumpsys gfxinfo com.example.app
 adb shell dumpsys meminfo com.example.app
 ```
 
-- 崩溃、闪退、启动失败：先清日志，再启动，再按 PID 抓 `logcat`。
+- 崩溃、闪退、启动失败：先按 PID 抓 `logcat`；确需清空历史日志时，确认会丢弃现有设备日志后再传 `--clear --yes`。
 - 卡顿、白屏、内存异常：补 `dumpsys gfxinfo`、`dumpsys meminfo`、`dumpsys activity top`。
 - 网络问题：在设备内跑 `curl`/`ping`/`ip addr`，不要只看宿主机网络。

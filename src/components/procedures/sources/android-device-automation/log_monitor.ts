@@ -3,7 +3,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { ADB_PATH, resolveSerial, runAdbCommand } from "./common";
-import { realpathSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 
 export const procedure = defineCliProcedure({
   id: "android-device-automation-log-monitor",
@@ -41,7 +41,13 @@ export const procedure = defineCliProcedure({
     {
       flag: "--clear",
       type: "",
-      description: "启动前清除日志，传此标志即启用",
+      description: "启动前清除日志；仅在用户已明确确认会丢弃现有日志后使用",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过清日志确认；仅在用户已明确确认影响范围后使用",
       required: false,
     },
     {
@@ -82,7 +88,8 @@ Options:
   --tag <tag>            Filter by log tag
   --priority <level>     Minimum priority V|D|I|W|E|F (default: V)
   --grep <pattern>       Grep filter applied in Node
-  --clear, -c            Clear logs first
+  --clear, -c            Clear logs first after explicit approval
+  --yes                  Skip clear-logcat confirmation after explicit approval
   --serial, -s <serial>  Device serial
   --help                 Show this help
 `;
@@ -94,6 +101,7 @@ export function parseArgs(argv: readonly string[]): any {
     priority: "V",
     grep: null,
     clear: false,
+    yes: false,
     serial: null,
     help: false,
   };
@@ -105,6 +113,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--clear" || arg === "-c") {
       args.clear = true;
+      continue;
+    }
+    if (arg === "--yes") {
+      args.yes = true;
       continue;
     }
     if (
@@ -144,6 +156,15 @@ export function main(argv: readonly string[]): any {
   }
   const serial = resolveSerial(args.serial);
   if (args.clear) {
+    if (
+      !args.yes &&
+      !readConfirmation(
+        `Clear Android logcat on device ${serial}? (type 'yes' to confirm): `,
+      )
+    ) {
+      console.log("Log clear cancelled: confirmation required");
+      return 1;
+    }
     runAdbCommand(["logcat", "-c"], serial);
     console.log("Logs cleared.");
   }
@@ -187,4 +208,14 @@ export function main(argv: readonly string[]): any {
     process.exitCode = 0;
   });
   return 0;
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }

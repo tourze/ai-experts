@@ -2,6 +2,7 @@ import { describe, expect, test } from "vitest";
 import { parseArgs as parseAppLauncherArgs } from "../../src/components/procedures/sources/android-device-automation/app_launcher.ts";
 import { parseArgs as parseDiagnoseArgs } from "../../src/components/procedures/sources/android-device-automation/diagnose_app.ts";
 import { parseArgs as parseEmulatorManageArgs } from "../../src/components/procedures/sources/android-device-automation/emulator_manage.ts";
+import { parseArgs as parseLogMonitorArgs } from "../../src/components/procedures/sources/android-device-automation/log_monitor.ts";
 
 describe("android device automation procedures", () => {
   test("tracks explicit --yes state for app uninstall", () => {
@@ -39,5 +40,16 @@ describe("android device automation procedures", () => {
         forceStop: true,
         yes: true,
       });
+  });
+
+  test("tracks explicit --yes state for logcat clearing", () => {
+    expect(parseLogMonitorArgs(["--package", "com.example.app", "--clear"])).toMatchObject({
+      clear: true,
+      yes: false,
+    });
+    expect(parseLogMonitorArgs(["--package", "com.example.app", "--clear", "--yes"])).toMatchObject({
+      clear: true,
+      yes: true,
+    });
   });
 });

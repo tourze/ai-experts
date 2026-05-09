@@ -3,7 +3,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
 import { fileURLToPath } from "node:url";
 import { resolveUdid, runCommand } from "./interaction_common";
 import { buildSimctlCommand } from "./simctl_common";
-import { realpathSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-app-launcher",
@@ -42,6 +42,12 @@ export const procedure = defineCliProcedure({
       flag: "--uninstall",
       type: "字符串",
       description: "卸载指定应用",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过终止、重启或卸载确认；仅在用户已明确确认 bundle ID 和目标模拟器后使用",
       required: false,
     },
     {
@@ -185,6 +191,7 @@ Actions:
   --state <bundle-id>        Get app state
 
 Options:
+  --yes                      Skip terminate/restart/uninstall confirmation after explicit user approval
   --wait-for-debugger        Wait for debugger when launching
   --udid <udid>              Device UDID
   --help                     Show this help
@@ -197,6 +204,7 @@ export function parseArgs(argv: readonly string[]): any {
     restart: null,
     install: null,
     uninstall: null,
+    yes: false,
     openUrl: null,
     list: false,
     state: null,
@@ -209,6 +217,7 @@ export function parseArgs(argv: readonly string[]): any {
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--list") args.list = true;
     else if (arg === "--wait-for-debugger") args.waitForDebugger = true;
+    else if (arg === "--yes") args.yes = true;
     else if (
       [
         "--launch",
@@ -258,7 +267,8 @@ export async function main(argv: readonly string[]): Promise<any> {
     console.log(usage());
     return 1;
   }
-  const launcher = new AppLauncher(resolveUdid(args.udid));
+  const udid = resolveUdid(args.udid);
+  const launcher = new AppLauncher(udid);
   if (args.launch) {
     const [success, pid] = launcher.launch(args.launch, {
       waitForDebugger: args.waitForDebugger,
@@ -271,12 +281,20 @@ export async function main(argv: readonly string[]): Promise<any> {
       pid ? `Launched ${args.launch} (PID: ${pid})` : `Launched ${args.launch}`,
     );
   } else if (args.terminate) {
+    if (!confirmAppLifecycleChange(args.yes, "Terminate", args.terminate, udid)) {
+      console.log("Terminate cancelled: confirmation required");
+      return 1;
+    }
     if (!launcher.terminate(args.terminate)) {
       console.log(`Failed to terminate ${args.terminate}`);
       return 1;
     }
     console.log(`Terminated ${args.terminate}`);
   } else if (args.restart) {
+    if (!confirmAppLifecycleChange(args.yes, "Restart", args.restart, udid)) {
+      console.log("Restart cancelled: confirmation required");
+      return 1;
+    }
     if (!(await launcher.restartApp(args.restart))) {
       console.log(`Failed to restart ${args.restart}`);
       return 1;
@@ -289,6 +307,10 @@ export async function main(argv: readonly string[]): Promise<any> {
     }
     console.log(`Installed ${args.install}`);
   } else if (args.uninstall) {
+    if (!confirmAppLifecycleChange(args.yes, "Uninstall", args.uninstall, udid)) {
+      console.log("Uninstall cancelled: confirmation required");
+      return 1;
+    }
     if (!launcher.uninstall(args.uninstall)) {
       console.log(`Failed to uninstall ${args.uninstall}`);
       return 1;
@@ -314,4 +336,25 @@ export async function main(argv: readonly string[]): Promise<any> {
     console.log(`${args.state}: ${launcher.getAppState(args.state)}`);
   }
   return 0;
+}
+function confirmAppLifecycleChange(
+  yes: any,
+  action: any,
+  bundleId: any,
+  udid: any,
+): any {
+  if (yes) return true;
+  return readConfirmation(
+    `${action} ${bundleId} on simulator ${udid}? (type 'yes' to confirm): `,
+  );
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }

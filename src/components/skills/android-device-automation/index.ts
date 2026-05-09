@@ -21,7 +21,7 @@ export const androidDeviceAutomationSkill = defineSkill({
     "先确认 Android SDK Platform-Tools、Java / OpenJDK 和目标设备可用；多设备场景必须显式指定 `-s <serial>`。",
     "优先用 `screen-mapper` / `navigator` 的语义节点操作界面，坐标点击只能作为兜底并说明坐标来源。",
     "每个会改变设备或应用状态的操作之后，都要用截图、UI dump、前台包名或日志验证结果。",
-    "卸载应用、关闭模拟器、强停应用或清空 logcat 会改变本地设备状态；只有用户明确确认包名、serial 和影响范围后才传 `--yes`。",
+    "卸载应用、关闭模拟器、强停应用或清空 logcat 会改变本地设备状态；只有用户明确确认包名、serial 和影响范围后才传 `--yes`，清空 logcat 还必须显式传 `--clear`。",
     "需要直接 ADB 命令时先读取 `adb-runbook` reference；能用 procedure 覆盖的场景不要手写一串临时命令。",
   ],
   antiPatterns: [

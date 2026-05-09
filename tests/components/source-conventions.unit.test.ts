@@ -102,9 +102,10 @@ describe("component source conventions", () => {
       join(repoRoot, "src/components/skills/ios-simulator-skill/index.ts"),
       "utf-8",
     );
+    assert.match(iosSkillSource, /卸载或终止应用/u);
     assert.match(iosSkillSource, /只有用户明确确认目标和影响范围后才传 `--yes`/u);
 
-    for (const sourceFile of ["simctl_delete.ts", "simctl_erase.ts", "simctl_shutdown.ts"]) {
+    for (const sourceFile of ["simctl_delete.ts", "simctl_erase.ts", "simctl_shutdown.ts", "app_launcher.ts"]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
         "utf-8",
@@ -121,9 +122,9 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(androidSkillSource, /强停应用或清空 logcat/u);
-    assert.match(androidSkillSource, /只有用户明确确认包名、serial 和影响范围后才传 `--yes`/u);
+    assert.match(androidSkillSource, /只有用户明确确认包名、serial 和影响范围后才传 `--yes`，清空 logcat 还必须显式传 `--clear`/u);
 
-    for (const sourceFile of ["app_launcher.ts", "diagnose_app.ts", "emulator_manage.ts"]) {
+    for (const sourceFile of ["app_launcher.ts", "diagnose_app.ts", "emulator_manage.ts", "log_monitor.ts"]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/android-device-automation", sourceFile),
         "utf-8",
