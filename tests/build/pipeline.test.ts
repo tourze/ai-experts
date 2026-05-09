@@ -450,6 +450,22 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill tools[0] mcp.tool must be a non-empty string when defined",
     );
 
+    const invalidSkillMcpServerWhitespaceRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "mcp", server: "bad server", tool: "lookup" } as any] }],
+    };
+    expect(() => validateRegistry(invalidSkillMcpServerWhitespaceRegistry)).toThrow(
+      "Skill fixture-skill tools[0] mcp.server must not contain whitespace",
+    );
+
+    const invalidSkillMcpServerDelimiterRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "mcp", server: "bad__server", tool: "lookup" } as any] }],
+    };
+    expect(() => validateRegistry(invalidSkillMcpServerDelimiterRegistry)).toThrow(
+      "Skill fixture-skill tools[0] mcp.server must not contain \"__\"",
+    );
+
     const invalidSkillMatcherKindRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, tools: [{ kind: "unknown" } as any] }],
@@ -731,6 +747,22 @@ describe("build/pipeline modules", () => {
       "Agent fixture-agent tools[0] mcp.tool must be a non-empty string when defined",
     );
 
+    const invalidAgentMcpToolWhitespaceRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "mcp", server: "fixture", tool: "bad tool" } as any] }],
+    };
+    expect(() => validateRegistry(invalidAgentMcpToolWhitespaceRegistry)).toThrow(
+      "Agent fixture-agent tools[0] mcp.tool must not contain whitespace",
+    );
+
+    const invalidAgentMcpToolDelimiterRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "mcp", server: "fixture", tool: "bad__tool" } as any] }],
+    };
+    expect(() => validateRegistry(invalidAgentMcpToolDelimiterRegistry)).toThrow(
+      "Agent fixture-agent tools[0] mcp.tool must not contain \"__\"",
+    );
+
     const invalidAgentMatcherKindRegistry: ComponentRegistry = {
       ...fixture.registry,
       agents: [{ ...fixture.agent, tools: [{ kind: "unknown" } as any] }],
@@ -789,6 +821,30 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidHookMcpToolRegistry)).toThrow(
       "Hook fixture-hook matcher[0] mcp.tool must be a non-empty string when defined",
+    );
+
+    const invalidHookMcpServerWhitespaceRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "mcp", server: "bad server", tool: "read" } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookMcpServerWhitespaceRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] mcp.server must not contain whitespace",
+    );
+
+    const invalidHookMcpToolDelimiterRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "mcp", server: "fixture", tool: "bad__tool" } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookMcpToolDelimiterRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] mcp.tool must not contain \"__\"",
     );
 
     const invalidHookRegexSourceRegistry: ComponentRegistry = {

@@ -281,6 +281,19 @@ const codexHookEvents = new Set<HookEvent>([
   HookEvent.UserPromptSubmit,
 ]);
 
+function validateMcpMatcherPart(
+  owner: string,
+  property: "server" | "tool",
+  value: string,
+): void {
+  if (/\s/u.test(value)) {
+    throw new Error(`${owner} mcp.${property} must not contain whitespace`);
+  }
+  if (value.includes("__")) {
+    throw new Error(`${owner} mcp.${property} must not contain "__"`);
+  }
+}
+
 function validateHookMatcher(hook: HookDefinition): void {
   if (!hook.matcher || hook.matcher.length === 0) return;
   if (!hookEventsWithToolMatcher.has(hook.event)) {
@@ -298,8 +311,12 @@ function validateHookMatcher(hook: HookDefinition): void {
       if (typeof matcher.server !== "string" || matcher.server.trim() === "") {
         throw new Error(`Hook ${hook.id} matcher[${index}] mcp.server must be a non-empty string`);
       }
+      validateMcpMatcherPart(`Hook ${hook.id} matcher[${index}]`, "server", matcher.server);
       if (matcher.tool !== undefined && (typeof matcher.tool !== "string" || matcher.tool.trim() === "")) {
         throw new Error(`Hook ${hook.id} matcher[${index}] mcp.tool must be a non-empty string when defined`);
+      }
+      if (typeof matcher.tool === "string") {
+        validateMcpMatcherPart(`Hook ${hook.id} matcher[${index}]`, "tool", matcher.tool);
       }
       continue;
     }
@@ -332,8 +349,12 @@ function validateRuntimeToolMatchers(
     if (typeof matcher.server !== "string" || matcher.server.trim() === "") {
       throw new Error(`${kind} ${component.id} tools[${index}] mcp.server must be a non-empty string`);
     }
+    validateMcpMatcherPart(`${kind} ${component.id} tools[${index}]`, "server", matcher.server);
     if (matcher.tool !== undefined && (typeof matcher.tool !== "string" || matcher.tool.trim() === "")) {
       throw new Error(`${kind} ${component.id} tools[${index}] mcp.tool must be a non-empty string when defined`);
+    }
+    if (typeof matcher.tool === "string") {
+      validateMcpMatcherPart(`${kind} ${component.id} tools[${index}]`, "tool", matcher.tool);
     }
   }
 }
