@@ -747,6 +747,12 @@ describe("component build integration", () => {
           if (triggerAgent && !procedure.owners?.agentIds?.includes(triggerAgent)) {
             invalidProcedureCommands.push(`${commandSource}:${procedureId}:agent:${triggerAgent}`);
           }
+          const triggerMatch = commandText.match(/--trigger-(?:skill|agent)\s+[A-Za-z0-9-]+([\s\S]*)$/u);
+          const afterTrigger = triggerMatch?.[1]?.replace(/\\\s*/gu, " ").trim() ?? "";
+          const isGeneratedProcedureCommand = /node ~\/\.(?:claude|codex)\/procedures\.js\s+\\\n/u.test(source);
+          if (isGeneratedProcedureCommand && afterTrigger !== "" && !afterTrigger.startsWith("-- ")) {
+            invalidProcedureCommands.push(`${commandSource}:${procedureId}:missing-args-separator`);
+          }
         }
       }
       assert.deepEqual(
@@ -1131,6 +1137,7 @@ describe("component build integration", () => {
     assert.match(screenshotSkill, /node ~\/\.codex\/procedures\.js/);
     assert.match(screenshotSkill, /--procedure-id screenshot-take-screenshot/);
     assert.match(screenshotSkill, /--trigger-skill screenshot/);
+    assert.match(screenshotSkill, /--trigger-skill screenshot \\\n  -- \\\n  --mode/);
     assert.match(screenshotSkill, /何时调用/);
     assert.match(screenshotSkill, /参数/);
     assert.doesNotMatch(screenshotSkill, /node \.\.\/\.\.\/procedures\.js/);

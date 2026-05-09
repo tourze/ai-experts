@@ -180,6 +180,7 @@ function renderProcedureCommand(
     `--trigger-skill ${skill.id}`,
   ];
   if (procedureArgs.length > 0) {
+    parts.push("--");
     parts.push(procedureArgs.join(" "));
   }
   return "```bash\n" + parts.join(" \\\n  ") + "\n```";
