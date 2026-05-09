@@ -11,7 +11,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
  * This produces HTML that displays math without any client-side JavaScript,
  * requiring only the KaTeX CSS + fonts for proper rendering.
  */
-import fs, { realpathSync } from "node:fs";
+import fs, { existsSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
@@ -25,6 +25,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["md-to-pdf"] },
   target: "scripts/katex_render.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 HTML 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["input.html", "output.html"] },
 });
@@ -73,7 +81,9 @@ function decodeEntities(str: any): any {
 export function renderKatexFile(
   inputPath: string,
   outputPath: string,
+  options: { overwrite?: boolean } = {},
 ): KatexStats {
+  assertOutputWritable(outputPath, options.overwrite ?? false);
   const katex = loadKatex();
   let html = fs.readFileSync(inputPath, "utf8");
   let inlineCount = 0;
@@ -131,13 +141,65 @@ export function renderKatexFile(
     errors: errorCount,
   };
 }
+export function assertOutputWritable(
+  outputPath: string,
+  overwrite = false,
+): void {
+  if (existsSync(outputPath) && !overwrite) {
+    throw new Error(
+      `output file already exists: ${outputPath}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+}
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    input: null,
+    output: null,
+    overwrite: false,
+    help: false,
+  };
+  for (const arg of argv) {
+    if (arg === "--help" || arg === "-h") {
+      args.help = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
+      continue;
+    }
+    if (arg.startsWith("-")) {
+      throw new Error(`unrecognized argument: ${arg}`);
+    }
+    if (!args.input) {
+      args.input = arg;
+    } else if (!args.output) {
+      args.output = arg;
+    } else {
+      throw new Error(`unexpected argument: ${arg}`);
+    }
+  }
+  return args;
+}
 export function main(argv: readonly string[]): any {
-  if (argv.length < 2) {
-    console.error("Usage: node katex_render.mjs <input.html> <output.html>");
+  let args: any;
+  try {
+    args = parseArgs(argv);
+  } catch (error: any) {
+    console.error(error instanceof Error ? error.message : String(error));
+    return 1;
+  }
+  if (args.help) {
+    console.log("Usage: node katex_render.mjs <input.html> <output.html> [--overwrite]");
+    return 0;
+  }
+  if (!args.input || !args.output) {
+    console.error("Usage: node katex_render.mjs <input.html> <output.html> [--overwrite]");
     return 1;
   }
   try {
-    const stats = renderKatexFile(argv[0], argv[1]);
+    const stats = renderKatexFile(args.input, args.output, {
+      overwrite: args.overwrite,
+    });
     // Output stats as JSON on the last line for parsing by md_to_pdf.mjs.
     console.log(JSON.stringify(stats));
     return 0;

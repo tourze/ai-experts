@@ -27,6 +27,7 @@ export const mdToPdfSkill = defineSkill({
     "`md-to-pdf-setup --install` 会修改本机或运行时依赖环境；只有用户明确确认安装方式和影响范围后才传 `--yes`。",
     "对大文档优先走默认管线，只有在确认依赖不足时才使用 `--no-mermaid` 或 `--no-math` 降级。",
     "自定义 CSS 只能叠加，不要覆盖掉基础排版到不可读。",
+    "默认不会覆盖已存在的 PDF 或 HTML 输出；确认目标文件可替换后才传 `--overwrite`。",
     "交付前至少抽查目录、图表、数学公式和分页效果。",
   ],
   checklist: [
@@ -34,6 +35,7 @@ export const mdToPdfSkill = defineSkill({
     "是否按需设置 `--format`、`--margin`、`--header-footer` 和 `--css`。",
     "Mermaid 与数学公式是否都成功渲染，没有留下源代码片段。",
     "输出 PDF 是否抽查了首尾页、宽表格、长代码块和分页位置。",
+    "是否确认输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
     "若只是要生成 Word 或 PPT，请不要误用本技能。",
   ],
   relatedSkills: [

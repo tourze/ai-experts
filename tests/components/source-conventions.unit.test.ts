@@ -309,6 +309,31 @@ describe("component source conventions", () => {
     assert.match(guardSource, /pass --overwrite only after confirming/u);
   });
 
+  test("md-to-pdf output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/md-to-pdf/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 PDF 或 HTML 输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["md_to_pdf.ts", "katex_render.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/md-to-pdf", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /parseArgs/u, `${sourceFile} should parse overwrite-aware argv`);
+      assert.match(source, /assertOutputWritable/u, `${sourceFile} should guard existing output files`);
+      assert.match(source, /output file already exists/u, `${sourceFile} should refuse silent overwrites`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+  });
+
   test("canvas output procedures require explicit overwrite for existing files", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/canvas-design/index.ts"),

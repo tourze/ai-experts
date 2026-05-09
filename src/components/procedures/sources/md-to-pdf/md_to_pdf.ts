@@ -71,6 +71,12 @@ export const procedure = defineCliProcedure({
       description: "显示页码页脚，传此标志即启用",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 PDF 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -99,6 +105,7 @@ type CliOptions = {
   css?: string;
   landscape: boolean;
   headerFooter: boolean;
+  overwrite: boolean;
 };
 type ProcessResult = {
   status: number | null;
@@ -318,6 +325,7 @@ function usage(): string {
     "  --css <file>                         Additional custom CSS file",
     "  --landscape                          Use landscape orientation",
     "  --header-footer                      Show page numbers in footer",
+    "  --overwrite                          Replace an existing PDF after confirmation",
     "  -h, --help                           Show this help",
   ].join("\n");
 }
@@ -349,7 +357,7 @@ function takeValue(
   }
   return value;
 }
-function parseArgs(argv: readonly string[]): CliOptions {
+export function parseArgs(argv: readonly string[]): CliOptions {
   const options: Omit<CliOptions, "input" | "output"> = {
     format: "A4",
     margin: "0.75in",
@@ -357,6 +365,7 @@ function parseArgs(argv: readonly string[]): CliOptions {
     noMath: false,
     landscape: false,
     headerFooter: false,
+    overwrite: false,
   };
   const positional: string[] = [];
   for (let index = 0; index < argv.length; index += 1) {
@@ -390,6 +399,9 @@ function parseArgs(argv: readonly string[]): CliOptions {
       case "--header-footer":
         options.headerFooter = true;
         break;
+      case "--overwrite":
+        options.overwrite = true;
+        break;
       default:
         if (arg.startsWith("-")) {
           fail(`ERROR: Unknown option '${arg}'.\n\n${usage()}`);
@@ -405,6 +417,16 @@ function parseArgs(argv: readonly string[]): CliOptions {
     output: positional[1],
     ...options,
   };
+}
+export function assertOutputWritable(
+  outputPath: string,
+  overwrite = false,
+): void {
+  if (existsSync(outputPath) && !overwrite) {
+    throw new Error(
+      `output file already exists: ${outputPath}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
 }
 function formatCount(value: number): string {
   return numberFormatter.format(value);
@@ -863,6 +885,7 @@ export async function main(argv: readonly string[]): Promise<string> {
   if (!existsSync(inputPath)) {
     fail(`ERROR: Input file not found: ${inputPath}`);
   }
+  assertOutputWritable(outputPath, args.overwrite);
   mkdirSync(dirname(outputPath), { recursive: true });
   console.log(
     `Converting: ${inputPath.split(/[\\/]/).pop()} -> ${outputPath.split(/[\\/]/).pop()}`,
