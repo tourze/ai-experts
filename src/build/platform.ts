@@ -37,7 +37,7 @@ import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks
 import { materializeRegistry } from "./registry";
 import { listProcedureUses } from "./procedure-uses";
 import type { ResolvedProcedureUse } from "./procedure-uses";
-import { emitProcedureRuntime, validateProcedureTarget } from "./procedures";
+import { emitProcedureRuntime, procedureRuntimeTarget, validateProcedureTarget } from "./procedures";
 import {
   emitSkill,
   skillSourceRoot,
@@ -174,6 +174,23 @@ function duplicateValues(values: readonly string[]): string[] {
 
 function procedureOwnerKey(ownerId: string, procedureId: string): string {
   return `${ownerId}\0${procedureId}`;
+}
+
+function validateUniqueProcedureTargetForOwner(
+  seenTargets: Map<string, string>,
+  procedure: ProcedureDefinition,
+  ownerKind: "skill" | "agent",
+  ownerId: string,
+  target: string,
+): void {
+  const key = `${ownerKind}\0${ownerId}\0${target}`;
+  const existingProcedureId = seenTargets.get(key);
+  if (existingProcedureId) {
+    throw new Error(
+      `Procedure ${procedure.id} target ${target} duplicates procedure ${existingProcedureId} for owner ${ownerKind} ${ownerId}`,
+    );
+  }
+  seenTargets.set(key, procedure.id);
 }
 
 function validateAgentSkillPlatform(
@@ -466,6 +483,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   const surfaceProcedureIds = new Set(surface.procedures.map((procedure) => procedure.id));
   const skillProcedureUseOwners = new Set<string>();
   const agentProcedureUseOwners = new Set<string>();
+  const procedureTargetsByOwner = new Map<string, string>();
 
   for (const procedure of procedures) {
     validateId(procedure.id, "procedure");
@@ -483,6 +501,8 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     validateProcedureTarget(procedure);
     validateProcedureSchema(procedure, "args");
     validateProcedureSchema(procedure, "output");
+    const procedureTarget = procedureRuntimeTarget(procedure);
+    const procedureIsReferenced = surfaceProcedureIds.has(procedure.id);
 
     const ownerSkillIds = procedure.owners.skillIds ?? [];
     const ownerAgentIds = procedure.owners.agentIds ?? [];
@@ -506,11 +526,29 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (!skillIds.has(ownerSkillId)) {
         throw new Error(`Procedure ${procedure.id} references missing owner skill: ${ownerSkillId}`);
       }
+      if (procedureIsReferenced) {
+        validateUniqueProcedureTargetForOwner(
+          procedureTargetsByOwner,
+          procedure,
+          "skill",
+          ownerSkillId,
+          procedureTarget,
+        );
+      }
     }
     for (const ownerAgentId of ownerAgentIds) {
       validateId(ownerAgentId, `procedure owner agent in ${procedure.id}`);
       if (!agentIds.has(ownerAgentId)) {
         throw new Error(`Procedure ${procedure.id} references missing owner agent: ${ownerAgentId}`);
+      }
+      if (procedureIsReferenced) {
+        validateUniqueProcedureTargetForOwner(
+          procedureTargetsByOwner,
+          procedure,
+          "agent",
+          ownerAgentId,
+          procedureTarget,
+        );
       }
     }
     proceduresById.set(procedure.id, procedure);

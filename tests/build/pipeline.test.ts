@@ -425,6 +425,51 @@ describe("build/pipeline modules", () => {
       "Procedure fixture-procedure target must use POSIX / separators: scripts\\bad.mjs",
     );
 
+    const duplicateSkillOwnerProcedureTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        procedures: [
+          defineProcedureUse({ id: fixture.procedure.id }),
+          defineProcedureUse({ id: "duplicate-skill-target-procedure" }),
+        ],
+      }],
+      procedures: [
+        fixture.procedure,
+        { ...fixture.procedure, id: "duplicate-skill-target-procedure" },
+      ],
+    };
+    expect(() => validateRegistry(duplicateSkillOwnerProcedureTargetRegistry)).toThrow(
+      "Procedure duplicate-skill-target-procedure target scripts/debug-checklist.mjs duplicates procedure fixture-procedure for owner skill fixture-skill",
+    );
+
+    const duplicateAgentOwnerProcedureTargetRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{
+        ...fixture.agent,
+        procedures: [
+          defineProcedureUse({ id: "duplicate-agent-target-a" }),
+          defineProcedureUse({ id: "duplicate-agent-target-b" }),
+        ],
+      }],
+      procedures: [
+        fixture.procedure,
+        {
+          ...fixture.procedure,
+          id: "duplicate-agent-target-a",
+          owners: { skillIds: [], agentIds: [fixture.agent.id] },
+        },
+        {
+          ...fixture.procedure,
+          id: "duplicate-agent-target-b",
+          owners: { skillIds: [], agentIds: [fixture.agent.id] },
+        },
+      ],
+    };
+    expect(() => validateRegistry(duplicateAgentOwnerProcedureTargetRegistry)).toThrow(
+      "Procedure duplicate-agent-target-b target scripts/debug-checklist.mjs duplicates procedure duplicate-agent-target-a for owner agent fixture-agent",
+    );
+
     const invalidProcedureArgsTypeNameRegistry: ComponentRegistry = {
       ...fixture.registry,
       procedures: [{

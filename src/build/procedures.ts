@@ -93,7 +93,7 @@ function normalizeProcedureTarget(target: string): string {
   return target.replace(/\.ts$/u, ".mjs");
 }
 
-function toProcedureTarget(procedure: ProcedureDefinition): string {
+export function procedureRuntimeTarget(procedure: ProcedureDefinition): string {
   return normalizeProcedureTarget(
     procedure.target ?? `scripts/${basename(toAbsolutePath(procedure.entry)).replace(/\.ts$/u, ".mjs")}`,
   );
@@ -825,7 +825,7 @@ function toRuntimeProcedureEntry(
   const owners = collectPlatformProcedureOwners(componentSurface, procedure, platform);
   return {
     id: procedure.id,
-    target: toProcedureTarget(procedure),
+    target: procedureRuntimeTarget(procedure),
     runtime: "node",
     description: procedure.description,
     owners,
