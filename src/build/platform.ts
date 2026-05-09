@@ -283,11 +283,34 @@ const codexHookEvents = new Set<HookEvent>([
 
 function validateHookMatcher(hook: HookDefinition): void {
   if (!hook.matcher || hook.matcher.length === 0) return;
-  if (hookEventsWithToolMatcher.has(hook.event)) return;
-  throw new Error(
-    `Hook ${hook.id} defines matcher for ${hook.event}; matcher is only supported for tool events: ` +
-    "PermissionRequest, PostToolUse, PreToolUse",
-  );
+  if (!hookEventsWithToolMatcher.has(hook.event)) {
+    throw new Error(
+      `Hook ${hook.id} defines matcher for ${hook.event}; matcher is only supported for tool events: ` +
+      "PermissionRequest, PostToolUse, PreToolUse",
+    );
+  }
+  for (const [index, matcher] of hook.matcher.entries()) {
+    if (typeof matcher === "string") continue;
+    if (!matcher || typeof matcher !== "object" || Array.isArray(matcher)) {
+      throw new Error(`Hook ${hook.id} matcher[${index}] must be a tool name or matcher object`);
+    }
+    if (matcher.kind === "mcp") {
+      if (typeof matcher.server !== "string" || matcher.server.trim() === "") {
+        throw new Error(`Hook ${hook.id} matcher[${index}] mcp.server must be a non-empty string`);
+      }
+      if (matcher.tool !== undefined && (typeof matcher.tool !== "string" || matcher.tool.trim() === "")) {
+        throw new Error(`Hook ${hook.id} matcher[${index}] mcp.tool must be a non-empty string when defined`);
+      }
+      continue;
+    }
+    if (matcher.kind === "regex") {
+      if (typeof matcher.source !== "string" || matcher.source.trim() === "") {
+        throw new Error(`Hook ${hook.id} matcher[${index}] regex.source must be a non-empty string`);
+      }
+      continue;
+    }
+    throw new Error(`Hook ${hook.id} matcher[${index}] uses unsupported matcher kind: ${(matcher as { kind?: unknown }).kind}`);
+  }
 }
 
 function validateRuntimeToolMatchers(
@@ -299,9 +322,18 @@ function validateRuntimeToolMatchers(
     if (!tool || typeof tool !== "object" || Array.isArray(tool)) {
       throw new Error(`${kind} ${component.id} tools[${index}] must be a tool name or matcher object`);
     }
-    const matcher = tool as Extract<ToolMatcher, { kind: string }>;
+    const matcher = tool as { kind?: unknown; server?: unknown; tool?: unknown };
     if (matcher.kind === "regex") {
       throw new Error(`${kind} ${component.id} tools[${index}] must not use regex matcher; use a concrete tool name or MCP matcher`);
+    }
+    if (matcher.kind !== "mcp") {
+      throw new Error(`${kind} ${component.id} tools[${index}] uses unsupported matcher kind: ${String(matcher.kind)}`);
+    }
+    if (typeof matcher.server !== "string" || matcher.server.trim() === "") {
+      throw new Error(`${kind} ${component.id} tools[${index}] mcp.server must be a non-empty string`);
+    }
+    if (matcher.tool !== undefined && (typeof matcher.tool !== "string" || matcher.tool.trim() === "")) {
+      throw new Error(`${kind} ${component.id} tools[${index}] mcp.tool must be a non-empty string when defined`);
     }
   }
 }

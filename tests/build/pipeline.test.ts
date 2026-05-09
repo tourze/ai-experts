@@ -434,6 +434,30 @@ describe("build/pipeline modules", () => {
       "Skill fixture-skill tools[0] must not use regex matcher",
     );
 
+    const invalidSkillMcpServerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "mcp", server: "", tool: "lookup" } as any] }],
+    };
+    expect(() => validateRegistry(invalidSkillMcpServerRegistry)).toThrow(
+      "Skill fixture-skill tools[0] mcp.server must be a non-empty string",
+    );
+
+    const invalidSkillMcpToolRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "mcp", server: "fixture", tool: "   " } as any] }],
+    };
+    expect(() => validateRegistry(invalidSkillMcpToolRegistry)).toThrow(
+      "Skill fixture-skill tools[0] mcp.tool must be a non-empty string when defined",
+    );
+
+    const invalidSkillMatcherKindRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "unknown" } as any] }],
+    };
+    expect(() => validateRegistry(invalidSkillMatcherKindRegistry)).toThrow(
+      "Skill fixture-skill tools[0] uses unsupported matcher kind: unknown",
+    );
+
     const missingSkillAssetRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{
@@ -691,6 +715,30 @@ describe("build/pipeline modules", () => {
       "Agent fixture-agent tools[0] must not use regex matcher",
     );
 
+    const invalidAgentMcpServerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "mcp", server: "" } as any] }],
+    };
+    expect(() => validateRegistry(invalidAgentMcpServerRegistry)).toThrow(
+      "Agent fixture-agent tools[0] mcp.server must be a non-empty string",
+    );
+
+    const invalidAgentMcpToolRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "mcp", server: "fixture", tool: "   " } as any] }],
+    };
+    expect(() => validateRegistry(invalidAgentMcpToolRegistry)).toThrow(
+      "Agent fixture-agent tools[0] mcp.tool must be a non-empty string when defined",
+    );
+
+    const invalidAgentMatcherKindRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "unknown" } as any] }],
+    };
+    expect(() => validateRegistry(invalidAgentMatcherKindRegistry)).toThrow(
+      "Agent fixture-agent tools[0] uses unsupported matcher kind: unknown",
+    );
+
     const invalidHookPlatformRegistry: ComponentRegistry = {
       ...fixture.registry,
       hooks: [{ ...fixture.hook, platforms: ["unsupported-hook-cli"] as any }],
@@ -717,6 +765,54 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(invalidHookMatcherRegistry)).toThrow(
       "Hook fixture-hook defines matcher for UserPromptSubmit",
+    );
+
+    const invalidHookMcpServerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "mcp", server: "", tool: "read" } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookMcpServerRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] mcp.server must be a non-empty string",
+    );
+
+    const invalidHookMcpToolRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "mcp", server: "fixture", tool: "   " } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookMcpToolRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] mcp.tool must be a non-empty string when defined",
+    );
+
+    const invalidHookRegexSourceRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "regex", source: "  " } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookRegexSourceRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] regex.source must be a non-empty string",
+    );
+
+    const invalidHookMatcherKindRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.PermissionRequest,
+        matcher: [{ kind: "unknown" } as any],
+      }],
+    };
+    expect(() => validateRegistry(invalidHookMatcherKindRegistry)).toThrow(
+      "Hook fixture-hook matcher[0] uses unsupported matcher kind: unknown",
     );
 
     const disabledInvocationRegistry: ComponentRegistry = {
