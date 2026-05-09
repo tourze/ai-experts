@@ -320,6 +320,29 @@ describe("component source conventions", () => {
     );
   });
 
+  test("runtime sources do not reintroduce legacy plugin-root compatibility paths", () => {
+    const legacyPluginRootMentions: string[] = [];
+    const runtimeSourceFiles = [
+      ...collectFiles(join(repoRoot, "src/build"), (file) => file.endsWith(".ts")),
+      ...collectFiles(join(repoRoot, "src/components"), (file) => file.endsWith(".ts")),
+    ];
+    const legacyPattern =
+      /\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b|~\/\.claude\/plugins\b|~\/\.codex\/plugins\b/u;
+
+    for (const sourceFile of runtimeSourceFiles) {
+      const source = readFileSync(sourceFile, "utf-8");
+      if (legacyPattern.test(source)) {
+        legacyPluginRootMentions.push(relative(repoRoot, sourceFile));
+      }
+    }
+
+    assert.deepEqual(
+      legacyPluginRootMentions,
+      [],
+      "runtime source code should only target canonical configRoot/skillRoot and must not keep legacy plugin-root compatibility branches",
+    );
+  });
+
   test("procedure YAML handling uses the shared yaml package", () => {
     const yamlProcedureSources = [
       join(repoRoot, "src/components/procedures/sources/skill-creator/quick_validate.ts"),
