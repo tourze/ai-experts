@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { parse as parseYaml } from "yaml";
@@ -116,6 +116,26 @@ function parseMarkdownFrontmatter(file: string): any {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
   assert.ok(match, `${relative(tmpDistDir, file)} should start with YAML frontmatter`);
   return parseYaml(match[1] ?? "");
+}
+
+function collectSymlinks(root: string): string[] {
+  const links: string[] = [];
+  const walk = (dir: string): void => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, entry.name);
+      if (entry.isSymbolicLink()) {
+        links.push(full);
+        continue;
+      }
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (lstatSync(full).isSymbolicLink()) {
+        links.push(full);
+      }
+    }
+  };
+  if (existsSync(root)) walk(root);
+  return links.sort();
 }
 
 function buildComponents(outDir: string): void {
@@ -287,6 +307,15 @@ function assertHookGroupTimeoutsMatchManifest(config: any, manifest: any, label:
 }
 
 describe("component build integration", () => {
+  test("generated dist does not contain symbolic links", () => {
+    const generatedSymlinks = collectSymlinks(tmpDistDir).map((path) => relative(tmpDistDir, path));
+    assert.deepEqual(
+      generatedSymlinks,
+      [],
+      "generated dist should contain concrete files/directories only and must not include symlinks",
+    );
+  });
+
   test("emits claude/codex manifests and core component counts", () => {
     const claudeManifest = JSON.parse(readFileSync(join(tmpDistDir, "claude/manifest.json"), "utf-8"));
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
