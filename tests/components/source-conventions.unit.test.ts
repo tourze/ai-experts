@@ -327,7 +327,7 @@ describe("component source conventions", () => {
       ...collectFiles(join(repoRoot, "src/components"), (file) => file.endsWith(".ts")),
     ];
     const legacyPattern =
-      /\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b|~\/\.claude\/plugins\b|~\/\.codex\/plugins\b/u;
+      /\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b|~\/\.claude\/plugins\b|~\/\.codex\/plugins\b|~\/\.codex\/skills\b/u;
 
     for (const sourceFile of runtimeSourceFiles) {
       const source = readFileSync(sourceFile, "utf-8");
@@ -339,7 +339,7 @@ describe("component source conventions", () => {
     assert.deepEqual(
       legacyPluginRootMentions,
       [],
-      "runtime source code should only target canonical configRoot/skillRoot and must not keep legacy plugin-root compatibility branches",
+      "runtime source code should only target canonical configRoot/skillRoot and must not keep legacy plugin-root or ~/.codex/skills compatibility branches",
     );
   });
 

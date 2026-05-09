@@ -449,7 +449,7 @@ describe("component build integration", () => {
       (file) => /\.(?:md|toml|json|mjs|js|ya?ml|txt)$/u.test(file),
     );
     const legacyPattern =
-      /~\/\.claude\/plugins\b|~\/\.codex\/plugins\b|\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b/u;
+      /~\/\.claude\/plugins\b|~\/\.codex\/plugins\b|~\/\.codex\/skills\b|\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b/u;
 
     for (const generatedFile of generatedTextFiles) {
       const source = readFileSync(generatedFile, "utf-8");
@@ -462,7 +462,7 @@ describe("component build integration", () => {
     assert.deepEqual(
       legacyPluginRootMentions,
       [],
-      "generated dist text outputs should only reference canonical configRoot/skillRoot paths and must not mention legacy plugin roots",
+      "generated dist text outputs should only reference canonical configRoot/skillRoot paths and must not mention legacy plugin roots or ~/.codex/skills",
     );
   });
 
