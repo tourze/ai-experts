@@ -38,6 +38,21 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function findRuntimeCommandsMissingPassthroughSeparator(source: string, label: string): string[] {
+  const findings: string[] = [];
+  const runtimeCommandPattern =
+    /node ~\/\.(?:claude|codex)\/procedures\.js --procedure-id [a-z0-9-]+ --trigger-(?:skill|agent) [a-z0-9-]+(?<tail>[^`"'\n]*)/gu;
+
+  for (const match of source.matchAll(runtimeCommandPattern)) {
+    const tail = (match.groups?.tail ?? "").trim();
+    if (tail === "" || /^[).,;:]/u.test(tail)) continue;
+    if (/^--(?:\s|\\|$)/u.test(tail)) continue;
+    findings.push(`${label}: ${match[0].trim()}`);
+  }
+
+  return findings;
+}
+
 function normalizeMarkdownReferenceLabel(label: string): string {
   return label.trim().replace(/\s+/gu, " ").toLowerCase();
 }
@@ -2320,6 +2335,14 @@ describe("component build integration", () => {
     assert.match(
       codexProceduresSource,
       /Run this first: node ~\/\.codex\/procedures\.js --procedure-id remote-ssh-command-install-sshpass --trigger-skill remote-ssh-command\./,
+    );
+    assert.deepEqual(
+      [
+        ...findRuntimeCommandsMissingPassthroughSeparator(proceduresSource, "claude/procedures.js"),
+        ...findRuntimeCommandsMissingPassthroughSeparator(codexProceduresSource, "codex/procedures.js"),
+      ],
+      [],
+      "bundled procedure help should include -- before procedure arguments so runtime flags cannot consume them",
     );
     assert.doesNotMatch(proceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);
     assert.doesNotMatch(codexProceduresSource, /\bnode \S*procedures\.js --procedure-id [a-z0-9-]+ -- --/);

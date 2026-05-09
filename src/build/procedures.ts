@@ -454,30 +454,30 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
     "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId + " --";
   const runtimeProcedureCommand = (rewrite) =>
     "node " + procedureRuntimePath + " --procedure-id " + rewrite.id + " --trigger-" + rewrite.triggerKind + " " + rewrite.triggerId;
-  const needsArgsSeparator = (offset, match) => {
-    const rest = source.slice(offset + match.length).replace(/^[ \\t]+/, "");
+  const needsArgsSeparator = (currentSource, offset, match) => {
+    const rest = currentSource.slice(offset + match.length).replace(/^[ \\t]+/, "");
     if (rest.startsWith("\\\\n") || rest.startsWith("\\\\r\\\\n")) return false;
     return /^(?:\\\\\\r?\\n|\\S)/.test(rest);
   };
-  const renderScriptRewrite = (rewrite, offset, match) =>
-    needsArgsSeparator(offset, match) ? runtimeCommand(rewrite) : runtimeProcedureCommand(rewrite);
-  const rewriteScriptCommand = (match, offset) => {
+  const renderScriptRewrite = (rewrite, offset, match, currentSource) =>
+    needsArgsSeparator(currentSource, offset, match) ? runtimeCommand(rewrite) : runtimeProcedureCommand(rewrite);
+  const rewriteScriptCommand = (match, offset, currentSource) => {
     const target = match.replace(/^node\\s+(?:\\.\\/)?/, "");
     if (target === context.target) {
       return context.primaryTrigger
-        ? renderScriptRewrite({ id: context.id, triggerKind: context.primaryTrigger.triggerKind, triggerId: context.primaryTrigger.triggerId }, offset, match)
+        ? renderScriptRewrite({ id: context.id, triggerKind: context.primaryTrigger.triggerKind, triggerId: context.primaryTrigger.triggerId }, offset, match, currentSource)
         : match;
     }
     for (const skillId of context.ownerSkillIds || []) {
       const ownerRewrite = commandRewrites[JSON.stringify(["skill", skillId, target])];
-      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match);
+      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match, currentSource);
     }
     for (const agentId of context.ownerAgentIds || []) {
       const ownerRewrite = commandRewrites[JSON.stringify(["agent", agentId, target])];
-      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match);
+      if (ownerRewrite) return renderScriptRewrite(ownerRewrite, offset, match, currentSource);
     }
     const globalRewrite = commandRewrites[JSON.stringify(["", "", target])];
-    return globalRewrite ? renderScriptRewrite(globalRewrite, offset, match) : match;
+    return globalRewrite ? renderScriptRewrite(globalRewrite, offset, match, currentSource) : match;
   };
   const rewriteProcedureIdReference = (match, procedureId) => {
     const rewrite = commandRewritesByProcedureId[procedureId];
