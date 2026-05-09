@@ -1167,6 +1167,17 @@ describe("build/pipeline modules", () => {
       "Agent fixture-agent contains duplicate skill reference(s): fixture-skill",
     );
 
+    const multilineAgentSkillReasonRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{
+        ...fixture.agent,
+        skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "bad\nreason" }],
+      }],
+    };
+    expect(() => validateRegistry(multilineAgentSkillReasonRegistry)).toThrow(
+      "Agent fixture-agent skill fixture-skill reason must be a single line",
+    );
+
     const codexSkillWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [
@@ -1381,6 +1392,18 @@ describe("build/pipeline modules", () => {
       relatedSkills: [],
       procedures: [],
     });
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        procedures: [],
+        skills: [{
+          ...fixture.skill,
+          procedures: [],
+          relatedSkills: [{ id: otherSkill.id, reason: "bad\nreason" }],
+        }, otherSkill],
+      })
+    ).toThrow("related skill other-skill reason must be a single line");
+
     expect(() =>
       validateRegistry({
         ...fixture.registry,

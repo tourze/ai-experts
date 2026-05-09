@@ -172,6 +172,12 @@ function duplicateValues(values: readonly string[]): string[] {
   return [...new Set(values.filter((value, index) => values.indexOf(value) !== index))];
 }
 
+function validateSingleLineMetadata(context: string, value: string): void {
+  if (/\r|\n/u.test(value)) {
+    throw new Error(`${context} must be a single line`);
+  }
+}
+
 function procedureOwnerKey(ownerId: string, procedureId: string): string {
   return `${ownerId}\0${procedureId}`;
 }
@@ -628,6 +634,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (typeof related.reason !== "string" || related.reason.trim() === "") {
         throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty reason`);
       }
+      validateSingleLineMetadata(`Skill ${skill.id} related skill ${related.id} reason`, related.reason);
       if (seenRelatedSkills.has(related.id)) {
         throw new Error(`Skill ${skill.id} has a duplicate related skill entry: ${related.id}`);
       }
@@ -760,6 +767,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
       if (typeof skill.reason !== "string" || skill.reason.trim().length === 0) {
         throw new Error(`Agent ${agent.id} skill ${skill.id} must include a non-empty reason`);
       }
+      validateSingleLineMetadata(`Agent ${agent.id} skill ${skill.id} reason`, skill.reason);
       agentSkillIds.add(skill.id);
     }
     for (const workflowSkillId of new Set([
