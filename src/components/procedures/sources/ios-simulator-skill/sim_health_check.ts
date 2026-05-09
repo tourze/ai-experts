@@ -173,7 +173,7 @@ Exit codes:
     console.log("       IDB is optional but provides advanced UI automation");
     console.log("       Install: https://fbidb.io/docs/installation");
     console.log(
-      "       Recommended: brew tap facebook/fb && brew install idb-companion",
+      "       If the user asks to install it, confirm the Homebrew change first, then run: brew tap facebook/fb && brew install idb-companion",
     );
   }
   console.log("");

@@ -196,6 +196,15 @@ describe("component source conventions", () => {
     );
   });
 
+  test("ios simulator optional brew installs require user confirmation wording", () => {
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/ios-simulator-skill/sim_health_check.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /confirm the Homebrew change first/u);
+    assert.doesNotMatch(procedureSource, /Recommended:\s*brew tap/u);
+  });
+
   test("youtube analysis scaffold does not silently overwrite Markdown output", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/youtube-analysis/index.ts"),
