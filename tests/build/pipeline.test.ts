@@ -836,6 +836,20 @@ describe("build/pipeline modules", () => {
       "Agent fixture-agent workflow references skill fixture-skill but agent.skills does not include it",
     );
 
+    const duplicateAgentSkillsRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{
+        ...fixture.agent,
+        skills: [
+          { id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" },
+          { id: fixture.skill.id, mode: SkillUseMode.Preload, reason: "duplicate fixture routing" },
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateAgentSkillsRegistry)).toThrow(
+      "Agent fixture-agent contains duplicate skill reference(s): fixture-skill",
+    );
+
     const codexSkillWorkflowWithClaudeOnlySkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [

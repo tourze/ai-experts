@@ -802,11 +802,19 @@ describe("component build integration", () => {
       } else {
         assert.match(developerInstructions, /## 技能编排/, `${label} should describe configured skill routing`);
       }
+      const seenSkillConfigPaths = new Set<string>();
       for (const skillConfig of skillConfigs) {
         assert.deepEqual(Object.keys(skillConfig).sort(), ["enabled", "path"], `${label} skill config shape`);
         assert.equal(skillConfig.enabled, true, `${label} skill config should be enabled`);
         assert.equal(typeof skillConfig.path, "string", `${label} skill path should be a string`);
-        const pathMatch = String(skillConfig.path).match(/^~\/\.agents\/skills\/([a-z0-9-]+)\/SKILL\.md$/);
+        const skillPath = String(skillConfig.path);
+        assert.equal(
+          seenSkillConfigPaths.has(skillPath),
+          false,
+          `${label} should not duplicate skill config path ${skillPath}`,
+        );
+        seenSkillConfigPaths.add(skillPath);
+        const pathMatch = skillPath.match(/^~\/\.agents\/skills\/([a-z0-9-]+)\/SKILL\.md$/);
         assert.ok(pathMatch, `${label} skill path should use the Codex user skill root`);
         assert.equal(
           existsSync(join(tmpDistDir, "codex/skills", pathMatch[1], "SKILL.md")),

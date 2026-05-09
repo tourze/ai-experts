@@ -610,6 +610,12 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!hasBashTool && bashBoundary.length > 0) {
       throw new Error(`Agent ${agent.id} defines bashBoundary but does not include KnownTool.Bash`);
     }
+    const duplicateAgentSkillIds = duplicateValues(
+      (agent.skills ?? []).map((skill: NonNullable<AgentDefinition["skills"]>[number]) => skill.id),
+    );
+    if (duplicateAgentSkillIds.length > 0) {
+      throw new Error(`Agent ${agent.id} contains duplicate skill reference(s): ${duplicateAgentSkillIds.join(", ")}`);
+    }
     const agentSkillIds = new Set<string>();
     for (const skill of agent.skills ?? []) {
       if (!skillIds.has(skill.id)) throw new Error(`Agent ${agent.id} references missing skill: ${skill.id}`);
