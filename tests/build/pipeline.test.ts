@@ -401,6 +401,49 @@ describe("build/pipeline modules", () => {
       "Procedure fixture-procedure platforms contain unsupported platform(s): unknown-cli",
     );
 
+    const invalidProcedureArgsTypeNameRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{
+        ...fixture.procedure,
+        args: { typeName: "Bad Type", fields: {} },
+      }],
+    };
+    expect(() => validateRegistry(invalidProcedureArgsTypeNameRegistry)).toThrow(
+      "Procedure fixture-procedure args.typeName must be a TypeScript identifier",
+    );
+
+    const invalidProcedureOutputFieldRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{
+        ...fixture.procedure,
+        output: {
+          typeName: "FixtureOutput",
+          fields: {
+            result: { type: "string", description: "" },
+          },
+        },
+      }],
+    };
+    expect(() => validateRegistry(invalidProcedureOutputFieldRegistry)).toThrow(
+      "Procedure fixture-procedure output.fields.result.description must be a non-empty string",
+    );
+
+    const invalidProcedureFieldRequiredRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [{
+        ...fixture.procedure,
+        args: {
+          typeName: "FixtureArgs",
+          fields: {
+            input: { type: "string", description: "fixture input", required: "yes" as any },
+          },
+        },
+      }],
+    };
+    expect(() => validateRegistry(invalidProcedureFieldRequiredRegistry)).toThrow(
+      "Procedure fixture-procedure args.fields.input.required must be a boolean when defined",
+    );
+
     const unreferencedProcedureRegistry: ComponentRegistry = {
       ...fixture.registry,
       procedures: [

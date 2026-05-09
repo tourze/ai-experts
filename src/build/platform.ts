@@ -266,6 +266,43 @@ function validateProcedureUsePlatforms(
   }
 }
 
+function validateProcedureSchema(
+  procedure: ProcedureDefinition,
+  property: "args" | "output",
+): void {
+  const schema = procedure[property];
+  if (schema === undefined) return;
+  if (!schema || typeof schema !== "object" || Array.isArray(schema)) {
+    throw new Error(`Procedure ${procedure.id} ${property} schema must be an object when defined`);
+  }
+  if (typeof schema.typeName !== "string" || schema.typeName.trim() === "") {
+    throw new Error(`Procedure ${procedure.id} ${property}.typeName must be a non-empty string`);
+  }
+  if (!/^[A-Za-z_][A-Za-z0-9_]*$/u.test(schema.typeName)) {
+    throw new Error(`Procedure ${procedure.id} ${property}.typeName must be a TypeScript identifier`);
+  }
+  if (!schema.fields || typeof schema.fields !== "object" || Array.isArray(schema.fields)) {
+    throw new Error(`Procedure ${procedure.id} ${property}.fields must be an object`);
+  }
+  for (const [fieldName, field] of Object.entries(schema.fields)) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/u.test(fieldName)) {
+      throw new Error(`Procedure ${procedure.id} ${property}.fields contains invalid field name: ${fieldName}`);
+    }
+    if (!field || typeof field !== "object" || Array.isArray(field)) {
+      throw new Error(`Procedure ${procedure.id} ${property}.fields.${fieldName} must be an object`);
+    }
+    if (typeof field.type !== "string" || field.type.trim() === "") {
+      throw new Error(`Procedure ${procedure.id} ${property}.fields.${fieldName}.type must be a non-empty string`);
+    }
+    if (typeof field.description !== "string" || field.description.trim() === "") {
+      throw new Error(`Procedure ${procedure.id} ${property}.fields.${fieldName}.description must be a non-empty string`);
+    }
+    if (field.required !== undefined && typeof field.required !== "boolean") {
+      throw new Error(`Procedure ${procedure.id} ${property}.fields.${fieldName}.required must be a boolean when defined`);
+    }
+  }
+}
+
 const hookEventsWithToolMatcher = new Set<HookEvent>([
   HookEvent.PermissionRequest,
   HookEvent.PostToolUse,
@@ -443,6 +480,8 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!existsSync(toAbsolutePath(procedure.entry))) {
       throw new Error(`Procedure ${procedure.id} entry is missing: ${displayPath(procedure.entry)}`);
     }
+    validateProcedureSchema(procedure, "args");
+    validateProcedureSchema(procedure, "output");
 
     const ownerSkillIds = procedure.owners.skillIds ?? [];
     const ownerAgentIds = procedure.owners.agentIds ?? [];
