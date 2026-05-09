@@ -1372,6 +1372,10 @@ describe("component build integration", () => {
     assert.match(claudeAgent, /model: sonnet\neffort: high/);
     assert.match(claudeAgent, /你是资深 TypeScript 工程师/);
     assert.match(claudeAgent, /`debug-methodology` \(route\)/);
+    assert.match(
+      claudeAgent,
+      /当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。/,
+    );
 
     const typescriptEngineerAgent = readFileSync(
       join(tmpDistDir, "claude/agents/typescript-engineer.md"),

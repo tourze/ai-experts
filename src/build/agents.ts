@@ -21,6 +21,8 @@ import { renderMarkdownBulletList } from "./markdown";
 import { validateMermaidSyntax } from "./mermaid";
 import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows";
 
+const AGENT_SKILL_ROUTING_GUIDANCE = "当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。";
+
 function validateSingleLineText(owner: string, property: string, value: string): void {
   if (/\r|\n/u.test(value)) {
     throw new Error(`${owner} ${property} must be a single line`);
@@ -379,7 +381,7 @@ function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet
     body,
   ];
   if (skillRoutes) {
-    sections.push("", "## 技能编排", skillRoutes, "");
+    sections.push("", "## 技能编排", skillRoutes, "", AGENT_SKILL_ROUTING_GUIDANCE, "");
   }
   return sections.join("\n");
 }
@@ -420,7 +422,7 @@ function renderCodexAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<
       "## 技能编排",
       skillRoutes,
       "",
-      "当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。",
+      AGENT_SKILL_ROUTING_GUIDANCE,
     );
   }
   const developerInstructions = developerInstructionSections.join("\n");

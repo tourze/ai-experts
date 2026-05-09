@@ -1650,13 +1650,16 @@ describe("build/pipeline modules", () => {
     const claudeAgent = readFileSync(join(out, "agents", "fixture-agent.md"), "utf-8");
     expect(claudeAgent).toContain("## Bash 使用边界");
     expect(claudeAgent).toContain("tools: Bash, mcp__fixture__agent, Read");
+    expect(claudeAgent).toContain("当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。");
     const codexAgent = readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8");
     expect(codexAgent).toContain("developer_instructions");
     expect(codexAgent).toContain("~/.agents/skills/fixture-skill/SKILL.md");
+    expect(codexAgent).toContain("当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。");
 
     await emitAgent(fixture.agent, out, Platform.Codex, new Set());
     const filteredCodexAgent = readFileSync(join(out, "agents", "fixture-agent.toml"), "utf-8");
     expect(filteredCodexAgent).not.toContain("~/.agents/skills/fixture-skill/SKILL.md");
+    expect(filteredCodexAgent).not.toContain("当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。");
   });
 
   test("agent output formats render structured json and file sets", async () => {
