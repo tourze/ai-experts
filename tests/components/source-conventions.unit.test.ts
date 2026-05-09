@@ -338,6 +338,35 @@ describe("component source conventions", () => {
     assert.match(guardSource, /output file already exists/u);
   });
 
+  test("modern web design output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/modern-web-design/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 HTML 或审计报告输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["pattern_generator.ts", "design_audit.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/modern-web-design", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /assertOutputWritable/u, `${sourceFile} should guard existing output files`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/modern-web-design/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

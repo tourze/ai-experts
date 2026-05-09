@@ -4,6 +4,7 @@ import { writeFileSync, realpathSync } from "node:fs";
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "modern-web-design-pattern-generator",
@@ -30,6 +31,12 @@ export const procedure = defineCliProcedure({
       flag: "--output",
       type: "路径",
       description: "输出文件路径",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 HTML 输出；仅在确认目标文件可替换后使用",
       required: false,
     },
   ],
@@ -70,6 +77,7 @@ export function generatePattern(
   patternKey: any,
   outputFile: any = null,
   write: any = console.log,
+  options: { overwrite?: boolean } = {},
 ): any {
   const pattern = PATTERNS[patternKey];
   if (!pattern) {
@@ -78,6 +86,7 @@ export function generatePattern(
     return 1;
   }
   if (outputFile) {
+    assertOutputWritable(outputFile, Boolean(options.overwrite));
     writeFileSync(outputFile, pattern.html, "utf8");
     write(`✅ Generated '${pattern.name}' pattern`);
     write(`   Saved to: ${outputFile}`);
@@ -126,16 +135,19 @@ async function interactiveMode(): Promise<any> {
     rl.close();
   }
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     pattern: null,
     output: null,
+    overwrite: false,
     list: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--list") {
       args.list = true;
+    } else if (arg === "--overwrite") {
+      args.overwrite = true;
     } else if (arg === "--pattern" || arg === "--output") {
       const value = argv[index + 1];
       if (value == null || value.startsWith("--")) {
@@ -166,7 +178,7 @@ export async function main(argv: readonly string[]): Promise<any> {
     return 0;
   }
   if (args.pattern) {
-    return generatePattern(args.pattern, args.output);
+    return generatePattern(args.pattern, args.output, console.log, args);
   }
   return interactiveMode();
 }

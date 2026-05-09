@@ -5,6 +5,7 @@ import { existsSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { extname } from "node:path";
 import { stdin as input, stdout as output } from "node:process";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "modern-web-design-design-audit",
@@ -25,6 +26,12 @@ export const procedure = defineCliProcedure({
       flag: "--report",
       type: "路径",
       description: "审计报告输出路径",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的审计报告；仅在确认目标文件可替换后使用",
       required: false,
     },
   ],
@@ -399,7 +406,11 @@ export class DesignAuditor {
     return report.join("\n");
   }
 }
-export function auditFile(filepath: any, outputFile: any = null): any {
+export function auditFile(
+  filepath: any,
+  outputFile: any = null,
+  options: { overwrite?: boolean } = {},
+): any {
   if (!existsSync(filepath)) {
     console.error(`Error: File '${filepath}' not found.`);
     return 1;
@@ -413,6 +424,7 @@ export function auditFile(filepath: any, outputFile: any = null): any {
   auditor.audit();
   const report = auditor.generateReport();
   if (outputFile) {
+    assertOutputWritable(outputFile, Boolean(options.overwrite));
     writeFileSync(outputFile, report, "utf-8");
     console.log("✅ Audit complete!");
     console.log(`   Report saved to: ${outputFile}`);
@@ -454,12 +466,21 @@ async function interactiveMode(): Promise<any> {
     rl.close();
   }
 }
-function parseArgs(argv: readonly string[]): any {
-  const args: Record<string, any> = { file: null, report: null, help: false };
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    file: null,
+    report: null,
+    overwrite: false,
+    help: false,
+  };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "-h" || arg === "--help") {
       args.help = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (arg === "--file" || arg === "--report") {
@@ -481,6 +502,7 @@ function printUsage(): any {
 Options:
   --file <html-file>       HTML file to audit
   --report <output-file>   Output file for audit report
+  --overwrite              Replace an existing report after confirmation
   -h, --help               Show this help`);
 }
 export async function main(argv: readonly string[]): Promise<any> {
@@ -496,7 +518,7 @@ export async function main(argv: readonly string[]): Promise<any> {
     return 0;
   }
   if (args.file) {
-    return auditFile(args.file, args.report);
+    return auditFile(args.file, args.report, args);
   }
   return interactiveMode();
 }

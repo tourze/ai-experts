@@ -36,6 +36,7 @@ export const modernWebDesignSkill = defineSkill({
     "不追热点式堆效果；玻璃、渐变、视差、滚动叙事都要有内容理由。",
     "避免\"AI 套版感\"：系统字体堆、紫色渐变、均匀卡片墙、无差别圆角、装饰性噪音。",
     "字体、色彩、网格、动效相互一致，围绕同一个概念服务。",
+    "默认不会覆盖已存在的 HTML 或审计报告输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "界面有一句能说清的视觉方向定义。",
@@ -47,6 +48,7 @@ export const modernWebDesignSkill = defineSkill({
     "首屏优先级明确，核心 CTA 和核心叙事一眼可见。",
     "视觉亮点不会牺牲可读性、可达性和响应速度。",
     "动效数量克制，且有降级策略。",
+    "是否确认输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   relatedSkills: [
     {
