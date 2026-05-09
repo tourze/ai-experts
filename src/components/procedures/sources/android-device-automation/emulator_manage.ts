@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { defineCliProcedure, procedureEntry } from "../../definition";
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync, readFileSync, realpathSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runAdbCommand } from "./common";
@@ -31,6 +31,12 @@ export const procedure = defineCliProcedure({
       flag: "--shutdown",
       type: "字符串",
       description: "按序列号关闭模拟器",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过关闭确认；仅在用户已明确确认模拟器 serial 后使用",
       required: false,
     },
     {
@@ -103,6 +109,7 @@ Actions:
   --shutdown <serial>    Shutdown emulator by serial
 
 Options:
+  --yes                  Skip shutdown confirmation after explicit user approval
   --json                 Reserved for future structured output
   --help                 Show this help
 `;
@@ -112,6 +119,7 @@ export function parseArgs(argv: readonly string[]): any {
     list: false,
     boot: null,
     shutdown: null,
+    yes: false,
     json: false,
     help: false,
   };
@@ -127,6 +135,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--json") {
       args.json = true;
+      continue;
+    }
+    if (arg === "--yes") {
+      args.yes = true;
       continue;
     }
     if (arg === "--boot" || arg === "--shutdown") {
@@ -156,9 +168,28 @@ export function main(argv: readonly string[]): any {
   } else if (args.boot) {
     return bootAvd(args.boot) ? 0 : 1;
   } else if (args.shutdown) {
+    if (
+      !args.yes &&
+      !readConfirmation(
+        `Shutdown Android emulator ${args.shutdown}? (type 'yes' to confirm): `,
+      )
+    ) {
+      console.log("Shutdown cancelled: confirmation required");
+      return 1;
+    }
     return shutdownEmulator(args.shutdown) ? 0 : 1;
   } else {
     console.log(usage());
   }
   return 0;
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }

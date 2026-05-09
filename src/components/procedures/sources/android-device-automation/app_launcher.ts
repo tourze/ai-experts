@@ -2,7 +2,7 @@
 import { defineCliProcedure, procedureEntry } from "../../definition";
 import { fileURLToPath } from "node:url";
 import { resolveSerial, runAdbCommand } from "./common";
-import { realpathSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 
 export const procedure = defineCliProcedure({
   id: "android-device-automation-app-launcher",
@@ -41,6 +41,12 @@ export const procedure = defineCliProcedure({
       flag: "--uninstall",
       type: "字符串",
       description: "卸载指定应用",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过卸载确认；仅在用户已明确确认包名和目标设备后使用",
       required: false,
     },
     {
@@ -174,6 +180,7 @@ Actions:
 
 Options:
   --serial, -s <serial>  Device serial
+  --yes                  Skip uninstall confirmation after explicit user approval
   --json                 Reserved for future structured output
   --help                 Show this help
 `;
@@ -185,6 +192,7 @@ export function parseArgs(argv: readonly string[]): any {
     terminate: null,
     install: null,
     uninstall: null,
+    yes: false,
     list: false,
     state: null,
     serial: null,
@@ -203,6 +211,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--json") {
       args.json = true;
+      continue;
+    }
+    if (arg === "--yes") {
+      args.yes = true;
       continue;
     }
     if (
@@ -263,6 +275,15 @@ export function main(argv: readonly string[]): any {
     if (!launcher.install(args.install)) return 1;
     console.log(`Installed ${args.install}`);
   } else if (args.uninstall) {
+    if (
+      !args.yes &&
+      !readConfirmation(
+        `Uninstall ${args.uninstall} from device ${serial}? (type 'yes' to confirm): `,
+      )
+    ) {
+      console.log("Uninstall cancelled: confirmation required");
+      return 1;
+    }
     if (!launcher.uninstall(args.uninstall)) return 1;
     console.log(`Uninstalled ${args.uninstall}`);
   } else if (args.list) {
@@ -273,4 +294,14 @@ export function main(argv: readonly string[]): any {
     console.log(`${args.state}: ${launcher.getAppState(args.state)}`);
   }
   return 0;
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }
