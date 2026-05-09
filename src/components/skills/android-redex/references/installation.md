@@ -1,5 +1,7 @@
 # ReDex 安装
 
+以下步骤会通过 Homebrew、apt 或 `sudo make install` 修改本机工具链。只有用户明确确认目标机器、安装方式和影响范围后，才复制执行命令；若只是优化 APK，先确认 ReDex 是否已存在，避免主动安装。
+
 ## macOS
 
 ```bash
@@ -16,7 +18,7 @@ sudo make install
 ## Ubuntu / Debian (64-bit, >= 22.04 / Debian 11)
 
 ```bash
-sudo apt-get install -y automake libtool g++-10 python3 \
+sudo apt-get install automake libtool g++-10 python3 \
   libboost-all-dev libiberty-dev libjemalloc-dev libjsoncpp-dev \
   liblz4-dev liblzma-dev zlib1g-dev
 # 或用便捷脚本

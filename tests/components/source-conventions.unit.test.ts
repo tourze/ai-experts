@@ -205,6 +205,34 @@ describe("component source conventions", () => {
     assert.doesNotMatch(procedureSource, /Recommended:\s*brew tap/u);
   });
 
+  test("android redex installation reference keeps system installs behind confirmation", () => {
+    const referenceSource = readFileSync(
+      join(repoRoot, "src/components/skills/android-redex/references/installation.md"),
+      "utf-8",
+    );
+    assert.match(referenceSource, /只有用户明确确认目标机器、安装方式和影响范围后/u);
+    assert.doesNotMatch(referenceSource, /apt-get install -y/u);
+  });
+
+  test("markitdown format reference keeps optional system installs behind confirmation", () => {
+    const referenceSource = readFileSync(
+      join(repoRoot, "src/components/skills/markitdown/references/file_formats.md"),
+      "utf-8",
+    );
+    assert.match(referenceSource, /Python extra 优先安装到项目虚拟环境/u);
+    assert.match(referenceSource, /用户确认 Homebrew 变更后执行/u);
+    assert.match(referenceSource, /用户确认 apt\/sudo 变更后执行/u);
+  });
+
+  test("ios binary analysis brew install checklist requires confirmation wording", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /先让用户确认包源和本机环境影响/u);
+    assert.match(skillSource, /brew install blacktop\/tap\/ipsw/u);
+  });
+
   test("youtube analysis scaffold does not silently overwrite Markdown output", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/youtube-analysis/index.ts"),

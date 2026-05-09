@@ -2,6 +2,8 @@
 
 本文档提供 MarkItDown 支持的每种文件格式的详细信息。
 
+依赖安装命令会修改 Python 或系统包管理环境。Python extra 优先安装到项目虚拟环境；Homebrew、apt 或 OCR 系统依赖只有在用户明确要求安装并确认影响范围后才执行。
+
 ## 文档格式
 
 ### PDF (.pdf)
@@ -207,9 +209,11 @@ result = md.convert("graph.png")
 需要 Tesseract OCR：
 ```bash
 # macOS
+# 用户确认 Homebrew 变更后执行
 brew install tesseract
 
 # Ubuntu
+# 用户确认 apt/sudo 变更后执行
 sudo apt-get install tesseract-ocr
 ```
 
@@ -461,6 +465,7 @@ result = md.convert("message.msg")
 
 2. **对于扫描的 PDF，确保 OCR 已设置**：
    ```bash
+   # 用户确认 Homebrew 变更后执行
    brew install tesseract  # macOS
    ```
 
