@@ -845,6 +845,23 @@ describe("component build integration", () => {
     assert.deepEqual(spacingIssues, [], "generated runtime prose should not contain `中文 时使用` spacing");
   });
 
+  test("generated incident response prose names observability gaps explicitly", () => {
+    const stalePhrases: string[] = [];
+    const textFilePattern = /\.(?:md|toml|ya?ml)$/u;
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
+        const source = readFileSync(generatedFile, "utf-8");
+        if (source.includes("待补观测")) {
+          stalePhrases.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}`);
+        }
+      }
+    }
+
+    assert.deepEqual(stalePhrases, [], "generated incident response prose should say 观测缺口, not 待补观测");
+  });
+
   test("generated runtime files do not leak maintainer-local absolute paths", () => {
     const localPathPattern = /(?:^|[\s"'`(])(?:file:\/\/)?(?:\/Users\/[^\s"'`)]+|\/home\/[^\s"'`)]+|\/private\/var\/[^\s"'`)]+|\/var\/folders\/[^\s"'`)]+|[A-Za-z]:\\Users\\[^\s"'`)]+)/u;
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;

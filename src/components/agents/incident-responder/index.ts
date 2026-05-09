@@ -67,7 +67,7 @@ export const incidentResponderAgent = defineAgent({
         body: "[短期 / 中期 / 长期，按风险与成本排序]",
       }),
       defineAgentOutputSection({
-        title: "待补观测",
+        title: "观测缺口",
         body: "[需要新增的 metric / log / trace / 告警]",
       }),
       defineAgentOutputSection({
