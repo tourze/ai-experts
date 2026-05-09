@@ -8,6 +8,7 @@ import { parse as parseYaml } from "yaml";
 import { afterAll, beforeAll, describe, test } from "vitest";
 import { defaultReferenceTarget, toAbsolutePath } from "../../src/build/core.ts";
 import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
+import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import { codexSystemSkillIds } from "../../src/build/platform.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
 import { registry } from "../../src/components/registry.ts";
@@ -110,6 +111,41 @@ function parseGeneratedToml(source: string, label: string): ParsedGeneratedToml 
   }
 
   return parsed;
+}
+
+function collectMermaidCodeBlocks(markdown: string): string[] {
+  const blocks: string[] = [];
+  let open: { marker: string; length: number; language: string; lines: string[] } | null = null;
+
+  for (const line of markdown.split(/\r?\n/u)) {
+    const fence = line.match(/^( {0,3})(`{3,}|~{3,})([A-Za-z0-9_-]+)?\s*$/u);
+    if (fence?.[2]) {
+      const marker = fence[2][0] ?? "";
+      const length = fence[2].length;
+      if (!open) {
+        open = {
+          marker,
+          length,
+          language: (fence[3] ?? "").toLowerCase(),
+          lines: [],
+        };
+        continue;
+      }
+      if (marker === open.marker && length >= open.length) {
+        if (open.language === "mermaid") {
+          blocks.push(open.lines.join("\n"));
+        }
+        open = null;
+        continue;
+      }
+    }
+
+    if (open) {
+      open.lines.push(line);
+    }
+  }
+
+  return blocks;
 }
 
 function parseMarkdownFrontmatter(file: string): any {
@@ -777,6 +813,29 @@ describe("component build integration", () => {
     }
 
     assert.deepEqual(unclosedFences, [], "generated Markdown should not contain unclosed code fences");
+  });
+
+  test("generated Markdown Mermaid code blocks parse", async () => {
+    const failures: string[] = [];
+
+    for (const platform of ["claude", "codex"]) {
+      const platformRoot = join(tmpDistDir, platform);
+      for (const markdownFile of collectFiles(platformRoot, (file) => file.endsWith(".md"))) {
+        const label = `${platform}/${relative(platformRoot, markdownFile).split("\\").join("/")}`;
+        const markdown = readFileSync(markdownFile, "utf-8");
+        const mermaidBlocks = collectMermaidCodeBlocks(markdown);
+
+        for (const [index, diagram] of mermaidBlocks.entries()) {
+          try {
+            await validateMermaidSyntax(`${label}#${index + 1}`, diagram);
+          } catch (error) {
+            failures.push(error instanceof Error ? error.message : String(error));
+          }
+        }
+      }
+    }
+
+    assert.deepEqual(failures, [], "generated Markdown Mermaid code blocks should parse");
   });
 
   test("emits reproducible manifests and procedure bundles", () => {

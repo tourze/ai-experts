@@ -95,27 +95,19 @@ sequenceDiagram
 
 ## Complex Example
 
-A microservices checkout flow with 6 participants grouped in `box` regions. Shows parallel calls, conditional branching, error handling with `break`, retry logic, and contextual notes — the full toolkit for complex sequences.
+A microservices checkout flow with 6 participants organized by layer-oriented participant names. Shows parallel calls, conditional branching, retry logic, and contextual notes — the full toolkit for complex sequences.
 
 ```mermaid
 sequenceDiagram
     accTitle: Microservices Checkout Flow
     accDescr: Multi-service checkout sequence showing parallel inventory and payment processing, error recovery with retries, and async notification dispatch across client, gateway, and backend service layers
 
-    box rgb(237,233,254) 🌐 Client Layer
-        participant browser as 👤 Browser
-    end
-
-    box rgb(219,234,254) 🖥️ API Layer
-        participant gw as 🌐 API Gateway
-        participant order as 📋 Order Service
-    end
-
-    box rgb(220,252,231) ⚙️ Backend Services
-        participant inventory as 📦 Inventory
-        participant payment as 💰 Payment
-        participant notify as 📤 Notifications
-    end
+    participant browser as 👤 Browser
+    participant gw as 🌐 API Gateway
+    participant order as 📋 Order Service
+    participant inventory as 📦 Inventory
+    participant payment as 💰 Payment
+    participant notify as 📤 Notifications
 
     browser->>gw: 🛒 Submit checkout
     gw->>gw: 🔐 Validate JWT token
@@ -167,7 +159,7 @@ sequenceDiagram
 
 ### Why this works
 
-- **`box` grouping** clusters participants by architectural layer — readers instantly see which services are client-facing vs backend
+- **Layer-oriented names** keep participants readable in Mermaid renderers that do not support sequence `box` styling
 - **`par` blocks** show parallel inventory + payment checks happening simultaneously, which is how real checkout systems work for performance
 - **Nested `alt`/`else`** covers the happy path AND two distinct failure modes, each with proper cleanup (void auth, release reservation)
 - **`loop` for retry logic** shows the payment retry pattern without cluttering the happy path

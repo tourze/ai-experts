@@ -520,14 +520,14 @@ def calculate_average(values: list[float]) -> float:
 
 将图表**内联放置在相关文本旁边**，而不是单独的章节中：
 
-````markdown
+~~~markdown
 ### 认证流程
 
 登录过程验证凭证、检查 MFA 状态，
 并发放会话令牌。失败的尝试会被记录用于
 安全监控。
 
-‎```mermaid
+```mermaid
 sequenceDiagram
 accTitle: 登录认证流程
 accDescr: 用户通过 API 和认证服务的登录序列
@@ -541,11 +541,11 @@ accDescr: 用户通过 API 和认证服务的登录序列
     S-->>A: ✅ 令牌已发放
     A-->>U: 200 OK + session
 
-‎```
+```
 
 令牌在 24 小时后过期。参见[认证流程](#认证流程)
 了解刷新令牌的详细信息。
-````
+~~~
 
 **始终遵循 [Mermaid 样式指南](./mermaid_style_guide.md)** 进行图表样式设置——emoji、颜色类、可访问性（`accTitle`/`accDescr`）和特定类型约定。
 

@@ -18,7 +18,7 @@
 
 _ZenUML sequence diagram showing a user authentication flow with credential validation and token generation using programming-style syntax:_
 
-```mermaid
+```zenuml
 zenuml
     @Actor User
     @Boundary AuthAPI
@@ -56,7 +56,7 @@ zenuml
 
 _Description of the interaction flow:_
 
-```mermaid
+```zenuml
 zenuml
     @Actor User
     @Boundary Server
