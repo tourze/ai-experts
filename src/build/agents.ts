@@ -407,7 +407,7 @@ function renderCodexAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<
   const body = renderAgentBodyWithGeneratedSections(agent);
   const skills = platformAgentSkills(agent, platformSkillIds);
   const skillRoutes = skills
-    .map((skill) => `- ${skill.id} (${skill.mode}): ${skill.reason}`)
+    .map((skill) => `- \`${skill.id}\` (${skill.mode}): ${skill.reason}`)
     .join("\n");
   const developerInstructionSections = [
     agent.role.trimEnd(),
@@ -420,7 +420,7 @@ function renderCodexAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<
       "## 技能编排",
       skillRoutes,
       "",
-      "When a listed skill is relevant, explicitly route the work through that skill's workflow.",
+      "当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。",
     );
   }
   const developerInstructions = developerInstructionSections.join("\n");

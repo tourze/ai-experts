@@ -1032,11 +1032,21 @@ describe("component build integration", () => {
       if (skillConfigs.length === 0) {
         assert.doesNotMatch(
           developerInstructions,
-          /## 技能编排|When a listed skill is relevant/,
+          /## 技能编排|当列出的 skill 与任务相关时/,
           `${label} should not describe skill routing without configured skills`,
         );
       } else {
         assert.match(developerInstructions, /## 技能编排/, `${label} should describe configured skill routing`);
+        assert.match(
+          developerInstructions,
+          /当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。/,
+          `${label} should render localized skill routing guidance`,
+        );
+        assert.doesNotMatch(
+          developerInstructions,
+          /When a listed skill is relevant/,
+          `${label} should not render English fallback skill routing guidance`,
+        );
       }
       const seenSkillConfigPaths = new Set<string>();
       for (const skillConfig of skillConfigs) {
