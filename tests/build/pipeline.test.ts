@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -1640,6 +1640,20 @@ describe("build/pipeline modules", () => {
       },
     );
     expect(denyOutput).toContain("\"decision\": \"block\"");
+
+    const missingEventValue = spawnSync(process.execPath, [join(hooksOut, "dispatch.mjs"), "--event", "--bad"], {
+      input: JSON.stringify({ prompt: "normal prompt" }),
+      encoding: "utf-8",
+    });
+    expect(missingEventValue.status).toBe(1);
+    expect(missingEventValue.stderr).toContain("--event requires a value");
+
+    const unknownEvent = spawnSync(process.execPath, [join(hooksOut, "dispatch.mjs"), "--event", "PreToolUse"], {
+      input: JSON.stringify({ prompt: "normal prompt" }),
+      encoding: "utf-8",
+    });
+    expect(unknownEvent.status).toBe(1);
+    expect(unknownEvent.stderr).toContain("Unknown --event: PreToolUse");
 
     const permissionDenyHook = defineHook({
       id: "fixture-permission-deny-hook",

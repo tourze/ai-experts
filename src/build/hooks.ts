@@ -107,6 +107,7 @@ ${imports.join("\n")}
 
 const platform = ${JSON.stringify(platform)};
 const hooks = ${JSON.stringify(runtimeHooks, null, 2)};
+const dispatchEvents = new Set(hooks.map((hook) => hook.event));
 const hookRunners = new Map([
 ${runners.join("\n")}
 ]);
@@ -116,7 +117,7 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === "--event") {
       const value = argv[++index];
-      if (!value) throw new Error("--event requires a value");
+      if (!value || String(value).startsWith("--")) throw new Error("--event requires a value");
       args.event = value;
     } else {
       throw new Error("Unknown argument: " + argv[index]);
@@ -298,6 +299,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const event = args.event;
   if (!event) throw new Error("Missing --event");
+  if (!dispatchEvents.has(event)) throw new Error("Unknown --event: " + event);
   const raw = await readStdin();
   const payload = normalize(raw, event);
   const results = [];
