@@ -426,8 +426,14 @@ function closeModal() {
 
 - axe DevTools（Chrome/Firefox）、WAVE、Lighthouse（Chrome DevTools）
 ```bash
-npm install -g pa11y && pa11y https://example.com
-npm install -g @axe-core/cli && axe https://example.com
+# If the tools are already available:
+pa11y https://example.com
+axe https://example.com
+
+# If they are missing, ask before adding project-local dev dependencies:
+npm install --save-dev pa11y @axe-core/cli
+npx pa11y https://example.com
+npx axe https://example.com
 ```
 
 ### 手动测试清单

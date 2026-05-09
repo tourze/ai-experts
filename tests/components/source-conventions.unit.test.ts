@@ -231,6 +231,27 @@ describe("component source conventions", () => {
     assert.doesNotMatch(referenceSource, /pacman -Sc --noconfirm/u);
   });
 
+  test("runtime guidance does not teach global tool installs for guarded workflows", () => {
+    const checkedFiles = [
+      "src/components/skills/modern-web-design/references/accessibility_guide.md",
+      "src/components/skills/md-to-pdf/README.md",
+    ];
+
+    for (const sourcePath of checkedFiles) {
+      const source = readFileSync(join(repoRoot, sourcePath), "utf-8");
+      assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
+    }
+
+    const accessibilityGuide = readFileSync(
+      join(repoRoot, "src/components/skills/modern-web-design/references/accessibility_guide.md"),
+      "utf-8",
+    );
+    assert.match(accessibilityGuide, /ask before adding project-local dev dependencies/u);
+
+    const mdToPdfReadme = readFileSync(join(repoRoot, "src/components/skills/md-to-pdf/README.md"), "utf-8");
+    assert.match(mdToPdfReadme, /Use `md-to-pdf-setup --install` and confirm/u);
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))
