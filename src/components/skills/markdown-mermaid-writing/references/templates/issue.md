@@ -12,7 +12,7 @@
 
 An issue report is a contract between the reporter and the resolver. Vague issues get vague fixes. The best issue documents are so clear that anyone on the team — or any AI agent — could pick them up, understand the problem, and start working without asking a single clarifying question. Include everything. Assume the person reading this has zero prior context.
 
-This is the [Everything is Code](../markdown_style_guide.md#-everything-is-code) philosophy: any agent or team member can find, read, and update issues with file access alone. No API, no tokens, no platform lock-in. `grep docs/project/issues/` beats searching Jira every time.
+This is the [Everything is Code](../markdown_style_guide.md#everything-is-code) philosophy: any agent or team member can find, read, and update issues with file access alone. No API, no tokens, no platform lock-in. `grep docs/project/issues/` beats searching Jira every time.
 
 ---
 

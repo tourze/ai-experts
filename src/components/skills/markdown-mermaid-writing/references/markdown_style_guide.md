@@ -38,6 +38,8 @@
 
 ---
 
+<a id="everything-is-code"></a>
+
 ## 🗂️ 一切都是代码
 
 一切都是代码。PR、issue、看板——它们都是您仓库中的 markdown 文件，而不是困在平台数据库中的数据。

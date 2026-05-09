@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { existsSync, lstatSync, readdirSync, readFileSync, readlinkSync } from "node:fs";
-import { basename, dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { describe, test } from "vitest";
@@ -52,6 +52,29 @@ function localMarkdownPath(destination: string): string | null {
     return null;
   }
   return path.replace(/\\/gu, "/");
+}
+
+function collectMarkdownAnchors(source: string): Set<string> {
+  const slugCounts = new Map<string, number>();
+  const anchors = new Set<string>();
+
+  for (const line of source.split(/\r?\n/u)) {
+    const heading = /^(#{1,6})\s+(.+?)\s*#*\s*$/u.exec(line);
+    if (heading) {
+      const baseSlug = githubStyleHeadingSlug(heading[2]);
+      if (baseSlug) {
+        const count = slugCounts.get(baseSlug) ?? 0;
+        slugCounts.set(baseSlug, count + 1);
+        anchors.add(count === 0 ? baseSlug : `${baseSlug}-${count}`);
+      }
+    }
+
+    for (const match of line.matchAll(/<a\s+[^>]*(?:id|name)=["']([^"']+)["'][^>]*>/giu)) {
+      anchors.add(match[1].toLowerCase());
+    }
+  }
+
+  return anchors;
 }
 
 describe("component source conventions", () => {
@@ -1017,20 +1040,7 @@ describe("component source conventions", () => {
 
     for (const sourceFile of skillMarkdownSources) {
       const source = readFileSync(sourceFile, "utf-8");
-      const slugCounts = new Map<string, number>();
-      const headingSlugs = new Set<string>();
-
-      for (const line of source.split(/\r?\n/u)) {
-        const heading = /^(#{1,6})\s+(.+?)\s*#*\s*$/u.exec(line);
-        if (!heading) continue;
-
-        const baseSlug = githubStyleHeadingSlug(heading[2]);
-        if (!baseSlug) continue;
-
-        const count = slugCounts.get(baseSlug) ?? 0;
-        slugCounts.set(baseSlug, count + 1);
-        headingSlugs.add(count === 0 ? baseSlug : `${baseSlug}-${count}`);
-      }
+      const headingSlugs = collectMarkdownAnchors(source);
 
       const sourceWithoutCodeFences = source.replace(/```[\s\S]*?```/gu, "");
       for (const match of sourceWithoutCodeFences.matchAll(/\[[^\]]+\]\((#[^)\s]+)\)/gu)) {
@@ -1045,6 +1055,56 @@ describe("component source conventions", () => {
       brokenAnchors,
       [],
       "same-file markdown anchors should match generated heading slugs",
+    );
+  });
+
+  test("skill markdown sources keep cross-file heading anchors valid", () => {
+    const brokenAnchors: string[] = [];
+    const anchorCache = new Map<string, Set<string>>();
+    const skillMarkdownSources = collectFiles(join(repoRoot, "src/components/skills"), (file) =>
+      file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    );
+
+    const checkHref = (sourceFile: string, rawHref: string): void => {
+      const href = markdownDestination(rawHref);
+      if (!href.includes("#") || /^[a-z][a-z0-9+.-]*:/iu.test(href) || href.startsWith("#")) return;
+
+      const hashIndex = href.indexOf("#");
+      const anchor = href.slice(hashIndex + 1);
+      const targetPath = localMarkdownPath(href);
+      if (!targetPath || !anchor) return;
+
+      const targetFile = resolve(dirname(sourceFile), targetPath);
+      if (!existsSync(targetFile) || extname(targetFile) !== ".md") return;
+
+      let targetAnchors = anchorCache.get(targetFile);
+      if (!targetAnchors) {
+        targetAnchors = collectMarkdownAnchors(readFileSync(targetFile, "utf-8"));
+        anchorCache.set(targetFile, targetAnchors);
+      }
+
+      const target = decodeMarkdownAnchor(anchor).toLowerCase();
+      if (!targetAnchors.has(target)) {
+        brokenAnchors.push(`${relative(repoRoot, sourceFile)}: ${href} missing #${target}`);
+      }
+    };
+
+    for (const sourceFile of skillMarkdownSources) {
+      const sourceWithoutCodeFences = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      for (const match of sourceWithoutCodeFences.matchAll(/!?\[[^\]\n]*\]\(([^)\n]+)\)/gu)) {
+        checkHref(sourceFile, match[1] as string);
+      }
+      for (const match of sourceWithoutCodeFences.matchAll(/^\s*\[([^\]\n]+)\]:\s+([^\n]+)$/gmu)) {
+        const label = (match[1] ?? "").trim();
+        if (label.startsWith("^")) continue;
+        checkHref(sourceFile, match[2] as string);
+      }
+    }
+
+    assert.deepEqual(
+      brokenAnchors,
+      [],
+      "cross-file markdown anchors should match generated heading slugs or explicit HTML anchors",
     );
   });
 
