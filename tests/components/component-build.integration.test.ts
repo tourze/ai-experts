@@ -24,6 +24,7 @@ import {
 
 let tmpDistDir = "";
 const codexSystemSkillIdSet = new Set<string>(codexSystemSkillIds);
+const componentBuildSetupTimeoutMs = 300_000;
 
 type ParsedTomlScalar = string | boolean | number;
 type ParsedGeneratedToml = {
@@ -270,7 +271,7 @@ beforeAll(() => {
   assert.doesNotMatch(packageJson.scripts["build:components"], /build-components\.mjs/);
 
   buildComponents(tmpDistDir);
-}, 120_000);
+}, componentBuildSetupTimeoutMs);
 
 afterAll(() => {
   if (tmpDistDir) {
