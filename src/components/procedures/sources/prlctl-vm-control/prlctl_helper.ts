@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { defineCliProcedure, procedureEntry } from "../../definition";
-import { accessSync, constants } from "node:fs";
+import { accessSync, constants, readFileSync } from "node:fs";
 import { delimiter, join } from "node:path";
 import { spawnSync } from "node:child_process";
 import {
@@ -75,7 +75,13 @@ export const procedure = defineCliProcedure({
     {
       flag: "--option",
       type: "字符串",
-      description: "传递给 prlctl 的额外选项（需配合 power 子命令）",
+      description: "传递给 prlctl 的额外选项（需配合 power 子命令；也支持 --option=VALUE）",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过高风险电源操作确认；仅在用户已明确确认虚拟机和动作后使用",
       required: false,
     },
   ],
@@ -149,6 +155,16 @@ function runPrlctl(args: any, options: any = {}): any {
     );
   }
   return runProcess("prlctl", args, options);
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }
 function normalizeSelector(selector: any): any {
   let trimmed = String(selector ?? "").trim();
@@ -413,20 +429,29 @@ function parseExec(args: any): any {
   }
   return options;
 }
-function parsePower(args: any): any {
+export function parsePower(args: any): any {
   if (args.length < 2) throw new PrlctlError("缺少虚拟机选择器或电源动作。");
   const options: Record<string, any> = {
     selector: args[0],
     action: args[1],
     option: [],
     dryRun: false,
+    yes: false,
   };
   for (let i = 2; i < args.length; i += 1) {
     if (args[i] === "--option") options.option.push(readOption(args, i++));
+    else if (String(args[i]).startsWith("--option="))
+      options.option.push(String(args[i]).slice("--option=".length));
+    else if (args[i] === "--yes") options.yes = true;
     else if (args[i] === "--dry-run") options.dryRun = true;
     else throw new PrlctlError(`未知参数: ${args[i]}`);
   }
   return options;
+}
+export function isHighRiskPowerAction(options: any): any {
+  if (options.action === "reset") return true;
+  if (options.action !== "stop") return false;
+  return options.option.some((value: any) => ["--kill", "kill"].includes(String(value)));
 }
 function commandList(args: any): any {
   const options = parseList(args);
@@ -542,6 +567,16 @@ function commandPower(args: any): any {
     printJson({ vm, command: ["prlctl", ...prlctlArgs] });
     return 0;
   }
+  if (
+    isHighRiskPowerAction(options) &&
+    !options.yes &&
+    !readConfirmation(
+      `Run high-risk prlctl command '${["prlctl", ...prlctlArgs].join(" ")}' for VM '${vm.name}'? (type 'yes' to confirm): `,
+    )
+  ) {
+    console.log("Power action cancelled: confirmation required");
+    return 1;
+  }
   return emitCommandResult(runPrlctl(prlctlArgs, { check: false }));
 }
 function commandSnapshots(args: any): any {
@@ -567,7 +602,7 @@ function printUsage(): any {
   node prlctl_helper.mjs exec <selector> [options] -- <command>
   node prlctl_helper.mjs upload <selector> [options] -- <local-path> <guest-path>
   node prlctl_helper.mjs download <selector> [options] -- <guest-path> <local-path>
-  node prlctl_helper.mjs power <selector> <action> [--option VALUE] [--dry-run]
+  node prlctl_helper.mjs power <selector> <action> [--option VALUE|--option=VALUE] [--yes] [--dry-run]
   node prlctl_helper.mjs snapshots <selector>`);
 }
 export function main(argv: readonly string[]): any {

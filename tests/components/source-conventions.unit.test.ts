@@ -170,6 +170,32 @@ describe("component source conventions", () => {
     }
   });
 
+  test("prlctl high-risk power actions require explicit confirmation flags", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/prlctl-vm-control/index.ts"),
+      "utf-8",
+    );
+    assert.match(
+      skillSource,
+      /只有用户明确确认虚拟机、动作和影响范围后才传 `--yes`/u,
+    );
+
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/prlctl-vm-control/prlctl_helper.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"--yes"/u);
+    assert.match(procedureSource, /仅在用户已明确确认虚拟机和动作后使用/u);
+    assert.match(procedureSource, /isHighRiskPowerAction/u);
+    assert.match(procedureSource, /Power action cancelled: confirmation required/u);
+    assert.match(procedureSource, /startsWith\("--option="\)/u);
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--yes"/u,
+      "prlctl examples should not teach confirmation bypasses",
+    );
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

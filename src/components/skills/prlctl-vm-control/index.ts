@@ -27,7 +27,7 @@ export const prlctlVmControlSkill = defineSkill({
   constraints: [
     "先 `list` / `resolve`，后 `info` / `exec` / `power`；不要对模糊选择器直接做高风险动作。",
     "`--user` 必须与 `--password-env` 一起使用，避免触发交互式密码提示；桌面登录态任务优先 `--current-user`。",
-    "`reset`、`stop --kill`、`snapshot-switch`、`snapshot-delete`、`prlctl set` 都属于高风险动作，只有用户明确要求时才执行。",
+    "`reset`、`stop --kill`、`snapshot-switch`、`snapshot-delete`、`prlctl set` 都属于高风险动作；只有用户明确确认虚拟机、动作和影响范围后才传 `--yes`。",
     "优先把任务拆成多个可验证的小命令；失败时先保留 stdout / stderr，再缩小范围重试。",
     "如果任务依赖 GUI、剪贴板、浏览器会话或登录态，不要假定 `prlctl exec` 默认上下文正确，必须先做身份验证。",
     "Windows 文本输出优先走 `--shell powershell`，helper 会用 Base64 envelope 规避中文输出在 `prlctl` / 终端链路中的编码损坏；只有需要完全手写进程参数时才用 `--shell raw`。",
@@ -86,7 +86,7 @@ export const prlctlVmControlSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-4",
-        label: "只有用户明确要求时才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
+        label: "只有用户明确确认虚拟机、动作和影响范围后才执行 reset、kill stop、snapshot 切换/删除或 `prlctl set`；常见模板读取 recipes reference。",
       }),
     ],
   }),

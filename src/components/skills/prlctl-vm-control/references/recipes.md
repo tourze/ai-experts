@@ -65,5 +65,5 @@
 ## 风险动作前检查
 
 - 修改配置前先执行 `node scripts/prlctl_helper.mjs info '<vm-selector>'`。
-- `reset`、`stop --option=--kill`、`snapshot-switch`、`snapshot-delete`、`prlctl set` 只有用户明确要求时才执行。
+- `reset`、`stop --option=--kill`、`snapshot-switch`、`snapshot-delete`、`prlctl set` 只有用户明确确认虚拟机、动作和影响范围后才执行；helper 会交互确认，只有已获得确认后才传 `--yes` 跳过交互。
 - 如果用户要求回滚能力，先检查快照：`node scripts/prlctl_helper.mjs snapshots '<vm-selector>'`。
