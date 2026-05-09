@@ -442,6 +442,30 @@ describe("component build integration", () => {
     );
   });
 
+  test("generated dist outputs do not reference legacy plugin-root paths", () => {
+    const legacyPluginRootMentions: string[] = [];
+    const generatedTextFiles = collectFiles(
+      tmpDistDir,
+      (file) => /\.(?:md|toml|json|mjs|js|ya?ml|txt)$/u.test(file),
+    );
+    const legacyPattern =
+      /~\/\.claude\/plugins\b|~\/\.codex\/plugins\b|\bisLegacyPluginsRoot\b|\blegacyPluginsRoot\b/u;
+
+    for (const generatedFile of generatedTextFiles) {
+      const source = readFileSync(generatedFile, "utf-8");
+      const match = source.match(legacyPattern);
+      if (match) {
+        legacyPluginRootMentions.push(`${relative(tmpDistDir, generatedFile)}: ${match[0]}`);
+      }
+    }
+
+    assert.deepEqual(
+      legacyPluginRootMentions,
+      [],
+      "generated dist text outputs should only reference canonical configRoot/skillRoot paths and must not mention legacy plugin roots",
+    );
+  });
+
   test("generated markdown frontmatter parses as YAML", () => {
     const markdownFiles = [
       ...collectFiles(join(tmpDistDir, "claude/skills"), (file) => file.endsWith("SKILL.md")),
