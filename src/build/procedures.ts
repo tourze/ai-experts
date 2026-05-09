@@ -171,7 +171,6 @@ const platform = ${JSON.stringify(platform)};
 const procedureRuntimePath = ${JSON.stringify(procedureRuntimePath(platform))};
 const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
 const runtimeRoot = dirname(runtimeFile);
-const staleRequestJsonFlag = ["--request", "json"].join("-");
 
 function parseCliArgs(argv) {
   const parsed = {
@@ -190,9 +189,6 @@ function parseCliArgs(argv) {
     if (arg === "--help" || arg === "-h") {
       parsed.help = true;
       continue;
-    }
-    if (arg === staleRequestJsonFlag) {
-      throw new Error("unknown argument: " + String(arg) + "; pass procedure args after --");
     }
     if (arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--procedure-id") {
       const value = argv[index + 1];

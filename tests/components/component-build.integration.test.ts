@@ -820,7 +820,6 @@ describe("component build integration", () => {
   });
 
   test("generated runtime materials use direct procedure arguments", () => {
-    const staleRequestJsonReferences: string[] = [];
     const bareProcedureSeparators: string[] = [];
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
 
@@ -828,9 +827,6 @@ describe("component build integration", () => {
       const platformRoot = join(tmpDistDir, platform);
       for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
         const source = readFileSync(generatedFile, "utf-8");
-        if (/request-json/u.test(source)) {
-          staleRequestJsonReferences.push(`${platform}/${relative(platformRoot, generatedFile).split("\\").join("/")}`);
-        }
         source.split(/\r?\n/u).forEach((line, index) => {
           if (/node ~\/\.(?:claude|codex)\/procedures\.js\b.* --$/u.test(line.trim())) {
             const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
@@ -840,11 +836,6 @@ describe("component build integration", () => {
       }
     }
 
-    assert.deepEqual(
-      staleRequestJsonReferences,
-      [],
-      "generated runtime files should not expose stale --request-json procedure input",
-    );
     assert.deepEqual(
       bareProcedureSeparators,
       [],
@@ -1677,19 +1668,6 @@ describe("component build integration", () => {
     assert.match(childOwnerMismatch.stderr, /not callable by trigger skill: screenshot/);
     assert.doesNotMatch(childOwnerMismatch.stdout, /Debug Checklist: child-owner-mismatch/);
 
-    const staleRequestJsonResult = runProcedureProcess([
-      "--procedure-id",
-      "debug-methodology-debug-checklist",
-      "--trigger-skill",
-      "debug-methodology",
-      "--request-json",
-      "{\"args\":[\"--title\",\"stale\"]}",
-    ]);
-    assert.equal(staleRequestJsonResult.status, 1);
-    const staleRequestJson = staleRequestJsonResult.payload;
-    assert.equal(staleRequestJson.ok, false);
-    assert.match(staleRequestJson.error.message, /unknown argument: --request-json/);
-
     const success = JSON.parse(execFileSync(process.execPath, [
       proceduresPath,
       "--procedure-id",
@@ -1709,6 +1687,19 @@ describe("component build integration", () => {
     assert.equal(success.error, null);
     assert.equal(typeof success.timingMs, "number");
     assert.match(success.result.stdout, /Debug Checklist: fixture-checklist/);
+
+    const directArgs = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--procedure-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      "--title",
+      "direct-args",
+    ], { encoding: "utf-8" }));
+    assert.equal(directArgs.ok, true);
+    assert.equal(directArgs.procedureId, "debug-methodology-debug-checklist");
+    assert.match(directArgs.result.stdout, /Debug Checklist: direct-args/);
 
     const executionFailureResult = runProcedureProcess([
       "--procedure-id",
@@ -1763,7 +1754,6 @@ describe("component build integration", () => {
       runtimeHelp.result.usage,
       /node ~\/\.claude\/procedures\.js --procedure-id <id>/,
     );
-    assert.doesNotMatch(runtimeHelp.result.usage, /request-json/);
   });
 
   test("executes representative bundled procedures with real fixtures", () => {
