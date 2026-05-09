@@ -425,6 +425,35 @@ describe("component source conventions", () => {
     assert.match(runSource, /commandArgs\.push\("--overwrite"\)/u);
   });
 
+  test("speckit baseline setup plan requires explicit overwrite for existing plan", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/speckit-baseline/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 `plan\.md`/u);
+    assert.match(skillSource, /确认实现计划可替换后才传 `--overwrite`/u);
+
+    const setupPlanSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/speckit-baseline/setup-plan.ts"),
+      "utf-8",
+    );
+    assert.match(setupPlanSource, /flag:\s+"--overwrite"/u);
+    assert.match(setupPlanSource, /parseArgs/u);
+    assert.match(setupPlanSource, /assertOutputWritable/u);
+    assert.doesNotMatch(
+      setupPlanSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "speckit setup-plan examples should not teach overwrite bypasses",
+    );
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/speckit-baseline/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+    assert.match(guardSource, /pass --overwrite only after confirming/u);
+  });
+
   test("canvas output procedures require explicit overwrite for existing files", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/canvas-design/index.ts"),

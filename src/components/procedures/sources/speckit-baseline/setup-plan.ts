@@ -8,6 +8,7 @@ import {
   printHelpAndExit,
   resolveTemplate,
 } from "./common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "speckit-baseline-setup-plan",
@@ -19,29 +20,40 @@ export const procedure = defineCliProcedure({
   runtime: "node",
   params: [
     { flag: "--json", type: "", description: "JSON 格式输出", required: false },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 plan.md 后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: { args: ["--json"] },
 });
 
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   let jsonMode = false;
+  let overwrite = false;
   for (const arg of argv) {
     if (arg === "--json") {
       jsonMode = true;
       continue;
     }
+    if (arg === "--overwrite") {
+      overwrite = true;
+      continue;
+    }
     if (arg === "--help" || arg === "-h") {
-      printHelpAndExit("Usage: node setup-plan.mjs [--json]");
+      printHelpAndExit("Usage: node setup-plan.mjs [--json] [--overwrite]");
     }
     printErrorAndExit(
       `Error: unknown option '${arg}'. Use --help for usage information.`,
     );
   }
-  return { jsonMode };
+  return { jsonMode, overwrite };
 }
 export function main(argv: readonly string[]): any {
-  const { jsonMode } = parseArgs(argv);
+  const { jsonMode, overwrite } = parseArgs(argv);
   let paths;
   try {
     paths = getFeaturePaths();
@@ -58,6 +70,11 @@ export function main(argv: readonly string[]): any {
     process.exit(1);
   }
   fs.mkdirSync(paths.FEATURE_DIR, { recursive: true });
+  try {
+    assertOutputWritable(paths.IMPL_PLAN, overwrite);
+  } catch (error: any) {
+    printErrorAndExit(`Error: ${error.message}`);
+  }
   const template = resolveTemplate("plan-template", paths.REPO_ROOT);
   if (template && fs.existsSync(template)) {
     fs.copyFileSync(template, paths.IMPL_PLAN);
