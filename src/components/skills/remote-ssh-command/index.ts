@@ -23,6 +23,7 @@ export const remoteSshCommandSkill = defineSkill({
     "主机配置只放在 `~/.host/`；procedure 只接受一个 JSON 文件路径参数。",
     "远端命令从 `stdin` 读取完整文本，不通过 CLI 参数传命令或密码。",
     "用户明确给出的远端命令可执行；模型生成的远端命令必须先回显并获得用户确认。",
+    "安装 `sshpass` 会修改本机环境；只有用户明确确认安装方式和影响范围后才传 `--yes`。",
     "history 使用 JSONL 追加写入，只记录命令、时间、退出码、耗时和超时状态，不记录远端输出。",
     "procedure 输出完整远端 `stdout/stderr`，不做截断。",
   ],
@@ -50,7 +51,7 @@ export const remoteSshCommandSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-2",
-        label: "如本机缺少 `sshpass`，先调用安装 procedure；不要把密码或远端命令放进 CLI 参数。",
+        label: "如本机缺少 `sshpass`，先让用户确认本机安装方式，再调用安装 procedure；不要把密码或远端命令放进 CLI 参数。",
       }),
       defineWorkflowStep({
         id: "step-3",
@@ -73,7 +74,7 @@ export const remoteSshCommandSkill = defineSkill({
     procedureUse(remoteSshCommandInstallSshpass, {
       label: "安装 sshpass",
       when: "本地缺少 sshpass 工具时。",
-      reason: "自动检测操作系统和包管理器并安装 sshpass，避免手写多条安装命令。",
+      reason: "自动检测操作系统和包管理器，并在确认后安装 sshpass，避免手写多条安装命令。",
     }),
     procedureUse(remoteSshCommandSshExec, {
       label: "远端命令执行",

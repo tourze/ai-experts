@@ -18,7 +18,13 @@ export const procedure = defineCliProcedure({
     {
       flag: "--install",
       type: "",
-      description: "自动安装缺失的依赖项，传此标志即启用",
+      description: "自动安装缺失的依赖项；需要交互确认或同时传 --yes",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过依赖安装确认；仅在用户已明确确认会修改本机或全局环境后使用",
       required: false,
     },
   ],
@@ -26,8 +32,40 @@ export const procedure = defineCliProcedure({
   exampleArgs: { args: ["--install"] },
 });
 
+function usage(): any {
+  return `Check md-to-pdf dependencies.
+
+Usage: node scripts/setup.mjs [options]
+
+Options:
+  --install  Install missing dependencies after confirmation
+  --yes      Skip install confirmation after explicit user approval
+  --help     Show this help
+`;
+}
+
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    install: false,
+    yes: false,
+    help: false,
+  };
+  for (const arg of argv) {
+    if (arg === "--help" || arg === "-h") args.help = true;
+    else if (arg === "--install") args.install = true;
+    else if (arg === "--yes") args.yes = true;
+    else throw new Error(`unrecognized argument: ${arg}`);
+  }
+  return args;
+}
+
 export function main(argv: readonly string[]): any {
-  const install = argv.includes("--install");
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
+  const install = args.install;
   const RED = "\x1b[0;31m";
   const GREEN = "\x1b[0;32m";
   const YELLOW = "\x1b[1;33m";
@@ -42,6 +80,30 @@ export function main(argv: readonly string[]): any {
   function fail(message: any): any {
     console.log(`${RED}✗${NC} ${message}`);
     failed = true;
+  }
+  let installDecisionRead = false;
+  let installConfirmed = false;
+  function confirmInstall(): any {
+    if (!install) return false;
+    if (args.yes) return true;
+    if (installDecisionRead) return installConfirmed;
+    process.stdout.write(
+      "Install missing md-to-pdf dependencies on this machine? This may run sudo, brew, npm -g, choco, or playwright install. (type 'yes' to confirm): ",
+    );
+    installDecisionRead = true;
+    try {
+      installConfirmed =
+        fs.readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes";
+    } catch {
+      installConfirmed = false;
+    }
+    return installConfirmed;
+  }
+  function installChromium(): any {
+    return (
+      findCommand("playwright") &&
+      run("playwright", ["install", "chromium"], { stdio: "inherit" }).status === 0
+    );
   }
   function executableNames(command: any): any {
     if (process.platform !== "win32" || path.extname(command)) {
@@ -217,9 +279,12 @@ export function main(argv: readonly string[]): any {
     const versionLine = firstLine(run(pandoc, ["--version"]).stdout);
     ok(`pandoc ${versionLine.split(/\s+/)[1] || versionLine || "unknown"}`);
   } else if (install) {
-    warn("pandoc not found — installing...");
-    if (installPandoc()) ok("pandoc installed");
-    else fail("pandoc install failed (install pandoc manually)");
+    if (!confirmInstall()) fail("pandoc install cancelled: confirmation required");
+    else {
+      warn("pandoc not found — installing...");
+      if (installPandoc()) ok("pandoc installed");
+      else fail("pandoc install failed (install pandoc manually)");
+    }
   } else {
     fail("pandoc not found (apt/brew/choco install pandoc)");
   }
@@ -234,16 +299,19 @@ export function main(argv: readonly string[]): any {
     const version = firstLine(run(mmdc, ["--version"]).stdout || "unknown");
     ok(`mmdc (mermaid-cli) ${version || "unknown"}`);
   } else if (install) {
-    warn("mmdc not found — installing @mermaid-js/mermaid-cli...");
-    if (
-      findCommand("npm") &&
-      run("npm", ["install", "-g", "@mermaid-js/mermaid-cli"], {
-        stdio: "inherit",
-      }).status === 0
-    ) {
-      ok("mmdc installed");
-    } else {
-      fail("mmdc install failed (npm install -g @mermaid-js/mermaid-cli)");
+    if (!confirmInstall()) fail("mmdc install cancelled: confirmation required");
+    else {
+      warn("mmdc not found — installing @mermaid-js/mermaid-cli...");
+      if (
+        findCommand("npm") &&
+        run("npm", ["install", "-g", "@mermaid-js/mermaid-cli"], {
+          stdio: "inherit",
+        }).status === 0
+      ) {
+        ok("mmdc installed");
+      } else {
+        fail("mmdc install failed (npm install -g @mermaid-js/mermaid-cli)");
+      }
     }
   } else {
     fail("mmdc not found (npm install -g @mermaid-js/mermaid-cli)");
@@ -252,14 +320,17 @@ export function main(argv: readonly string[]): any {
   if (katex.status === 0) {
     ok(`katex ${firstLine(katex.stdout) || "loaded"}`);
   } else if (install) {
-    warn("katex not found — installing...");
-    if (
-      findCommand("npm") &&
-      run("npm", ["install", "-g", "katex"], { stdio: "inherit" }).status === 0
-    ) {
-      ok("katex installed");
-    } else {
-      fail("katex install failed (npm install -g katex)");
+    if (!confirmInstall()) fail("katex install cancelled: confirmation required");
+    else {
+      warn("katex not found — installing...");
+      if (
+        findCommand("npm") &&
+        run("npm", ["install", "-g", "katex"], { stdio: "inherit" }).status === 0
+      ) {
+        ok("katex installed");
+      } else {
+        fail("katex install failed (npm install -g katex)");
+      }
     }
   } else {
     fail("katex not found (npm install -g katex)");
@@ -268,20 +339,23 @@ export function main(argv: readonly string[]): any {
   if (playwright.status === 0) {
     ok(`playwright (Node.js) ${firstLine(playwright.stdout) || "loaded"}`);
   } else if (install) {
-    warn("playwright not found — installing...");
-    if (
-      findCommand("npm") &&
-      run("npm", ["install", "-g", "playwright"], { stdio: "inherit" })
-        .status === 0 &&
-      findCommand("playwright") &&
-      run("playwright", ["install", "chromium"], { stdio: "inherit" })
-        .status === 0
-    ) {
-      ok("playwright installed");
-    } else {
-      fail(
-        "playwright install failed (npm install -g playwright && playwright install chromium)",
-      );
+    if (!confirmInstall()) fail("playwright install cancelled: confirmation required");
+    else {
+      warn("playwright not found — installing...");
+      if (
+        findCommand("npm") &&
+        run("npm", ["install", "-g", "playwright"], { stdio: "inherit" })
+          .status === 0 &&
+        findCommand("playwright") &&
+        run("playwright", ["install", "chromium"], { stdio: "inherit" })
+          .status === 0
+      ) {
+        ok("playwright installed");
+      } else {
+        fail(
+          "playwright install failed (npm install -g playwright && playwright install chromium)",
+        );
+      }
     }
   } else {
     fail(
@@ -291,6 +365,13 @@ export function main(argv: readonly string[]): any {
   const chrome = findChrome();
   if (chrome) {
     ok(`Chrome binary: ${chrome}`);
+  } else if (install) {
+    if (!confirmInstall()) fail("Chrome install cancelled: confirmation required");
+    else {
+      warn("Chrome/Chromium not found — installing Playwright Chromium...");
+      if (installChromium()) ok("Playwright Chromium installed");
+      else fail("playwright install chromium failed");
+    }
   } else {
     fail("No Chrome/Chromium binary found (playwright install chromium)");
   }
@@ -314,7 +395,7 @@ export function main(argv: readonly string[]): any {
     process.exit(0);
   }
   console.log(
-    `${RED}Missing dependencies detected.${NC} Run: node scripts/setup.mjs --install`,
+    `${RED}Missing dependencies detected.${NC} Run: node scripts/setup.mjs --install and confirm, or add --yes only after explicit approval`,
   );
   process.exit(1);
 }

@@ -135,6 +135,41 @@ describe("component source conventions", () => {
     }
   });
 
+  test("local installation procedures require explicit confirmation flags", () => {
+    const skillExpectations = [
+      {
+        skill: "remote-ssh-command",
+        pattern: /安装 `sshpass` 会修改本机环境；只有用户明确确认安装方式和影响范围后才传 `--yes`/u,
+      },
+      {
+        skill: "md-to-pdf",
+        pattern: /`md-to-pdf-setup --install` 会修改本机或全局环境；只有用户明确确认安装方式和影响范围后才传 `--yes`/u,
+      },
+    ];
+
+    for (const { skill, pattern } of skillExpectations) {
+      const source = readFileSync(join(repoRoot, "src/components/skills", skill, "index.ts"), "utf-8");
+      assert.match(source, pattern);
+    }
+
+    const procedureExpectations = [
+      "src/components/procedures/sources/remote-ssh-command/install-sshpass.ts",
+      "src/components/procedures/sources/md-to-pdf/setup.ts",
+    ];
+
+    for (const sourcePath of procedureExpectations) {
+      const source = readFileSync(join(repoRoot, sourcePath), "utf-8");
+      assert.match(source, /flag:\s+"--yes"/u, `${sourcePath} should expose an explicit confirmation bypass`);
+      assert.match(source, /仅在用户已明确确认/u, `${sourcePath} should describe when --yes is allowed`);
+      assert.match(source, /confirmation required/u, `${sourcePath} should fail closed when confirmation is absent`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--yes"/u,
+        `${sourcePath} examples should not teach confirmation bypasses`,
+      );
+    }
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

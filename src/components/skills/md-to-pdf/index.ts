@@ -24,6 +24,7 @@ export const mdToPdfSkill = defineSkill({
   ],
   constraints: [
     "先检查依赖，再开始渲染；不要等到最后一步才发现 `pandoc` 或 `mmdc` 缺失。",
+    "`md-to-pdf-setup --install` 会修改本机或全局环境；只有用户明确确认安装方式和影响范围后才传 `--yes`。",
     "对大文档优先走默认管线，只有在确认依赖不足时才使用 `--no-mermaid` 或 `--no-math` 降级。",
     "自定义 CSS 只能叠加，不要覆盖掉基础排版到不可读。",
     "交付前至少抽查目录、图表、数学公式和分页效果。",
