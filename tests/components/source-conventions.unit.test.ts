@@ -459,10 +459,15 @@ describe("component source conventions", () => {
       join(repoRoot, "src/components/skills/skill-creator/index.ts"),
       "utf-8",
     );
-    assert.match(skillSource, /默认不会覆盖已存在的 HTML、JSON 或 Markdown 输出/u);
+    assert.match(skillSource, /默认不会覆盖已存在的 HTML、JSON、Markdown 或 \.skill 输出/u);
     assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
-    for (const sourceFile of ["generate_report.ts", "aggregate_benchmark.ts"]) {
+    for (const sourceFile of [
+      "generate_report.ts",
+      "aggregate_benchmark.ts",
+      "generate_review.ts",
+      "package_skill.ts",
+    ]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/skill-creator", sourceFile),
         "utf-8",
@@ -482,6 +487,12 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(aggregateSource, /plannedBenchmarkOutputFiles/u);
+
+    const generateReviewSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/skill-creator/generate_review.ts"),
+      "utf-8",
+    );
+    assert.match(generateReviewSource, /parseArgs\(\{\s*args:\s*\[\.\.\.argv\]/u);
 
     const guardSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/skill-creator/output_guard.ts"),

@@ -21,6 +21,7 @@ import {
 import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-generate-review",
@@ -65,6 +66,12 @@ export const procedure = defineCliProcedure({
       flag: "--benchmark",
       type: "路径",
       description: "Benchmark JSON 文件路径，嵌入 viewer 展示",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有静态 HTML 后使用",
       required: false,
     },
   ],
@@ -647,10 +654,12 @@ type GenerateReviewCliArgs =
       benchmarkPath: string | null;
       benchmark: any;
       staticOutputPath: string | null;
+      overwrite: boolean;
     };
 
-function parseCliArgs(): GenerateReviewCliArgs {
+export function parseCliArgs(argv: readonly string[]): GenerateReviewCliArgs {
   const parsed = parseArgs({
+    args: [...argv],
     allowPositionals: true,
     options: {
       help: { type: "boolean", short: "h" },
@@ -659,6 +668,7 @@ function parseCliArgs(): GenerateReviewCliArgs {
       "previous-workspace": { type: "string" },
       benchmark: { type: "string" },
       static: { type: "string", short: "s" },
+      overwrite: { type: "boolean" },
     },
   });
 
@@ -724,15 +734,16 @@ function parseCliArgs(): GenerateReviewCliArgs {
     benchmarkPath,
     benchmark,
     staticOutputPath,
+    overwrite: Boolean(parsed.values.overwrite),
   };
 }
 
 export function main(argv: readonly string[]): void {
-  const args = parseCliArgs();
+  const args = parseCliArgs(argv);
 
   if (args.help) {
     console.log(
-      "Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117]",
+      "Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117] [--overwrite]",
     );
     return;
   }
@@ -747,11 +758,13 @@ export function main(argv: readonly string[]): void {
     benchmarkPath,
     benchmark,
     staticOutputPath,
+    overwrite,
   } = args;
 
   if (staticOutputPath) {
     const html = generateHtml(runs, skillName, previous, benchmark);
     mkdirSync(dirname(staticOutputPath), { recursive: true });
+    assertOutputWritable(staticOutputPath, overwrite);
     writeFileSync(staticOutputPath, html, "utf8");
     console.log(`\n  静态 viewer 已写入：${staticOutputPath}\n`);
     return;

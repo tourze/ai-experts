@@ -1,4 +1,10 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
@@ -10,6 +16,14 @@ import {
   parseArgs as parseGenerateReportArgs,
   main as generateReportMain,
 } from "../../src/components/procedures/sources/skill-creator/generate_report.ts";
+import {
+  main as generateReviewMain,
+  parseCliArgs as parseGenerateReviewArgs,
+} from "../../src/components/procedures/sources/skill-creator/generate_review.ts";
+import {
+  packageSkill,
+  parseArgs as parsePackageSkillArgs,
+} from "../../src/components/procedures/sources/skill-creator/package_skill.ts";
 import {
   assertOutputFilesWritable,
   assertOutputWritable,
@@ -38,9 +52,40 @@ describe("skill creator output overwrite guards", () => {
         output: "benchmark.json",
         overwrite: true,
       });
+
+    const workspace = mkdtempSync(join(tmpdir(), "ai-experts-skill-creator-review-"));
+    try {
+      const runDir = join(workspace, "runs", "case-1");
+      mkdirSync(join(runDir, "outputs"), { recursive: true });
+      writeFileSync(join(runDir, "outputs", "answer.txt"), "ok\n", "utf8");
+      expect(parseGenerateReviewArgs([workspace, "--static", "review.html"]))
+        .toMatchObject({
+          workspace,
+          staticOutputPath: expect.stringContaining("review.html"),
+          overwrite: false,
+        });
+      expect(parseGenerateReviewArgs([workspace, "--static", "review.html", "--overwrite"]))
+        .toMatchObject({
+          overwrite: true,
+        });
+    } finally {
+      rmSync(workspace, { recursive: true, force: true });
+    }
+
+    expect(parsePackageSkillArgs(["skills/demo", "dist"])).toMatchObject({
+      skillPath: "skills/demo",
+      outputDir: "dist",
+      overwrite: false,
+    });
+    expect(parsePackageSkillArgs(["skills/demo", "dist", "--overwrite"]))
+      .toMatchObject({
+        skillPath: "skills/demo",
+        outputDir: "dist",
+        overwrite: true,
+      });
   });
 
-  test("refuses existing HTML, JSON, and Markdown report outputs unless overwrite is explicit", () => {
+  test("refuses existing report outputs unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-skill-creator-output-"));
     try {
       const outputHtml = join(workDir, "report.html");
@@ -66,6 +111,39 @@ describe("skill creator output overwrite guards", () => {
         extensionlessBenchmark,
         `${extensionlessBenchmark}.md`,
       ]);
+
+      const reviewWorkspace = join(workDir, "workspace");
+      const reviewRunDir = join(reviewWorkspace, "runs", "case-1");
+      const reviewHtml = join(workDir, "review.html");
+      mkdirSync(join(reviewRunDir, "outputs"), { recursive: true });
+      writeFileSync(join(reviewRunDir, "outputs", "answer.txt"), "ok\n", "utf8");
+      writeFileSync(reviewHtml, "keep-review\n", "utf8");
+      expect(() => generateReviewMain([reviewWorkspace, "--static", reviewHtml]))
+        .toThrow(/output file already exists/);
+      expect(readFileSync(reviewHtml, "utf8")).toBe("keep-review\n");
+    } finally {
+      rmSync(workDir, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses existing .skill package output unless overwrite is explicit", () => {
+    const workDir = mkdtempSync(join(tmpdir(), "ai-experts-skill-creator-package-"));
+    try {
+      const skillDir = join(workDir, "demo-skill");
+      const outputDir = join(workDir, "dist");
+      mkdirSync(skillDir, { recursive: true });
+      mkdirSync(outputDir, { recursive: true });
+      writeFileSync(
+        join(skillDir, "SKILL.md"),
+        "---\nname: demo-skill\ndescription: Demo skill.\n---\n# Demo\n",
+        "utf8",
+      );
+      const packagePath = join(outputDir, "demo-skill.skill");
+      writeFileSync(packagePath, "keep-package\n", "utf8");
+
+      expect(packageSkill(skillDir, outputDir)).toBeNull();
+      expect(readFileSync(packagePath, "utf8")).toBe("keep-package\n");
+      expect(packageSkill(skillDir, outputDir, true)).toBe(packagePath);
     } finally {
       rmSync(workDir, { recursive: true, force: true });
     }

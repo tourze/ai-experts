@@ -25,7 +25,7 @@ export const skillCreatorSkill = defineSkill({
     "with-skill 和 baseline/old-skill 运行必须同一轮启动，避免时间和上下文偏差。",
     "改进时从反馈中泛化原则，不为少数 eval prompt 过拟合。",
     "description 优化必须使用真实 should-trigger / should-not-trigger queries，并由 held-out test score 选择 best description。",
-    "报告生成类 procedure 默认不会覆盖已存在的 HTML、JSON 或 Markdown 输出；确认目标可替换后才传 `--overwrite`。",
+    "报告生成和打包类 procedure 默认不会覆盖已存在的 HTML、JSON、Markdown 或 .skill 输出；确认目标可替换后才传 `--overwrite`。",
   ],
   antiPatterns: [
     defineAntiPattern({

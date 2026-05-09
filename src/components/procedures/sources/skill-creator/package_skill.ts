@@ -13,6 +13,7 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { deflateRawSync } from "node:zlib";
 import { validateSkill } from "./quick_validate";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-package-skill",
@@ -33,6 +34,12 @@ export const procedure = defineCliProcedure({
       flag: "[outputDir]",
       type: "路径",
       description: "输出目录路径（默认当前目录）",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 .skill 文件后使用",
       required: false,
     },
   ],
@@ -172,7 +179,11 @@ export function writeZip(outputPath: any, entries: any): any {
     Buffer.concat([...chunks, centralDirectory, endRecord]),
   );
 }
-export function packageSkill(skillPath: any, outputDir: any = null): any {
+export function packageSkill(
+  skillPath: any,
+  outputDir: any = null,
+  overwrite: any = false,
+): any {
   const resolvedSkillPath = resolve(skillPath);
   if (!existsSync(resolvedSkillPath)) {
     console.log(`❌ 错误：未找到 skill 目录：${resolvedSkillPath}`);
@@ -201,6 +212,7 @@ export function packageSkill(skillPath: any, outputDir: any = null): any {
     `${basename(resolvedSkillPath)}.skill`,
   );
   try {
+    assertOutputWritable(skillFilename, overwrite);
     const entries: any[] = [];
     for (const filePath of collectFiles(resolvedSkillPath)) {
       const archiveName = toZipPath(
@@ -223,23 +235,40 @@ export function packageSkill(skillPath: any, outputDir: any = null): any {
 }
 function printUsage(): any {
   console.log(
-    "用法：node package_skill.mjs <path/to/skill-folder> [output-directory]",
+    "用法：node package_skill.mjs <path/to/skill-folder> [output-directory] [--overwrite]",
   );
   console.log("\n示例：");
   console.log("  node package_skill.mjs skills/public/my-skill");
   console.log("  node package_skill.mjs skills/public/my-skill ./dist");
 }
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    overwrite: false,
+  };
+  const positional: any[] = [];
+  for (const arg of argv) {
+    if (arg === "--overwrite") {
+      args.overwrite = true;
+    } else {
+      positional.push(arg);
+    }
+  }
+  return {
+    ...args,
+    skillPath: positional[0] ?? null,
+    outputDir: positional[1] ?? null,
+  };
+}
 export function main(argv: readonly string[]): any {
-  if (argv.length < 1) {
+  const args = parseArgs(argv);
+  if (!args.skillPath) {
     printUsage();
     return 1;
   }
-  const skillPath = argv[0];
-  const outputDir = argv[1] ?? null;
-  console.log(`📦 正在打包 skill：${skillPath}`);
-  if (outputDir) {
-    console.log(`   输出目录：${outputDir}`);
+  console.log(`📦 正在打包 skill：${args.skillPath}`);
+  if (args.outputDir) {
+    console.log(`   输出目录：${args.outputDir}`);
   }
   console.log();
-  return packageSkill(skillPath, outputDir) ? 0 : 1;
+  return packageSkill(args.skillPath, args.outputDir, args.overwrite) ? 0 : 1;
 }
