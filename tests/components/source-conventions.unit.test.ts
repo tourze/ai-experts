@@ -88,6 +88,12 @@ describe("component source conventions", () => {
         InvocationPolicy.ExplicitOnly,
         `${skillId} should not be implicitly invoked because it can affect remote hosts or virtual machines`,
       );
+      const source = readFileSync(join(repoRoot, "src/components/skills", skillId, "index.ts"), "utf-8");
+      assert.doesNotMatch(
+        source,
+        /不做二次确认/,
+        `${skillId} should not tell the model to bypass confirmation for high-risk actions`,
+      );
     }
   });
 

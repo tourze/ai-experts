@@ -22,12 +22,13 @@ export const remoteSshCommandSkill = defineSkill({
     "第一版只支持密码认证：`auth.type` 必须是 `password`。",
     "主机配置只放在 `~/.host/`；procedure 只接受一个 JSON 文件路径参数。",
     "远端命令从 `stdin` 读取完整文本，不通过 CLI 参数传命令或密码。",
-    "用户命令和模型生成命令都可直接执行，不做二次确认。",
+    "用户明确给出的远端命令可执行；模型生成的远端命令必须先回显并获得用户确认。",
     "history 使用 JSONL 追加写入，只记录命令、时间、退出码、耗时和超时状态，不记录远端输出。",
     "procedure 输出完整远端 `stdout/stderr`，不做截断。",
   ],
   checklist: [
     "是否确认 JSON 文件在 `~/.host/` 下，且只使用密码认证。",
+    "是否确认远端命令来自用户原文，或已把模型生成命令回显给用户并获得确认。",
     "是否把远端命令放在 `stdin`，避免本地 shell 提前展开。",
     "是否查看 procedure 退出码；本地退出码等于远端命令退出码，连接失败、配置错误、超时均为非零。",
     "是否按需查看 `~/.host/<host>.history`，确认执行命令、退出码和耗时。",
@@ -53,7 +54,7 @@ export const remoteSshCommandSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-3",
-        label: "把完整远端命令经 stdin 传给 `remote-ssh-command-ssh-exec`，例如用 `printf '%s\\n' '<command>' | procedure ... ~/.host/<host>.json` 的形态执行。",
+        label: "确认远端命令来源后，经 stdin 传给 `remote-ssh-command-ssh-exec`，例如用 `printf '%s\\n' '<command>' | procedure ... ~/.host/<host>.json` 的形态执行。",
       }),
       defineWorkflowStep({
         id: "step-4",
@@ -63,7 +64,7 @@ export const remoteSshCommandSkill = defineSkill({
   }),
   outputs: defineSkillOutputs({
     items: [
-      "主机 JSON 配置路径、认证类型、超时设置和将要执行的远端命令来源。",
+      "主机 JSON 配置路径、认证类型、超时设置、将要执行的远端命令来源和确认状态。",
       "远端 stdout/stderr、退出码、耗时和连接/配置/超时错误分类。",
       "必要时给出 history JSONL 路径与最近执行摘要，不泄露密码或敏感远端输出。",
     ],
