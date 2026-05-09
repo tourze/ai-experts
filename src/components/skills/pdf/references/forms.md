@@ -3,7 +3,7 @@
 如果你需要填写 PDF 表单，首先检查 PDF 是否有可填写的表单字段。在此文件所在目录运行以下脚本：
  `node scripts/check_fillable_fields.mjs '<file.pdf>'`，根据结果进入"可填字段"或"不可填字段"部分，并按照说明操作。
 
-基于 Node 的 PDF 辅助工具需要 `pdf-lib`、`pdfjs-dist`、`@pdfme/converter` 和 `sharp` 可由 Node.js 解析；如果脚本报告缺少模块，使用 `npm install -g pdf-lib pdfjs-dist @pdfme/converter sharp` 安装它们。
+基于 Node 的 PDF 辅助工具需要 `pdf-lib`、`pdfjs-dist`、`@pdfme/converter` 和 `sharp` 可由 Node.js 解析；如果脚本报告缺少模块，先说明缺失模块和目标运行根目录，征得用户确认后把依赖安装到该 runtime root，例如 `npm install --prefix <runtime-root> pdf-lib pdfjs-dist @pdfme/converter sharp`，不要使用全局安装。
 
 # 可填字段
 如果 PDF 有可填写的表单字段：

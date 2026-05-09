@@ -5,6 +5,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 export const procedure = defineCliProcedure({
   id: "md-to-pdf-setup",
@@ -24,7 +25,7 @@ export const procedure = defineCliProcedure({
     {
       flag: "--yes",
       type: "",
-      description: "跳过依赖安装确认；仅在用户已明确确认会修改本机或全局环境后使用",
+      description: "跳过依赖安装确认；仅在用户已明确确认会修改本机或运行时依赖环境后使用",
       required: false,
     },
   ],
@@ -70,6 +71,8 @@ export function main(argv: readonly string[]): any {
   const GREEN = "\x1b[0;32m";
   const YELLOW = "\x1b[1;33m";
   const NC = "\x1b[0m";
+  const runtimeRoot = path.dirname(fileURLToPath(import.meta.url));
+  const runtimeBin = path.join(runtimeRoot, "node_modules", ".bin");
   let failed = false;
   function ok(message: any): any {
     console.log(`${GREEN}✓${NC} ${message}`);
@@ -88,7 +91,7 @@ export function main(argv: readonly string[]): any {
     if (args.yes) return true;
     if (installDecisionRead) return installConfirmed;
     process.stdout.write(
-      "Install missing md-to-pdf dependencies on this machine? This may run sudo, brew, npm -g, choco, or playwright install. (type 'yes' to confirm): ",
+      `Install missing md-to-pdf dependencies on this machine? This may run sudo, brew, choco, npm install --prefix ${runtimeRoot}, or playwright install. (type 'yes' to confirm): `,
     );
     installDecisionRead = true;
     try {
@@ -100,9 +103,10 @@ export function main(argv: readonly string[]): any {
     return installConfirmed;
   }
   function installChromium(): any {
+    const playwright = findCommand("playwright");
     return (
-      findCommand("playwright") &&
-      run("playwright", ["install", "chromium"], { stdio: "inherit" }).status === 0
+      playwright &&
+      run(playwright, ["install", "chromium"], { stdio: "inherit" }).status === 0
     );
   }
   function executableNames(command: any): any {
@@ -129,9 +133,11 @@ export function main(argv: readonly string[]): any {
     }
   }
   function findCommand(command: any): any {
-    for (const dir of (process.env.PATH || "")
-      .split(path.delimiter)
-      .filter(Boolean)) {
+    const dirs = [
+      runtimeBin,
+      ...(process.env.PATH || "").split(path.delimiter).filter(Boolean),
+    ];
+    for (const dir of dirs) {
       for (const name of executableNames(command)) {
         const candidate = path.join(dir, name);
         if (isExecutable(candidate)) {
@@ -183,7 +189,7 @@ export function main(argv: readonly string[]): any {
         "const {createRequire}=require('node:module');",
         "const {spawnSync}=require('node:child_process');",
         "const path=require('node:path');",
-        "const req=createRequire(process.cwd() + '/noop.js');",
+        `const req=createRequire(${JSON.stringify(path.join(runtimeRoot, "noop.js"))});`,
         `const name=${JSON.stringify(moduleName)};`,
         "function load(){try{return req(name)}catch(e){const root=spawnSync('npm',['root','-g'],{encoding:'utf8'}).stdout.trim(); if(root){return req(path.join(root,name));} throw e;}}",
         "try{const m=load(); console.log(m.version || 'loaded')}catch(e){process.exit(1)}",
@@ -197,11 +203,19 @@ export function main(argv: readonly string[]): any {
         "const {createRequire}=require('node:module');",
         "const {spawnSync}=require('node:child_process');",
         "const path=require('node:path');",
-        "const req=createRequire(process.cwd() + '/noop.js');",
+        `const req=createRequire(${JSON.stringify(path.join(runtimeRoot, "noop.js"))});`,
         `const request=${JSON.stringify(request)};`,
         "try{console.log(req.resolve(request))}catch(e){const root=spawnSync('npm',['root','-g'],{encoding:'utf8'}).stdout.trim(); if(root){try{console.log(req.resolve(path.join(root,request))); process.exit(0)}catch(_){}} process.exit(1)}",
       ].join(""),
     ]);
+  }
+  function npmInstallRuntimePackage(packageName: string): boolean {
+    return (
+      findCommand("npm") &&
+      run("npm", ["install", "--prefix", runtimeRoot, packageName], {
+        stdio: "inherit",
+      }).status === 0
+    );
   }
   function findChromeUnder(root: any): any {
     const stack: any[] = [root];
@@ -302,19 +316,14 @@ export function main(argv: readonly string[]): any {
     if (!confirmInstall()) fail("mmdc install cancelled: confirmation required");
     else {
       warn("mmdc not found — installing @mermaid-js/mermaid-cli...");
-      if (
-        findCommand("npm") &&
-        run("npm", ["install", "-g", "@mermaid-js/mermaid-cli"], {
-          stdio: "inherit",
-        }).status === 0
-      ) {
+      if (npmInstallRuntimePackage("@mermaid-js/mermaid-cli")) {
         ok("mmdc installed");
       } else {
-        fail("mmdc install failed (npm install -g @mermaid-js/mermaid-cli)");
+        fail("mmdc install failed (npm install --prefix <runtime-root> @mermaid-js/mermaid-cli)");
       }
     }
   } else {
-    fail("mmdc not found (npm install -g @mermaid-js/mermaid-cli)");
+    fail("mmdc not found (run setup with --install after confirming runtime-local npm install)");
   }
   const katex = nodeRequire("katex");
   if (katex.status === 0) {
@@ -323,17 +332,14 @@ export function main(argv: readonly string[]): any {
     if (!confirmInstall()) fail("katex install cancelled: confirmation required");
     else {
       warn("katex not found — installing...");
-      if (
-        findCommand("npm") &&
-        run("npm", ["install", "-g", "katex"], { stdio: "inherit" }).status === 0
-      ) {
+      if (npmInstallRuntimePackage("katex")) {
         ok("katex installed");
       } else {
-        fail("katex install failed (npm install -g katex)");
+        fail("katex install failed (npm install --prefix <runtime-root> katex)");
       }
     }
   } else {
-    fail("katex not found (npm install -g katex)");
+    fail("katex not found (run setup with --install after confirming runtime-local npm install)");
   }
   const playwright = nodeRequire("playwright");
   if (playwright.status === 0) {
@@ -343,23 +349,19 @@ export function main(argv: readonly string[]): any {
     else {
       warn("playwright not found — installing...");
       if (
-        findCommand("npm") &&
-        run("npm", ["install", "-g", "playwright"], { stdio: "inherit" })
-          .status === 0 &&
-        findCommand("playwright") &&
-        run("playwright", ["install", "chromium"], { stdio: "inherit" })
-          .status === 0
+        npmInstallRuntimePackage("playwright") &&
+        installChromium()
       ) {
         ok("playwright installed");
       } else {
         fail(
-          "playwright install failed (npm install -g playwright && playwright install chromium)",
+          "playwright install failed (npm install --prefix <runtime-root> playwright && playwright install chromium)",
         );
       }
     }
   } else {
     fail(
-      "playwright not found (npm install -g playwright && playwright install chromium)",
+      "playwright not found (run setup with --install after confirming runtime-local npm install and browser download)",
     );
   }
   const chrome = findChrome();

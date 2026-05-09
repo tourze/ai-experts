@@ -56,7 +56,7 @@ function loadKatex(): KatexRenderer {
   }
   if (!katex) {
     throw new Error(
-      "KaTeX is not installed. Run `node scripts/setup.mjs` or `npm install -g katex`.",
+      "KaTeX is not installed. Run `node scripts/setup.mjs --install` after confirming runtime-local npm install.",
     );
   }
   return katex;

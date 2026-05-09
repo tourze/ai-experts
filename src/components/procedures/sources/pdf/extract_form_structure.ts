@@ -124,7 +124,7 @@ async function importPdfjs(): Promise<PdfjsModule> {
       }
     }
     throw new Error(
-      `pdfjs-dist is not installed. Run \`npm install -g pdfjs-dist\`. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
+      `pdfjs-dist is not installed. Ask before installing it in the runtime root, for example \`npm install --prefix <runtime-root> pdfjs-dist\`; do not install it globally. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
     );
   }
 }

@@ -16,8 +16,8 @@ import {
 } from "node:fs";
 import { createRequire } from "node:module";
 import { homedir, tmpdir } from "node:os";
-import { dirname, join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { delimiter, dirname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { renderKatexFile } from "./katex_render";
 
 export const procedure = defineCliProcedure({
@@ -79,6 +79,8 @@ export const procedure = defineCliProcedure({
 });
 
 const requireFromScript = createRequire(import.meta.url);
+const runtimeRoot = dirname(fileURLToPath(import.meta.url));
+const runtimeBin = join(runtimeRoot, "node_modules", ".bin");
 const numberFormatter = new Intl.NumberFormat("en-US");
 type PageFormat = "A4" | "Letter" | "Legal" | "A3";
 type Margins = {
@@ -422,6 +424,29 @@ function isExecutable(filePath: string): boolean {
     return false;
   }
 }
+function executableNames(command: string): string[] {
+  if (process.platform !== "win32" || dirname(command) !== ".") {
+    return [command];
+  }
+  return (process.env.PATHEXT || ".EXE;.CMD;.BAT;.COM")
+    .split(";")
+    .map((ext) => `${command}${ext}`);
+}
+function findCommand(command: string): string | null {
+  const dirs = [
+    runtimeBin,
+    ...(process.env.PATH || "").split(delimiter).filter(Boolean),
+  ];
+  for (const dir of dirs) {
+    for (const name of executableNames(command)) {
+      const candidate = join(dir, name);
+      if (isExecutable(candidate)) {
+        return candidate;
+      }
+    }
+  }
+  return null;
+}
 function findChromeUnder(
   root: string,
   names: Set<string>,
@@ -612,6 +637,7 @@ function renderMermaidBlocks(
     return markdown;
   }
   console.log(`  Mermaid: found ${matches.length} diagram(s)`);
+  const mmdc = findCommand("mmdc") ?? "mmdc";
   const mmdcBase: any[] = [
     "-p",
     puppeteerConfig,
@@ -641,7 +667,7 @@ function renderMermaidBlocks(
     const svgFile = join(tempDir, `mermaid_${reversedIndex}.svg`);
     writeFileSync(mmdFile, mermaidCode, "utf8");
     const proc = run(
-      "mmdc",
+      mmdc,
       [...mmdcBase, "-i", mmdFile, "-o", svgFile],
       30000,
     );
@@ -773,7 +799,7 @@ async function htmlToPdf(
     playwright = requireNodeModule<PlaywrightModule>("playwright");
   } catch {
     throw new Error(
-      "playwright is not installed. Run `node scripts/setup.mjs --install` or `npm install -g playwright`.",
+      "playwright is not installed. Run `node scripts/setup.mjs --install` after confirming runtime-local npm install and browser download.",
     );
   }
   const browser = await playwright.chromium.launch({

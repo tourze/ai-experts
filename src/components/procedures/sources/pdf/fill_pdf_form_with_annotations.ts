@@ -104,7 +104,7 @@ function requireNodeModule<T>(request: string): T {
       }
     }
     throw new Error(
-      `${request} is not installed. Run \`npm install -g ${request}\`. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
+      `${request} is not installed. Ask before installing it in the runtime root, for example \`npm install --prefix <runtime-root> ${request}\`; do not install it globally. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
     );
   }
 }

@@ -143,7 +143,7 @@ describe("component source conventions", () => {
       },
       {
         skill: "md-to-pdf",
-        pattern: /`md-to-pdf-setup --install` 会修改本机或全局环境；只有用户明确确认安装方式和影响范围后才传 `--yes`/u,
+        pattern: /`md-to-pdf-setup --install` 会修改本机或运行时依赖环境；只有用户明确确认安装方式和影响范围后才传 `--yes`/u,
       },
     ];
 
@@ -235,10 +235,20 @@ describe("component source conventions", () => {
     const checkedFiles = [
       "src/components/skills/modern-web-design/references/accessibility_guide.md",
       "src/components/skills/md-to-pdf/README.md",
+      "src/components/skills/openapi-spec-generation/references/code-first-and-tooling.md",
+      "src/components/skills/pdf/references/forms.md",
     ];
 
     for (const sourcePath of checkedFiles) {
       const source = readFileSync(join(repoRoot, sourcePath), "utf-8");
+      assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
+    }
+
+    for (const sourcePath of collectFiles(
+      join(repoRoot, "src/components"),
+      (file) => file.endsWith(".ts") || file.endsWith(".md"),
+    )) {
+      const source = readFileSync(sourcePath, "utf-8");
       assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
     }
 
@@ -250,6 +260,35 @@ describe("component source conventions", () => {
 
     const mdToPdfReadme = readFileSync(join(repoRoot, "src/components/skills/md-to-pdf/README.md"), "utf-8");
     assert.match(mdToPdfReadme, /Use `md-to-pdf-setup --install` and confirm/u);
+
+    const openApiTooling = readFileSync(
+      join(repoRoot, "src/components/skills/openapi-spec-generation/references/code-first-and-tooling.md"),
+      "utf-8",
+    );
+    assert.match(openApiTooling, /ask before adding project-local dev dependencies/u);
+
+    const pdfForms = readFileSync(join(repoRoot, "src/components/skills/pdf/references/forms.md"), "utf-8");
+    assert.match(pdfForms, /安装到该 runtime root/u);
+
+    for (const sourcePath of collectFiles(
+      join(repoRoot, "src/components/procedures/sources/pdf"),
+      (file) => file.endsWith(".ts"),
+    )) {
+      const source = readFileSync(sourcePath, "utf-8");
+      assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
+      if (source.includes(" is not installed.")) {
+        assert.match(source, /do not install it globally/u, `${sourcePath} should warn against global installs`);
+      }
+    }
+
+    for (const sourcePath of collectFiles(
+      join(repoRoot, "src/components/procedures/sources/md-to-pdf"),
+      (file) => file.endsWith(".ts"),
+    )) {
+      const source = readFileSync(sourcePath, "utf-8");
+      assert.doesNotMatch(source, /npm install -g/u, `${sourcePath} should avoid global npm install guidance`);
+      assert.doesNotMatch(source, /npm",\s*\["install",\s*"-g"/u, `${sourcePath} should not run global npm installs`);
+    }
   });
 
   test("skill display names are user-facing labels", () => {

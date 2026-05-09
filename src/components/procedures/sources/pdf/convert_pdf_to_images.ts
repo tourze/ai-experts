@@ -90,7 +90,7 @@ async function importPdfmeConverter(): Promise<PdfmeConverter> {
       }
     }
     throw new Error(
-      `@pdfme/converter is not installed. Run \`npm install -g @pdfme/converter\`. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
+      `@pdfme/converter is not installed. Ask before installing it in the runtime root, for example \`npm install --prefix <runtime-root> @pdfme/converter\`; do not install it globally. Original error: ${localError instanceof Error ? localError.message : String(localError)}`,
     );
   }
 }

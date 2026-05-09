@@ -381,9 +381,8 @@ export class UsersController extends Controller {
 ## 模板 4：验证与 Linting
 
 ```bash
-# Install validation tools
-npm install -g @stoplight/spectral-cli
-npm install -g @redocly/cli
+# Prefer tools already available in the project. If they are missing, ask before adding project-local dev dependencies:
+npm install --save-dev @stoplight/spectral-cli @redocly/cli
 
 # Spectral ruleset (.spectral.yaml)
 cat > .spectral.yaml << 'EOF'
@@ -427,7 +426,7 @@ rules:
 EOF
 
 # Run Spectral
-spectral lint openapi.yaml
+npx spectral lint openapi.yaml
 
 # Redocly config (redocly.yaml)
 cat > redocly.yaml << 'EOF'
@@ -458,33 +457,33 @@ theme:
 EOF
 
 # Run Redocly
-redocly lint openapi.yaml
-redocly bundle openapi.yaml -o bundled.yaml
-redocly preview-docs openapi.yaml
+npx redocly lint openapi.yaml
+npx redocly bundle openapi.yaml -o bundled.yaml
+npx redocly preview-docs openapi.yaml
 ```
 
 ## SDK 生成
 
 ```bash
-# OpenAPI Generator
-npm install -g @openapitools/openapi-generator-cli
+# Prefer an existing project-local generator. If it is missing, ask before adding the dev dependency:
+npm install --save-dev @openapitools/openapi-generator-cli
 
 # Generate TypeScript client
-openapi-generator-cli generate \
+npx openapi-generator-cli generate \
   -i openapi.yaml \
   -g typescript-fetch \
   -o ./generated/typescript-client \
   --additional-properties=supportsES6=true,npmName=@myorg/api-client
 
 # Generate Python client
-openapi-generator-cli generate \
+npx openapi-generator-cli generate \
   -i openapi.yaml \
   -g python \
   -o ./generated/python-client \
   --additional-properties=packageName=api_client
 
 # Generate Go client
-openapi-generator-cli generate \
+npx openapi-generator-cli generate \
   -i openapi.yaml \
   -g go \
   -o ./generated/go-client

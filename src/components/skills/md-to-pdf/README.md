@@ -44,9 +44,9 @@ Each stage is independently skippable (`--no-mermaid`, `--no-math`) for speed wh
 | Tool       | Purpose       | Setup path |
 | ---------- | ------------- | ---------- |
 | pandoc     | MD → HTML     | Use `md-to-pdf-setup` to detect it; install with the platform package manager only after confirmation. |
-| mmdc       | Mermaid → SVG | Use `md-to-pdf-setup --install` and confirm, or add the package as a project/local dependency. |
-| katex      | LaTeX → HTML  | Use `md-to-pdf-setup --install` and confirm, or add the package as a project/local dependency. |
-| playwright | HTML → PDF    | Use `md-to-pdf-setup --install` and confirm before installing Playwright Chromium. |
+| mmdc       | Mermaid → SVG | Use `md-to-pdf-setup --install` and confirm runtime-local `@mermaid-js/mermaid-cli` installation. |
+| katex      | LaTeX → HTML  | Use `md-to-pdf-setup --install` and confirm runtime-local `katex` installation. |
+| playwright | HTML → PDF    | Use `md-to-pdf-setup --install` and confirm runtime-local Playwright plus Chromium installation. |
 
 Do not assume these tools are pre-installed. Run the `md-to-pdf-setup` procedure before conversion and treat its output as the source of truth for the current machine.
 
