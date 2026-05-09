@@ -21,6 +21,12 @@ import { renderMarkdownBulletList } from "./markdown";
 import { validateMermaidSyntax } from "./mermaid";
 import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows";
 
+function validateSingleLineText(owner: string, property: string, value: string): void {
+  if (/\r|\n/u.test(value)) {
+    throw new Error(`${owner} ${property} must be a single line`);
+  }
+}
+
 export function hasStringTool(
   component: { tools?: readonly ToolMatcher[] },
   toolName: string,
@@ -101,6 +107,7 @@ function validateAgentOutputSection(
   if (typeof section.title !== "string" || section.title.trim() === "") {
     throw new Error(`Agent ${agent.id} outputFormat.sections[${index}].title must be a non-empty string`);
   }
+  validateSingleLineText(`Agent ${agent.id}`, `outputFormat.sections[${index}].title`, section.title);
   if (typeof section.body !== "string") {
     throw new Error(`Agent ${agent.id} outputFormat.sections[${index}].body must be a string`);
   }
@@ -149,12 +156,16 @@ function validateAgentOutputTemplate(
   if (template.heading !== undefined && (typeof template.heading !== "string" || template.heading.trim() === "")) {
     throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].heading must be non-empty when defined`);
   }
+  if (template.heading !== undefined) {
+    validateSingleLineText(`Agent ${agent.id}`, `outputFormat.templates[${index}].heading`, template.heading);
+  }
   if (template.intro !== undefined && (typeof template.intro !== "string" || template.intro.trim() === "")) {
     throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].intro must be non-empty when defined`);
   }
   if (typeof template.title !== "string" || template.title.trim() === "") {
     throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].title must be a non-empty string`);
   }
+  validateSingleLineText(`Agent ${agent.id}`, `outputFormat.templates[${index}].title`, template.title);
   if (!Array.isArray(template.sections) || template.sections.length === 0) {
     throw new Error(`Agent ${agent.id} outputFormat.templates[${index}].sections must be a non-empty array`);
   }
@@ -175,6 +186,7 @@ export function validateAgentOutputFormat(
     if (typeof format.title !== "string" || format.title.trim() === "") {
       throw new Error(`Agent ${agent.id} outputFormat.title must be a non-empty string`);
     }
+    validateSingleLineText(`Agent ${agent.id}`, "outputFormat.title", format.title);
     if (!Array.isArray(format.sections) || format.sections.length === 0) {
       throw new Error(`Agent ${agent.id} outputFormat.sections must be a non-empty array`);
     }

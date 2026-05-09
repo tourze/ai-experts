@@ -256,6 +256,9 @@ describe("build/pipeline modules", () => {
     expect(structuredRendered).toContain('step_1["读取输入。"]\n  start --> step_1');
     expect(structuredRendered).toContain('step_2["执行检查。"]\n  step_1 --> step_2');
     expect(structuredRendered).toContain("## 输出\n\n- 结论\n- 后续动作");
+    expect(() =>
+      renderSkillMd({ ...structuredSkill, fullName: "Bad\nName" }, Platform.Claude, procedureMap)
+    ).toThrow("fullName must be a single line");
     const structuredWorkflow = validateSkillWorkflow(structuredSkill);
     expect(structuredWorkflow).not.toBeNull();
     if (!structuredWorkflow) throw new Error("expected structured workflow");
@@ -1548,6 +1551,16 @@ describe("build/pipeline modules", () => {
     expect(() => validateAgentBashBoundary({ ...fixture.agent, bashBoundary: [] })).toThrow();
     expect(() => validateAgentQualityStandards({ ...fixture.agent, qualityStandards: [] })).toThrow();
     expect(() => validateAgentOutputFormat({ ...fixture.agent, outputFormat: { kind: "raw", body: "" } })).toThrow();
+    expect(() =>
+      validateAgentOutputFormat({
+        ...fixture.agent,
+        outputFormat: {
+          kind: "markdown",
+          title: "Bad\nTitle",
+          sections: [defineAgentOutputSection({ title: "Summary", body: "done" })],
+        },
+      })
+    ).toThrow("outputFormat.title must be a single line");
     expect(() => validateAgentWorkflow({ ...fixture.agent, workflow: { steps: [] } })).toThrow();
     expect(() =>
       validateAgentWorkflow({

@@ -39,6 +39,12 @@ import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } 
 
 type TextListProperty = "useCases" | "constraints" | "checklist";
 
+function validateSingleLineText(owner: string, property: string, value: string): void {
+  if (/\r|\n/u.test(value)) {
+    throw new Error(`${owner} ${property} must be a single line`);
+  }
+}
+
 export function skillSourceRoot(skill: SkillDefinition): string {
   if (skill.sourceDir !== undefined) return toAbsolutePath(skill.sourceDir);
   throw new Error(`Skill ${skill.id} must define sourceDir`);
@@ -339,6 +345,7 @@ export function validateSkillGoal(skill: SkillDefinition): SkillGoalDefinition |
   if (typeof goal.title !== "string" || goal.title.trim() === "") {
     throw new Error(`Skill ${skill.id} goal.title must be a non-empty string`);
   }
+  validateSingleLineText(`Skill ${skill.id}`, "goal.title", goal.title);
   if (goal.title.trim() === "目标") {
     throw new Error(`Skill ${skill.id} goal.title must be specific; use outputs or checklist for generic goals`);
   }
@@ -360,6 +367,9 @@ export function validateSkillOutputs(skill: SkillDefinition): SkillOutputsDefini
   }
   if (outputs.title !== undefined && (typeof outputs.title !== "string" || outputs.title.trim() === "")) {
     throw new Error(`Skill ${skill.id} outputs.title must be non-empty when defined`);
+  }
+  if (outputs.title !== undefined) {
+    validateSingleLineText(`Skill ${skill.id}`, "outputs.title", outputs.title);
   }
   const hasItems = outputs.items !== undefined;
   const hasBody = outputs.body !== undefined;
@@ -478,6 +488,7 @@ export function renderSkillMd(
   if (typeof skill.fullName !== "string" || skill.fullName.trim() === "") {
     throw new Error(`Skill ${skill.id} must define a non-empty fullName`);
   }
+  validateSingleLineText(`Skill ${skill.id}`, "fullName", skill.fullName);
   const body = [
     renderStructuredSkillBody(skill),
   ].filter((section) => section.trim() !== "")
