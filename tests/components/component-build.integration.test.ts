@@ -747,7 +747,7 @@ describe("component build integration", () => {
     } finally {
       rmSync(secondDistDir, { recursive: true, force: true });
     }
-  }, 120_000);
+  }, componentBuildSetupTimeoutMs);
 
   test("emits parseable codex TOML configs", () => {
     const codexManifest = JSON.parse(readFileSync(join(tmpDistDir, "codex/manifest.json"), "utf-8"));
