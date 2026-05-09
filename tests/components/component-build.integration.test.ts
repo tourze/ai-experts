@@ -1142,6 +1142,23 @@ describe("component build integration", () => {
     assert.match(screenshotSkill, /参数/);
     assert.doesNotMatch(screenshotSkill, /node \.\.\/\.\.\/procedures\.js/);
     assert.doesNotMatch(screenshotSkill, /node scripts\/take_screenshot\.mjs/);
+
+    const youtubeSearchSkill = readFileSync(join(tmpDistDir, "codex/skills/youtube-search/SKILL.md"), "utf-8");
+    assert.match(youtubeSearchSkill, /'tailwindcss tutorial' --count 5 --sort views/);
+    assert.doesNotMatch(youtubeSearchSkill, /\n  tailwindcss tutorial --count 5 --sort views/);
+
+    const iconRetrievalSkill = readFileSync(join(tmpDistDir, "codex/skills/icon-retrieval/SKILL.md"), "utf-8");
+    assert.match(iconRetrievalSkill, /'security shield' 3/);
+
+    const copywritingSkill = readFileSync(join(tmpDistDir, "codex/skills/copywriting/SKILL.md"), "utf-8");
+    assert.match(copywritingSkill, /--text '这是一段待检测文案' --platform social-platform/);
+
+    const speckitBaselineSkill = readFileSync(join(tmpDistDir, "codex/skills/speckit-baseline/SKILL.md"), "utf-8");
+    assert.match(speckitBaselineSkill, /--short-name user-auth '用户登录功能'/);
+
+    const iosSimulatorSkill = readFileSync(join(tmpDistDir, "codex/skills/ios-simulator-skill/SKILL.md"), "utf-8");
+    assert.match(iosSimulatorSkill, /--udid '<device-udid>' --verbose/);
+
     assert.equal(existsSync(join(tmpDistDir, "codex/procedures.js")), true);
     assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/scripts")), false);

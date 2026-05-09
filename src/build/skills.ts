@@ -160,6 +160,12 @@ function skillRuntimeRoot(platform: PlatformType): string {
   return platform === Platform.Claude ? "~/.claude/skills" : "~/.agents/skills";
 }
 
+function shellQuoteArg(value: string): string {
+  if (value === "") return "''";
+  if (/^[A-Za-z0-9_./:@%+=,~-]+$/u.test(value)) return value;
+  return `'${value.replaceAll("'", "'\\''")}'`;
+}
+
 function renderProcedureCommand(
   skill: SkillDefinition,
   platform: PlatformType,
@@ -181,7 +187,7 @@ function renderProcedureCommand(
   ];
   if (procedureArgs.length > 0) {
     parts.push("--");
-    parts.push(procedureArgs.join(" "));
+    parts.push(procedureArgs.map(shellQuoteArg).join(" "));
   }
   return "```bash\n" + parts.join(" \\\n  ") + "\n```";
 }
