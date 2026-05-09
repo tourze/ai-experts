@@ -104,7 +104,7 @@ describe("component source conventions", () => {
     );
     assert.match(iosSkillSource, /只有用户明确确认目标和影响范围后才传 `--yes`/u);
 
-    for (const sourceFile of ["simctl_delete.ts", "simctl_erase.ts"]) {
+    for (const sourceFile of ["simctl_delete.ts", "simctl_erase.ts", "simctl_shutdown.ts"]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
         "utf-8",
