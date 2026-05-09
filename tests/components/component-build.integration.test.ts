@@ -514,6 +514,54 @@ describe("component build integration", () => {
     );
   });
 
+  test("generated dist keeps platform-specific procedure runtime paths isolated", () => {
+    const textFileMatcher = (file: string): boolean => /\.(?:md|toml|json|mjs|js|ya?ml|txt)$/u.test(file);
+    const claudeFiles = collectFiles(join(tmpDistDir, "claude"), textFileMatcher);
+    const codexFiles = collectFiles(join(tmpDistDir, "codex"), textFileMatcher);
+
+    const claudeCrossPlatformMentions: string[] = [];
+    const codexCrossPlatformMentions: string[] = [];
+    let claudeCanonicalMentions = 0;
+    let codexCanonicalMentions = 0;
+
+    for (const file of claudeFiles) {
+      const source = readFileSync(file, "utf-8");
+      if (/~\/\.codex\/procedures\.js\b/u.test(source)) {
+        claudeCrossPlatformMentions.push(relative(tmpDistDir, file));
+      }
+      claudeCanonicalMentions += (source.match(/~\/\.claude\/procedures\.js\b/gu) ?? []).length;
+    }
+
+    for (const file of codexFiles) {
+      const source = readFileSync(file, "utf-8");
+      if (/~\/\.claude\/procedures\.js\b/u.test(source)) {
+        codexCrossPlatformMentions.push(relative(tmpDistDir, file));
+      }
+      codexCanonicalMentions += (source.match(/~\/\.codex\/procedures\.js\b/gu) ?? []).length;
+    }
+
+    assert.deepEqual(
+      claudeCrossPlatformMentions,
+      [],
+      "claude dist should not reference Codex runtime path ~/.codex/procedures.js",
+    );
+    assert.deepEqual(
+      codexCrossPlatformMentions,
+      [],
+      "codex dist should not reference Claude runtime path ~/.claude/procedures.js",
+    );
+    assert.equal(
+      claudeCanonicalMentions > 0,
+      true,
+      "claude dist should keep canonical ~/.claude/procedures.js references",
+    );
+    assert.equal(
+      codexCanonicalMentions > 0,
+      true,
+      "codex dist should keep canonical ~/.codex/procedures.js references",
+    );
+  });
+
   test("generated markdown frontmatter parses as YAML", () => {
     const markdownFiles = [
       ...collectFiles(join(tmpDistDir, "claude/skills"), (file) => file.endsWith("SKILL.md")),
