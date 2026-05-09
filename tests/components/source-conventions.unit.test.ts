@@ -1682,7 +1682,7 @@ describe("component source conventions", () => {
       const source = readFileSync(sourceFile, "utf-8");
       assert.doesNotMatch(
         source,
-        /from\s+["']\.[^"']+\.(?:ts|js)["']|import\s+["']\.[^"']+\.(?:ts|js)["']|import\(\s*["']\.[^"']+\.(?:ts|js)["']\s*\)/,
+        /from\s+["']\.[^"']+\.(?:ts|js|mjs|cjs)["']|import\s+["']\.[^"']+\.(?:ts|js|mjs|cjs)["']|import\(\s*["']\.[^"']+\.(?:ts|js|mjs|cjs)["']\s*\)/,
         `${sourceFile} should use extensionless relative imports`,
       );
     }
