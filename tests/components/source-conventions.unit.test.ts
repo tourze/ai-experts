@@ -334,6 +334,42 @@ describe("component source conventions", () => {
     }
   });
 
+  test("security ownership map outputs require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/security-ownership-map/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖输出目录内已存在的 CSV\/JSON\/GraphML 产物/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["build_ownership_map.ts", "run_ownership_map.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/security-ownership-map", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const buildSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/security-ownership-map/build_ownership_map.ts"),
+      "utf-8",
+    );
+    assert.match(buildSource, /plannedOwnershipMapOutputFiles/u);
+    assert.match(buildSource, /assertOutputFilesWritable/u);
+    assert.match(buildSource, /output file already exists/u);
+
+    const runSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/security-ownership-map/run_ownership_map.ts"),
+      "utf-8",
+    );
+    assert.match(runSource, /commandArgs\.push\("--overwrite"\)/u);
+  });
+
   test("canvas output procedures require explicit overwrite for existing files", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/canvas-design/index.ts"),

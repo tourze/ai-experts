@@ -26,6 +26,12 @@ export const procedure = defineCliProcedure({
       required: false,
     },
     {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖输出目录内已存在的所有权分析产物；仅在确认目标可替换后使用",
+      required: false,
+    },
+    {
       flag: "--since",
       type: "字符串",
       description: "起始日期",
@@ -106,6 +112,7 @@ export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     repo: ".",
     out: "ownership-map-out",
+    overwrite: false,
     since: null,
     until: null,
     identity: "author",
@@ -134,6 +141,7 @@ export function parseArgs(argv: readonly string[]): any {
       ((args.repo = requireValue(argv, index, arg)), (index += 1));
     else if (arg === "--out")
       ((args.out = requireValue(argv, index, arg)), (index += 1));
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (arg === "--since")
       ((args.since = requireValue(argv, index, arg)), (index += 1));
     else if (arg === "--until")
@@ -215,6 +223,7 @@ export function buildOwnershipMapArgs(args: any): any {
   if (args.until) commandArgs.push("--until", args.until);
   if (args.includeMerges) commandArgs.push("--include-merges");
   if (args.emitCommits) commandArgs.push("--emit-commits");
+  if (args.overwrite) commandArgs.push("--overwrite");
   if (args.graphml) commandArgs.push("--graphml");
   if (args.sensitiveConfig)
     commandArgs.push("--sensitive-config", args.sensitiveConfig);

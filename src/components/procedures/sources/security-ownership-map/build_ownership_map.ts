@@ -33,6 +33,12 @@ export const procedure = defineCliProcedure({
       required: false,
     },
     {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖输出目录内已存在的所有权分析产物；仅在确认目标可替换后使用",
+      required: false,
+    },
+    {
       flag: "--since",
       type: "字符串",
       description: "起始日期（如 2024-01-01）",
@@ -232,6 +238,7 @@ export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     repo: ".",
     out: "ownership-map-out",
+    overwrite: false,
     since: null,
     until: null,
     identity: "author",
@@ -263,6 +270,7 @@ export function parseArgs(argv: readonly string[]): any {
       ((args.repo = requireValue(argv, index, arg)), (index += 1));
     else if (arg === "--out")
       ((args.out = requireValue(argv, index, arg)), (index += 1));
+    else if (arg === "--overwrite") args.overwrite = true;
     else if (arg === "--since")
       ((args.since = requireValue(argv, index, arg)), (index += 1));
     else if (arg === "--until")
@@ -323,6 +331,34 @@ export function parseArgs(argv: readonly string[]): any {
   if (!["author", "committer"].includes(args.dateField))
     throw new Error(`invalid --date-field: ${args.dateField}`);
   return args;
+}
+export function plannedOwnershipMapOutputFiles(args: any, outDir: any): any {
+  const names: any[] = ["people.csv", "files.csv", "edges.csv", "summary.json"];
+  if (args.emitCommits) names.push("commits.jsonl");
+  if (!args.noCochange) names.push("cochange_edges.csv");
+  if (args.communities) {
+    names.push(
+      "communities.json",
+      "cochange.graph.json",
+      "ownership.graph.json",
+    );
+  }
+  if (args.graphml) {
+    names.push("ownership.graphml", "cochange.graphml");
+  }
+  return names.map((name) => join(outDir, name));
+}
+export function assertOutputFilesWritable(
+  paths: any,
+  overwrite: any = false,
+): any {
+  for (const path of paths) {
+    if (existsSync(path) && !overwrite) {
+      throw new Error(
+        `output file already exists: ${path}; pass --overwrite only after confirming it can be replaced`,
+      );
+    }
+  }
 }
 function parseDate(value: any): any {
   const date = new Date(value);
@@ -631,6 +667,10 @@ export function buildOwnershipMap(args: any): any {
   const now = new Date();
   const rules = loadSensitiveRules(args.sensitiveConfig);
   const outDir = args.out;
+  assertOutputFilesWritable(
+    plannedOwnershipMapOutputFiles(args, outDir),
+    args.overwrite,
+  );
   mkdirSync(outDir, { recursive: true });
   const people = new Map();
   const files = new Map();
