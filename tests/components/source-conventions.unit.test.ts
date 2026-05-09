@@ -196,6 +196,28 @@ describe("component source conventions", () => {
     );
   });
 
+  test("youtube analysis scaffold does not silently overwrite Markdown output", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/youtube-analysis/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 Markdown 输出/u);
+    assert.match(skillSource, /确认目标文件可覆盖后才传 `--force`/u);
+
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/youtube-analysis/analyze_video.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"--force"/u);
+    assert.match(procedureSource, /existsSync\(outputPath\) && !args\.force/u);
+    assert.match(procedureSource, /output file already exists/u);
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--force"/u,
+      "youtube analysis examples should not teach overwrite bypasses",
+    );
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

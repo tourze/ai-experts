@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 import { defineCliProcedure, procedureEntry } from "../../definition";
-import { mkdirSync, readFileSync, writeFileSync, realpathSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { fetchVideo } from "./fetch_transcript";
@@ -49,6 +55,12 @@ export const procedure = defineCliProcedure({
       flag: "--json",
       type: "",
       description: "输出原始 JSON 而非 Markdown 脚手架",
+      required: false,
+    },
+    {
+      flag: "--force",
+      type: "",
+      description: "允许覆盖已存在的输出 Markdown 文件；仅在确认目标文件可覆盖后使用",
       required: false,
     },
   ],
@@ -139,6 +151,7 @@ Options:
   --type <value>       auto, lecture, tutorial, interview, podcast, tech-talk, or panel
   --lang <code>        Preferred transcript language (default: en)
   --json               Output raw JSON instead of Markdown scaffold
+  --force              Overwrite an existing Markdown output file
   --help, -h           Show this help
 `;
 }
@@ -156,6 +169,7 @@ export function parseArgs(argv: readonly string[]): any {
     videoType: "auto",
     lang: "en",
     json: false,
+    force: false,
     help: false,
   };
   const depths = new Set(["quick", "standard", "deep"]);
@@ -190,6 +204,8 @@ export function parseArgs(argv: readonly string[]): any {
       index += 1;
     } else if (arg === "--json") {
       args.json = true;
+    } else if (arg === "--force") {
+      args.force = true;
     } else if (!args.url) {
       args.url = arg;
     } else {
@@ -213,6 +229,11 @@ export function main(argv: readonly string[]): any {
   const scaffold = buildScaffold(data, args.depth, args.videoType);
   const outputPath =
     args.output || join(process.cwd(), `${sanitizeFilename(data.title)}.md`);
+  if (existsSync(outputPath) && !args.force) {
+    throw new Error(
+      `output file already exists: ${outputPath}; pass --force only after confirming it can be overwritten`,
+    );
+  }
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, scaffold, "utf8");
   console.error(`Output written to: ${outputPath}`);
