@@ -85,6 +85,12 @@ export const procedure = defineCliProcedure({
       description: "使用交互式选区，传此标志即启用",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的截图输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: { args: ["--mode", "temp"] },
@@ -158,6 +164,21 @@ export function testDisplayIds(env: any = process.env): any {
 export function writeTestPng(path: any): any {
   ensureParent(path);
   writeFileSync(path, TEST_PNG);
+}
+export function assertOutputWritable(path: any, overwrite: any = false): any {
+  if (existsSync(path) && !overwrite) {
+    throw new Error(
+      `output file already exists: ${path}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+}
+export function assertOutputPathsWritable(
+  paths: any,
+  overwrite: any = false,
+): any {
+  for (const path of paths) {
+    assertOutputWritable(path, overwrite);
+  }
 }
 function pad(value: any): any {
   return String(value).padStart(2, "0");
@@ -580,6 +601,9 @@ export function captureLinux(args: any, output: any): any {
 }
 export function captureWindows(args: any, output: any): any {
   const cmd: any[] = ["--path", output, "--format", args.format];
+  if (args.overwrite) {
+    cmd.push("--overwrite");
+  }
   if (args.region) {
     cmd.push("--region", args.region.join(","));
   }
@@ -616,6 +640,7 @@ Options:
   --window-id <id>          capture a specific window id when supported
   --active-window           capture the focused/active window when supported
   --interactive             use interactive selection where the OS tool supports it
+  --overwrite               replace existing screenshot outputs after confirmation
   --help                    show this help
 `;
 }
@@ -631,6 +656,7 @@ export function parseArgs(argv: readonly string[]): any {
     windowId: null,
     activeWindow: false,
     interactive: false,
+    overwrite: false,
     help: false,
   };
   const valueOptions = new Set([
@@ -658,6 +684,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--interactive") {
       args.interactive = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (!valueOptions.has(arg)) {
@@ -779,6 +809,7 @@ export function main(argv: readonly string[]): any {
           output,
           windowIds.map((winId: any) => `w${winId}`),
         );
+        assertOutputPathsWritable(paths, args.overwrite);
         for (const path of paths) writeTestPng(path);
         printPaths(paths);
         return 0;
@@ -788,11 +819,13 @@ export function main(argv: readonly string[]): any {
           output,
           displayIds.map((displayId: any) => `d${displayId}`),
         );
+        assertOutputPathsWritable(paths, args.overwrite);
         for (const path of paths) writeTestPng(path);
         printPaths(paths);
         return 0;
       }
     }
+    assertOutputWritable(output, args.overwrite);
     writeTestPng(output);
     console.log(output);
     return 0;
@@ -803,6 +836,7 @@ export function main(argv: readonly string[]): any {
         output,
         windowIds.map((winId: any) => `w${winId}`),
       );
+      assertOutputPathsWritable(paths, args.overwrite);
       windowIds.forEach((winId: any, index: any) =>
         captureMacos(args, paths[index], { windowId: winId }),
       );
@@ -814,16 +848,20 @@ export function main(argv: readonly string[]): any {
         output,
         displayIds.map((displayId: any) => `d${displayId}`),
       );
+      assertOutputPathsWritable(paths, args.overwrite);
       displayIds.forEach((displayId: any, index: any) =>
         captureMacos(args, paths[index], { display: displayId }),
       );
       printPaths(paths);
       return 0;
     }
+    assertOutputWritable(output, args.overwrite);
     captureMacos(args, output);
   } else if (system === "Linux") {
+    assertOutputWritable(output, args.overwrite);
     captureLinux(args, output);
   } else if (system === "Windows") {
+    assertOutputWritable(output, args.overwrite);
     captureWindows(args, output);
   } else {
     throw new Error(`unsupported platform: ${system}`);

@@ -26,6 +26,7 @@ export const screenshotSkill = defineSkill({
     "`--app`、`--window-name`、`--list-windows` 只支持 macOS。",
     "Windows 走 `screenshot-take-screenshot-windows` procedure；主入口会在 Windows 分支委托给该 Node helper。",
     "互斥参数不能混用：`--region` / `--window-id` / `--active-window` / `--app` / `--interactive` 要按脚本约束组合。",
+    "默认不会覆盖已存在的截图输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "已明确输出位置：显式路径、系统默认目录，还是临时目录。",
@@ -33,6 +34,7 @@ export const screenshotSkill = defineSkill({
     "需要窗口 ID 时，先用 `--list-windows` 确认。",
     "没有同时传入互斥参数。",
     "截图命令跑完后，逐个检查输出路径是否真实生成。",
+    "是否确认截图输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   antiPatterns: [
     defineAntiPattern({

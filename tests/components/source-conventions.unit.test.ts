@@ -367,6 +367,42 @@ describe("component source conventions", () => {
     assert.match(guardSource, /output file already exists/u);
   });
 
+  test("screenshot output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/screenshot/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的截图输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["take_screenshot.ts", "take_screenshot_windows.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/screenshot", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /output file already exists/u, `${sourceFile} should refuse existing output files`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const mainSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/screenshot/take_screenshot.ts"),
+      "utf-8",
+    );
+    assert.match(mainSource, /assertOutputPathsWritable/u);
+    assert.match(mainSource, /cmd\.push\("--overwrite"\)/u);
+
+    const windowsSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/screenshot/take_screenshot_windows.ts"),
+      "utf-8",
+    );
+    assert.match(windowsSource, /\$opts\.overwrite/u);
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

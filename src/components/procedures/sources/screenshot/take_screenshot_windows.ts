@@ -51,6 +51,12 @@ export const procedure = defineCliProcedure({
       description: "截取指定原生窗口句柄",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的截图输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: { args: ["--path", "screenshot.png"] },
@@ -70,9 +76,10 @@ Options:
   --format, -Format png|jpg|jpeg|bmp   Image format
   --region, -Region x,y,w,h            Capture a region
   --active-window, -ActiveWindow       Capture the foreground window
-  --window-handle, -WindowHandle <id>  Capture a specific native window handle`);
+  --window-handle, -WindowHandle <id>  Capture a specific native window handle
+  --overwrite                          Replace existing output after confirmation`);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const options: Record<string, any> = {
     path: "",
     mode: "default",
@@ -80,6 +87,7 @@ function parseArgs(argv: readonly string[]): any {
     region: "",
     activeWindow: false,
     windowHandle: 0,
+    overwrite: false,
   };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -95,6 +103,8 @@ function parseArgs(argv: readonly string[]): any {
       options.region = argv[++i] || "";
     } else if (["--active-window", "-ActiveWindow"].includes(arg)) {
       options.activeWindow = true;
+    } else if (["--overwrite", "-Overwrite"].includes(arg)) {
+      options.overwrite = true;
     } else if (["--window-handle", "-WindowHandle"].includes(arg)) {
       options.windowHandle = Number.parseInt(argv[++i] || "0", 10);
     } else {
@@ -244,6 +254,9 @@ public static class NativeMethods {
 
 $regionValues = Parse-Region
 $outputPath = Resolve-OutputPath
+if ((Test-Path $outputPath) -and -not $opts.overwrite) {
+  throw "output file already exists: $outputPath; pass --overwrite only after confirming it can be replaced"
+}
 
 if ($regionValues) {
   $bounds = New-Object System.Drawing.Rectangle($regionValues[0], $regionValues[1], $regionValues[2], $regionValues[3])
