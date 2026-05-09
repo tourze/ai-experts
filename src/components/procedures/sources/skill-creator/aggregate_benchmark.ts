@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertOutputFilesWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-aggregate-benchmark",
@@ -42,6 +43,12 @@ export const procedure = defineCliProcedure({
       type: "路径",
       description:
         "输出 benchmark JSON 文件路径（默认 benchmark_dir/benchmark.json）",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 benchmark 报告后使用",
       required: false,
     },
   ],
@@ -291,11 +298,12 @@ export function generateMarkdown(benchmark: any): any {
   }
   return lines.join("\n");
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     skillName: "",
     skillPath: "",
     output: null,
+    overwrite: false,
   };
   const positional: any[] = [];
   for (let index = 0; index < argv.length; index += 1) {
@@ -304,13 +312,20 @@ function parseArgs(argv: readonly string[]): any {
     else if (arg === "--skill-path") args.skillPath = argv[++index] ?? "";
     else if (arg === "--output" || arg === "-o")
       args.output = argv[++index] ?? null;
+    else if (arg === "--overwrite") args.overwrite = true;
     else positional.push(arg);
   }
   if (!positional.length)
     throw new Error(
-      "用法：node aggregate_benchmark.mjs <benchmark_dir> [--skill-name name] [--skill-path path] [--output benchmark.json]",
+      "用法：node aggregate_benchmark.mjs <benchmark_dir> [--skill-name name] [--skill-path path] [--output benchmark.json] [--overwrite]",
     );
   return { ...args, benchmarkDir: positional[0] };
+}
+export function plannedBenchmarkOutputFiles(outputJson: any): any {
+  const outputMd = /\.json$/i.test(outputJson)
+    ? outputJson.replace(/\.json$/i, ".md")
+    : `${outputJson}.md`;
+  return [outputJson, outputMd];
 }
 export function main(argv: readonly string[]): any {
   try {
@@ -328,9 +343,10 @@ export function main(argv: readonly string[]): any {
     const outputJson = args.output
       ? resolve(args.output)
       : join(benchmarkDir, "benchmark.json");
-    const outputMd = outputJson.replace(/\.json$/i, ".md");
-    writeFileSync(outputJson, JSON.stringify(benchmark, null, 2), "utf8");
-    console.log(`已生成：${outputJson}`);
+    const [plannedJson, outputMd] = plannedBenchmarkOutputFiles(outputJson);
+    assertOutputFilesWritable([plannedJson, outputMd], args.overwrite);
+    writeFileSync(plannedJson, JSON.stringify(benchmark, null, 2), "utf8");
+    console.log(`已生成：${plannedJson}`);
     writeFileSync(outputMd, generateMarkdown(benchmark), "utf8");
     console.log(`已生成：${outputMd}`);
     const configs = Object.keys(benchmark.run_summary).filter(

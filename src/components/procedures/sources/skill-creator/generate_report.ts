@@ -2,6 +2,7 @@
 import { defineCliProcedure, procedureEntry } from "../../definition";
 import { readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-generate-report",
@@ -28,6 +29,12 @@ export const procedure = defineCliProcedure({
       flag: "--skill-name",
       type: "字符串",
       description: "Skill 名称，用于报告标题",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 HTML 报告后使用",
       required: false,
     },
   ],
@@ -182,18 +189,23 @@ ${rows}
 </html>
 `;
 }
-function parseArgs(argv: readonly string[]): any {
-  const args: Record<string, any> = { output: null, skillName: "" };
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    output: null,
+    skillName: "",
+    overwrite: false,
+  };
   const positional: any[] = [];
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "-o" || arg === "--output") args.output = argv[++index] ?? null;
     else if (arg === "--skill-name") args.skillName = argv[++index] ?? "";
+    else if (arg === "--overwrite") args.overwrite = true;
     else positional.push(arg);
   }
   if (!positional.length)
     throw new Error(
-      "用法：node generate_report.mjs <results.json|- for stdin> [-o output.html] [--skill-name name]",
+      "用法：node generate_report.mjs <results.json|- for stdin> [-o output.html] [--skill-name name] [--overwrite]",
     );
   return { ...args, input: positional[0] };
 }
@@ -206,6 +218,7 @@ export function main(argv: readonly string[], stdin: any = process.stdin): any {
         : JSON.parse(readFileSync(args.input, "utf8"));
     const html = generateHtml(data, false, args.skillName);
     if (args.output) {
+      assertOutputWritable(args.output, args.overwrite);
       writeFileSync(args.output, html, "utf8");
       console.error(`报告已写入：${args.output}`);
     } else {

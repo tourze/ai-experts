@@ -454,6 +454,43 @@ describe("component source conventions", () => {
     assert.match(guardSource, /pass --overwrite only after confirming/u);
   });
 
+  test("skill creator report procedures require explicit overwrite for existing outputs", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/skill-creator/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 HTML、JSON 或 Markdown 输出/u);
+    assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["generate_report.ts", "aggregate_benchmark.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/skill-creator", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /parseArgs/u, `${sourceFile} should parse overwrite-aware argv`);
+      assert.match(source, /assertOutput(?:Files)?Writable/u, `${sourceFile} should guard existing outputs`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const aggregateSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/skill-creator/aggregate_benchmark.ts"),
+      "utf-8",
+    );
+    assert.match(aggregateSource, /plannedBenchmarkOutputFiles/u);
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/skill-creator/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+    assert.match(guardSource, /pass --overwrite only after confirming/u);
+  });
+
   test("canvas output procedures require explicit overwrite for existing files", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/canvas-design/index.ts"),
