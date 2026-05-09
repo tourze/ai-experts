@@ -31,6 +31,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "变体实验必须结构化对比：一次只改一个主变量（指令清晰度、示例策略、输出约束）。",
     "评分 rubric 必须包含硬约束和软约束，不要只有\"感觉更好\"。",
     "如果问题本质在检索、数据或工具链，而不是 prompt，本 skill 只负责识别，不负责掩盖。",
+    "optimize-prompt 默认不会覆盖已存在的 JSON 输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "输出格式是否有明确 schema 或字段定义。",
@@ -38,6 +39,7 @@ export const promptEngineeringPatternsSkill = defineSkill({
     "prompt 是否包含边界条件、拒答规则、异常输入处理方式。",
     "当前 prompt 的失败模式是否已经分类，而不是只收集了零散 bad case。",
     "变体之间是否真正可比较（一次一变量）。",
+    "是否确认 optimize-prompt 输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   relatedSkills: [
     {

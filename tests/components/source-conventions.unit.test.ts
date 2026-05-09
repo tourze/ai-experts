@@ -403,6 +403,30 @@ describe("component source conventions", () => {
     assert.match(windowsSource, /\$opts\.overwrite/u);
   });
 
+  test("prompt optimization output requires explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/prompt-engineering-patterns/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 JSON 输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/prompt-engineering-patterns/optimize-prompt.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"--output"/u);
+    assert.match(procedureSource, /flag:\s+"--overwrite"/u);
+    assert.match(procedureSource, /parseArgs/u);
+    assert.match(procedureSource, /output file already exists/u);
+    assert.match(procedureSource, /optimizer\.exportResults\(args\.output, args\.overwrite\)/u);
+    assert.doesNotMatch(
+      procedureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "prompt optimization examples should not teach overwrite bypasses",
+    );
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

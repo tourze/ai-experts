@@ -7,7 +7,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
  * latency, token estimates, and selecting a better prompt from heuristic
  * variants. Uses only Node.js built-ins and the default MockLLMClient.
  */
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { performance } from "node:perf_hooks";
 
@@ -19,6 +19,20 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["prompt-engineering-patterns"] },
   target: "scripts/optimize-prompt.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "--output",
+      type: "路径",
+      description: "优化结果 JSON 输出路径（默认 optimization_results.json）",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的优化结果输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: [] },
 });
@@ -259,7 +273,8 @@ Output: Sample output
       improvement: Math.abs(metricsA.avg_accuracy - metricsB.avg_accuracy),
     };
   }
-  exportResults(filename: any): any {
+  exportResults(filename: any, overwrite: any = false): any {
+    assertOutputWritable(filename, overwrite);
     const outputDir = dirname(filename);
     if (outputDir && outputDir !== ".") {
       mkdirSync(outputDir, { recursive: true });
@@ -271,6 +286,16 @@ Output: Sample output
     );
   }
 }
+export function assertOutputWritable(
+  outputPath: any,
+  overwrite: any = false,
+): any {
+  if (existsSync(outputPath) && !overwrite) {
+    throw new Error(
+      `output file already exists: ${outputPath}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+}
 function formatTemplate(template: any, values: any): any {
   return template.replace(/\{([^{}]+)\}/g, (match: any, key: any) => {
     if (!(key in values)) {
@@ -279,7 +304,52 @@ function formatTemplate(template: any, values: any): any {
     return String(values[key]);
   });
 }
+function usage(): any {
+  return `Prompt optimization demo.
+
+Usage: node scripts/optimize-prompt.mjs [options]
+
+Options:
+  --output <path>   Write optimization history JSON to this path (default: optimization_results.json)
+  --overwrite       Replace an existing output file after confirmation
+  --help            Show this help
+`;
+}
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    output: "optimization_results.json",
+    overwrite: false,
+    help: false,
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--help" || arg === "-h") {
+      args.help = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
+      continue;
+    }
+    if (arg === "--output") {
+      const value = argv[index + 1];
+      if (value == null || value.startsWith("--")) {
+        throw new Error("--output requires a value");
+      }
+      args.output = value;
+      index += 1;
+      continue;
+    }
+    throw new Error(`unrecognized argument: ${arg}`);
+  }
+  return args;
+}
 export function main(argv: readonly string[]): any {
+  const args = parseArgs(argv);
+  if (args.help) {
+    console.log(usage());
+    return 0;
+  }
   const testSuite: any[] = [
     new TestCase({ text: "This movie was amazing!" }, "Positive"),
     new TestCase({ text: "Worst purchase ever." }, "Negative"),
@@ -305,7 +375,7 @@ export function main(argv: readonly string[]): any {
     console.log("Optimization Complete!");
     console.log(`Best Accuracy: ${results.best_score.toFixed(2)}`);
     console.log(`Best Prompt:\n${results.best_prompt}`);
-    optimizer.exportResults("optimization_results.json");
+    optimizer.exportResults(args.output, args.overwrite);
   } finally {
     optimizer.shutdown();
   }
