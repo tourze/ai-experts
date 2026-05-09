@@ -210,6 +210,17 @@ function escapeRegexLiteral(value: string): string {
 export function renderToolMatcher(matcher: ToolMatcher): string {
   if (typeof matcher === "string") return matcher;
   if (matcher.kind === "mcp") {
+    return matcher.tool
+      ? `mcp__${matcher.server}__${matcher.tool}`
+      : `mcp__${matcher.server}__.*`;
+  }
+  if (matcher.kind === "regex") return matcher.source;
+  throw new Error(`Unsupported matcher: ${JSON.stringify(matcher)}`);
+}
+
+function renderHookToolMatcher(matcher: ToolMatcher): string {
+  if (typeof matcher === "string") return escapeRegexLiteral(matcher);
+  if (matcher.kind === "mcp") {
     const server = escapeRegexLiteral(matcher.server);
     return matcher.tool
       ? `mcp__${server}__${escapeRegexLiteral(matcher.tool)}`
@@ -221,7 +232,7 @@ export function renderToolMatcher(matcher: ToolMatcher): string {
 
 export function renderHookMatcher(hook: Pick<HookDefinition, "matcher">): string {
   if (!hook.matcher || hook.matcher.length === 0) return "";
-  return hook.matcher.map(renderToolMatcher).join("|");
+  return hook.matcher.map(renderHookToolMatcher).join("|");
 }
 
 export function defaultReferenceTarget(reference: SkillReferenceDefinition): string {
