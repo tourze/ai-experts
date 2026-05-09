@@ -4,6 +4,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, realpathSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "canvas-design-concept-to-video-add-audio",
@@ -42,6 +43,12 @@ export const procedure = defineCliProcedure({
       flag: "--trim-to-video",
       type: "",
       description: "裁剪音频以匹配视频长度，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的输出视频；仅在确认目标文件可替换后使用",
       required: false,
     },
   ],
@@ -189,6 +196,7 @@ Options:
   --fade-in <seconds>      Fade-in duration in seconds (default: 0)
   --fade-out <seconds>     Fade-out duration in seconds (default: 0)
   --trim-to-video          Trim audio to match video length
+  --overwrite              Replace an existing output video after confirmation
   --help                   Show this help
 `;
 }
@@ -201,6 +209,7 @@ export function parseArgs(argv: readonly string[]): any {
     fadeIn: 0.0,
     fadeOut: 0.0,
     trimToVideo: false,
+    overwrite: false,
     help: false,
   };
   const positional: any[] = [];
@@ -212,6 +221,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--trim-to-video") {
       args.trimToVideo = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (
@@ -265,6 +278,7 @@ export function main(argv: readonly string[]): any {
     throw new Error(`Error: --volume must be > 0, got ${args.volume}`);
   if (args.fadeIn < 0 || args.fadeOut < 0)
     throw new Error("Error: --fade-in and --fade-out must be >= 0");
+  assertOutputWritable(output, args.overwrite);
   mkdirSync(dirname(output), { recursive: true });
   const command = buildFfmpegCommand(
     video,

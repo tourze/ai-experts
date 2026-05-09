@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { dirname, extname, resolve } from "node:path";
 import { pathToFileURL, fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "canvas-design-concept-to-image-render-to-image",
@@ -47,6 +48,12 @@ export const procedure = defineCliProcedure({
       flag: "--full-page",
       type: "",
       description: "截图整页而非元素（PNG only，布尔标志）",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 PNG/SVG 输出；仅在确认目标文件可替换后使用",
       required: false,
     },
   ],
@@ -145,6 +152,7 @@ export async function renderSvg(
   page: any,
   outputPath: any,
   selector: any,
+  options: { overwrite?: boolean } = {},
 ): Promise<any> {
   const svgContent = await extractSvgContent(page, selector);
   if (svgContent) {
@@ -163,6 +171,7 @@ export async function renderSvg(
       `  Falling back to PNG: ${fallbackPath}\n` +
       `  TIP: For vector SVG output, redesign using a root <svg> element inside '${selector}'.`,
   );
+  assertOutputWritable(fallbackPath, Boolean(options.overwrite));
   return renderPng(page, fallbackPath, selector);
 }
 function usage(): any {
@@ -176,6 +185,7 @@ Options:
   --scale <number>      Device scale factor for PNG (default: 2)
   --selector <selector> CSS selector for target element (default: .canvas)
   --full-page           Capture full page instead of element (PNG only)
+  --overwrite           Replace an existing PNG/SVG output after confirmation
   --help                Show this help
 `;
 }
@@ -188,6 +198,7 @@ export function parseArgs(argv: readonly string[]): any {
     scale: 2,
     selector: ".canvas",
     fullPage: false,
+    overwrite: false,
     help: false,
   };
   const positional: any[] = [];
@@ -199,6 +210,10 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--full-page") {
       args.fullPage = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (["--width", "--height", "--scale", "--selector"].includes(arg)) {
@@ -244,6 +259,7 @@ export async function main(argv: readonly string[]): Promise<any> {
   if (![".png", ".svg"].includes(outputExt)) {
     throw new Error(`ERROR: Output must be .png or .svg, got: ${outputExt}`);
   }
+  assertOutputWritable(outputPath, args.overwrite);
   mkdirSync(dirname(outputPath), { recursive: true });
   const playwright = await loadPlaywright();
   const browser = await launchBrowser(playwright);
@@ -270,7 +286,7 @@ export async function main(argv: readonly string[]): Promise<any> {
     } else if (outputExt === ".png") {
       actual = await renderPng(page, outputPath, args.selector);
     } else {
-      actual = await renderSvg(page, outputPath, args.selector);
+      actual = await renderSvg(page, outputPath, args.selector, args);
     }
   } finally {
     await browser.close();

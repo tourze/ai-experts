@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "canvas-design-concept-to-video-render-video",
@@ -43,6 +44,12 @@ export const procedure = defineCliProcedure({
       flag: "--media-dir",
       type: "路径",
       description: "Manim 媒体输出目录",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的自定义输出文件；仅在确认目标文件可替换后使用",
       required: false,
     },
   ],
@@ -140,6 +147,7 @@ Options:
   --format <mp4|gif|webm>         Output format (default: mp4)
   --output, -o <path>             Output file path
   --media-dir <path>              Custom media directory for Manim output
+  --overwrite                     Replace an existing custom output after confirmation
   --help                          Show this help
 `;
 }
@@ -151,6 +159,7 @@ export function parseArgs(argv: readonly string[]): any {
     format: "mp4",
     output: null,
     mediaDir: null,
+    overwrite: false,
     help: false,
   };
   const positional: any[] = [];
@@ -158,6 +167,10 @@ export function parseArgs(argv: readonly string[]): any {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") {
       args.help = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      args.overwrite = true;
       continue;
     }
     if (
@@ -219,6 +232,9 @@ export function main(argv: readonly string[]): any {
     throw new Error(`ERROR: Scene file not found: ${scenePath}`);
   }
   const outputPath = resolveOutputPath(args.output, args.format);
+  if (outputPath) {
+    assertOutputWritable(outputPath, args.overwrite);
+  }
   if (!ensureManimInstalled()) {
     throw new Error(
       "ERROR: Manim is not installed for the selected Python. Create or activate a virtualenv, then install `manim`; do not bypass Python package manager safety.",

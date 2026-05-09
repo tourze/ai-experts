@@ -295,6 +295,49 @@ describe("component source conventions", () => {
     assert.match(guardSource, /pass --overwrite only after confirming/u);
   });
 
+  test("canvas output procedures require explicit overwrite for existing files", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/canvas-design/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 PNG、SVG、视频或 batch JSON 输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    const sourceFiles = [
+      "baoyu-article-illustrator-build-batch.ts",
+      "concept-to-image-render_to_image.ts",
+      "concept-to-video-add_audio.ts",
+      "concept-to-video-render_video.ts",
+    ];
+
+    for (const sourceFile of sourceFiles) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/canvas-design", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /assertOutputWritable/u, `${sourceFile} should guard existing output files`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const renderImageSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/canvas-design/concept-to-image-render_to_image.ts"),
+      "utf-8",
+    );
+    assert.match(renderImageSource, /fallbackPath/u);
+    assert.match(renderImageSource, /assertOutputWritable\(fallbackPath/u);
+
+    const guardSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/canvas-design/output_guard.ts"),
+      "utf-8",
+    );
+    assert.match(guardSource, /output file already exists/u);
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

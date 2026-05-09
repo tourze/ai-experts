@@ -2,6 +2,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
 import path from "node:path";
 import process from "node:process";
 import { readdir, readFile, stat, writeFile } from "node:fs/promises";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "canvas-design-baoyu-article-illustrator-build-batch",
@@ -66,6 +67,12 @@ export const procedure = defineCliProcedure({
       description: "推荐 worker 数量",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 batch JSON 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -96,9 +103,10 @@ Options:
   --ar <ratio>         Aspect ratio for all tasks (default: 16:9)
   --quality <level>    Quality for all tasks (default: 2k)
   --jobs <count>       Recommended worker count metadata (optional)
+  --overwrite          Replace an existing batch JSON output after confirmation
   -h, --help           Show help`);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     outlinePath: null,
     promptsDir: null,
@@ -109,6 +117,7 @@ function parseArgs(argv: readonly string[]): any {
     aspectRatio: "16:9",
     quality: "2k",
     jobs: null,
+    overwrite: false,
     help: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -128,6 +137,8 @@ function parseArgs(argv: readonly string[]): any {
       args.jobs = value ? parseInt(value, 10) : null;
     } else if (current === "--help" || current === "-h") {
       args.help = true;
+    } else if (current === "--overwrite") {
+      args.overwrite = true;
     }
   }
   return args;
@@ -177,6 +188,7 @@ export async function main(argv: readonly string[]): Promise<any> {
     console.error("Error: --jobs must be a positive integer");
     process.exit(1);
   }
+  assertOutputWritable(args.outputPath, args.overwrite);
   const outlineStat = await stat(args.outlinePath).catch(() => null);
   if (!outlineStat?.isFile()) {
     console.error(`Error: outline file not found: ${args.outlinePath}`);

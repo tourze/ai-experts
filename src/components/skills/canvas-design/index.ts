@@ -28,6 +28,7 @@ export const canvasDesignSkill = defineSkill({
     "输出必须是单页作品，默认 90% 视觉、10% 必要文字。",
     "字体优先使用本 skill 的 `assets/canvas-fonts/` 中已有字体；需要额外字体时，只能为了作品质量引入，不能随手套默认系统字。",
     "严禁复刻现实艺术家或品牌现成视觉语言；只能做原创重构。",
+    "默认不会覆盖已存在的 PNG、SVG、视频或 batch JSON 输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "设计哲学已落盘，且不是空泛口号。",
@@ -35,6 +36,7 @@ export const canvasDesignSkill = defineSkill({
     "文字是视觉元素的一部分，不是大段说明文。",
     "使用的字体、色彩、纹理和留白都服务于同一审美方向。",
     "导出的成品文件和哲学文件同时存在。",
+    "是否确认输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   antiPatterns: [
     defineAntiPattern({
