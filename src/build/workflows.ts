@@ -80,10 +80,16 @@ function validateWorkflowRoute(owner: string, route: WorkflowRouteDefinition, in
   if (!Array.isArray(route.triggers) || route.triggers.length === 0) {
     throw new Error(`${owner} workflow.routes[${index}].triggers must be a non-empty array`);
   }
+  const seenTriggers = new Set<string>();
   for (const [triggerIndex, trigger] of route.triggers.entries()) {
     if (typeof trigger !== "string" || trigger.trim() === "") {
       throw new Error(`${owner} workflow.routes[${index}].triggers[${triggerIndex}] must be a non-empty string`);
     }
+    const normalizedTrigger = trigger.trim();
+    if (seenTriggers.has(normalizedTrigger)) {
+      throw new Error(`${owner} workflow.routes[${index}] contains duplicate trigger: ${normalizedTrigger}`);
+    }
+    seenTriggers.add(normalizedTrigger);
   }
   if (typeof route.output !== "string" || route.output.trim() === "") {
     throw new Error(`${owner} workflow.routes[${index}].output must be a non-empty string`);

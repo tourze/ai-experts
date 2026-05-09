@@ -815,6 +815,28 @@ describe("build/pipeline modules", () => {
       "workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
     );
 
+    const duplicateAgentRouteTriggerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          routes: [
+            defineWorkflowRoute({
+              id: "route-a",
+              triggers: ["需要技能", "需要技能"],
+              skill: fixture.skill.id,
+              checks: "路由检查",
+              output: "产出结果",
+            }),
+          ],
+        }),
+        skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
+      }],
+    };
+    expect(() => validateRegistry(duplicateAgentRouteTriggerRegistry)).toThrow(
+      "Agent fixture-agent workflow.routes[0] contains duplicate trigger: 需要技能",
+    );
+
     const agentWorkflowMissingDeclaredSkillRegistry: ComponentRegistry = {
       ...fixture.registry,
       agents: [{
@@ -919,6 +941,34 @@ describe("build/pipeline modules", () => {
     };
     expect(() => validateRegistry(codexSkillRouteWithClaudeOnlySkillRegistry)).toThrow(
       "Skill workflow-skill workflow route references skill fixture-skill unavailable on platform(s): codex-cli",
+    );
+
+    const duplicateSkillRouteTriggerRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        workflow: defineWorkflow({
+          routes: [
+            defineWorkflowRoute({
+              id: "route-a",
+              triggers: ["需要技能", "需要技能"],
+              skill: fixture.skill.id,
+              checks: "路由检查",
+              output: "产出结果",
+            }),
+          ],
+        }),
+      }],
+      agents: [{
+        ...fixture.agent,
+        workflow: defineWorkflow({
+          steps: [defineWorkflowStep({ id: "skill-route-check", label: "检查 skill route。" })],
+        }),
+        skills: [{ id: fixture.skill.id, mode: SkillUseMode.Route, reason: "fixture routing" }],
+      }],
+    };
+    expect(() => validateRegistry(duplicateSkillRouteTriggerRegistry)).toThrow(
+      "Skill fixture-skill workflow.routes[0] contains duplicate trigger: 需要技能",
     );
 
     const missingOwnerRegistry: ComponentRegistry = {
