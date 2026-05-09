@@ -467,6 +467,7 @@ describe("component source conventions", () => {
       "aggregate_benchmark.ts",
       "generate_review.ts",
       "package_skill.ts",
+      "run_loop.ts",
     ]) {
       const source = readFileSync(
         join(repoRoot, "src/components/procedures/sources/skill-creator", sourceFile),

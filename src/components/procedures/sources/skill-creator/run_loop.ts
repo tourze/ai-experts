@@ -9,6 +9,7 @@ import { generateHtml } from "./generate_report";
 import { improveDescription } from "./improve_description";
 import { findProjectRoot, loadEvalSet, runEval } from "./run_eval";
 import { parseSkillMd } from "./utils";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-run-loop",
@@ -96,6 +97,12 @@ export const procedure = defineCliProcedure({
       flag: "--results-dir",
       type: "路径",
       description: "结果保存目录",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 live report 后使用",
       required: false,
     },
   ],
@@ -393,7 +400,7 @@ export async function runLoop({
     history,
   };
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     description: null,
     numWorkers: 10,
@@ -405,6 +412,7 @@ function parseArgs(argv: readonly string[]): any {
     verbose: false,
     report: "auto",
     resultsDir: null,
+    overwrite: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -424,10 +432,11 @@ function parseArgs(argv: readonly string[]): any {
     else if (arg === "--verbose") args.verbose = true;
     else if (arg === "--report") args.report = argv[++index];
     else if (arg === "--results-dir") args.resultsDir = argv[++index];
+    else if (arg === "--overwrite") args.overwrite = true;
   }
   if (!args.evalSet || !args.skillPath || !args.model) {
     throw new Error(
-      "用法：node run_loop.mjs --eval-set evals/cases.yaml --skill-path skill-dir --model model [--max-iterations 5]",
+      "用法：node run_loop.mjs --eval-set evals/cases.yaml --skill-path skill-dir --model model [--max-iterations 5] [--overwrite]",
     );
   }
   return args;
@@ -451,6 +460,7 @@ export async function main(argv: readonly string[]): Promise<any> {
         args.report === "auto"
           ? join(tmpdir(), `skill_description_report_${name}_${timestamp}.html`)
           : args.report;
+      assertOutputWritable(liveReportPath, args.overwrite);
       writeFileSync(
         liveReportPath,
         "<html lang='zh-CN'><body><h1>正在启动优化循环...</h1><meta http-equiv='refresh' content='5'></body></html>",

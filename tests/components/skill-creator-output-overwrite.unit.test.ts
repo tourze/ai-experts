@@ -24,6 +24,7 @@ import {
   packageSkill,
   parseArgs as parsePackageSkillArgs,
 } from "../../src/components/procedures/sources/skill-creator/package_skill.ts";
+import { parseArgs as parseRunLoopArgs } from "../../src/components/procedures/sources/skill-creator/run_loop.ts";
 import {
   assertOutputFilesWritable,
   assertOutputWritable,
@@ -83,6 +84,34 @@ describe("skill creator output overwrite guards", () => {
         outputDir: "dist",
         overwrite: true,
       });
+
+    expect(parseRunLoopArgs([
+      "--eval-set",
+      "evals/cases.yaml",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "model",
+      "--report",
+      "report.html",
+    ])).toMatchObject({
+      report: "report.html",
+      overwrite: false,
+    });
+    expect(parseRunLoopArgs([
+      "--eval-set",
+      "evals/cases.yaml",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "model",
+      "--report",
+      "report.html",
+      "--overwrite",
+    ])).toMatchObject({
+      report: "report.html",
+      overwrite: true,
+    });
   });
 
   test("refuses existing report outputs unless overwrite is explicit", () => {
