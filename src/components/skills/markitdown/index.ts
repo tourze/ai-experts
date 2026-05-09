@@ -30,12 +30,14 @@ export const markitdownSkill = defineSkill({
     "AI 增强模式依赖 `openai` 兼容客户端与 API key，只在确实需要图片理解时开启。",
     "批量转换时保留原目录结构与文件扩展映射，避免输出目录混乱。",
     "学术文献场景下优先补齐文件命名和元数据，再做批量转换。",
+    "默认不会覆盖已存在的 Markdown、`INDEX.md` 或 `catalog.json` 输出；确认目标文件可替换后才传 `--overwrite`。",
   ],
   checklist: [
     "是否确认了输入目录、输出目录、扩展名过滤和递归策略。",
     "是否在批量模式下保留了原文件名与层级，便于回溯原件。",
     "AI 模式是否只在有图像理解需求时启用，并明确模型与密钥来源。",
     "对学术文献是否输出了 `INDEX.md` 或 `catalog.json` 这类导航文件。",
+    "是否确认输出路径不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",
   ],
   relatedSkills: [
     {

@@ -39,6 +39,12 @@ export const procedure = defineCliProcedure({
       description: "递归搜索子目录",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 Markdown、INDEX.md 和 catalog.json 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -52,14 +58,16 @@ function usage(): any {
 Options:
   --organize-by-year, -y  Organize output into year subdirectories
   --create-index, -i      Create an index/catalog of all papers
-  --recursive, -r         Search subdirectories recursively`);
+  --recursive, -r         Search subdirectories recursively
+  --overwrite             Replace existing Markdown/index outputs after confirmation`);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   const options: Record<string, any> = {
     organizeByYear: false,
     createIndex: false,
     recursive: false,
+    overwrite: false,
   };
   for (const arg of argv) {
     if (arg === "--help" || arg === "-h") {
@@ -71,6 +79,8 @@ function parseArgs(argv: readonly string[]): any {
       options.createIndex = true;
     } else if (arg === "--recursive" || arg === "-r") {
       options.recursive = true;
+    } else if (arg === "--overwrite") {
+      options.overwrite = true;
     } else {
       positional.push(arg);
     }
@@ -121,24 +131,29 @@ export async function convertPaper(
   options: any = {},
 ): Promise<any> {
   console.log(`Converting: ${basename(inputFile)}`);
-  const result = await convertDocument(inputFile);
   const metadata: Record<string, any> = {
     ...extractMetadataFromFilename(inputFile),
     source_file: basename(inputFile),
     converted_date: new Date().toISOString(),
   };
-  if (!metadata.title && result.title) {
-    metadata.title = result.title;
-  }
   const outputSubdir =
     options.organizeByYear && metadata.year
       ? join(outputDir, metadata.year)
       : outputDir;
-  mkdirSync(outputSubdir, { recursive: true });
   const outputFile = join(
     outputSubdir,
     `${basename(inputFile, extname(inputFile))}.md`,
   );
+  if (existsSync(outputFile) && !options.overwrite) {
+    throw new Error(
+      `output file already exists: ${outputFile}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+  const result = await convertDocument(inputFile);
+  if (!metadata.title && result.title) {
+    metadata.title = result.title;
+  }
+  mkdirSync(outputSubdir, { recursive: true });
   const lines: any[] = [
     "---",
     `title: "${metadata.title || basename(inputFile, extname(inputFile))}"`,
@@ -177,7 +192,19 @@ export async function convertPaper(
   console.log(`Saved to: ${outputFile}`);
   return metadata;
 }
-export function createIndex(papers: any, outputDir: any): any {
+function assertIndexOutputsWritable(outputDir: any, options: any = {}): void {
+  const indexFile = join(outputDir, "INDEX.md");
+  const catalogFile = join(outputDir, "catalog.json");
+  for (const outputFile of [indexFile, catalogFile]) {
+    if (existsSync(outputFile) && !options.overwrite) {
+      throw new Error(
+        `output file already exists: ${outputFile}; pass --overwrite only after confirming it can be replaced`,
+      );
+    }
+  }
+}
+export function createIndex(papers: any, outputDir: any, options: any = {}): any {
+  assertIndexOutputsWritable(outputDir, options);
   const papersSorted = [...papers].sort((left: any, right: any) => {
     const year = String(left.year ?? "9999").localeCompare(
       String(right.year ?? "9999"),
@@ -255,6 +282,14 @@ export async function main(argv: readonly string[]): Promise<any> {
     console.log("No PDF files found");
     return 1;
   }
+  if (args.createIndex) {
+    try {
+      assertIndexOutputsWritable(resolve(args.outputDir), args);
+    } catch (error: any) {
+      console.error(`Error: ${error.message}`);
+      return 1;
+    }
+  }
   console.log(`Found ${pdfFiles.length} PDF file(s)`);
   const results: any[] = [];
   let successCount = 0;
@@ -267,7 +302,12 @@ export async function main(argv: readonly string[]): Promise<any> {
     }
   }
   if (args.createIndex && results.length > 0) {
-    createIndex(results, resolve(args.outputDir));
+    try {
+      createIndex(results, resolve(args.outputDir), args);
+    } catch (error: any) {
+      console.error(`Error: ${error.message}`);
+      return 1;
+    }
   }
   console.log("\n==================================================");
   console.log("CONVERSION SUMMARY");

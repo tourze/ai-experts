@@ -51,6 +51,12 @@ export const procedure = defineCliProcedure({
       description: "启用 MarkItDown 插件，传此标志即启用",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 Markdown 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -82,9 +88,10 @@ Options:
   --recursive, -r           Search subdirectories recursively
   --workers, -w <n>         Number of parallel workers (default: 4)
   --verbose, -v             Print detailed messages
-  --plugins, -p             Enable MarkItDown plugins`);
+  --plugins, -p             Enable MarkItDown plugins
+  --overwrite               Replace existing Markdown outputs after confirmation`);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   const options: Record<string, any> = {
     extensions: null,
@@ -92,6 +99,7 @@ function parseArgs(argv: readonly string[]): any {
     workers: 4,
     verbose: false,
     enablePlugins: false,
+    overwrite: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -104,6 +112,8 @@ function parseArgs(argv: readonly string[]): any {
       options.verbose = true;
     } else if (arg === "--plugins" || arg === "-p") {
       options.enablePlugins = true;
+    } else if (arg === "--overwrite") {
+      options.overwrite = true;
     } else if (arg === "--workers" || arg === "-w") {
       options.workers = Number.parseInt(argv[++index] ?? "", 10);
     } else if (arg === "--extensions" || arg === "-e") {
@@ -174,15 +184,20 @@ export async function convertFile(
   if (options.verbose) {
     console.log(`Converting: ${filePath}`);
   }
-  const result = await convertDocument(filePath, {
-    enablePlugins: options.enablePlugins,
-  });
   const sourceName = basename(filePath);
   const stem = sourceName.slice(
     0,
     sourceName.length - extname(sourceName).length,
   );
   const outputFile = join(outputDir, `${stem}.md`);
+  if (existsSync(outputFile) && !options.overwrite) {
+    throw new Error(
+      `output file already exists: ${outputFile}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
+  const result = await convertDocument(filePath, {
+    enablePlugins: options.enablePlugins,
+  });
   const content = [
     `# ${result.title || stem}`,
     "",

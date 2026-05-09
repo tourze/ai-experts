@@ -224,6 +224,37 @@ describe("component source conventions", () => {
     assert.match(referenceSource, /用户确认 apt\/sudo 变更后执行/u);
   });
 
+  test("markitdown conversions require explicit overwrite for existing outputs", () => {
+    const skillSource = readFileSync(
+      join(repoRoot, "src/components/skills/markitdown/index.ts"),
+      "utf-8",
+    );
+    assert.match(skillSource, /默认不会覆盖已存在的 Markdown、`INDEX\.md` 或 `catalog\.json` 输出/u);
+    assert.match(skillSource, /确认目标文件可替换后才传 `--overwrite`/u);
+
+    for (const sourceFile of ["batch_convert.ts", "convert_with_ai.ts", "convert_literature.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/markitdown", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--overwrite"/u, `${sourceFile} should expose an explicit overwrite flag`);
+      assert.match(source, /output file already exists/u, `${sourceFile} should refuse silent overwrites`);
+      assert.doesNotMatch(
+        source,
+        /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+        `${sourceFile} examples should not teach overwrite bypasses`,
+      );
+    }
+
+    const literatureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/markitdown/convert_literature.ts"),
+      "utf-8",
+    );
+    assert.match(literatureSource, /INDEX\.md/u);
+    assert.match(literatureSource, /catalog\.json/u);
+    assert.match(literatureSource, /assertIndexOutputsWritable/u);
+  });
+
   test("ios binary analysis brew install checklist requires confirmation wording", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/ios-binary-analysis/index.ts"),

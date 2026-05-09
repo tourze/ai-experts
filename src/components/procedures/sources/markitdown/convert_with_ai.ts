@@ -45,6 +45,12 @@ export const procedure = defineCliProcedure({
       description: "列出所有可用提示模板并退出",
       required: false,
     },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "允许覆盖已存在的 Markdown 输出；仅在确认目标文件可替换后使用",
+      required: false,
+    },
   ],
 
   exampleArgs: {
@@ -96,9 +102,10 @@ Options:
   --model, -m <model>       Model to use
   --prompt-type, -t <type>  Prompt type: ${Object.keys(PROMPTS).join(", ")}
   --custom-prompt, -p <txt> Custom prompt
-  --list-prompts, -l        List prompt types and exit`);
+  --list-prompts, -l        List prompt types and exit
+  --overwrite               Replace existing Markdown output after confirmation`);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   const options: Record<string, any> = {
     model: "anthropic/claude-opus-4.5",
@@ -106,6 +113,7 @@ function parseArgs(argv: readonly string[]): any {
     customPrompt: null,
     apiKey: null,
     listPrompts: false,
+    overwrite: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -122,6 +130,8 @@ function parseArgs(argv: readonly string[]): any {
       options.promptType = argv[++index];
     } else if (arg === "--custom-prompt" || arg === "-p") {
       options.customPrompt = argv[++index];
+    } else if (arg === "--overwrite") {
+      options.overwrite = true;
     } else {
       positional.push(arg);
     }
@@ -160,6 +170,11 @@ export async function convertWithAi(
     `Prompt type: ${options.customPrompt ? "custom" : options.promptType}`,
   );
   console.log(`Converting: ${inputFile}`);
+  if (existsSync(outputFile) && !options.overwrite) {
+    throw new Error(
+      `output file already exists: ${outputFile}; pass --overwrite only after confirming it can be replaced`,
+    );
+  }
   const result = await convertDocument(inputFile, {
     llm: {
       apiKey: options.apiKey,
