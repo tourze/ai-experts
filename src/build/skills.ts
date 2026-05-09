@@ -172,7 +172,7 @@ function renderProcedureCommand(
   procedureUse: ResolvedProcedureUse,
   procedure: ProcedureDefinition | undefined,
 ): string {
-  const exampleArgs = procedure?.exampleArgs ?? procedureUse.exampleArgs;
+  const exampleArgs = procedureUse.exampleArgs ?? procedure?.exampleArgs;
   const argsArray: unknown[] = (exampleArgs != null && typeof exampleArgs === "object" && "args" in exampleArgs)
     ? (exampleArgs as Record<string, unknown>).args as unknown[] ?? []
     : [];

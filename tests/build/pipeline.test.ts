@@ -219,6 +219,26 @@ describe("build/pipeline modules", () => {
     const procedureMap = new Map([[fixture.procedure.id, fixture.procedure]]);
     expect(renderSkillMd(fixture.skill, Platform.Claude, procedureMap)).toContain("## 适用场景");
     expect(renderSkillMd(fixture.skill, Platform.Codex, procedureMap)).toContain("# Fixture Skill");
+    const procedureWithDefaultArgs = {
+      ...fixture.procedure,
+      exampleArgs: { args: ["--default", "procedure value"] },
+    };
+    const procedureUseOverrideSkill = {
+      ...fixture.skill,
+      procedures: [
+        defineProcedureUse({
+          id: fixture.procedure.id,
+          exampleArgs: { args: ["--override", "use value"] },
+        }),
+      ],
+    };
+    const procedureUseOverrideMd = renderSkillMd(
+      procedureUseOverrideSkill,
+      Platform.Claude,
+      new Map([[fixture.procedure.id, procedureWithDefaultArgs]]),
+    );
+    expect(procedureUseOverrideMd).toContain("--override 'use value'");
+    expect(procedureUseOverrideMd).not.toContain("--default 'procedure value'");
     const relatedSkillMd = renderSkillMd(
       {
         ...fixture.skill,
