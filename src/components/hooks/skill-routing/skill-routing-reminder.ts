@@ -46,6 +46,9 @@ export async function run(payload: NormalizedHookPayload) {
   // 斜杠命令不注入
   if (trimmed.startsWith("/")) return null;
 
+  // Codex 显式 skill 调用不注入
+  if (payload.platform === Platform.Codex && /^\$[A-Za-z0-9_-]+\b/u.test(trimmed)) return null;
+
   // 纯确认性回复不注入
   if (SHORT_CONFIRMATION_RE.test(trimmed)) return null;
 

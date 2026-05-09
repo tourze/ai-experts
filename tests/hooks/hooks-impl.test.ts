@@ -15,6 +15,8 @@ import { run as runGeneratedDistGuard } from "../../src/components/hooks/edit-sa
 import { run as runMergeConflictGuard } from "../../src/components/hooks/edit-safety/merge-conflict-guard";
 import { run as runJavascriptEnvDetector } from "../../src/components/hooks/session-bootstrap/javascript-env-detector";
 import { run as runComponentRoutingReminder } from "../../src/components/hooks/skill-routing/component-routing-reminder";
+import { run as runSkillNextStepGate } from "../../src/components/hooks/skill-routing/skill-next-step-gate";
+import { run as runSkillRoutingReminder } from "../../src/components/hooks/skill-routing/skill-routing-reminder";
 
 const tempDirs: string[] = [];
 
@@ -249,5 +251,78 @@ describe("hooks implementation coverage", () => {
       }),
     );
     expect(skipped).toBeNull();
+  });
+
+  test("skill-routing-reminder skips explicit codex skill invocations", async () => {
+    const skipped = await runSkillRoutingReminder(
+      makeNormalizedPayload(HookEvent.UserPromptSubmit, {
+        platform: Platform.Codex,
+        prompt: "$typescript-type-safety 帮我看这个类型错误",
+      }),
+    );
+    expect(skipped).toBeNull();
+
+    const injected = await runSkillRoutingReminder(
+      makeNormalizedPayload(HookEvent.UserPromptSubmit, {
+        platform: Platform.Codex,
+        prompt: "帮我看这个 TypeScript 类型错误",
+      }),
+    );
+    expect(injected?.decision).toBe("context");
+  });
+
+  test("skill-next-step-gate renders platform-specific skill invocation prompts", async () => {
+    const root = createTempDir("ai-experts-hook-next-step-");
+    const codexTranscript = join(root, "codex.jsonl");
+    const claudeTranscript = join(root, "claude.jsonl");
+    const finalText =
+      "我已经完成了主要分析，覆盖了关键风险、修复建议和验证结果，并说明了后续验证方式。" +
+      "这段回复刻意保持为普通任务型总结，长度足够触发下一步推荐 gate，但还没有添加下一步推荐区块。";
+
+    writeFileSync(
+      codexTranscript,
+      [
+        JSON.stringify({
+          type: "response_item",
+          payload: { type: "message", role: "user", content: [{ type: "input_text", text: "请审查这段代码" }] },
+        }),
+        JSON.stringify({
+          type: "response_item",
+          payload: { type: "message", role: "assistant", content: [{ type: "output_text", text: finalText }] },
+        }),
+        "",
+      ].join("\n"),
+      "utf-8",
+    );
+    writeFileSync(
+      claudeTranscript,
+      [
+        JSON.stringify({ type: "user", promptId: "p1", message: { content: "请审查这段代码" } }),
+        JSON.stringify({ type: "assistant", promptId: "p1", message: { content: [{ type: "text", text: finalText }] } }),
+        "",
+      ].join("\n"),
+      "utf-8",
+    );
+
+    const codexResult = await runSkillNextStepGate(
+      makeNormalizedPayload(HookEvent.Stop, {
+        platform: Platform.Codex,
+        transcriptPath: codexTranscript,
+      }),
+    );
+    expect(codexResult?.decision).toBe("block");
+    expect(codexResult?.reason).toContain("请用 $skill-name");
+    expect(codexResult?.reason).toContain("请用 $session-finalization-workflow");
+    expect(codexResult?.reason).not.toContain("请用 /skill-name");
+
+    const claudeResult = await runSkillNextStepGate(
+      makeNormalizedPayload(HookEvent.Stop, {
+        platform: Platform.Claude,
+        transcriptPath: claudeTranscript,
+      }),
+    );
+    expect(claudeResult?.decision).toBe("block");
+    expect(claudeResult?.reason).toContain("请用 /skill-name");
+    expect(claudeResult?.reason).toContain("请用 /session-finalization-workflow");
   });
 });

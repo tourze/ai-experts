@@ -9,8 +9,8 @@ import {
   parseTranscript,
 } from "../_shared/transcript-utils";
 import {
-  NEXT_STEP_BLOCK_TEMPLATE,
-  NEXT_STEP_RULES,
+  buildNextStepBlockTemplate,
+  buildNextStepRules,
   hasCompletionStatus,
   hasNextStepSection,
   shouldSkipNextStepRequirement,
@@ -86,6 +86,8 @@ export async function run(payload: NormalizedHookPayload) {
   }
 
   const summary = summarizeText(finalText);
+  const nextStepBlock = buildNextStepBlockTemplate(payload.platform);
+  const nextStepRules = buildNextStepRules(payload.platform);
 
   return {
     decision: "block",
@@ -94,9 +96,9 @@ export async function run(payload: NormalizedHookPayload) {
       "",
       "请在本轮回复末尾补上以下内容后再结束：",
       "",
-      NEXT_STEP_BLOCK_TEMPLATE,
+      nextStepBlock,
       "",
-      NEXT_STEP_RULES,
+      nextStepRules,
       "",
       "当前回复摘要：",
       `- ${summary}`,
