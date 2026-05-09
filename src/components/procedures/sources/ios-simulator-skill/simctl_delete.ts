@@ -33,7 +33,7 @@ export const procedure = defineCliProcedure({
     {
       flag: "--yes",
       type: "",
-      description: "跳过确认提示，传此标志即启用",
+      description: "跳过确认提示；仅在用户已明确确认删除目标后使用",
       required: false,
     },
     { flag: "--all", type: "", description: "删除所有模拟器", required: false },
@@ -167,7 +167,7 @@ Usage: node scripts/simctl_delete.mjs [options]
 Options:
   --udid <udid>          Device UDID or name
   --name <name>          Device name
-  --yes                  Skip confirmation prompt
+  --yes                  Skip confirmation prompt after explicit user approval
   --all                  Delete all simulators
   --type <type>          Delete all simulators of a type
   --old <keep-count>     Delete older simulators, keeping this many per type

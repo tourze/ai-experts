@@ -26,6 +26,7 @@ export const iosSimulatorSkillSkill = defineSkill({
     "优先走无障碍树：先 `ios-simulator-skill-screen-mapper` / `ios-simulator-skill-navigator` procedure，最后才用坐标。",
     "大多数 Procedure 在未传 `--udid` 时会自动选择 booted simulator；`ios-simulator-skill-log-monitor` procedure 例外，参数名是 `--device-udid`。",
     "`ios-simulator-skill-visual-diff` procedure 直接处理 PNG；截图缩放优先使用系统 `sips`，缺失时保留原图尺寸。",
+    "删除、擦除、批量关闭模拟器会丢失本地模拟器状态；只有用户明确确认目标和影响范围后才传 `--yes` 或执行批量操作。",
   ],
   checklist: [
     "先跑 `ios-simulator-skill-sim-health-check` procedure，确认 `xcrun`、`simctl`、Node.js 运行时可用。",

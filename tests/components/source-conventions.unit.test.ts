@@ -97,6 +97,24 @@ describe("component source conventions", () => {
     }
   });
 
+  test("destructive simulator procedures require explicit confirmation flags", () => {
+    const iosSkillSource = readFileSync(
+      join(repoRoot, "src/components/skills/ios-simulator-skill/index.ts"),
+      "utf-8",
+    );
+    assert.match(iosSkillSource, /只有用户明确确认目标和影响范围后才传 `--yes`/u);
+
+    for (const sourceFile of ["simctl_delete.ts", "simctl_erase.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/ios-simulator-skill", sourceFile),
+        "utf-8",
+      );
+      assert.match(source, /flag:\s+"--yes"/u, `${sourceFile} should expose an explicit confirmation bypass`);
+      assert.match(source, /仅在用户已明确确认/u, `${sourceFile} should describe when --yes is allowed`);
+      assert.match(source, /readConfirmation/u, `${sourceFile} should ask for confirmation when --yes is absent`);
+    }
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

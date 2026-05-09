@@ -8,7 +8,7 @@ import {
   runXcrunSimctl,
   sleep,
 } from "./simctl_common";
-import { realpathSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 
 export const procedure = defineCliProcedure({
   id: "ios-simulator-skill-simctl-erase",
@@ -35,6 +35,12 @@ export const procedure = defineCliProcedure({
       flag: "--verify",
       type: "",
       description: "等待擦除验证，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "跳过确认提示；仅在用户已明确确认擦除目标后使用",
       required: false,
     },
     {
@@ -72,8 +78,20 @@ export class SimulatorEraser {
   constructor(udid: any = null) {
     this.udid = udid;
   }
-  async erase({ verify = false, timeoutSeconds = 30 }: any = {}): Promise<any> {
+  async erase({
+    verify = false,
+    timeoutSeconds = 30,
+    confirm = false,
+  }: any = {}): Promise<any> {
     if (!this.udid) return [false, "Error: Device UDID not specified"];
+    if (
+      !confirm &&
+      !readConfirmation(
+        `Erase simulator ${this.udid} and reset all app data? (type 'yes' to confirm): `,
+      )
+    ) {
+      return [false, "Erase cancelled: confirmation required"];
+    }
     const start = Date.now();
     const result = runXcrunSimctl(["erase", this.udid], { timeoutMs: 60000 });
     if (result.error?.code === "ETIMEDOUT")
@@ -118,31 +136,58 @@ export class SimulatorEraser {
       `Erase verification timeout: Device did not respond within ${elapsedSeconds(start)}s (${checks} checks)`,
     ];
   }
-  static async eraseAll(): Promise<any> {
-    return eraseMany(listSimulators(null));
+  static async eraseAll({ confirm = false }: any = {}): Promise<any> {
+    return eraseMany(listSimulators(null), { confirm });
   }
-  static async eraseByType(deviceType: any): Promise<any> {
+  static async eraseByType(
+    deviceType: any,
+    { confirm = false }: any = {},
+  ): Promise<any> {
     return eraseMany(
       listSimulators(null).filter((sim: any) =>
         sim.name.toLowerCase().includes(deviceType.toLowerCase()),
       ),
+      { confirm },
     );
   }
-  static async eraseBooted(): Promise<any> {
-    return eraseMany(listSimulators("booted"));
+  static async eraseBooted({ confirm = false }: any = {}): Promise<any> {
+    return eraseMany(listSimulators("booted"), { confirm });
   }
 }
-async function eraseMany(simulators: any): Promise<any> {
+async function eraseMany(
+  simulators: any,
+  { confirm = false }: any = {},
+): Promise<any> {
+  if (
+    simulators.length > 0 &&
+    !confirm &&
+    !readConfirmation(
+      `Erase ${simulators.length} simulator(s) and reset all app data? (type 'yes' to confirm): `,
+    )
+  ) {
+    return [0, simulators.length];
+  }
   let succeeded = 0;
   let failed = 0;
   for (const simulator of simulators) {
     const [success] = await new SimulatorEraser(simulator.udid).erase({
+      confirm: true,
       verify: false,
     });
     if (success) succeeded += 1;
     else failed += 1;
   }
   return [succeeded, failed];
+}
+export function readConfirmation(prompt: any): any {
+  process.stdout.write(prompt);
+  try {
+    return (
+      readFileSync(0, "utf8").trim().split(/\r?\n/)[0]?.toLowerCase() === "yes"
+    );
+  } catch {
+    return false;
+  }
 }
 function elapsedSeconds(startMs: any): any {
   return ((Date.now() - startMs) / 1000).toFixed(1);
@@ -156,6 +201,7 @@ Options:
   --udid <udid>          Device UDID or name
   --name <name>          Device name
   --verify               Wait for erase verification
+  --yes                  Skip confirmation prompt after explicit user approval
   --timeout <seconds>    Timeout for --verify (default: 30)
   --all                  Erase all simulators
   --type <type>          Erase all simulators of a type
@@ -169,6 +215,7 @@ export function parseArgs(argv: readonly string[]): any {
     udid: null,
     name: null,
     verify: false,
+    yes: false,
     timeout: 30,
     all: false,
     type: null,
@@ -180,6 +227,7 @@ export function parseArgs(argv: readonly string[]): any {
     const arg = argv[index];
     if (arg === "--help" || arg === "-h") args.help = true;
     else if (arg === "--verify") args.verify = true;
+    else if (arg === "--yes") args.yes = true;
     else if (arg === "--all") args.all = true;
     else if (arg === "--booted") args.booted = true;
     else if (arg === "--json") args.json = true;
@@ -226,14 +274,14 @@ export async function main(argv: readonly string[]): Promise<any> {
     return 0;
   }
   if (args.all)
-    return outputBatch(args, "erase_all", () => SimulatorEraser.eraseAll());
+    return outputBatch(args, "erase_all", () => SimulatorEraser.eraseAll({ confirm: args.yes }));
   if (args.type)
     return outputBatch(args, "erase_by_type", () =>
-      SimulatorEraser.eraseByType(args.type),
+      SimulatorEraser.eraseByType(args.type, { confirm: args.yes }),
     );
   if (args.booted)
     return outputBatch(args, "erase_booted", () =>
-      SimulatorEraser.eraseBooted(),
+      SimulatorEraser.eraseBooted({ confirm: args.yes }),
     );
   const deviceId = args.udid || args.name;
   if (!deviceId) {
@@ -242,6 +290,7 @@ export async function main(argv: readonly string[]): Promise<any> {
   }
   const udid = resolveDeviceIdentifier(deviceId);
   const [success, message] = await new SimulatorEraser(udid).erase({
+    confirm: args.yes,
     verify: args.verify,
     timeoutSeconds: args.timeout,
   });
