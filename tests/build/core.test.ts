@@ -126,8 +126,16 @@ describe("build/core", () => {
     expect(renderToolMatcher(KnownTool.Bash)).toBe("Bash");
     expect(renderToolMatcher({ kind: "mcp", server: "x" })).toBe("mcp__x__.*");
     expect(renderToolMatcher({ kind: "mcp", server: "x", tool: "y" })).toBe("mcp__x__y");
+    expect(renderToolMatcher({ kind: "mcp", server: "gh.server+1", tool: "issue(write)" })).toBe(
+      "mcp__gh\\.server\\+1__issue\\(write\\)",
+    );
     expect(renderToolMatcher({ kind: "regex", source: "Bash|Read" })).toBe("Bash|Read");
     expect(renderHookMatcher({ matcher: [KnownTool.Bash] })).toBe("Bash");
+    expect(
+      renderHookMatcher({
+        matcher: [{ kind: "mcp", server: "gh.server+1", tool: "issue(write)" }],
+      }),
+    ).toBe("mcp__gh\\.server\\+1__issue\\(write\\)");
     expect(renderHookMatcher({ matcher: undefined })).toBe("");
 
     const reference = {
