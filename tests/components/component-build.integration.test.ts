@@ -865,7 +865,9 @@ describe("component build integration", () => {
       for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
         const source = readFileSync(generatedFile, "utf-8");
         source.split(/\r?\n/u).forEach((line, index) => {
-          if (/node ~\/\.(?:claude|codex)\/procedures\.js\b.* --$/u.test(line.trim())) {
+          if (
+            /node ~\/\.(?:claude|codex)\/procedures\.js\b.*\s--(?:$|[`"')\];,。])/u.test(line.trim())
+          ) {
             const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
             bareProcedureSeparators.push(`${platform}/${generatedPath}:${index + 1}`);
           }

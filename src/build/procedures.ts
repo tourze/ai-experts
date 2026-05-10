@@ -578,6 +578,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const needsArgsSeparator = (currentSource, offset, match) => {
     const rest = currentSource.slice(offset + match.length).replace(/^[ \\t]+/, "");
     if (rest.startsWith("\\\\n") || rest.startsWith("\\\\r\\\\n")) return false;
+    if (/^["'\`),.;:]/.test(rest)) return false;
     return /^(?:\\\\\\r?\\n|\\S)/.test(rest);
   };
   const renderScriptRewrite = (rewrite, offset, match, currentSource) =>
