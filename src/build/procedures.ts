@@ -23,6 +23,13 @@ type RuntimeProcedureEntry = {
   };
   argsSchema: string | null;
   outputSchema: string | null;
+  params?: readonly {
+    flag: string;
+    type: string;
+    description: string;
+    required: boolean;
+  }[];
+  exampleArgs?: { args?: readonly string[] };
 };
 
 type RuntimeProcedureModule = RuntimeProcedureEntry & {
@@ -312,6 +319,64 @@ function printHelp() {
   });
 }
 
+function triggerHelpArg(procedure, parsed) {
+  if (parsed.triggerSkill) return "--trigger-skill " + parsed.triggerSkill;
+  if (parsed.triggerAgent) return "--trigger-agent " + parsed.triggerAgent;
+  const fallbackSkill = procedure.owners?.skillIds?.[0];
+  if (fallbackSkill) return "--trigger-skill " + fallbackSkill;
+  const fallbackAgent = procedure.owners?.agentIds?.[0];
+  if (fallbackAgent) return "--trigger-agent " + fallbackAgent;
+  return "--trigger-skill <skill-id>";
+}
+
+function renderParamHelp(param) {
+  const type = param.type && param.type !== "布尔" ? " <" + param.type + ">" : "";
+  const required = param.required ? " (required)" : "";
+  return "  " + param.flag + type + required + "\\n      " + param.description;
+}
+
+function renderProcedureHelp(procedure, parsed) {
+  const triggerArg = triggerHelpArg(procedure, parsed);
+  const lines = [
+    procedure.id,
+    "",
+    procedure.description,
+    "",
+    "Usage: node " + procedureRuntimePath + " --procedure-id " + procedure.id + " " + triggerArg + " -- [options]",
+  ];
+  if (Array.isArray(procedure.params) && procedure.params.length > 0) {
+    lines.push("", "Parameters:");
+    for (const param of procedure.params) lines.push(renderParamHelp(param));
+  }
+  const exampleArgs = procedure.exampleArgs?.args;
+  if (Array.isArray(exampleArgs) && exampleArgs.length > 0) {
+    lines.push("", "Example:");
+    lines.push(
+      "  node " + procedureRuntimePath + " --procedure-id " + procedure.id + " " + triggerArg + " -- " +
+        exampleArgs.map((arg) => JSON.stringify(String(arg))).join(" "),
+    );
+  }
+  return lines.join("\\n") + "\\n";
+}
+
+function printProcedureHelp(procedure, parsed, timingMs) {
+  printResult({
+    ok: true,
+    procedureId: procedure.id,
+    sessionId: parsed.sessionId,
+    trigger: normalizeTrigger(parsed),
+    result: {
+      exitCode: 0,
+      signal: null,
+      stdout: renderProcedureHelp(procedure, parsed),
+      stderr: "",
+    },
+    error: null,
+    timingMs,
+    version,
+  });
+}
+
 async function runProcedureChild(payload) {
   const procedure = procedures[payload.procedureId];
   const loader = procedureLoaders[payload.procedureId];
@@ -361,6 +426,10 @@ export function main(rawArgv = process.argv.slice(2)) {
       throw new Error("procedure not found: " + parsed.procedureId);
     }
     ensureAuthorized(procedure, parsed);
+    if (parsed.passthroughArgs.length === 1 && ["--help", "-h"].includes(String(parsed.passthroughArgs[0]))) {
+      printProcedureHelp(procedure, parsed, Date.now() - startAt);
+      return;
+    }
 
     const childPayload = {
       procedureId: procedure.id,
@@ -798,6 +867,13 @@ function toRuntimeProcedureEntry(
     owners,
     argsSchema: schemaName(procedure.args),
     outputSchema: schemaName(procedure.output),
+    params: procedure.params?.map((param) => ({
+      flag: param.flag,
+      type: param.type,
+      description: param.description,
+      required: Boolean(param.required),
+    })),
+    exampleArgs: procedure.exampleArgs,
     sourcePath,
   };
 }

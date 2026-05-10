@@ -1857,7 +1857,23 @@ describe("component build integration", () => {
       rewrittenHelp.result.stdout,
       /Usage: node ~\/\.claude\/procedures\.js --procedure-id screenshot-take-screenshot --trigger-skill screenshot -- \[options\]/,
     );
+    assert.match(rewrittenHelp.result.stdout, /Parameters:/);
+    assert.match(rewrittenHelp.result.stdout, /--path <路径>/);
     assert.doesNotMatch(rewrittenHelp.result.stdout, /node scripts\/take_screenshot\.mjs/);
+
+    const genericProcedureHelp = JSON.parse(execFileSync(process.execPath, [
+      proceduresPath,
+      "--procedure-id",
+      "complexity-reducer-complexity-report",
+      "--trigger-skill",
+      "complexity-reducer",
+      "--",
+      "--help",
+    ], { encoding: "utf-8" }));
+    assert.equal(genericProcedureHelp.ok, true);
+    assert.match(genericProcedureHelp.result.stdout, /complexity-reducer-complexity-report/);
+    assert.match(genericProcedureHelp.result.stdout, /--format <json\|markdown>/);
+    assert.doesNotMatch(genericProcedureHelp.result.stderr, /Unknown option/);
 
     const runtimeHelp = JSON.parse(execFileSync(process.execPath, [
       proceduresPath,
