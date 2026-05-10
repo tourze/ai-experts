@@ -15,6 +15,7 @@ import { runMacosDisplayInfo } from "./macos_display_info";
 import { runMacosPermissions } from "./macos_permissions";
 import { runMacosWindowInfo } from "./macos_window_info";
 import { main as runWindowsScreenshot } from "./take_screenshot_windows";
+import { captureMainOutput, helperJson, runCommand } from "./take_screenshot_command";
 
 export const procedure = defineCliProcedure({
   id: "screenshot-take-screenshot",
@@ -95,6 +96,8 @@ export const procedure = defineCliProcedure({
 
   exampleArgs: { args: ["--mode", "temp"] },
 });
+
+export { captureMainOutput, helperJson, runCommand } from "./take_screenshot_command";
 
 const TEST_MODE_ENV = "AI_EXPERTS_SCREENSHOT_TEST_MODE";
 const TEST_PLATFORM_ENV = "AI_EXPERTS_SCREENSHOT_TEST_PLATFORM";
@@ -283,97 +286,6 @@ export function multiOutputPaths(base: any, suffixes: any): any {
     ensureParent(candidate);
     return candidate;
   });
-}
-export function runCommand(cmd: any): any {
-  const proc = spawnSync(cmd[0], cmd.slice(1), { stdio: "inherit" });
-  const spawnError = proc.error as NodeJS.ErrnoException | undefined;
-  if (spawnError?.code === "ENOENT") {
-    throw new Error(`required command not found: ${cmd[0]}`);
-  }
-  if (proc.status !== 0) {
-    throw new Error(`command failed (${proc.status ?? 1}): ${cmd.join(" ")}`);
-  }
-}
-function writeChunkText(chunk: any, encoding: any): any {
-  const textEncoding =
-    typeof encoding === "string" ? (encoding as BufferEncoding) : "utf8";
-  if (Buffer.isBuffer(chunk)) {
-    return chunk.toString(textEncoding);
-  }
-  if (chunk instanceof Uint8Array) {
-    return Buffer.from(chunk).toString(textEncoding);
-  }
-  return String(chunk);
-}
-export function captureMainOutput(mainFn: any, args: any = []): any {
-  const previousStdoutWrite = process.stdout.write;
-  const previousStderrWrite = process.stderr.write;
-  const previousExitCode = process.exitCode;
-  let stdout = "";
-  let stderr = "";
-  function captureStdout(
-    chunk: any,
-    encodingOrCallback?: any,
-    callback?: any,
-  ): any {
-    stdout += writeChunkText(chunk, encodingOrCallback);
-    const done =
-      typeof encodingOrCallback === "function" ? encodingOrCallback : callback;
-    if (done) done();
-    return true;
-  }
-  function captureStderr(
-    chunk: any,
-    encodingOrCallback?: any,
-    callback?: any,
-  ): any {
-    stderr += writeChunkText(chunk, encodingOrCallback);
-    const done =
-      typeof encodingOrCallback === "function" ? encodingOrCallback : callback;
-    if (done) done();
-    return true;
-  }
-  try {
-    process.stdout.write = captureStdout as any;
-    process.stderr.write = captureStderr as any;
-    const status = mainFn(args);
-    if (status && typeof status.then === "function") {
-      throw new Error("async helper output capture is not supported");
-    }
-    return {
-      status: typeof status === "number" ? status : 0,
-      stdout,
-      stderr,
-    };
-  } finally {
-    process.stdout.write = previousStdoutWrite;
-    process.stderr.write = previousStderrWrite;
-    process.exitCode = previousExitCode;
-  }
-}
-export function helperJson(mainFn: any, extraArgs: any = []): any {
-  const proc = mainFn(extraArgs);
-  if (proc.status !== 0) {
-    const stderr = (proc.stderr ?? "").trim();
-    if (
-      stderr.includes("ModuleCache") &&
-      stderr.includes("Operation not permitted")
-    ) {
-      throw new Error(
-        "macOS native helper needs module-cache access; rerun with escalated permissions",
-      );
-    }
-    throw new Error(
-      stderr || (proc.stdout ?? "").trim() || "macOS native helper failed",
-    );
-  }
-  try {
-    return JSON.parse(proc.stdout);
-  } catch {
-    throw new Error(
-      `macOS native helper returned invalid JSON: ${proc.stdout.trim()}`,
-    );
-  }
 }
 export function macosScreenCaptureGranted(request: any = false): any {
   const payload = helperJson(runMacosPermissions, request ? ["--request"] : []);
