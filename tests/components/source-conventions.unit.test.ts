@@ -443,10 +443,17 @@ describe("component source conventions", () => {
       );
     }
 
-    const buildSource = readFileSync(
-      join(repoRoot, "src/components/procedures/sources/security-ownership-map/build_ownership_map.ts"),
-      "utf-8",
-    );
+    const buildSource = [
+      "build_ownership_map.ts",
+      "build_ownership_map_args.ts",
+    ]
+      .map((sourceFile) =>
+        readFileSync(
+          join(repoRoot, "src/components/procedures/sources/security-ownership-map", sourceFile),
+          "utf-8",
+        ),
+      )
+      .join("\n");
     assert.match(buildSource, /plannedOwnershipMapOutputFiles/u);
     assert.match(buildSource, /assertOutputFilesWritable/u);
     assert.match(buildSource, /output file already exists/u);
