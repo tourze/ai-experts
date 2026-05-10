@@ -60,6 +60,15 @@ describe("canvas output overwrite guards", () => {
       .toThrow(/--jobs requires a value/);
   });
 
+  test("rejects short option tokens where values are required", () => {
+    expect(() => parseRenderVideoArgs(["scene.py", "Scene", "--output", "-o"]))
+      .toThrow(/--output requires a value/);
+    expect(() => parseAddAudioArgs(["video.mp4", "audio.mp3", "--output", "-o"]))
+      .toThrow(/--output requires a value/);
+    expect(() => parseRenderImageArgs(["input.html", "output.png", "--width", "-h"]))
+      .toThrow(/--width requires a value/);
+  });
+
   test("refuses existing output files unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-canvas-output-"));
     try {

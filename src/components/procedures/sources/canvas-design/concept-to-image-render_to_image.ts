@@ -218,7 +218,7 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (["--width", "--height", "--scale", "--selector"].includes(arg)) {
       const value = argv[index + 1];
-      if (value == null || value.startsWith("--")) {
+      if (value == null || value.startsWith("-")) {
         throw new Error(`${arg} requires a value`);
       }
       index += 1;
