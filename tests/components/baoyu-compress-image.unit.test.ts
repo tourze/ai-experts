@@ -1,5 +1,9 @@
 import { describe, expect, test, vi } from "vitest";
-import { getOutputPath, parseArgs } from "../../src/components/procedures/sources/baoyu-compress-image/main.ts";
+import {
+  getOutputPath,
+  parseArgs,
+  sharpInstallGuidance,
+} from "../../src/components/procedures/sources/baoyu-compress-image/main.ts";
 
 describe("baoyu compress image procedure args", () => {
   test("keeps originals and refuses overwrite by default", () => {
@@ -33,5 +37,10 @@ describe("baoyu compress image procedure args", () => {
   test("uses a compressed suffix when preserving same-format originals", () => {
     expect(getOutputPath("/tmp/photo.webp", "webp", true, undefined)).toBe("/tmp/photo-compressed.webp");
     expect(getOutputPath("/tmp/photo.png", "webp", true, undefined)).toBe("/tmp/photo.webp");
+  });
+
+  test("guides sharp installs to the runtime root", () => {
+    expect(sharpInstallGuidance("~/.codex")).toContain("npm install --prefix ~/.codex sharp");
+    expect(sharpInstallGuidance("~/.codex")).toContain("do not install it globally");
   });
 });

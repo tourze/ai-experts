@@ -25,7 +25,7 @@ export const baoyuCompressImageSkill = defineSkill({
     "默认保留源文件；只有用户明确确认源文件可删除后才传 `--delete-original`。",
     "默认不会覆盖已存在的输出文件；只有确认目标可替换后才传 `--overwrite`。",
     "目录模式默认不递归；需要跨子目录时必须显式加 `--recursive`。",
-    "压缩后端按“系统工具优先、`sharp` 兜底”顺序选择；如果没有任何后端，先补依赖再运行。",
+    "压缩后端按“系统工具优先、`sharp` 兜底”顺序选择；如果没有任何后端，先说明缺失后端并经用户确认后把 `sharp` 安装到 runtime root，不要全局安装。",
   ],
   checklist: [
     "已确认输入是单文件还是目录。",

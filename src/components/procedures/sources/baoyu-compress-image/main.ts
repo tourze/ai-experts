@@ -160,6 +160,20 @@ function isModuleNotFoundError(error: any): any {
     error.code === "ERR_MODULE_NOT_FOUND"
   );
 }
+function runtimeRootForInstall(): string {
+  const runtimeRoot = (globalThis as { __aiExpertsRuntimeRoot?: unknown })
+    .__aiExpertsRuntimeRoot;
+  return typeof runtimeRoot === "string" && runtimeRoot.trim() !== ""
+    ? runtimeRoot
+    : "<runtime-root>";
+}
+export function sharpInstallGuidance(runtimeRoot: string = runtimeRootForInstall()): string {
+  return [
+    "sharp is not installed.",
+    "Use a system backend such as sips/cwebp/ImageMagick, or after explicit user confirmation",
+    `install sharp into the runtime root with \`npm install --prefix ${runtimeRoot} sharp\`; do not install it globally.`,
+  ].join(" ");
+}
 async function compressWithSharp(
   input: any,
   output: any,
@@ -175,9 +189,7 @@ async function compressWithSharp(
     await pipeline.toFile(output);
   } catch (error: any) {
     if (isModuleNotFoundError(error)) {
-      throw new Error(
-        "sharp not installed. Install sharp or use a system backend such as sips/cwebp/ImageMagick.",
-      );
+      throw new Error(sharpInstallGuidance());
     }
     throw error;
   }
