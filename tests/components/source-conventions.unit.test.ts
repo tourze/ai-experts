@@ -2995,6 +2995,27 @@ describe("component source conventions", () => {
     );
   });
 
+  test("supplemental skill READMEs do not advertise external skill installation", () => {
+    const readmeFiles = collectFiles(
+      join(repoRoot, "src/components/skills"),
+      (file) => basename(file) === "README.md",
+    );
+    const offenders: string[] = [];
+
+    for (const readmeFile of readmeFiles) {
+      const source = readFileSync(readmeFile, "utf-8");
+      if (/npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global/u.test(source)) {
+        offenders.push(relative(repoRoot, readmeFile));
+      }
+    }
+
+    assert.deepEqual(
+      offenders,
+      [],
+      "supplemental skill README files are copied into dist and must not point users at external skill installation commands",
+    );
+  });
+
   test("skill index metadata definitions stay normalized", () => {
     const skillIndexFiles = collectFiles(
       join(repoRoot, "src/components/skills"),

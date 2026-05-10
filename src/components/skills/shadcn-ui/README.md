@@ -1,247 +1,56 @@
-# shadcn/ui Integration Skill
+# shadcn/ui 集成
 
-## Install
+本 README 是 `shadcn-ui` skill 的补充导航。运行时入口以生成后的 `SKILL.md` 为准；不要通过外部 skill 包安装本目录内容。
 
-```bash
-npx skills add google-labs-code/stitch-skills --skill shadcn-ui --global
-```
+## 运行时位置
 
-## What It Does
-
-This skill provides expert guidance for integrating shadcn/ui components into your React applications. It helps you discover, install, customize, and optimize shadcn/ui components while following best practices.
-
-## Example Prompts
+构建后该 skill 会随平台产物一起输出：
 
 ```text
-Help me set up shadcn/ui in my Next.js project
-
-Add a data table component with sorting and filtering to my app
-
-Show me how to customize the button component with a new variant
-
-Create a login form using shadcn/ui components with validation
-
-Build a dashboard layout with sidebar navigation using shadcn/ui blocks
+dist/claude/skills/shadcn-ui/
+dist/codex/skills/shadcn-ui/
 ```
 
-## What is shadcn/ui?
+安装器应按当前平台 manifest 的 `install.skillEntries` 逐项复制或 symlink 这个 skill 目录，目标 skill 根目录以 `install.skillRoot` 为准。
 
-shadcn/ui is a collection of beautifully designed, accessible, and customizable components built with:
-- **Radix UI or Base UI**: Unstyled, accessible component primitives
-- **Tailwind CSS**: Utility-first styling framework
-- **TypeScript**: Full type safety
+不要在本 README 里写外部 skill 包安装命令；本仓库的事实源在 `src/components/skills/shadcn-ui/`。
 
-**Key Difference**: Unlike traditional component libraries, shadcn/ui copies components directly into your project. This gives you:
-- Full control over the code
-- No version lock-in
-- Complete customization freedom
-- Zero runtime overhead
-
-## Skill Structure
+## 目录结构
 
 ```text
-skills/shadcn-ui/
-├── SKILL.md              — Core instructions & workflow
-├── README.md             — This file
-├── references/
-│   ├── examples/         — Example implementations
-│   │   ├── form-pattern.tsx       — Form with validation
-│   │   ├── data-table.tsx         — Advanced table with sorting
-│   │   └── auth-layout.tsx        — Authentication flow
-│   └── resources/        — Reference documentation
-│       ├── setup-guide.md         — Project initialization
-│       ├── component-catalog.md   — Component reference
-│       ├── customization-guide.md — Theming patterns
-│       └── migration-guide.md     — Migration from other libraries
+shadcn-ui/
+├── SKILL.md
+├── README.md
+├── agents/
+│   └── openai.yaml
+└── references/
+    ├── index.md
+    ├── examples/
+    │   ├── index.md
+    │   ├── auth-layout.tsx
+    │   ├── data-table.tsx
+    │   └── form-pattern.tsx
+    └── resources/
+        ├── index.md
+        ├── component-catalog.md
+        ├── customization-guide.md
+        ├── migration-guide.md
+        └── setup-guide.md
 ```
 
-## How It Works
+## 使用边界
 
-When activated, the agent follows this workflow:
+- 用 `shadcn-ui-verify-setup` procedure 验证 `components.json`、Tailwind、路径别名、全局样式和 `cn()` 工具函数。
+- 添加组件优先使用 `npx shadcn@latest add <component>`，不要手抄半套组件源码。
+- 复杂组合优先读取 `references/examples/`；初始化、组件目录、主题定制和迁移问题读取 `references/resources/`。
+- 接入已有设计系统时先映射 token、字体、spacing 和主题变量，再落地组件。
 
-### 1. **Discovery & Planning**
-- Lists available components using shadcn MCP tools
-- Identifies required dependencies
-- Plans component composition strategy
-
-### 2. **Setup & Configuration**
-- Verifies or initializes `components.json`
-- Checks Tailwind CSS configuration
-- Validates import aliases and paths
-
-### 3. **Component Integration**
-- Retrieves component source code
-- Installs via CLI or manual integration
-- Handles dependency installation
-
-### 4. **Customization**
-- Applies theme customization
-- Creates component variants
-- Extends components with custom logic
-
-### 5. **Quality Assurance**
-- Validates TypeScript types
-- Checks accessibility compliance
-- Verifies responsive behavior
-
-## Prerequisites
-
-Your project should have:
-- **React 18+**
-- **Tailwind CSS 3.0+**
-- **TypeScript** (recommended)
-- **Node.js 18+**
-
-## Quick Start
-
-### For New Projects
+## 常用入口
 
 ```bash
-# Create Next.js project with shadcn/ui
-npx create-next-app@latest my-app
-cd my-app
-npx shadcn@latest init
-
-# Add components
-npx shadcn@latest add button
-npx shadcn@latest add card
+node <runtime-root>/procedures.js \
+  --procedure-id shadcn-ui-verify-setup \
+  --trigger-skill shadcn-ui
 ```
 
-### For Existing Projects
-
-```bash
-# Initialize shadcn/ui
-npx shadcn@latest init
-
-# Configure when prompted:
-# - Choose style (default/new-york)
-# - Select base color
-# - Configure CSS variables
-# - Set import aliases
-
-# Add your first component
-npx shadcn@latest add button
-```
-
-## Available Components
-
-shadcn/ui provides 50+ components including:
-
-**Layout**: Accordion, Card, Separator, Tabs, Collapsible  
-**Forms**: Button, Input, Label, Checkbox, Radio Group, Select, Textarea  
-**Data Display**: Table, Badge, Avatar, Progress, Skeleton  
-**Overlays**: Dialog, Sheet, Popover, Tooltip, Dropdown Menu  
-**Navigation**: Navigation Menu, Tabs, Breadcrumb, Pagination  
-**Feedback**: Alert, Alert Dialog, Toast, Command  
-
-Plus complete **Blocks** like:
-- Authentication forms
-- Dashboard layouts
-- Calendar interfaces
-- Sidebar navigation
-- E-commerce components
-
-## Customization Approach
-
-### Theme-Level Customization
-Modify CSS variables in `globals.css`:
-```css
-:root {
-  --primary: 221.2 83.2% 53.3%;
-  --secondary: 210 40% 96.1%;
-  /* ... */
-}
-```
-
-### Component-Level Customization
-Components use `class-variance-authority` for variants:
-```typescript
-const buttonVariants = cva(
-  "base-classes",
-  {
-    variants: {
-      variant: { default: "...", destructive: "..." },
-      size: { default: "...", sm: "..." },
-    }
-  }
-)
-```
-
-### Composition
-Create higher-level components:
-```typescript
-// Compose existing components
-export function FeatureCard({ title, description, icon }) {
-  return (
-    <Card>
-      <CardHeader>
-        {icon}
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p>{description}</p>
-      </CardContent>
-    </Card>
-  )
-}
-```
-
-## Integration with MCP Tools
-
-This skill leverages shadcn MCP server capabilities:
-
-- `list_components` - Browse component catalog
-- `get_component` - Retrieve component source
-- `get_component_metadata` - View props and dependencies
-- `get_component_demo` - See usage examples
-- `list_blocks` - Browse UI blocks
-- `get_block` - Retrieve block source with all files
-- `search_items_in_registries` - Find components in custom registries
-
-## Best Practices
-
-1. **Keep `ui/` pure**: Don't modify components in `components/ui/` directly
-2. **Compose, don't fork**: Create wrapper components instead of editing originals
-3. **Use the CLI**: Let `shadcn add` handle dependencies and updates
-4. **Maintain consistency**: Use the `cn()` utility for all class merging
-5. **Respect accessibility**: Preserve ARIA attributes and keyboard handlers
-6. **Test responsiveness**: shadcn components are responsive by default—keep it that way
-
-## Troubleshooting
-
-### "Module not found" errors
-Check your `tsconfig.json` includes path aliases:
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
-}
-```
-
-### Styles not applying
-- Import `globals.css` in your root layout
-- Verify Tailwind config includes component paths
-- Check CSS variable definitions match component expectations
-
-### TypeScript errors
-- Ensure all Radix UI peer dependencies are installed
-- Run `npm install` after adding components via CLI
-- Check that React types are up to date
-
-## Further Reading
-
-- [Official Documentation](https://ui.shadcn.com)
-- [Component Source](https://github.com/shadcn-ui/ui)
-- [Radix UI Docs](https://www.radix-ui.com)
-- [Tailwind CSS Docs](https://tailwindcss.com)
-
-## Contributing
-
-Contributions to improve this skill are welcome. Refer to the repository CONTRIBUTING guidelines.
-
-## License
-
-License: MIT (see the repository `package.json`).
+生成后的 `SKILL.md` 会渲染当前平台对应的完整命令示例。

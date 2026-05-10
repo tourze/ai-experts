@@ -571,6 +571,27 @@ describe("component build integration", () => {
     );
   });
 
+  test("generated supplemental READMEs do not advertise external skill installation", () => {
+    const generatedReadmes = collectFiles(
+      tmpDistDir,
+      (file) => basename(file) === "README.md" && file.split(/[\\/]/).includes("skills"),
+    );
+    const offenders: string[] = [];
+
+    for (const readmeFile of generatedReadmes) {
+      const source = readFileSync(readmeFile, "utf-8");
+      if (/npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global/u.test(source)) {
+        offenders.push(relative(tmpDistDir, readmeFile));
+      }
+    }
+
+    assert.deepEqual(
+      offenders,
+      [],
+      "generated supplemental README files should describe this harness package, not external skill installation",
+    );
+  });
+
   test("generated dist keeps platform-specific skill root references isolated", () => {
     const textFileMatcher = (file: string): boolean => /\.(?:md|toml|json|mjs|js|ya?ml|txt)$/u.test(file);
     const claudeFiles = collectFiles(join(tmpDistDir, "claude"), textFileMatcher);
