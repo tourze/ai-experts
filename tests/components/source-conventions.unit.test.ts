@@ -832,6 +832,18 @@ describe("component source conventions", () => {
     }
   });
 
+  test("remote ssh exec documents host config and stdin contract", () => {
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/remote-ssh-command/ssh-exec.ts"),
+      "utf-8",
+    );
+    assert.match(procedureSource, /flag:\s+"\[host-config\]"/u);
+    assert.match(procedureSource, /flag:\s+"stdin"/u);
+    assert.match(procedureSource, /readStdin/u);
+    assert.match(procedureSource, /remote command must be provided on stdin/u);
+    assert.match(procedureSource, /Host config must be stored under ~\/\.host\//u);
+  });
+
   test("baoyu compress image defaults preserve originals and reject overwrites", () => {
     const skillSource = readFileSync(
       join(repoRoot, "src/components/skills/baoyu-compress-image/index.ts"),

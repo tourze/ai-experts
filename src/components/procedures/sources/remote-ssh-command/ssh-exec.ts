@@ -25,6 +25,20 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["remote-ssh-command"] },
   target: "scripts/ssh-exec.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[host-config]",
+      type: "路径",
+      description: "位于 ~/.host/ 下的主机 JSON 配置文件路径（必填）",
+      required: true,
+    },
+    {
+      flag: "stdin",
+      type: "字符串",
+      description: "要在远端执行的完整命令；不要通过 CLI 参数传命令",
+      required: true,
+    },
+  ],
 
   exampleArgs: { args: ["~/.host/my-server.json"] },
 });

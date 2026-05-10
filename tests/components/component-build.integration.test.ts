@@ -1278,6 +1278,11 @@ describe("component build integration", () => {
     assert.match(webContentFetcherSkill, /\| `--stealth` \| — \| 否 \| 使用更接近浏览器的请求头/);
     assert.match(webContentFetcherSkill, /\| `--json` \| — \| 否 \| 输出包含 URL、模式、选择器和 Markdown 的 JSON/);
 
+    const remoteSshCommandSkill = readFileSync(join(tmpDistDir, "codex/skills/remote-ssh-command/SKILL.md"), "utf-8");
+    assert.match(remoteSshCommandSkill, /### `remote-ssh-command-ssh-exec`/);
+    assert.match(remoteSshCommandSkill, /\| `\[host-config\]` \| 路径 \| 是 \| 位于 ~\/\.host\/ 下的主机 JSON 配置文件路径/);
+    assert.match(remoteSshCommandSkill, /\| `stdin` \| 字符串 \| 是 \| 要在远端执行的完整命令/);
+
     const iconRetrievalSkill = readFileSync(join(tmpDistDir, "codex/skills/icon-retrieval/SKILL.md"), "utf-8");
     assert.match(iconRetrievalSkill, /'security shield' 3/);
 
