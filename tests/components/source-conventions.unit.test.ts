@@ -940,6 +940,30 @@ describe("component source conventions", () => {
         file: "src/components/procedures/sources/i18n-localization/i18n_checker.ts",
         flags: ['flag: "[target]"'],
       },
+      {
+        file: "src/components/procedures/sources/model-first-reasoning/validate-model.ts",
+        flags: ['flag: "[model_path]"'],
+      },
+      {
+        file: "src/components/procedures/sources/agile-product-owner/user_story_generator.ts",
+        flags: ['flag: "[mode]"', 'flag: "[capacity]"'],
+      },
+      {
+        file: "src/components/procedures/sources/helm-chart-scaffolding/validate-chart.ts",
+        flags: ['flag: "[chart_dir]"'],
+      },
+      {
+        file: "src/components/procedures/sources/skills-prune-and-sync-readme/curate_skills.ts",
+        flags: [
+          'flag: "[command]"',
+          'flag: "--repo-root"',
+          'flag: "--format"',
+          'flag: "--skills"',
+          'flag: "--yes"',
+          'flag: "--write"',
+          'flag: "--check"',
+        ],
+      },
     ];
 
     for (const expectation of expectations) {
@@ -948,6 +972,27 @@ describe("component source conventions", () => {
         assert.match(source, new RegExp(flag.replaceAll("[", "\\[").replaceAll("]", "\\]"), "u"));
       }
     }
+  });
+
+  test("procedures with non-empty example argv declare params", () => {
+    const procedureFiles = collectFiles(join(repoRoot, "src/components/procedures/sources"), (file) =>
+      file.endsWith(".ts"),
+    );
+    const offenders: string[] = [];
+
+    for (const file of procedureFiles) {
+      const source = readFileSync(file, "utf-8");
+      if (!source.includes("defineCliProcedure")) continue;
+
+      const exampleMatch = /exampleArgs:\s*\{\s*args:\s*\[([\s\S]*?)\]/u.exec(source);
+      const hasNonEmptyExampleArgs = Boolean(exampleMatch && exampleMatch[1].trim().length > 0);
+      const hasParams = /\n\s*params:\s*\[/u.test(source);
+      if (hasNonEmptyExampleArgs && !hasParams) {
+        offenders.push(relative(repoRoot, file));
+      }
+    }
+
+    assert.deepEqual(offenders, []);
   });
 
   test("skill display names are user-facing labels", () => {

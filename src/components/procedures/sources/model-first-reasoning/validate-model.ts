@@ -21,6 +21,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["model-first-reasoning"] },
   target: "scripts/validate-model.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[model_path]",
+      type: "路径",
+      description: "要校验的 model.json 文件路径（必填）",
+      required: true,
+    },
+  ],
 
   exampleArgs: { args: ["model.json"] },
 });

@@ -1313,6 +1313,33 @@ describe("component build integration", () => {
     );
     assert.match(i18nLocalizationSkill, /\| `\[target\]` \| 路径 \| 否 \| 要扫描的项目文件或目录/);
 
+    const modelFirstReasoningSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/model-first-reasoning/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(modelFirstReasoningSkill, /\| `\[model_path\]` \| 路径 \| 是 \| 要校验的 model\.json 文件路径/);
+
+    const agileProductOwnerSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/agile-product-owner/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(agileProductOwnerSkill, /\| `\[mode\]` \| 字符串 \| 否 \| 生成模式/);
+    assert.match(agileProductOwnerSkill, /\| `\[capacity\]` \| 数字 \| 否 \| Sprint 容量点数/);
+
+    const helmChartScaffoldingSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/helm-chart-scaffolding/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(helmChartScaffoldingSkill, /\| `\[chart_dir\]` \| 路径 \| 否 \| 要校验的 Helm Chart 目录/);
+
+    const skillsPruneAndSyncReadmeSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/skills-prune-and-sync-readme/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(skillsPruneAndSyncReadmeSkill, /\| `\[command\]` \| 字符串 \| 是 \| 命令/);
+    assert.match(skillsPruneAndSyncReadmeSkill, /\| `--format` \| 字符串 \| 否 \| audit 输出格式/);
+    assert.match(skillsPruneAndSyncReadmeSkill, /\| `--yes` \| — \| 否 \| 确认执行 prune 删除操作/);
+
     const copywritingSkill = readFileSync(join(tmpDistDir, "codex/skills/copywriting/SKILL.md"), "utf-8");
     assert.match(copywritingSkill, /--text '这是一段待检测文案' --platform social-platform/);
 

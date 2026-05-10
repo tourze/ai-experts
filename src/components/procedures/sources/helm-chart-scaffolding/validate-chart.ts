@@ -12,6 +12,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["helm-chart-scaffolding"] },
   target: "scripts/validate-chart.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[chart_dir]",
+      type: "路径",
+      description: "要校验的 Helm Chart 目录（默认 .）",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["."] },
 });

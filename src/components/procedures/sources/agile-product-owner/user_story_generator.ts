@@ -9,6 +9,20 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["agile-product-owner"] },
   target: "scripts/user_story_generator.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[mode]",
+      type: "字符串",
+      description: "生成模式：backlog 或 sprint（默认 backlog）",
+      required: false,
+    },
+    {
+      flag: "[capacity]",
+      type: "数字",
+      description: "Sprint 容量点数，仅 mode=sprint 时使用（默认 30）",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["sprint", "30"] },
 });

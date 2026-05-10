@@ -15,6 +15,50 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["skills-prune-and-sync-readme"] },
   target: "scripts/curate_skills.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[command]",
+      type: "字符串",
+      description: "命令：audit、prune 或 sync-readme（必填）",
+      required: true,
+    },
+    {
+      flag: "--repo-root",
+      type: "路径",
+      description: "仓库根目录（默认当前目录）",
+      required: false,
+    },
+    {
+      flag: "--format",
+      type: "字符串",
+      description: "audit 输出格式：text 或 json（默认 text）",
+      required: false,
+    },
+    {
+      flag: "--skills",
+      type: "字符串",
+      description: "prune 要删除的 skill id、目录名或源码路径列表",
+      required: false,
+    },
+    {
+      flag: "--yes",
+      type: "",
+      description: "确认执行 prune 删除操作",
+      required: false,
+    },
+    {
+      flag: "--write",
+      type: "",
+      description: "sync-readme 写回 README",
+      required: false,
+    },
+    {
+      flag: "--check",
+      type: "",
+      description: "sync-readme 只检查 README 是否同步",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["audit", "--format", "json"] },
 });
