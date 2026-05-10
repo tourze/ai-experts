@@ -1486,6 +1486,8 @@ describe("component build integration", () => {
     assert.match(iosSimulatorSkill, /--udid '<device-udid>' --verbose/);
 
     assert.equal(existsSync(join(tmpDistDir, "codex/procedures.js")), true);
+    assert.notEqual(statSync(join(tmpDistDir, "claude/procedures.js")).mode & 0o111, 0);
+    assert.notEqual(statSync(join(tmpDistDir, "codex/procedures.js")).mode & 0o111, 0);
     assert.equal(existsSync(join(tmpDistDir, "codex/run.js")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/scripts")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/screenshot/assets/screenshot.png")), true);
@@ -2667,6 +2669,8 @@ describe("component build integration", () => {
     );
     assert.equal(existsSync(join(tmpDistDir, "claude/hooks/dispatch.mjs")), true);
     assert.equal(existsSync(join(tmpDistDir, "codex/hooks/dispatch.mjs")), true);
+    assert.notEqual(statSync(join(tmpDistDir, "claude/hooks/dispatch.mjs")).mode & 0o111, 0);
+    assert.notEqual(statSync(join(tmpDistDir, "codex/hooks/dispatch.mjs")).mode & 0o111, 0);
     assert.equal(existsSync(join(tmpDistDir, "claude/hooks/modules")), false);
     assert.equal(existsSync(join(tmpDistDir, "codex/hooks/modules")), false);
     assert.equal(hookManifest.hooks.some((hook: any) => "module" in hook), false);

@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
@@ -448,6 +448,7 @@ async function emitBundledProceduresFile(
   const bundledSource = readFileSync(proceduresFile, "utf-8");
   const canonicalSource = canonicalizeProcedureBundleSource(bundledSource, platform);
   if (canonicalSource !== bundledSource) writeFileSync(proceduresFile, canonicalSource, "utf-8");
+  chmodSync(proceduresFile, 0o755);
   return canonicalSource;
 }
 
