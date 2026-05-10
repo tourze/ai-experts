@@ -924,7 +924,7 @@ describe("component build integration", () => {
   test("generated runtime materials use direct procedure arguments", () => {
     const bareProcedureSeparators: string[] = [];
     const legacyRequestProtocolMentions: string[] = [];
-    const removedRequestJsonFlag = ["--request", "json"].join("-");
+    const legacyRequestFlag = ["--request", "json"].join("-");
     const legacyRequestSchema = ["CliProcedure", "Request"].join("");
     const legacyRequestPayload = ["request", "Payload"].join("");
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
@@ -937,7 +937,7 @@ describe("component build integration", () => {
         if (
           source.includes(legacyRequestSchema) ||
           source.includes(legacyRequestPayload) ||
-          (!generatedPath.endsWith("procedures.js") && source.includes(removedRequestJsonFlag))
+          source.includes(legacyRequestFlag)
         ) {
           legacyRequestProtocolMentions.push(`${platform}/${generatedPath}`);
         }
@@ -959,7 +959,7 @@ describe("component build integration", () => {
     assert.deepEqual(
       legacyRequestProtocolMentions,
       [],
-      "generated runtime materials should not expose removed request-json procedure protocol outside the runner rejection path",
+      "generated runtime materials should not expose removed legacy request protocol",
     );
   });
 
@@ -1854,18 +1854,6 @@ describe("component build integration", () => {
     const unknownScript = unknownScriptResult.payload;
     assert.equal(unknownScript.ok, false);
     assert.match(unknownScript.error.message, /procedure not found/);
-
-    const removedRequestJsonResult = runProcedureProcess([
-      "--procedure-id",
-      "debug-methodology-debug-checklist",
-      "--trigger-skill",
-      "debug-methodology",
-      ["--request", "json"].join("-"),
-      JSON.stringify({ args: ["--title", "legacy-request"] }),
-    ]);
-    assert.equal(removedRequestJsonResult.status, 1);
-    assert.match(removedRequestJsonResult.payload.error.message, /has been removed/);
-    assert.match(removedRequestJsonResult.payload.error.message, /pass procedure arguments directly/);
 
     const helperOnlyProcedureResult = runProcedureProcess([
       "--procedure-id",

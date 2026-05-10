@@ -11,7 +11,6 @@ const platform = __AI_EXPERTS_PLATFORM_JSON__;
 const procedureRuntimePath = __AI_EXPERTS_RUNTIME_PATH_JSON__;
 const runtimeFile = realpathSync(resolve(process.argv[1] || "."));
 const runtimeRoot = dirname(runtimeFile);
-const removedRequestJsonFlag = ["--request", "json"].join("-");
 
 function parseCliArgs(argv) {
   const parsed = {
@@ -26,9 +25,6 @@ function parseCliArgs(argv) {
     if (arg === "--") {
       parsed.passthroughArgs = argv.slice(index + 1);
       break;
-    }
-    if (arg === removedRequestJsonFlag) {
-      throw new Error(removedRequestJsonFlag + " has been removed; pass procedure arguments directly after the trigger, optionally after --");
     }
     if (arg === "--help" || arg === "-h") {
       parsed.help = true;
