@@ -20,7 +20,7 @@ export const agileProductOwnerSkill = defineSkill({
   useCases: [
     "把需求拆成可交付的用户故事、Epic 和 Sprint 范围。",
     "需要结合 [references/user-story-templates.md](references/user-story-templates.md)、[references/sprint-planning-guide.md](references/sprint-planning-guide.md) 或模板资产落文档。",
-    "故事拆分可配合 `user-story-patterns`（8 种拆分模式 + INVEST 检查），Epic 分解可配合 `epic-decomposition`（9 种分解模式 + Story Mapping）。",
+    "需要故事拆分模式、Epic 分解模式或 PRD 上下文时，转由相关 Skill 承载。",
     "需要运行脚本生成示例 Backlog 或 Sprint 计划时，可直接调用 `agile-product-owner-user-story-generator` procedure。",
   ],
   constraints: [
@@ -39,7 +39,7 @@ export const agileProductOwnerSkill = defineSkill({
       get id() {
         return createPrdSkill.id;
       },
-      reason: "故事拆分可配合 `user-story-patterns`，Epic 分解可配合 `epic-decomposition`；这些模板归入 `create-prd` 相关资料。",
+      reason: "需要故事拆分模式、Epic 分解模式或 PRD 上下文时联动。",
     },
   ],
   antiPatterns: [

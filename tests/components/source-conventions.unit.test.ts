@@ -1491,6 +1491,31 @@ describe("component source conventions", () => {
     );
   });
 
+  test("related skill reasons only backtick registered skill ids", () => {
+    const registeredSkillIds = new Set(registry.skills.map((skill) => skill.id));
+    const invalidMentions: string[] = [];
+
+    for (const skill of registry.skills) {
+      for (const relatedSkill of skill.relatedSkills ?? []) {
+        for (const match of relatedSkill.reason.matchAll(/`([a-z0-9]+(?:-[a-z0-9]+)+)`/gu)) {
+          const id = match[1] ?? "";
+          if (registeredSkillIds.has(id)) continue;
+
+          const afterMention = relatedSkill.reason.slice((match.index ?? 0) + match[0].length);
+          if (/^\s*(?:reference|参考|资料|模板)/iu.test(afterMention)) continue;
+
+          invalidMentions.push(`${skill.id}: ${match[0]} in ${relatedSkill.reason}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      invalidMentions,
+      [],
+      "relatedSkills.reason should use backticks for registered skill ids; references should be named as references",
+    );
+  });
+
   test("skill creator viewer uses platform-neutral review wording", () => {
     const viewerSource = readFileSync(
       join(repoRoot, "src/components/skills/skill-creator/assets/eval-viewer/viewer.html"),
