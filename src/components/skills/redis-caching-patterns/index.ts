@@ -18,7 +18,6 @@ export const redisCachingPatternsSkill = defineSkill({
     "数据库前置缓存层读写策略选型（cache-aside、write-through、write-behind）。",
     "高并发下防缓存击穿（thundering herd），需 singleflight 或锁刷新。",
     "防缓存穿透（恶意请求不存在的 key），需空值缓存或布隆过滤器。",
-    "TTL 抖动防雪崩，配合 `redis-data-modeling` 的键设计与锁模式。",
   ],
   constraints: [
     "cache-aside 读路径：check cache → miss → query DB → set cache；写路径：先写 DB 再删缓存。",

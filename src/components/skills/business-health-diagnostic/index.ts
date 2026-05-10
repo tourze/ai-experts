@@ -18,7 +18,6 @@ export const businessHealthDiagnosticSkill = defineSkill({
   useCases: [
     "季度复盘、董事会汇报前快速评估业务整体健康度。",
     '感觉"哪里不对"但说不清楚，需要系统化扫描定位问题。',
-    "与 `process-optimization` 配合优化发现的瓶颈。",
     "需要更深入的专项分析时：\n- [references/balanced-scorecard.md](references/balanced-scorecard.md) — BSC 战略翻译工具\n- [references/blm-model.md](references/blm-model.md) — 业务领先模型（差距分析 + 战略执行）\n- [references/mckinsey-7s.md](references/mckinsey-7s.md) — 麦肯锡 7S 组织匹配模型",
   ],
   constraints: [

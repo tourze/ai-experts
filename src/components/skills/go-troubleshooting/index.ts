@@ -20,8 +20,6 @@ export const goTroubleshootingSkill = defineSkill({
     "Go 程序出现 CPU 飙高、内存持续增长、goroutine 泄漏、死锁、数据竞争或性能回归。",
     "需要用 pprof/delve/race detector/GODEBUG 定位根因。",
     "生产环境异常排查：crash 日志分析、stack trace 解读、运行时 profile 采集。",
-    "优化方法论和 benchmark 验证 → `go-performance`。",
-    "goroutine/channel 死锁与泄漏模式 → `go-concurrency-patterns`。",
     "panic、错误传播与资源释放边界 → `go-error-handling`。",
   ],
   constraints: [

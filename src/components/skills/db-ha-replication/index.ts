@@ -19,7 +19,6 @@ export const dbHaReplicationSkill = defineSkill({
     "实施读写分离架构，需要合理的 Replica 路由策略和延迟监控。",
     "规划或执行故障切换（计划内与非计划），需要确认 GTID 集合一致性。",
     "排查复制延迟、中断、数据不一致等运维问题。",
-    "需要理解事务与锁对复制的影响，联动 `mysql-transaction-locking`。",
   ],
   constraints: [
     "必须启用 GTID（`gtid_mode=ON`、`enforce_gtid_consistency=ON`）；GTID 让故障切换位点对齐自动化。",

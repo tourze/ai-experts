@@ -16,7 +16,6 @@ export const systemDiagnosticsSkill = defineSkill({
   description: "当用户说 Linux 主机变慢、服务异常、需要健康检查或要先摸清系统现状时使用。",
   useCases: [
     "用户要做健康检查、系统摸底、上线前巡检、故障前置采样或基础资源审计。",
-    "若后续需要网络分析，可切到 `network-troubleshooter`。",
   ],
   constraints: [
     "只运行只读命令；不安装软件、不修改配置、不重启服务。",

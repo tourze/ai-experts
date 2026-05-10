@@ -17,7 +17,6 @@ export const fundraiseAdvisorSkill = defineSkill({
   useCases: [
     "规划融资窗口、目标轮次、投资人名单、会前材料和跟进节奏。",
     "需要展开完整方法时，阅读 [references/full-guide.md](references/full-guide.md)。",
-    "需要市场规模支撑时配合 `market-sizing-analysis`。",
   ],
   constraints: [
     "先确认融资目的、跑道、关键里程碑和资金用途，再决定金额与轮次。",

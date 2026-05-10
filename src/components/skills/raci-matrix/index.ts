@@ -16,7 +16,6 @@ export const raciMatrixSkill = defineSkill({
   useCases: [
     "新项目启动时明确\"谁负责、谁审批、咨询谁、通知谁\"。",
     "解决\"这件事没人管\"或\"这件事太多人管\"的问题。",
-    "与 `running-decision-processes` 配合：RACI 定角色，决策流程定方法。",
   ],
   constraints: [
     "**每个任务只能有一个 A（Accountable）**——这是 RACI 最硬的规则。多个 A = 无人负责。",

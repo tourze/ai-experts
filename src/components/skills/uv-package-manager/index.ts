@@ -20,8 +20,6 @@ export const uvPackageManagerSkill = defineSkill({
     "现有项目要从 `pip` / `requirements.txt` 迁移到 `pyproject.toml` + `uv.lock`。",
     "需要用 `uv run` 统一执行测试、类型检查和脚本。",
     "更完整的 workspace、Docker、CI 和 lockfile 工作流见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
-    "需要把测试工具链串起来时，联动 `python-testing-patterns`。",
-    "需要把 mypy/pyright 等静态检查纳入开发流时，联动 `python-type-safety`。",
   ],
   constraints: [
     "单个项目只保留一个依赖真源：`pyproject.toml` + `uv.lock`。",

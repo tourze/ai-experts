@@ -17,7 +17,6 @@ export const funnelArchitectSkill = defineSkill({
   useCases: [
     "设计线索获取到成交的转化路径，或重构已有落地页和报价流程。",
     "需要把流量入口、价值阶梯、转化页面和后续培育串起来。",
-    "需要补充用户旅程时可配合 `customer-journey-map`，讨论套餐结构时可配合 `pricing-strategy`。",
   ],
   constraints: [
     "先明确目标用户、核心承诺和单步转化目标，再设计页面和自动化链路。",

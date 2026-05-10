@@ -20,7 +20,6 @@ export const mysqlTransactionLockingSkill = defineSkill({
     "分析高并发场景下的锁等待和锁超时，减少事务持有锁的时间。",
     "正确使用 `SELECT ... FOR UPDATE` / `FOR SHARE`，避免丢失更新和幻读。",
     "解释 `lock_mode X locks gap before rec insert intention waiting`、`locks rec but not gap`、`AUTO-INC` 等锁日志。",
-    "需要理解索引对锁范围的影响，联动 `sql-review-optimization`（含深度索引策略）。",
   ],
   constraints: [
     "InnoDB 默认 REPEATABLE READ，搜索或扫描索引时通常使用 Next-Key Lock（记录锁 + 前一段间隙锁），可能锁定比预期更大的范围。",

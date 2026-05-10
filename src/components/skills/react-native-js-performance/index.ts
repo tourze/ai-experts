@@ -20,7 +20,6 @@ export const reactNativeJsPerformanceSkill = defineSkill({
     "动画需要从 JS 线程迁移到 UI 线程（Reanimated worklet）。",
     "React 渲染性能分析、React Compiler 接入评估。",
     "JS 内存泄漏定位与修复。",
-    "交互与视觉实现优先联动 `react-native-design`。",
   ],
   constraints: [
     "量化 = 帧耗时/FPS 数字，不是\"感觉流畅了\"。用 Perf Monitor 或 Flashlight 拿到数据再下结论。",

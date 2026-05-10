@@ -15,7 +15,6 @@ export const opportunitySolutionTreeSkill = defineSkill({
   description: "当用户要搭建机会解决方案树、把目标与机会、方案和实验串起来时使用；适合连续发现、需求排序和产品探索决策。",
   useCases: [
     "产品探索、连续发现、OKR 拆解、机会排序和实验规划。",
-    "需要把目标与版本规划、PRD 连接起来时，可配合 `create-prd`。",
   ],
   constraints: [
     "树顶必须是单一且可度量的 outcome，不能把功能目标写在最上面。",

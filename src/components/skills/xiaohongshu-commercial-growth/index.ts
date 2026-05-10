@@ -19,7 +19,6 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
     "品牌、商家、创始人 IP、知识博主或实体店要做小红书增长与变现。",
     "需要把内容、搜索、店铺、直播、达人合作和私域承接串成闭环。",
     "需要输出图文内容时，参考图文生成相关方法。",
-    "需要落评论区和粉丝维护动作时，联动 `fan-operations`。",
   ],
   constraints: [
     "先定义商业路径，再定义内容；不要反过来。",

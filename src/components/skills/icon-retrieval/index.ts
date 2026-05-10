@@ -26,7 +26,6 @@ export const iconRetrievalSkill = defineSkill({
     "`topK` 必须是正整数，默认值是 `5`。",
     "返回的是原始 SVG 字符串，落库前要按项目的安全与样式规范处理。",
     "先确认图标风格与现有设计系统匹配，再决定是否采用。",
-    "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
   ],
   checklist: [
     "搜索词足够具体，已拿到 3-5 个可比较候选。",

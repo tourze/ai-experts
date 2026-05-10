@@ -20,7 +20,6 @@ export const proposalWriterSkill = defineSkill({
     "目标是\"写出能发给客户的文本\"，不是只做提纲。",
     "交付物可以是长文档、Word 方案、PPT 结构稿或销售跟进材料。",
     "已经具备一部分背景材料，但需要把它们组织成对外表达。",
-    "若前置研究还没完成，先用 `consulting-analysis` 补齐事实基础。",
   ],
   constraints: [
     "必须围绕客户问题、目标和成交动作写作，不要把公司介绍写成主角。",

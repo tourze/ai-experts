@@ -17,7 +17,6 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   useCases: [
     "需要理解入口点、导入表、字符串、控制流和数据结构。",
     "需要和 [anti-reversing-techniques](references/anti-reversing-techniques.md) 联动分析保护逻辑。",
-    "协议编解码或加密路径不清晰时，可切到 `protocol-reverse-engineering`。",
   ],
   constraints: [
     "先识别架构、位数、ABI 和编译器痕迹，再选工具链。",

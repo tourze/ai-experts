@@ -19,8 +19,6 @@ export const thinkingPartnerSkill = defineSkill({
     "用户说“我现在很乱”“不知道怎么办”“帮我理一理”“我卡住了”。",
     "局面里同时混着目标、限制、情绪和执行问题，需要先找主导矛盾。",
     "用户需要有人一起思考，而不是直接听一堆标准答案。",
-    "如果用户其实只是要给任务排先后，优先转到 `priority-judge`。",
-    "如果用户已经有明确方案，只想做压力测试，转到 `grill-me`。",
     "如果用户想通过被提问来自己发现答案，转到 [socratic-teaching](references/socratic-teaching.md)。",
   ],
   constraints: [

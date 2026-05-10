@@ -18,7 +18,6 @@ export const mckinseyStepSkill = defineSkill({
   useCases: [
     "面对模糊的业务问题，需要结构化拆解到可执行方案。",
     "咨询式问题解决：从假设出发，用数据验证。",
-    "与 `first-principles-decomposer` 配合：第一性原理拆假设，七步法走全流程。",
   ],
   constraints: [
     "七步是循环不是直线——假设不成立时必须退回重来。",

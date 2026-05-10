@@ -18,7 +18,6 @@ export const uxHeuristicsSkill = defineSkill({
     "用户反馈“找不到入口”“不知道系统在干什么”“提交后没反应”。",
     "需要在没有真实用户测试前，先做一轮低成本可用性体检。",
     "要给页面、流程、组件输出可执行的严重级别与修复顺序。",
-    "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
     "具体评估细则优先读取 [Nielsen 十原则](references/nielsen-heuristics.md)、[Krug 导航检查](references/krug-principles.md) 与 [审计模板](references/audit-template.md)。",
   ],
   constraints: [

@@ -20,7 +20,6 @@ export const whatIfOracleSkill = defineSkill({
     "需要在多个可能未来之间做准备，而不是押注单一路径。",
     "适合战略、产品、职业、风险应对、资源配置等高不确定性问题。",
     "如果要先从失败角度找脆弱点，可先用 `first-principles-decomposer` 的反向推理方法。",
-    "如果要给多个候选动作排当前优先级，可在推演后接 `priority-judge`。",
     "如果要把分支概率、证据质量和行动代价转成证据到行动报告，可接 [bayesian-decision](references/bayesian-decision.md)。",
     "需要按领域套模板时，参考 [scenario-templates.md](references/scenario-templates.md)。",
   ],

@@ -18,7 +18,6 @@ export const marketSizingAnalysisSkill = defineSkill({
   useCases: [
     "创业立项、融资材料、年度规划或新市场机会评估。",
     "需要参考 [references/data-sources.md](references/data-sources.md) 与 [references/examples/saas-market-sizing.md](references/examples/saas-market-sizing.md)。",
-    "与客户画像或融资故事联动时，可配合 `startup-icp-definer` 和 `fundraise-advisor`。",
   ],
   constraints: [
     "同时给出方法、假设和数据来源，不允许只报一个大数字。",

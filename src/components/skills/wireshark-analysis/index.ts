@@ -18,7 +18,6 @@ export const wiresharkAnalysisSkill = defineSkill({
   useCases: [
     "需要对抓包文件进行过滤、跟流、字段提取和异常定位。",
     "需要与 `ethical-hacking-methodology` 的端口侦察结果交叉验证暴露服务。",
-    "需要把会话样本交给 `protocol-reverse-engineering` 深挖协议。",
   ],
   constraints: [
     "先确认抓包点、时区和采集窗口，再解释流量。",

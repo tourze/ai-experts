@@ -19,7 +19,6 @@ export const goObservabilitySkill = defineSkill({
     "选型或实施日志（slog）、指标（Prometheus）、链路追踪（OpenTelemetry）、profiling、告警。",
     "需要在多条信号间做关联：日志带 trace ID、指标带 exemplar。",
     "从 `log.Printf` 迁移到结构化日志，或从零搭建可观测性体系。",
-    "性能优化中的 pprof/profile → `go-performance`；生产异常排查 → `go-troubleshooting`。",
   ],
   constraints: [
     "**结构化优先**：所有日志必须用 `slog` 结构化输出，禁止 `fmt.Println` / `log.Printf` 进入生产。",

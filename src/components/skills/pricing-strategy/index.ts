@@ -18,7 +18,6 @@ export const pricingStrategySkill = defineSkill({
   useCases: [
     "SaaS 套餐设计、涨价、免费试用、价值度量或打包层级重构。",
     "需要参考 [references/research-methods.md](references/research-methods.md) 与 [references/tier-structure.md](references/tier-structure.md)。",
-    "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
   ],
   constraints: [
     "先理解客户获得的价值、替代方案和购买流程，再决定价格。",

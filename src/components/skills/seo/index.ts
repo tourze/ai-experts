@@ -23,7 +23,6 @@ export const seoSkill = defineSkill({
   constraints: [
     "先确认页面是否值得被索引，再谈标题和关键词。",
     "技术 SEO 改动必须说明影响范围，尤其是 robots、canonical、noindex、重定向。",
-    "站点层级和 URL 规划配合 `content-strategy`。",
     "不对排名结果做承诺；SEO 结论要区分\"可执行项\"和\"结果预期\"。",
     "按站点类型使用对应检查项，必要时读取 `site-type-checklists` reference。",
   ],

@@ -18,7 +18,6 @@ export const iosBinaryAnalysisSkill = defineSkill({
   useCases: [
     "需要从 IPA 中提取 Mach-O 并用 ipsw class-dump 获取类/方法声明。",
     "需要追踪 ViewController → ViewModel → Service → API 的调用链。",
-    "需要与 `frida-dynamic-analysis` 配合做运行时验证。",
     "需要与 `binary-analysis-patterns` 联动分析反逆向保护逻辑。",
   ],
   constraints: [

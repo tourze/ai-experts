@@ -18,7 +18,6 @@ export const systemsThinkingSkill = defineSkill({
   useCases: [
     "平台策略、组织协作、复杂业务链路、生态位博弈或长期副作用分析。",
     "需要经验参考时可阅读 [references/guest-insights.md](references/guest-insights.md)。",
-    "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
   ],
   constraints: [
     "先识别系统边界、参与方、激励与流量，再讨论解决方案。",

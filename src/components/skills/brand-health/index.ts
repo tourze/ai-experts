@@ -17,7 +17,6 @@ export const brandHealthSkill = defineSkill({
   useCases: [
     "定期品牌健康检查（季度/年度）。",
     "品牌重塑前的诊断。",
-    "与 `content-strategy` 配合：品牌诊断找问题，内容策略做修复。",
   ],
   constraints: [
     "五维度漏斗：认知度 -> 美誉度 -> 使用率 -> 购买意愿 -> 推荐率（NPS）。",

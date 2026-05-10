@@ -1468,6 +1468,29 @@ describe("component source conventions", () => {
     assert.match(source, /return featureDevSkill\.id;/);
   });
 
+  test("related skill reasons are not duplicated in use cases or constraints", () => {
+    const duplicatedReasons: string[] = [];
+
+    for (const skill of registry.skills) {
+      const relatedReasons = new Set((skill.relatedSkills ?? []).map((related) => related.reason.trim()));
+      if (relatedReasons.size === 0) continue;
+
+      for (const fieldName of ["useCases", "constraints"] as const) {
+        for (const entry of skill[fieldName] ?? []) {
+          if (relatedReasons.has(entry.trim())) {
+            duplicatedReasons.push(`${skill.id}.${fieldName}: ${entry}`);
+          }
+        }
+      }
+    }
+
+    assert.deepEqual(
+      duplicatedReasons,
+      [],
+      "cross-skill routing should live in relatedSkills; useCases/constraints should describe local applicability and rules",
+    );
+  });
+
   test("skill creator viewer uses platform-neutral review wording", () => {
     const viewerSource = readFileSync(
       join(repoRoot, "src/components/skills/skill-creator/assets/eval-viewer/viewer.html"),

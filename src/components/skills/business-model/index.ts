@@ -20,7 +20,6 @@ export const businessModelSkill = defineSkill({
     "`idea_to_model`：新业务、新产品或变现想法，需要生成 `3-5` 个商业模式选项。",
     "`model_diagnosis`：现有产品、网站或公司，需要诊断收入结构、变现缺口和升级机会。",
     "`company_case_study`：成熟公司研究，需要拆解利润池、可迁移经验和环境依赖。",
-    "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
     "中国市场商业模式因果链推演用[魏朱六要素](references/weizhu-model.md)；快速定位一致性检查用[业务铁三角](references/iron-triangle.md)。",
   ],
   constraints: [

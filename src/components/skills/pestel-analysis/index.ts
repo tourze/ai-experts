@@ -18,7 +18,6 @@ export const pestelAnalysisSkill = defineSkill({
   useCases: [
     "年度战略规划、新市场进入或重大投资决策前的宏观环境扫描。",
     "监管政策变化、技术趋势转折或经济周期变动时评估对业务的影响。",
-    "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
     "融资路演中需要展示对宏观环境的理解。",
   ],
   constraints: [

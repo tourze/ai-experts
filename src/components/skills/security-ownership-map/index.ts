@@ -18,7 +18,6 @@ export const securityOwnershipMapSkill = defineSkill({
   description: "当用户明确希望基于 git 历史构建安全所有权、bus factor、敏感代码归属或 CODEOWNERS 风险画像时使用。",
   useCases: [
     "需要找出敏感代码无人维护、单点维护者或高风险变更簇。",
-    "需要把 git 历史与 `security-threat-model` 的资产/边界分析关联起来。",
     "需要导出 CSV/JSON 给图数据库或可视化工具。导入 Neo4j 的方法见 [references/neo4j-import.md](references/neo4j-import.md)。",
   ],
   constraints: [

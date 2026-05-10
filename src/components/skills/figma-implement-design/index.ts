@@ -28,7 +28,6 @@ export const figmaImplementDesignSkill = defineSkill({
     "不要把 Figma 自动生成代码原样落库；必须翻译成项目现有规范。",
     "设计稿资产以 Figma 提供的内容为准，不要私自替换为别的图标包或占位图。",
     "遇到设计系统已有组件时先复用，再决定是否新建。",
-    "实现完成后，用 `frontend-design-review` 复核视觉与交互一致性。",
   ],
   checklist: [
     "已拿到设计上下文和截图，而不是只看链接标题。",

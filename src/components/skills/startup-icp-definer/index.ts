@@ -17,7 +17,6 @@ export const startupIcpDefinerSkill = defineSkill({
   useCases: [
     "B2B/B2B2C 早期定位、销售聚焦、市场切入和外呼名单筛选。",
     "需要完整方法时可阅读 [references/full-guide.md](references/full-guide.md)。",
-    "需要结合想法验证或市场空间时，可配合 `market-sizing-analysis`。",
   ],
   constraints: [
     "ICP 必须同时覆盖公司画像、买方角色、使用者角色和购买触发因素。",

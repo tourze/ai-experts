@@ -21,8 +21,6 @@ export const pythonTestingPatternsSkill = defineSkill({
     "需要设计 fixture、mock、参数化测试和失败路径覆盖。",
     "需要把异步代码、数据库、文件系统或外部 API 测试做干净隔离。",
     "更完整的 async、monkeypatch、临时目录和 property-based 示例见 [references/advanced-patterns.md](references/advanced-patterns.md)。",
-    "失败路径设计和断言策略时，联动 `python-error-handling`。",
-    "异步测试组织方式时，联动 `async-python-patterns`。",
   ],
   constraints: [
     "单元测试优先测边界和业务规则，不要把 pytest 框架细节当成主要断言对象。",

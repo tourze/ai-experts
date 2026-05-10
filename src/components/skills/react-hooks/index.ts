@@ -21,7 +21,6 @@ export const reactHooksSkill = defineSkill({
     "要设计可复用的自定义 Hook，并稳定暴露返回值与错误语义。",
     "遇到 effect 重复执行、闭包拿到旧值、依赖数组写不对、清理逻辑遗漏等问题。",
     "如果问题已经扩展成\"渲染性能、外部 store 订阅或 memo 治理\"，统一看 `react-performance`。",
-    "如果任务在 Next.js App Router / RSC 边界上，优先联动 `react-server-components`。",
     "类型体操很重时，联动 `typescript-type-safety`。",
   ],
   constraints: [

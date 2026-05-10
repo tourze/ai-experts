@@ -18,7 +18,6 @@ export const docCoauthoringSkill = defineSkill({
     "用户手里有零散素材，需要共同整理成可读、可评审、可交付的文档。",
     "文档类型可以是技术设计、项目方案、研究备忘录、培训材料、用户指南。",
     "用户需要“边问边补、边写边校”，而不是一次性生成完稿。",
-    "若文档偏正式提案，可接续 `proposal-review` 或 `proposal-writer`。",
   ],
   constraints: [
     "先收集上下文和读者信息，再决定结构；不要盲写。",

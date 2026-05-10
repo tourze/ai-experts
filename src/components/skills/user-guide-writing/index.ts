@@ -18,7 +18,6 @@ export const userGuideWritingSkill = defineSkill({
     "文档读者是终端用户、业务用户、客户支持对象，而不是研发同事。",
     "需要写 onboarding、操作手册、教程、常见问题、故障排查或培训资料。",
     "用户希望内容“能照着做”，而不是高层概述。",
-    "如果当前还在收集素材和结构，可先用 `doc-coauthoring`。",
   ],
   constraints: [
     "以任务为单位组织内容，例如“如何导出数据”，不要按内部模块堆目录。",
