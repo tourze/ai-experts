@@ -3004,7 +3004,11 @@ describe("component source conventions", () => {
 
     for (const readmeFile of readmeFiles) {
       const source = readFileSync(readmeFile, "utf-8");
-      if (/npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global/u.test(source)) {
+      if (
+        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills/u.test(
+          source,
+        )
+      ) {
         offenders.push(relative(repoRoot, readmeFile));
       }
     }

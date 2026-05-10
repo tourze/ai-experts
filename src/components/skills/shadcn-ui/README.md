@@ -4,11 +4,10 @@
 
 ## 运行时位置
 
-构建后该 skill 会随平台产物一起输出：
+构建后该 skill 会随当前平台产物一起输出：
 
 ```text
-dist/claude/skills/shadcn-ui/
-dist/codex/skills/shadcn-ui/
+skills/shadcn-ui/
 ```
 
 安装器应按当前平台 manifest 的 `install.skillEntries` 逐项复制或 symlink 这个 skill 目录，目标 skill 根目录以 `install.skillRoot` 为准。
