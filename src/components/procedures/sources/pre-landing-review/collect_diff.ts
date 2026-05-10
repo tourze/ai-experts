@@ -75,7 +75,7 @@ export function collectDiff({
 }
 function readOptionValue(argv: readonly string[], index: number, flag: string): string {
   const value = argv[index + 1];
-  if (value == null || value.startsWith("--")) {
+  if (value == null || (value !== "-" && value.startsWith("-"))) {
     throw new Error(`${flag} requires a value`);
   }
   return value;

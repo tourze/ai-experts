@@ -150,7 +150,7 @@ export function parseArgs(argv: readonly string[]): any {
       args.overwrite = true;
     } else if (arg === "--pattern" || arg === "--output") {
       const value = argv[index + 1];
-      if (value == null || value.startsWith("--")) {
+      if (value == null || value.startsWith("-")) {
         throw new Error(`${arg} requires a value`);
       }
       index += 1;

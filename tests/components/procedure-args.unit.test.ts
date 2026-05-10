@@ -1,10 +1,12 @@
 import { describe, expect, test } from "vitest";
 import { parseArgs as parseComplexityReportArgs } from "../../src/components/procedures/sources/complexity-reducer/complexity_report.ts";
+import { parseArgs as parseDebugChecklistArgs } from "../../src/components/procedures/sources/debug-methodology/debug-checklist.ts";
 import { parseArgs as parseBudgetVarianceArgs } from "../../src/components/procedures/sources/financial-analyst/budget_variance_analyzer.ts";
 import { parseArgs as parseDcfValuationArgs } from "../../src/components/procedures/sources/financial-analyst/dcf_valuation.ts";
 import { parseArgs as parseForecastBuilderArgs } from "../../src/components/procedures/sources/financial-analyst/forecast_builder.ts";
 import { parseArgs as parseRatioCalculatorArgs } from "../../src/components/procedures/sources/financial-analyst/ratio_calculator.ts";
 import { parseArgs as parseRatioInputArgs } from "../../src/components/procedures/sources/financial-analyst/ratio_input_validation.ts";
+import { parseArgs as parseInspectPrChecksArgs } from "../../src/components/procedures/sources/gh-fix-ci/inspect_pr_checks.ts";
 import { parseArgs as parseCsoAuditArgs } from "../../src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts";
 import { parseInputPath } from "../../src/components/procedures/sources/typescript-type-safety/extract-ts-errors.ts";
 
@@ -32,5 +34,15 @@ describe("procedure argument parsers", () => {
       .toThrow(/--input requires a value/);
     expect(() => parseComplexityReportArgs(["src", "--format"]))
       .toThrow(/--format requires a value/);
+    expect(() => parseDebugChecklistArgs(["--title", "--symptom", "crash"]))
+      .toThrow(/--title requires a value/);
+    expect(() => parseDebugChecklistArgs(["--symptom", "-s"]))
+      .toThrow(/--symptom requires a value/);
+    expect(() => parseDebugChecklistArgs(["--unknown"]))
+      .toThrow(/Unknown argument/);
+    expect(() => parseInspectPrChecksArgs(["--repo", "-h"]))
+      .toThrow(/--repo requires a value/);
+    expect(() => parseInspectPrChecksArgs(["--pr", "--json"]))
+      .toThrow(/--pr requires a value/);
   });
 });

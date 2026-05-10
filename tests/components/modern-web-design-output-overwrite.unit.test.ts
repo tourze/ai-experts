@@ -30,6 +30,17 @@ describe("modern web design output overwrite guards", () => {
       });
   });
 
+  test("rejects option tokens where values are required", () => {
+    expect(() => parsePatternArgs(["--pattern", "-h"]))
+      .toThrow(/--pattern requires a value/);
+    expect(() => parsePatternArgs(["--pattern", "hero", "--output", "-o"]))
+      .toThrow(/--output requires a value/);
+    expect(() => parseAuditArgs(["--file", "-h"]))
+      .toThrow(/--file requires a value/);
+    expect(() => parseAuditArgs(["--file", "index.html", "--report", "-o"]))
+      .toThrow(/--report requires a value/);
+  });
+
   test("refuses existing output files unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-modern-web-output-"));
     try {

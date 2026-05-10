@@ -333,7 +333,7 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--output") {
       const value = argv[index + 1];
-      if (value == null || value.startsWith("--")) {
+      if (value == null || value.startsWith("-")) {
         throw new Error("--output requires a value");
       }
       args.output = value;

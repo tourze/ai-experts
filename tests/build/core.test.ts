@@ -55,6 +55,7 @@ describe("build/core", () => {
     expect(parseArgs(["--out-dir=/tmp/out"])).toEqual({ outDir: resolve("/tmp/out"), check: false, help: false });
     expect(() => parseArgs(["--out-dir"])).toThrow("--out-dir requires a value");
     expect(() => parseArgs(["--out-dir", "--check"])).toThrow("--out-dir requires a value");
+    expect(() => parseArgs(["--out-dir", "-h"])).toThrow("--out-dir requires a value");
     expect(() => parseArgs(["--out-dir="])).toThrow("--out-dir requires a value");
     expect(() => parseArgs(["--bad-flag"])).toThrow("Unknown argument");
   });

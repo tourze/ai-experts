@@ -39,7 +39,7 @@ export function parseArgs(argv: readonly string[]): ParsedBuildArgs {
     if (arg === "--check") args.check = true;
     else if (arg === "--out-dir") {
       const value = argv[index + 1];
-      if (value === undefined || value === "" || value.startsWith("--")) {
+      if (value === undefined || value === "" || value.startsWith("-")) {
         throw new Error("--out-dir requires a value");
       }
       args.outDir = resolve(value);

@@ -20,6 +20,11 @@ describe("prompt engineering optimize-prompt output guards", () => {
     });
   });
 
+  test("rejects option tokens where output value is required", () => {
+    expect(() => parseArgs(["--output", "-h"]))
+      .toThrow(/--output requires a value/);
+  });
+
   test("refuses existing optimization outputs unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-prompt-output-"));
     try {

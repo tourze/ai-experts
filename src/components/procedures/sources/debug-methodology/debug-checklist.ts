@@ -33,25 +33,37 @@ export const procedure = defineCliProcedure({
   exampleArgs: { args: ["--title", "fixture-checklist"] },
 });
 
-export function main(argv: readonly string[]): any {
-  type ChecklistOptions = {
-    title: string;
-    symptom?: string;
-  };
-  function parseArgs(argv: readonly string[]): ChecklistOptions {
-    const options: ChecklistOptions = { title: "未命名问题" };
-    for (let index = 0; index < argv.length; index += 1) {
-      const arg = argv[index];
-      if ((arg === "--title" || arg === "-t") && argv[index + 1]) {
-        options.title = argv[index + 1];
-        index += 1;
-      } else if ((arg === "--symptom" || arg === "-s") && argv[index + 1]) {
-        options.symptom = argv[index + 1];
-        index += 1;
-      }
-    }
-    return options;
+type ChecklistOptions = {
+  title: string;
+  symptom?: string;
+};
+
+function requireValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value.startsWith("-")) {
+    throw new Error(`${flag} requires a value`);
   }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): ChecklistOptions {
+  const options: ChecklistOptions = { title: "未命名问题" };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--title" || arg === "-t") {
+      options.title = requireValue(argv, index, arg);
+      index += 1;
+    } else if (arg === "--symptom" || arg === "-s") {
+      options.symptom = requireValue(argv, index, arg);
+      index += 1;
+    } else {
+      throw new Error(`Unknown argument: ${arg}`);
+    }
+  }
+  return options;
+}
+
+export function main(argv: readonly string[]): any {
   function renderChecklist(options: ChecklistOptions): string {
     const symptom = options.symptom ? `\n\n现象：${options.symptom}` : "";
     return `# Debug Checklist: ${options.title}${symptom}

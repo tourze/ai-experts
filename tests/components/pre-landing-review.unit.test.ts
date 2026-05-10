@@ -96,8 +96,12 @@ describe("renderReport", (): any => {
 describe("CLI entrypoints", (): any => {
     it("rejects option flags without values", () => {
         assert.throws(() => parseCollectDiffArgs(["--base", "--cwd"]), /--base requires a value/);
+        assert.throws(() => parseCollectDiffArgs(["--base", "-h"]), /--base requires a value/);
         assert.throws(() => parseCollectDiffArgs(["--cwd"]), /--cwd requires a value/);
+        assert.throws(() => parseCollectDiffArgs(["--cwd", "-h"]), /--cwd requires a value/);
         assert.throws(() => parseRenderReportArgs(["--input", "--help"]), /--input requires a value/);
+        assert.throws(() => parseRenderReportArgs(["--input", "-h"]), /--input requires a value/);
+        assert.equal(parseRenderReportArgs(["--input", "-"]).input, "-");
     });
     it("render_report main 输出报告", async () => {
         const dir = mkdtempSync(join(tmpdir(), "pre-landing-render-"));
