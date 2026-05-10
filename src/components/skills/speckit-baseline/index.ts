@@ -21,7 +21,7 @@ export const speckitBaselineSkill = defineSkill({
     "只在本 skill 的适用场景内使用；任务不匹配时先澄清或转向更合适的 skill。",
     "执行时遵循正文中的流程、红线、检查清单和必要参考资料，不用未经验证的假设替代证据。",
     "默认在当前分支写入规格；禁止执行 `git checkout -b`、`git switch -c` 或 `node .specify/scripts/create-new-feature.mjs`。",
-    "`speckit-baseline-bootstrap-specify` 默认不会覆盖已存在的 `.specify` wrapper/template 文件，`speckit-baseline-setup-plan` 默认不会覆盖已存在的 `plan.md`；确认目标可替换后才传 `--overwrite`。",
+    "`speckit-baseline-bootstrap-specify` 默认不会覆盖已存在的 `.specify` wrapper/template 文件，`speckit-baseline-create-new-feature` 默认不会替换已有的 `.specify/feature.json` 当前 feature 指针，`speckit-baseline-setup-plan` 默认不会覆盖已存在的 `plan.md`；确认目标可替换后才传 `--overwrite`。",
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

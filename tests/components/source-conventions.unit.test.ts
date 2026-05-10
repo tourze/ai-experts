@@ -450,6 +450,7 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(skillSource, /默认不会覆盖已存在的 `\.specify` wrapper\/template 文件/u);
+    assert.match(skillSource, /默认不会替换已有的 `\.specify\/feature\.json` 当前 feature 指针/u);
     assert.match(skillSource, /默认不会覆盖已存在的 `plan\.md`/u);
     assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
@@ -473,6 +474,19 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(bootstrapSource, /plannedBootstrapOutputFiles/u);
+
+    const createFeatureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/speckit-baseline/create-new-feature.ts"),
+      "utf-8",
+    );
+    assert.match(createFeatureSource, /flag:\s+"--overwrite"/u);
+    assert.match(createFeatureSource, /writeCurrentFeatureJson/u);
+    assert.match(createFeatureSource, /assertOutputWritable/u);
+    assert.doesNotMatch(
+      createFeatureSource,
+      /exampleArgs:\s*\{\s*args:\s*\[[^\]]*"--overwrite"/u,
+      "speckit create-new-feature examples should not teach overwrite bypasses",
+    );
 
     const guardSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/speckit-baseline/output_guard.ts"),

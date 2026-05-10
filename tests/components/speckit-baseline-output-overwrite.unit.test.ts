@@ -15,6 +15,10 @@ import {
   parseArgs as parseBootstrapArgs,
   plannedBootstrapOutputFiles,
 } from "../../src/components/procedures/sources/speckit-baseline/bootstrap-specify.ts";
+import {
+  parseArgs as parseCreateFeatureArgs,
+  writeCurrentFeatureJson,
+} from "../../src/components/procedures/sources/speckit-baseline/create-new-feature.ts";
 import { parseArgs as parseSetupPlanArgs } from "../../src/components/procedures/sources/speckit-baseline/setup-plan.ts";
 
 describe("speckit baseline output overwrite guards", () => {
@@ -28,6 +32,17 @@ describe("speckit baseline output overwrite guards", () => {
       .toMatchObject({
         skillRoot: "skill-root",
         targetDir: ".specify",
+        overwrite: true,
+      });
+
+    expect(parseCreateFeatureArgs(["--short-name", "one", "Feature one"]))
+      .toMatchObject({
+        shortName: "one",
+        overwrite: false,
+      });
+    expect(parseCreateFeatureArgs(["--short-name", "one", "--overwrite", "Feature one"]))
+      .toMatchObject({
+        shortName: "one",
         overwrite: true,
       });
 
@@ -70,6 +85,27 @@ describe("speckit baseline output overwrite guards", () => {
 
       expect(bootstrapSpecifyMain([skillRoot, targetDir, "--overwrite"])).toBe(0);
       expect(existsSync(join(targetDir, "templates", "spec-template.md"))).toBe(true);
+    } finally {
+      rmSync(workDir, { recursive: true, force: true });
+    }
+  });
+
+  test("refuses to replace the current feature pointer unless overwrite is explicit", () => {
+    const workDir = mkdtempSync(join(tmpdir(), "ai-experts-speckit-feature-"));
+    try {
+      mkdirSync(join(workDir, ".specify"), { recursive: true });
+      const featureJson = join(workDir, ".specify", "feature.json");
+      writeFileSync(
+        featureJson,
+        `${JSON.stringify({ feature_directory: ".specify/features/old" }, null, 2)}\n`,
+        "utf8",
+      );
+
+      expect(() => writeCurrentFeatureJson(workDir, "new"))
+        .toThrow(/output file already exists/);
+      expect(readFileSync(featureJson, "utf8")).toContain("old");
+      expect(writeCurrentFeatureJson(workDir, "new", true)).toBe(featureJson);
+      expect(readFileSync(featureJson, "utf8")).toContain(".specify/features/new");
     } finally {
       rmSync(workDir, { recursive: true, force: true });
     }

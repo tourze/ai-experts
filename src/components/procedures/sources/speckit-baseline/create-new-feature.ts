@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 import { getRepoRoot, printHelpAndExit, printErrorAndExit } from "./common";
+import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
   id: "speckit-baseline-create-new-feature",
@@ -19,6 +20,12 @@ export const procedure = defineCliProcedure({
       flag: "--short-name",
       type: "字符串",
       description: "手动指定 slug 短名，而非从描述自动生成",
+      required: false,
+    },
+    {
+      flag: "--overwrite",
+      type: "",
+      description: "仅在用户已明确确认可替换现有 .specify/feature.json 当前 feature 指针后使用",
       required: false,
     },
   ],
@@ -45,14 +52,19 @@ function slugFromText(text: any): any {
     .slice(0, 8);
   return `feature-${hash}`;
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   let jsonMode = false;
   let shortName = "";
+  let overwrite = false;
   const descriptionParts: any[] = [];
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--json") {
       jsonMode = true;
+      continue;
+    }
+    if (arg === "--overwrite") {
+      overwrite = true;
       continue;
     }
     if (arg === "--short-name") {
@@ -66,7 +78,7 @@ function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--help" || arg === "-h") {
       printHelpAndExit(
-        "Usage: node create-new-feature.mjs [--json] [--short-name <slug>] <feature description>",
+        "Usage: node create-new-feature.mjs [--json] [--short-name <slug>] [--overwrite] <feature description>",
       );
     }
     if (arg.startsWith("-")) {
@@ -78,10 +90,30 @@ function parseArgs(argv: readonly string[]): any {
   if (!featureDescription) {
     printErrorAndExit("Error: feature description is required");
   }
-  return { jsonMode, shortName, featureDescription };
+  return { jsonMode, shortName, featureDescription, overwrite };
+}
+export function writeCurrentFeatureJson(
+  repoRoot: any,
+  slug: any,
+  overwrite: any = false,
+): any {
+  const featureJsonPath = path.join(repoRoot, ".specify", "feature.json");
+  const featureJson: Record<string, any> = {
+    feature_directory: `.specify/features/${slug}`,
+  };
+  const content = `${JSON.stringify(featureJson, null, 2)}\n`;
+  if (
+    fs.existsSync(featureJsonPath) &&
+    fs.readFileSync(featureJsonPath, "utf8") !== content
+  ) {
+    assertOutputWritable(featureJsonPath, overwrite);
+  }
+  fs.writeFileSync(featureJsonPath, content, "utf8");
+  return featureJsonPath;
 }
 export function main(argv: readonly string[]): any {
-  const { jsonMode, shortName, featureDescription } = parseArgs(argv);
+  const { jsonMode, shortName, featureDescription, overwrite } =
+    parseArgs(argv);
   let slug = shortName
     ? slugFromText(shortName)
     : slugFromText(featureDescription);
@@ -93,15 +125,7 @@ export function main(argv: readonly string[]): any {
   const specFile = path.join(featureDir, "spec.md");
   fs.mkdirSync(featureDir, { recursive: true });
   fs.mkdirSync(path.join(repoRoot, ".specify"), { recursive: true });
-  const featureJsonPath = path.join(repoRoot, ".specify", "feature.json");
-  const featureJson: Record<string, any> = {
-    feature_directory: `.specify/features/${slug}`,
-  };
-  fs.writeFileSync(
-    featureJsonPath,
-    `${JSON.stringify(featureJson, null, 2)}\n`,
-    "utf8",
-  );
+  writeCurrentFeatureJson(repoRoot, slug, overwrite);
   const result: Record<string, any> = {
     FEATURE_DIR: featureDir,
     SPEC_FILE: specFile,
