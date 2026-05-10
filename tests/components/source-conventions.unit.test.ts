@@ -1644,7 +1644,7 @@ describe("component source conventions", () => {
     const skillAuthorSource = readFileSync(join(repoRoot, "src/components/agents/skill-author/index.ts"), "utf-8");
 
     assert.match(skillAuthorSource, /index\.ts、references、assets、evals、Procedure 引用/);
-    assert.match(skillAuthorSource, /registry\.generated\.ts/);
+    assert.match(skillAuthorSource, /registry\.generated\.skills\.ts/);
     assert.doesNotMatch(
       skillAuthorSource,
       /SKILL\.body\.md|src\/components\/skills\/<skill>\/` 下的 SKILL\.md|写 SKILL\.md 时|README 索引项|\[SKILL\.md \//u,
@@ -1777,7 +1777,7 @@ describe("component source conventions", () => {
   test("component guidance uses current skill ids instead of legacy expert routes", () => {
     const legacyExpertRoutes: string[] = [];
     const componentGuidanceFiles = collectFiles(join(repoRoot, "src/components"), (file) =>
-      /\.(?:ts|md|ya?ml)$/u.test(file) && !file.endsWith("registry.generated.ts"),
+      /\.(?:ts|md|ya?ml)$/u.test(file) && !basename(file).startsWith("registry.generated"),
     );
     const legacyExpertRoutePattern =
       /\b(?:android|database|mysql|pgsql|speckit|skill)-expert(?::[a-z0-9-]+|\/[a-z0-9-]+)?\b/u;
@@ -2924,15 +2924,21 @@ describe("component source conventions", () => {
     assert.match(agentSource, /typescriptTypeSafetySkill\.id/);
     assert.doesNotMatch(agentSource, /id: "typescript-type-safety"/);
 
-    const generatedRegistrySource = readFileSync(
-      join(repoRoot, "src/components/registry.generated.ts"),
-      "utf-8",
-    );
-    assert.doesNotMatch(
-      generatedRegistrySource,
-      /from\s+"\.\/hooks\//,
-      "registry.generated.ts should not import hooks; hooks are registered through src/components/hooks/index.ts",
-    );
+    for (const registryFile of [
+      "registry.generated.ts",
+      "registry.generated.skills.ts",
+      "registry.generated.agents.ts",
+    ]) {
+      const generatedRegistrySource = readFileSync(
+        join(repoRoot, "src/components", registryFile),
+        "utf-8",
+      );
+      assert.doesNotMatch(
+        generatedRegistrySource,
+        /from\s+"\.\/hooks\//,
+        `${registryFile} should not import hooks; hooks are registered through src/components/hooks/index.ts`,
+      );
+    }
 
     const removedLayer = ["migr", "ated"].join("");
     assert.equal(existsSync(join(repoRoot, "src/components", removedLayer)), false);

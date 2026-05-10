@@ -21,7 +21,7 @@ import { benchmarkResultAnalyzerSkill } from "../../skills/benchmark-result-anal
 export const skillAuthorAgent = defineAgent({
   id: "skill-author",
   description: "当需要创建新 skill、根据参考 skill 演化目标 skill、跑 with-skill vs baseline 基准测试、或发现并集成外部 skill 时使用。它可以写入新的 skill 组件源码、references、assets、evals 和 Procedure 声明等交付物，但不修改无关代码。",
-  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 index.ts、references、assets、evals、Procedure 引用与 registry.generated.ts 索引项，但不要修改无关源码、配置或其他 skill。`,
+  role: `你是资深 Skill 作者。你可以在用户请求的交付范围内创建或更新 \`src/components/skills/<skill>/\` 下的 index.ts、references、assets、evals、Procedure 引用与 registry.generated.skills.ts 索引项，但不要修改无关源码、配置或其他 skill。`,
   platforms: [Platform.Claude, Platform.Codex],
   workflow: defineWorkflow({
     direction: "TD",
@@ -65,7 +65,7 @@ export const skillAuthorAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "已写入文件",
-        body: "[index.ts / references/* / assets/* / evals/* / Procedure 声明 / registry.generated.ts 修改的具体路径与摘要]",
+        body: "[index.ts / references/* / assets/* / evals/* / Procedure 声明 / registry.generated.skills.ts 修改的具体路径与摘要]",
       }),
       defineAgentOutputSection({
         title: "frontmatter 自检",

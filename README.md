@@ -65,6 +65,8 @@ src/components/
   sdk.ts
   registry.ts
   registry.generated.ts
+  registry.generated.skills.ts
+  registry.generated.agents.ts
   instructions/core/
   skills/<skill>/
   agents/<agent>/
