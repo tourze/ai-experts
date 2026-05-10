@@ -8,14 +8,16 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { featureDevSkill } from "../feature-dev/index";
+import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const subagentDrivenDevelopmentSkill = defineSkill({
   id: "subagent-driven-development",
   fullName: "子代理驱动开发",
   description: "当用户明确要求子代理/worker/多 agent/并行实现，并需要按计划派遣与审查时使用。",
   useCases: [
-    "有一份实现计划或 Execution Contract（来自 `task-decomposer`、`feature-dev`、`persistent-planning` 等），且用户明确要求子代理、worker、多 agent 或并行实现。",
-    "需要消费 `task-decomposer` 输出的 `waves` / `read_scope` / `write_scope` / `acceptance`，并把计划推进到实际修改。",
+    "有一份实现计划或 Execution Contract，且用户明确要求子代理、worker、多 agent 或并行实现。",
+    "需要消费任务拆解输出的 `waves` / `read_scope` / `write_scope` / `acceptance`，并把计划推进到实际修改。",
     "需要在当前会话中连续执行多个任务而不污染主上下文。",
     "需要按 wave 执行、验收、审查和集成多个相互独立的实现任务。",
   ],
@@ -44,6 +46,20 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
       fail: "把规格审查和代码质量审查合并，或先审代码质量。",
       pass: "先确认做对了事，再确认事做得好。",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return taskDecomposerSkill.id;
+      },
+      reason: "需要生成或修正 Execution Contract、waves、read_scope、write_scope 和 acceptance 时联动。",
+    },
+    {
+      get id() {
+        return featureDevSkill.id;
+      },
+      reason: "子代理执行的是完整功能交付，需要回到发现、设计、实现和验证工作流时联动。",
+    },
   ],
   checklist: [
     "一次性读取了完整计划",

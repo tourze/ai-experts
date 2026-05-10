@@ -1453,6 +1453,21 @@ describe("component source conventions", () => {
     );
   });
 
+  test("subagent-driven-development routes planner sources through relatedSkills", () => {
+    const source = readFileSync(
+      join(repoRoot, "src/components/skills/subagent-driven-development/index.ts"),
+      "utf-8",
+    );
+
+    assert.doesNotMatch(
+      source,
+      /来自 `task-decomposer`、`feature-dev`、`persistent-planning`/,
+      "planner-producing skills and references should not be listed as inline aliases",
+    );
+    assert.match(source, /return taskDecomposerSkill\.id;/);
+    assert.match(source, /return featureDevSkill\.id;/);
+  });
+
   test("skill creator viewer uses platform-neutral review wording", () => {
     const viewerSource = readFileSync(
       join(repoRoot, "src/components/skills/skill-creator/assets/eval-viewer/viewer.html"),
