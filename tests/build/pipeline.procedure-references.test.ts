@@ -210,4 +210,51 @@ describe("build/pipeline procedure references", () => {
     ).toThrow("Unknown component procedure id");
   });
 
+  test("procedure runtime help keeps omitted params required by default", async () => {
+    const fixture = createFixture();
+    const procedure = defineProcedure({
+      ...fixture.procedure,
+      params: [
+        {
+          flag: "--input",
+          type: "路径",
+          description: "输入文件",
+        },
+        {
+          flag: "--optional",
+          type: "字符串",
+          description: "可选参数",
+          required: false,
+        },
+      ],
+    });
+    const registry: ComponentRegistry = {
+      ...fixture.registry,
+      procedures: [procedure],
+    };
+    const outDir = createTempDir("ai-experts-procedure-help-");
+    await emitPlatform(validateRegistry(registry), outDir, Platform.Claude);
+
+    const result = spawnSync(
+      process.execPath,
+      [
+        join(outDir, "claude", "procedures.js"),
+        "--procedure-id",
+        procedure.id,
+        "--trigger-skill",
+        fixture.skill.id,
+        "--",
+        "--help",
+      ],
+      { encoding: "utf-8" },
+    );
+
+    expect(result.status).toBe(0);
+    const output = JSON.parse(result.stdout);
+    const help = output.result.stdout;
+    expect(help).toContain("--input <路径> (required)");
+    expect(help).toContain("--optional <字符串>");
+    expect(help).not.toContain("--optional <字符串> (required)");
+  });
+
 });

@@ -544,7 +544,7 @@ function toRuntimeProcedureEntry(
       flag: param.flag,
       type: param.type,
       description: param.description,
-      required: Boolean(param.required),
+      required: param.required !== false,
     })),
     exampleArgs: procedure.exampleArgs,
     sourcePath,
