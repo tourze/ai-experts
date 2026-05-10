@@ -8,6 +8,7 @@ import type {
   ToolMatcher,
   WorkflowDefinition,
 } from "../components/sdk";
+import { SkillUseMode } from "../components/sdk";
 import {
   Platform,
   renderToolMatcher,
@@ -356,7 +357,11 @@ function platformAgentSkills(agent: AgentDefinition, platformSkillIds: ReadonlyS
   return (agent.skills ?? []).filter((skill) => platformSkillIds.has(skill.id));
 }
 
-function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet<string>): string {
+function renderClaudeAgent(
+  agent: AgentDefinition,
+  platformSkillIds: ReadonlySet<string>,
+  claudePreloadableSkillIds: ReadonlySet<string>,
+): string {
   const frontmatter: Record<string, unknown> = {
     name: agent.id,
     description: agent.description,
@@ -364,7 +369,9 @@ function renderClaudeAgent(agent: AgentDefinition, platformSkillIds: ReadonlySet
   const tools = (agent.tools ?? []).map(renderToolMatcher);
   if (tools.length > 0) frontmatter.tools = tools.join(", ");
   const skills = platformAgentSkills(agent, platformSkillIds);
-  const claudeSkills = skills.map((skill) => skill.id);
+  const claudeSkills = skills
+    .filter((skill) => skill.mode === SkillUseMode.Preload && claudePreloadableSkillIds.has(skill.id))
+    .map((skill) => skill.id);
   if (claudeSkills.length > 0) frontmatter.skills = claudeSkills;
   const model = agent.claudeModel ?? agent.model;
   if (model) frontmatter.model = model;
@@ -445,14 +452,19 @@ export async function emitAgent(
   platformRoot: string,
   platform: Platform,
   platformSkillIds?: ReadonlySet<string>,
+  claudePreloadableSkillIds?: ReadonlySet<string>,
 ): Promise<void> {
   const effectivePlatformSkillIds = platformSkillIds ?? new Set((agent.skills ?? []).map((skill) => skill.id));
+  const effectiveClaudePreloadableSkillIds = claudePreloadableSkillIds ?? effectivePlatformSkillIds;
   const workflow = validateAgentWorkflow(agent);
   if (workflow) {
     await validateMermaidSyntax(`Agent ${agent.id}`, renderWorkflowMermaidSource(workflow));
   }
   if (platform === Platform.Claude) {
-    writeText(join(platformRoot, "agents", `${agent.id}.md`), renderClaudeAgent(agent, effectivePlatformSkillIds));
+    writeText(
+      join(platformRoot, "agents", `${agent.id}.md`),
+      renderClaudeAgent(agent, effectivePlatformSkillIds, effectiveClaudePreloadableSkillIds),
+    );
   } else {
     writeText(join(platformRoot, "agents", `${agent.id}.toml`), renderCodexAgent(agent, effectivePlatformSkillIds));
   }

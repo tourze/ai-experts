@@ -725,6 +725,32 @@ describe("component build integration", () => {
     }
   });
 
+  test("claude agent skill preload frontmatter only includes preloadable skills", () => {
+    const disabledModelInvocationSkills = new Set<string>();
+    for (const skillFile of collectFiles(join(tmpDistDir, "claude/skills"), (file) => basename(file) === "SKILL.md")) {
+      const frontmatter = parseMarkdownFrontmatter(skillFile);
+      if (frontmatter["disable-model-invocation"] === true) disabledModelInvocationSkills.add(frontmatter.name);
+    }
+
+    for (const agentFile of collectFiles(join(tmpDistDir, "claude/agents"), (file) => file.endsWith(".md"))) {
+      const frontmatter = parseMarkdownFrontmatter(agentFile);
+      for (const skillId of frontmatter.skills ?? []) {
+        assert.equal(
+          disabledModelInvocationSkills.has(skillId),
+          false,
+          `${relative(tmpDistDir, agentFile)} should not preload explicit-only skill ${skillId}`,
+        );
+      }
+    }
+
+    const typescriptReviewer = parseMarkdownFrontmatter(join(tmpDistDir, "claude/agents/typescript-reviewer.md"));
+    assert.deepEqual(
+      typescriptReviewer.skills,
+      ["typescript-type-safety"],
+      "Route-only skills should stay in agent body routing guidance, not Claude preload frontmatter",
+    );
+  });
+
   test("manifest file checksums cover every generated file", () => {
     for (const platform of ["claude", "codex"]) {
       const platformRoot = join(tmpDistDir, platform);
@@ -1574,7 +1600,7 @@ describe("component build integration", () => {
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
-    assert.match(claudeAgent, /skills:\n  - typescript-type-safety\n  - debug-methodology/);
+    assert.match(claudeAgent, /skills:\n  - typescript-type-safety\nmodel: sonnet/);
     assert.match(claudeAgent, /model: sonnet\neffort: high/);
     assert.match(claudeAgent, /你是资深 TypeScript 工程师/);
     assert.match(claudeAgent, /`debug-methodology` \(route\)/);
@@ -1639,6 +1665,11 @@ describe("component build integration", () => {
     assert.match(windowsReviewerAgent, /windows-ui-automation/);
     assert.match(windowsReviewerAgent, /prlctl-vm-control/);
     assert.doesNotMatch(windowsReviewerAgent, /分场景路由/);
+    assert.deepEqual(
+      parseMarkdownFrontmatter(join(tmpDistDir, "claude/agents/windows-platform-reviewer.md")).skills,
+      ["windows-kernel-security", "windows-ui-automation", "evidence-quality-framework"],
+      "Claude agents should not preload explicit-only skills that disable model invocation",
+    );
 
     const codexAgent = readFileSync(join(tmpDistDir, "codex/agents/frontend-engineer.toml"), "utf-8");
     assert.match(codexAgent, /name = "frontend-engineer"/);

@@ -879,11 +879,19 @@ export async function emitPlatform(
       .filter((skill) => skill.platforms.includes(platform))
       .map((skill) => skill.id),
   );
+  const claudePreloadableSkillIds = new Set(
+    componentSurface.skills
+      .filter((skill) => skill.platforms.includes(platform))
+      .filter((skill) => platform !== Platform.Claude || skill.invocation !== InvocationPolicy.ExplicitOnly)
+      .map((skill) => skill.id),
+  );
   for (const skill of componentSurface.skills) {
     if (skill.platforms.includes(platform)) await emitSkill(skill, root, platform, proceduresById, platformSkillIds);
   }
   for (const agent of componentSurface.agents) {
-    if (agent.platforms.includes(platform)) await emitAgent(agent, root, platform, platformSkillIds);
+    if (agent.platforms.includes(platform)) {
+      await emitAgent(agent, root, platform, platformSkillIds, claudePreloadableSkillIds);
+    }
   }
 
   const files = checksumFiles(root);
