@@ -157,7 +157,7 @@ export const nestjsLayeringPatternsSkill = defineSkill({
       loadWhen: "需要设计 Service 层逻辑、管理依赖注入关系或封装模块时读取。",
     }),
     defineReference({
-      id: "testing-patterns",
+      id: "nestjs-testing-patterns",
       source: new URL("./references/testing-patterns.md", import.meta.url),
       target: "references/testing-patterns.md",
       title: "testing-patterns.md",

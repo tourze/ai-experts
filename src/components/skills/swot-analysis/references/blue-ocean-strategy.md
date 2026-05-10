@@ -3,7 +3,7 @@
 ## 适用场景
 - 需要重新定义竞争边界，而不是继续在现有红海里卷价格和功能。
 - 需要使用 [references/strategy-canvas.md](./strategy-canvas.md)、[references/errc-grid.md](./errc-grid.md)、[references/non-customers.md](./non-customers.md) 做结构化分析。
-- 讨论市场进入顺序时，可配合 [crossing-the-chasm](../../designing-growth-loops/SKILL.md)；讨论定位时，可配合 [obviously-awesome](../../competitive-intelligence/SKILL.md)。
+- 讨论市场进入顺序时，可配合 [crossing-the-chasm](../../designing-growth-loops/references/crossing-the-chasm.md)；讨论定位时，可配合 [obviously-awesome](../../competitive-intelligence/references/obviously-awesome.md)。
 
 ## 核心约束
 - 先识别现有竞争因子与用户牺牲项，再谈创新；不要把“多做几个功能”误判为蓝海。

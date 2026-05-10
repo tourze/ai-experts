@@ -3,7 +3,7 @@
 ## 适用场景
 - 产品定位决策：该服务谁、凭什么赢、对手怎么应对。
 - 比 SWOT 更聚焦于竞争关系的快速战略诊断。
-- 与 [competitive-teardown](../../competitive-intelligence/SKILL.md) 配合：3C 做框架，teardown 做深度拆解。
+- 与 [competitive-teardown](../../competitive-intelligence/references/competitive-teardown.md) 配合：3C 做框架，teardown 做深度拆解。
 
 ## 核心约束
 - 三个 C 必须**相互关联**分析，不能独立罗列。核心问题：我们能为客户做什么竞争对手做不到的事？

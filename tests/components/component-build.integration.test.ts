@@ -2778,6 +2778,42 @@ describe("component build integration", () => {
       );
       assert.deepEqual(directoryLinks, [], `${platform} generated Markdown should not link local directories directly`);
 
+      const skillIds = new Set(
+        readdirSync(join(tmpDistDir, platform, "skills"), { withFileTypes: true })
+          .filter((entry) => entry.isDirectory())
+          .map((entry) => entry.name),
+      );
+      const misleadingSkillLinks: string[] = [];
+      for (const markdownFile of runtimeMarkdownFiles) {
+        const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
+        for (const match of markdown.matchAll(/(?<!!)\[([^\]\n]+)\]\(([^)\n]+)\)/gu)) {
+          const label = (match[1] ?? "").trim();
+          if (!/^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(label)) continue;
+
+          const href = markdownDestination(match[2] as string);
+          if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
+
+          const [pathWithoutAnchor] = href.split("#", 1);
+          if (!pathWithoutAnchor) continue;
+          const resolvedPath = resolve(dirname(markdownFile), pathWithoutAnchor);
+          const targetSkillMatch = resolvedPath.match(/[/\\]skills[/\\]([^/\\]+)[/\\]SKILL\.md$/u);
+
+          if (targetSkillMatch) {
+            const targetSkillId = targetSkillMatch[1] ?? "";
+            if (label !== targetSkillId) {
+              misleadingSkillLinks.push(`${markdownFile}: [${label}] -> ${href} targets ${targetSkillId}`);
+            }
+          } else if (skillIds.has(label)) {
+            misleadingSkillLinks.push(`${markdownFile}: [${label}] -> ${href} labels a skill but targets a reference`);
+          }
+        }
+      }
+      assert.deepEqual(
+        misleadingSkillLinks,
+        [],
+        `${platform} generated Markdown should not label reference links as skills or skill links as references`,
+      );
+
       for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => file.endsWith("SKILL.md"))) {
         const source = stripFrontmatter(readFileSync(skillFile, "utf-8")).trimStart();
         assert.match(source, /^#\s+\S/, `${skillFile} should render an H1 heading from fullName`);

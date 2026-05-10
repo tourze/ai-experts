@@ -143,7 +143,7 @@ export const vueExpertJsSkill = defineSkill({
       loadWhen: "需要设计全局或模块级状态管理方案时读取。",
     }),
     defineReference({
-      id: "testing-patterns",
+      id: "vue-testing-patterns",
       source: new URL("./references/testing-patterns.md", import.meta.url),
       target: "references/testing-patterns.md",
       title: "testing-patterns.md",
