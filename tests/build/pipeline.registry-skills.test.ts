@@ -115,6 +115,14 @@ describe("build/pipeline registry skill validation", () => {
       "Skill fixture-skill tools[0] mcp.server must not contain \"__\"",
     );
 
+    const invalidSkillMcpServerPathRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{ ...fixture.skill, tools: [{ kind: "mcp", server: "github/github-mcp-server", tool: "lookup" }] }],
+    };
+    expect(() => validateRegistry(invalidSkillMcpServerPathRegistry)).toThrow(
+      "Skill fixture-skill tools[0] mcp.server must not contain path separators",
+    );
+
     const invalidSkillMatcherKindRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{ ...fixture.skill, tools: [{ kind: "unknown" } as any] }],

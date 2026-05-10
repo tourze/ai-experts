@@ -123,6 +123,14 @@ describe("build/pipeline registry agent and hook validation", () => {
       "Agent fixture-agent tools[0] mcp.tool must not contain \"__\"",
     );
 
+    const invalidAgentMcpServerPathRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      agents: [{ ...fixture.agent, tools: [{ kind: "mcp", server: "github/github-mcp-server", tool: "issue_write" }] }],
+    };
+    expect(() => validateRegistry(invalidAgentMcpServerPathRegistry)).toThrow(
+      "Agent fixture-agent tools[0] mcp.server must not contain path separators",
+    );
+
     const invalidAgentMatcherKindRegistry: ComponentRegistry = {
       ...fixture.registry,
       agents: [{ ...fixture.agent, tools: [{ kind: "unknown" } as any] }],

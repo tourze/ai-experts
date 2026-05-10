@@ -61,6 +61,6 @@ export const speckitTaskstoissuesSkill = defineSkill({
     ],
   }),
   tools: [
-    { kind: "mcp", server: "github/github-mcp-server", tool: "issue_write" },
+    { kind: "mcp", server: "github", tool: "issue_write" },
   ],
 });

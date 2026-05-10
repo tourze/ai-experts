@@ -286,6 +286,9 @@ function validateMcpMatcherPart(
   if (value.includes("__")) {
     throw new Error(`${owner} mcp.${property} must not contain "__"`);
   }
+  if (/[\\/]/u.test(value)) {
+    throw new Error(`${owner} mcp.${property} must not contain path separators`);
+  }
 }
 
 function validateHookMatcher(hook: HookDefinition): void {

@@ -181,7 +181,7 @@ export function registerComponentBuildRepresentativeTests(): void {
       join(getTmpDistDir(), "claude/skills/speckit-taskstoissues/SKILL.md"),
       "utf-8",
     );
-    assert.match(speckitTaskstoissuesSkill, /allowed-tools:\n  - mcp__github\/github-mcp-server__issue_write/);
+    assert.match(speckitTaskstoissuesSkill, /allowed-tools:\n  - mcp__github__issue_write/);
 
     const goTestingPatternsSkill = readFileSync(
       join(getTmpDistDir(), "claude/skills/go-testing-patterns/SKILL.md"),
