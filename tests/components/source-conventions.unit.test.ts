@@ -570,6 +570,8 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(generateReviewSource, /parseArgs\(\{\s*args:\s*\[\.\.\.argv\]/u);
+    assert.match(generateReviewSource, /\[--previous-workspace path\]/u);
+    assert.match(generateReviewSource, /\[--benchmark benchmark\.json\]/u);
 
     const guardSource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/skill-creator/output_guard.ts"),

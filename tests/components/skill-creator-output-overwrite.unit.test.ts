@@ -69,6 +69,16 @@ describe("skill creator output overwrite guards", () => {
         .toMatchObject({
           overwrite: true,
         });
+      expect(parseGenerateReviewArgs([
+        workspace,
+        "--previous-workspace",
+        workspace,
+        "--benchmark",
+        join(workspace, "benchmark.json"),
+      ])).toMatchObject({
+        previous: {},
+        benchmarkPath: join(workspace, "benchmark.json"),
+      });
     } finally {
       rmSync(workspace, { recursive: true, force: true });
     }

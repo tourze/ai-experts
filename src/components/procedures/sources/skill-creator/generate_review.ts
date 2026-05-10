@@ -743,7 +743,15 @@ export function main(argv: readonly string[]): void {
 
   if (args.help) {
     console.log(
-      "Usage: node generate_review.mjs <workspace> [--static output.html] [--skill-name name] [--port 3117] [--overwrite]",
+      [
+        "Usage: node generate_review.mjs <workspace>",
+        "[--static output.html]",
+        "[--skill-name name]",
+        "[--port 3117]",
+        "[--previous-workspace path]",
+        "[--benchmark benchmark.json]",
+        "[--overwrite]",
+      ].join(" "),
     );
     return;
   }
