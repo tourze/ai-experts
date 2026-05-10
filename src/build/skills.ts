@@ -54,21 +54,19 @@ export function compactCodexOpenAiShortDescription(description: string): string 
   if (characters.length <= CODEX_OPENAI_SHORT_DESCRIPTION_MAX_LENGTH) return normalized;
 
   const maxEnd = Math.min(characters.length, CODEX_OPENAI_SHORT_DESCRIPTION_MAX_LENGTH);
-  let boundaryEnd = -1;
   for (const boundaryCharacters of [
     new Set(["。", "；", ";"]),
     new Set(["，", ",", "、", "：", ":", "）", ")"]),
     new Set([" "]),
   ]) {
+    let boundaryEnd = -1;
     for (let index = CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH - 1; index < maxEnd; index += 1) {
       if (boundaryCharacters.has(characters[index])) boundaryEnd = index + 1;
     }
-    if (boundaryEnd >= CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH) break;
-  }
-
-  if (boundaryEnd >= CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH) {
-    const candidate = characters.slice(0, boundaryEnd).join("").replace(/[，,、；;：:\s]+$/u, "").trim();
-    if (Array.from(candidate).length >= CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH) return candidate;
+    if (boundaryEnd >= CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH) {
+      const candidate = characters.slice(0, boundaryEnd).join("").replace(/[，,、；;：:\s]+$/u, "").trim();
+      if (Array.from(candidate).length >= CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH) return candidate;
+    }
   }
 
   return `${characters.slice(0, CODEX_OPENAI_SHORT_DESCRIPTION_MAX_LENGTH - 3).join("").trimEnd()}...`;

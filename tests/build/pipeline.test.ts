@@ -255,6 +255,9 @@ describe("build/pipeline modules", () => {
     expect(compactCodexOpenAiShortDescription(
       "当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。适用于 token/JWT/session/cookie/OAuth 认证链路。",
     )).toBe("当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。");
+    expect(compactCodexOpenAiShortDescription(
+      "当用户需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel、select! 或异步生命周期时触发。",
+    )).toBe("当用户需要开发或排障 Tokio 异步代码时使用；涉及 tokio::spawn、JoinSet、channel");
     const claudeSkill = renderSkillMd(fixture.skill, Platform.Claude, procedureMap);
     expect(claudeSkill).toContain("  - mcp__fixture__lookup");
     expect(claudeSkill).toContain(
