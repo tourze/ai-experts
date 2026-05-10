@@ -10,7 +10,10 @@ import { defaultReferenceTarget, toAbsolutePath } from "../../src/build/core.ts"
 import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import { codexSystemSkillIds } from "../../src/build/platform.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
-import { compactCodexOpenAiShortDescription } from "../../src/build/skills.ts";
+import {
+  compactCodexOpenAiShortDescription,
+  renderCodexOpenAiDefaultPrompt,
+} from "../../src/build/skills.ts";
 import { registry } from "../../src/components/registry.ts";
 import { InvocationPolicy, Platform, type SkillReferenceDefinition } from "../../src/components/sdk.ts";
 import {
@@ -447,6 +450,7 @@ export function registerComponentBuildGeneratedContentTests(): void {
           interface: {
             display_name: skill.fullName,
             short_description: compactCodexOpenAiShortDescription(skill.description),
+            default_prompt: renderCodexOpenAiDefaultPrompt(skill),
           },
           policy: {
             allow_implicit_invocation: allowImplicit,
@@ -458,6 +462,12 @@ export function registerComponentBuildGeneratedContentTests(): void {
         Array.from(parsedMetadata.interface.short_description).length <= 64,
         `${skillId} Codex openai.yaml short_description should stay UI-sized`,
       );
+      assert.match(
+        parsedMetadata.interface.default_prompt,
+        new RegExp(`\\$${escapeRegExp(skillId)}\\b`),
+        `${skillId} Codex openai.yaml default_prompt should mention the skill selector`,
+      );
+      assert.doesNotMatch(metadata, /^"interface":/m, `${skillId} openai.yaml should keep keys unquoted`);
     }
 
     assert.deepEqual(

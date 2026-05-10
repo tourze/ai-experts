@@ -19,6 +19,7 @@ import { byId, compileRegistry, materializeRegistry } from "../../src/build/regi
 import {
   compactCodexOpenAiShortDescription,
   emitSkill,
+  renderCodexOpenAiDefaultPrompt,
   renderSkillMd,
   validateAntiPatterns,
   validateParameters,
@@ -247,11 +248,15 @@ describe("build/pipeline modules", () => {
       interface: {
         display_name: fixture.skill.fullName,
         short_description: compactCodexOpenAiShortDescription(fixture.skill.description),
+        default_prompt: renderCodexOpenAiDefaultPrompt(fixture.skill),
       },
       policy: {
         allow_implicit_invocation: false,
       },
     });
+    expect(codexSkillMetadata).toContain("display_name: ");
+    expect(codexSkillMetadata).not.toContain('"display_name":');
+    expect(parseYaml(codexSkillMetadata).interface.default_prompt).toContain(`$${fixture.skill.id}`);
     expect(compactCodexOpenAiShortDescription(
       "当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。适用于 token/JWT/session/cookie/OAuth 认证链路。",
     )).toBe("当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。");

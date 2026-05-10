@@ -1,7 +1,6 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { basename, join, relative } from "node:path";
 import { pathToFileURL } from "node:url";
-import { stringify as stringifyYaml } from "yaml";
 import type {
   AntiPatternDefinition,
   Platform as PlatformType,
@@ -70,6 +69,14 @@ export function compactCodexOpenAiShortDescription(description: string): string 
   }
 
   return `${characters.slice(0, CODEX_OPENAI_SHORT_DESCRIPTION_MAX_LENGTH - 3).join("").trimEnd()}...`;
+}
+
+function quoteYamlString(value: string): string {
+  return JSON.stringify(value);
+}
+
+export function renderCodexOpenAiDefaultPrompt(skill: SkillDefinition): string {
+  return `使用 $${skill.id} 处理：${compactCodexOpenAiShortDescription(skill.description)}`;
 }
 
 export function skillSourceRoot(skill: SkillDefinition): string {
@@ -580,18 +587,17 @@ function renderReferencesIndex(skill: SkillDefinition): string {
 
 function renderCodexOpenAiYaml(skill: SkillDefinition): string {
   const allowImplicit = skill.invocation !== InvocationPolicy.ExplicitOnly;
-  return stringifyYaml(
-    {
-      interface: {
-        display_name: skill.fullName,
-        short_description: compactCodexOpenAiShortDescription(skill.description),
-      },
-      policy: {
-        allow_implicit_invocation: allowImplicit,
-      },
-    },
-    { lineWidth: 0 },
-  );
+  return [
+    "interface:",
+    `  display_name: ${quoteYamlString(skill.fullName)}`,
+    `  short_description: ${quoteYamlString(
+      compactCodexOpenAiShortDescription(skill.description),
+    )}`,
+    `  default_prompt: ${quoteYamlString(renderCodexOpenAiDefaultPrompt(skill))}`,
+    "policy:",
+    `  allow_implicit_invocation: ${allowImplicit ? "true" : "false"}`,
+    "",
+  ].join("\n");
 }
 
 export async function emitSkill(
