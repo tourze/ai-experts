@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
 import webpack, { type Configuration, type Stats } from "webpack";
@@ -58,6 +59,7 @@ export type ProcedureRuntimeBuildResult = {
 };
 
 const runtimeEntryId = "virtual:ai-experts-procedures";
+const nodeRequire = createRequire(import.meta.url);
 
 function procedureRuntimePath(platform: PlatformType): string {
   return platform === "claude-code" ? "~/.claude/procedures.js" : "~/.codex/procedures.js";
@@ -514,8 +516,50 @@ type ProcedureTransformContext = {
 
 function renderProcedurePathLoader(): string {
   return `
+let tsModule = null;
+
+function getTypescript(options) {
+  if (!tsModule) tsModule = require(options.typescriptModulePath || "typescript");
+  return tsModule;
+}
+
+function procedureMetadataCalleeName(ts, initializer) {
+  if (!initializer || !ts.isCallExpression(initializer)) return "";
+  const expression = initializer.expression;
+  if (ts.isIdentifier(expression)) return expression.text;
+  if (ts.isPropertyAccessExpression(expression)) return expression.name.text;
+  return "";
+}
+
+function isProcedureMetadataStatement(ts, statement) {
+  if (!ts.isVariableStatement(statement)) return false;
+  const declarations = statement.declarationList.declarations;
+  if (declarations.length !== 1) return false;
+  const declaration = declarations[0];
+  if (!ts.isIdentifier(declaration.name) || declaration.name.text !== "procedure") return false;
+  return ["defineCliProcedure", "defineProcedure"].includes(procedureMetadataCalleeName(ts, declaration.initializer));
+}
+
+function isProcedureDefinitionImport(ts, statement) {
+  if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) return false;
+  const specifier = statement.moduleSpecifier.text.replaceAll("\\\\", "/");
+  return specifier === "../definition" || specifier === "../../definition" || specifier.endsWith("/definition");
+}
+
+function stripProcedureMetadata(ts, source, sourcePath) {
+  const sourceFile = ts.createSourceFile(sourcePath || "procedure.ts", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const statements = sourceFile.statements.filter((statement) =>
+    !isProcedureMetadataStatement(ts, statement) && !isProcedureDefinitionImport(ts, statement)
+  );
+  if (statements.length === sourceFile.statements.length) return source;
+  return ts.createPrinter({ newLine: ts.NewLineKind.LineFeed }).printFile(
+    ts.factory.updateSourceFile(sourceFile, statements)
+  );
+}
+
 module.exports = function aiExpertsProcedurePathLoader(source) {
   const options = this.getOptions() || {};
+  const ts = getTypescript(options);
   const contexts = options.contexts || {};
   const commandRewrites = options.commandRewrites || {};
   const commandRewritesByProcedureId = options.commandRewritesByProcedureId || {};
@@ -523,6 +567,7 @@ module.exports = function aiExpertsProcedurePathLoader(source) {
   const file = String(this.resourcePath || "").replaceAll("\\\\", "/");
   const context = contexts[file];
   if (!context) return source;
+  source = stripProcedureMetadata(ts, source, file);
   const sanitizedEntry = "new URL(" + JSON.stringify("ai-experts-procedure:" + context.id) + ")";
   const replacement = "globalThis.__aiExpertsProcedureDir(" + JSON.stringify(context.target) + ")";
   const moduleFile = "globalThis.__aiExpertsModuleFile(" + JSON.stringify(context.target) + ")";
@@ -746,6 +791,7 @@ async function emitBundledProceduresFile(
                   commandRewrites,
                   commandRewritesByProcedureId,
                   procedureRuntimePath: procedureRuntimePath(platform),
+                  typescriptModulePath: nodeRequire.resolve("typescript"),
                 },
               },
             ],

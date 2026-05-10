@@ -2438,6 +2438,11 @@ describe("component build integration", () => {
         /\b(?:ComponentKind|InvocationPolicy|KnownTool|HookEvent|defineSkill|defineAgent|defineHook)\b/,
         `${platform} bundled procedures.js should not include unrelated skill/agent/hook SDK helpers`,
       );
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /\b(?:defineCliProcedure|procedureEntry|runtimeProcedureOutput|defineProcedureOutput)\b|entry:\s*new URL\("ai-experts-procedure:/,
+        `${platform} bundled procedures.js should not include source-side procedure registration metadata`,
+      );
       assert.match(platformProceduresSource, /ai-experts-component-module:procedures\/sources/);
       if (platform === "claude") {
         assert.match(
