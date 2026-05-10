@@ -255,10 +255,12 @@ export function parseArgs(argv: readonly string[]): any {
       args.help = true;
     } else if (arg === "--lang") {
       const value = argv[index + 1];
-      if (value == null || value.startsWith("--"))
+      if (value == null || value.startsWith("-"))
         throw new Error("--lang requires a value");
       args.lang = value;
       index += 1;
+    } else if (arg.startsWith("-")) {
+      throw new Error(`unrecognized argument: ${arg}`);
     } else if (!args.url) {
       args.url = arg;
     } else {

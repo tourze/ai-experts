@@ -157,7 +157,7 @@ Options:
 }
 function requireValue(argv: readonly string[], index: any, option: any): any {
   const value = argv[index + 1];
-  if (value == null || value.startsWith("--"))
+  if (value == null || value.startsWith("-"))
     throw new Error(`${option} requires a value`);
   return value;
 }
@@ -206,6 +206,8 @@ export function parseArgs(argv: readonly string[]): any {
       args.json = true;
     } else if (arg === "--force") {
       args.force = true;
+    } else if (arg.startsWith("-")) {
+      throw new Error(`unrecognized argument: ${arg}`);
     } else if (!args.url) {
       args.url = arg;
     } else {
