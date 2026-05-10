@@ -448,8 +448,17 @@ export function generateHtml(
 
   return template.replace(
     "/*__EMBEDDED_DATA__*/",
-    `const EMBEDDED_DATA = ${JSON.stringify(embedded)};`,
+    `const EMBEDDED_DATA = ${serializeScriptJson(embedded)};`,
   );
+}
+
+function serializeScriptJson(value: any): string {
+  return JSON.stringify(value)
+    .replaceAll("<", "\\u003c")
+    .replaceAll(">", "\\u003e")
+    .replaceAll("&", "\\u0026")
+    .replaceAll("\u2028", "\\u2028")
+    .replaceAll("\u2029", "\\u2029");
 }
 
 function killPort(port: number): void {

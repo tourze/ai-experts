@@ -18,6 +18,7 @@ import {
   main as generateReportMain,
 } from "../../src/components/procedures/sources/skill-creator/generate_report.ts";
 import {
+  generateHtml as generateReviewHtml,
   main as generateReviewMain,
   parseCliArgs as parseGenerateReviewArgs,
 } from "../../src/components/procedures/sources/skill-creator/generate_review.ts";
@@ -55,6 +56,30 @@ describe("skill creator output overwrite guards", () => {
     expect(html).not.toContain("<img src=x");
     expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
     expect(html).toContain("0/0");
+  });
+
+  test("escapes embedded review viewer JSON for script tags", () => {
+    const html = generateReviewHtml(
+      [
+        {
+          id: "run-1",
+          prompt: "</script><img src=x onerror=alert(1)>",
+          outputs: [],
+        },
+      ],
+      "</script>",
+      {
+        "run-1": {
+          feedback: "</script><svg onload=alert(2)>",
+          outputs: [],
+        },
+      },
+      { notes: ["</script><img src=x>"] },
+    );
+
+    expect(html).not.toContain("</script><img");
+    expect(html).not.toContain("</script><svg");
+    expect(html).toContain("\\u003c/script\\u003e\\u003cimg src=x onerror=alert(1)\\u003e");
   });
 
   test("tracks explicit overwrite state for report generators", () => {
