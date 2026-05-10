@@ -1493,7 +1493,7 @@ describe("component build integration", () => {
     assert.equal(existsSync(join(tmpDistDir, "codex/skills/screenshot/assets/screenshot.png")), true);
 
     const shadcnSkill = readFileSync(join(tmpDistDir, "claude/skills/shadcn-ui/SKILL.md"), "utf-8");
-    assert.match(shadcnSkill, /allowed-tools:\n  - mcp__shadcn__\.\*/);
+    assert.match(shadcnSkill, /allowed-tools:\n  - mcp__shadcn__\*/);
 
     const speckitTaskstoissuesSkill = readFileSync(
       join(tmpDistDir, "claude/skills/speckit-taskstoissues/SKILL.md"),

@@ -250,7 +250,7 @@ export function renderToolMatcher(matcher: ToolMatcher): string {
   if (matcher.kind === "mcp") {
     return matcher.tool
       ? `mcp__${matcher.server}__${matcher.tool}`
-      : `mcp__${matcher.server}__.*`;
+      : `mcp__${matcher.server}__*`;
   }
   if (matcher.kind === "regex") return matcher.source;
   throw new Error(`Unsupported matcher: ${JSON.stringify(matcher)}`);
