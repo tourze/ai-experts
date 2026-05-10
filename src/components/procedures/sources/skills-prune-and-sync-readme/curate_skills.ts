@@ -6,6 +6,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseDocument } from "yaml";
 import { buildSimilarityGroups } from "./similarity_groups";
+import {
+  ALLOWED_FRONTMATTER_KEYS,
+  BROAD_SCOPE_MARKERS,
+  EXCLUSIVE_MARKERS,
+  LOW_QUALITY_PATTERNS,
+  README_SECTION_END,
+  README_SECTION_START,
+  STOP_WORDS,
+  SUMMARY_SPLIT_PATTERNS,
+} from "./curate_skills_constants";
 
 export const procedure = defineCliProcedure({
   id: "skills-prune-and-sync-readme-curate-skills",
@@ -63,88 +73,6 @@ export const procedure = defineCliProcedure({
   exampleArgs: { args: ["audit", "--format", "json"] },
 });
 
-const ALLOWED_FRONTMATTER_KEYS = new Set(
-  "acknowledgments agent allowed-tools alwaysApply argument-hint arguments compatibility context date_added dependency description disable-model-invocation license metadata name related-skills risk source tools user-invocable user_invocable version".split(
-    " ",
-  ),
-);
-const README_SECTION_START = "## Skill 清单";
-const README_SECTION_END = "## 数据来源";
-const STOP_WORDS = new Set([
-  "a",
-  "an",
-  "and",
-  "api",
-  "app",
-  "application",
-  "best",
-  "by",
-  "code",
-  "covers",
-  "default",
-  "for",
-  "from",
-  "guide",
-  "help",
-  "how",
-  "in",
-  "is",
-  "it",
-  "its",
-  "must",
-  "of",
-  "on",
-  "or",
-  "skill",
-  "skills",
-  "style",
-  "task",
-  "tasks",
-  "the",
-  "this",
-  "to",
-  "tool",
-  "tools",
-  "use",
-  "used",
-  "using",
-  "when",
-  "with",
-  "workflow",
-]);
-const LOW_QUALITY_PATTERNS: any[] = [/\bTODO\b/i, /\bTBD\b/i, /placeholder/i];
-const EXCLUSIVE_MARKERS: any[] = [
-  "must be used",
-  "must use",
-  "always use",
-  "always prefer",
-  "only",
-  "do not use",
-  "必须",
-  "仅限",
-  "只在",
-  "禁止",
-];
-const BROAD_SCOPE_MARKERS: any[] = [
-  "any ",
-  "all ",
-  "must be used for",
-  "always use",
-  "for any",
-  "任何",
-  "全部",
-];
-const SUMMARY_SPLIT_PATTERNS: any[] = [
-  " Use when ",
-  " This skill should be used when ",
-  " Also use when ",
-  " Triggers on ",
-  " Trigger with ",
-  " Use this whenever ",
-  " 适合",
-  " 用户提到",
-  " 当用户",
-];
 function parseFrontmatter(content: any): any {
   const source = String(content);
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n)?/);
