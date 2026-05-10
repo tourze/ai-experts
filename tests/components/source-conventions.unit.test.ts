@@ -906,6 +906,22 @@ describe("component source conventions", () => {
     assert.match(procedureSource, /else if \(arg === "--json"\) jsonOutput = true/u);
   });
 
+  test("code review assess procedures document required targets", () => {
+    const assessCodeSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/code-review/assess-code.ts"),
+      "utf-8",
+    );
+    assert.match(assessCodeSource, /flag:\s+"\[target\]"/u);
+    assert.match(assessCodeSource, /Usage: assess-code <file-or-directory>/u);
+
+    const assessTestsSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/code-review/assess-tests.ts"),
+      "utf-8",
+    );
+    assert.match(assessTestsSource, /flag:\s+"\[test-directory\]"/u);
+    assert.match(assessTestsSource, /Usage: assess-tests <test-directory>/u);
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

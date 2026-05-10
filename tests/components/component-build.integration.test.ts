@@ -1283,6 +1283,10 @@ describe("component build integration", () => {
     assert.match(remoteSshCommandSkill, /\| `\[host-config\]` \| 路径 \| 是 \| 位于 ~\/\.host\/ 下的主机 JSON 配置文件路径/);
     assert.match(remoteSshCommandSkill, /\| `stdin` \| 字符串 \| 是 \| 要在远端执行的完整命令/);
 
+    const codeReviewSkill = readFileSync(join(tmpDistDir, "codex/skills/code-review/SKILL.md"), "utf-8");
+    assert.match(codeReviewSkill, /\| `\[target\]` \| 路径 \| 是 \| 要评估的源码文件或目录/);
+    assert.match(codeReviewSkill, /\| `\[test-directory\]` \| 路径 \| 是 \| 要评估的测试目录/);
+
     const iconRetrievalSkill = readFileSync(join(tmpDistDir, "codex/skills/icon-retrieval/SKILL.md"), "utf-8");
     assert.match(iconRetrievalSkill, /'security shield' 3/);
 

@@ -15,6 +15,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["code-review"] },
   target: "scripts/assess-tests.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[test-directory]",
+      type: "路径",
+      description: "要评估的测试目录（必填）",
+      required: true,
+    },
+  ],
 
   exampleArgs: { args: ["tests/"] },
 });
