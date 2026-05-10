@@ -3,6 +3,7 @@ import { defineCliProcedure, procedureEntry } from "../../definition";
 import { readFileSync, writeFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { assertOutputWritable } from "./output_guard";
+import { readCliOptionValue } from "./utils";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-generate-report",
@@ -202,8 +203,10 @@ export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "-o" || arg === "--output") args.output = argv[++index] ?? null;
-    else if (arg === "--skill-name") args.skillName = argv[++index] ?? "";
+    if (arg === "-o" || arg === "--output")
+      args.output = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--skill-name")
+      args.skillName = readCliOptionValue(argv, index++, arg);
     else if (arg === "--overwrite") args.overwrite = true;
     else positional.push(arg);
   }

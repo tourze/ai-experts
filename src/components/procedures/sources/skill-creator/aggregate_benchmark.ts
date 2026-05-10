@@ -10,6 +10,7 @@ import {
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { assertOutputFilesWritable } from "./output_guard";
+import { readCliOptionValue } from "./utils";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-aggregate-benchmark",
@@ -308,10 +309,10 @@ export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--skill-name") args.skillName = argv[++index] ?? "";
-    else if (arg === "--skill-path") args.skillPath = argv[++index] ?? "";
+    if (arg === "--skill-name") args.skillName = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--skill-path") args.skillPath = readCliOptionValue(argv, index++, arg);
     else if (arg === "--output" || arg === "-o")
-      args.output = argv[++index] ?? null;
+      args.output = readCliOptionValue(argv, index++, arg);
     else if (arg === "--overwrite") args.overwrite = true;
     else positional.push(arg);
   }

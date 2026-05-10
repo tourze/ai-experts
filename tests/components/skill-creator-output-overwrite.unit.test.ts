@@ -22,10 +22,12 @@ import {
   main as generateReviewMain,
   parseCliArgs as parseGenerateReviewArgs,
 } from "../../src/components/procedures/sources/skill-creator/generate_review.ts";
+import { parseArgs as parseImproveDescriptionArgs } from "../../src/components/procedures/sources/skill-creator/improve_description.ts";
 import {
   packageSkill,
   parseArgs as parsePackageSkillArgs,
 } from "../../src/components/procedures/sources/skill-creator/package_skill.ts";
+import { parseArgs as parseRunEvalArgs } from "../../src/components/procedures/sources/skill-creator/run_eval.ts";
 import { parseArgs as parseRunLoopArgs } from "../../src/components/procedures/sources/skill-creator/run_loop.ts";
 import {
   assertOutputFilesWritable,
@@ -173,6 +175,49 @@ describe("skill creator output overwrite guards", () => {
       report: "report.html",
       overwrite: true,
     });
+  });
+
+  test("rejects skill creator option flags without values", () => {
+    expect(() => parseGenerateReportArgs(["results.json", "--output", "--overwrite"]))
+      .toThrow(/--output requires a value/);
+    expect(() => parseAggregateArgs(["benchmark-dir", "--skill-name", "--output"]))
+      .toThrow(/--skill-name requires a value/);
+    expect(() => parseRunLoopArgs([
+      "--eval-set",
+      "evals/cases.yaml",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "model",
+      "--timeout",
+      "--verbose",
+    ])).toThrow(/--timeout requires a value/);
+    expect(() => parseRunLoopArgs([
+      "--eval-set",
+      "evals/cases.yaml",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "model",
+      "--num-workers",
+      "many",
+    ])).toThrow(/--num-workers requires a finite number/);
+    expect(() => parseRunEvalArgs([
+      "--eval-set",
+      "evals/cases.yaml",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "--verbose",
+    ])).toThrow(/--model requires a value/);
+    expect(() => parseImproveDescriptionArgs([
+      "--eval-results",
+      "results.json",
+      "--skill-path",
+      "skills/demo",
+      "--model",
+      "--verbose",
+    ])).toThrow(/--model requires a value/);
   });
 
   test("refuses existing report outputs unless overwrite is explicit", () => {

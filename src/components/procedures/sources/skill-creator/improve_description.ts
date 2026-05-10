@@ -10,7 +10,11 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parseSkillMd, withoutNestedAgentCliEnv } from "./utils";
+import {
+  parseSkillMd,
+  readCliOptionValue,
+  withoutNestedAgentCliEnv,
+} from "./utils";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-improve-description",
@@ -257,14 +261,14 @@ export function improveDescription({
   }
   return description;
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = { history: null, verbose: false };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--eval-results") args.evalResults = argv[++index];
-    else if (arg === "--skill-path") args.skillPath = argv[++index];
-    else if (arg === "--history") args.history = argv[++index];
-    else if (arg === "--model") args.model = argv[++index];
+    if (arg === "--eval-results") args.evalResults = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--skill-path") args.skillPath = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--history") args.history = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--model") args.model = readCliOptionValue(argv, index++, arg);
     else if (arg === "--verbose") args.verbose = true;
   }
   if (!args.evalResults || !args.skillPath || !args.model) {

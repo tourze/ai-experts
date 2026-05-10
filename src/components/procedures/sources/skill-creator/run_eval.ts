@@ -13,7 +13,12 @@ import {
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
-import { parseSkillMd, withoutNestedAgentCliEnv } from "./utils";
+import {
+  parseSkillMd,
+  readCliNumberOption,
+  readCliOptionValue,
+  withoutNestedAgentCliEnv,
+} from "./utils";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-run-eval",
@@ -341,7 +346,7 @@ export function loadEvalSet(path: any): any[] {
     : JSON.parse(source);
   return normalizeEvalSet(raw);
 }
-function parseArgs(argv: readonly string[]): any {
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     description: null,
     numWorkers: 10,
@@ -353,16 +358,16 @@ function parseArgs(argv: readonly string[]): any {
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--eval-set") args.evalSet = argv[++index];
-    else if (arg === "--skill-path") args.skillPath = argv[++index];
-    else if (arg === "--description") args.description = argv[++index];
-    else if (arg === "--num-workers") args.numWorkers = Number(argv[++index]);
-    else if (arg === "--timeout") args.timeout = Number(argv[++index]);
+    if (arg === "--eval-set") args.evalSet = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--skill-path") args.skillPath = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--description") args.description = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--num-workers") args.numWorkers = readCliNumberOption(argv, index++, arg);
+    else if (arg === "--timeout") args.timeout = readCliNumberOption(argv, index++, arg);
     else if (arg === "--runs-per-query")
-      args.runsPerQuery = Number(argv[++index]);
+      args.runsPerQuery = readCliNumberOption(argv, index++, arg);
     else if (arg === "--trigger-threshold")
-      args.triggerThreshold = Number(argv[++index]);
-    else if (arg === "--model") args.model = argv[++index];
+      args.triggerThreshold = readCliNumberOption(argv, index++, arg);
+    else if (arg === "--model") args.model = readCliOptionValue(argv, index++, arg);
     else if (arg === "--verbose") args.verbose = true;
   }
   if (!args.evalSet || !args.skillPath) {

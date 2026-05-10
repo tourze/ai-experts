@@ -36,3 +36,32 @@ export function withoutNestedAgentCliEnv(env: any = process.env): any {
     Object.entries(env).filter(([key]: any) => key !== "CLAUDECODE"),
   );
 }
+
+function looksLikeOption(value: string): boolean {
+  return value.startsWith("-") && value !== "-";
+}
+
+export function readCliOptionValue(
+  argv: readonly string[],
+  index: number,
+  flag: string,
+): string {
+  const value = argv[index + 1];
+  if (value == null || looksLikeOption(value)) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function readCliNumberOption(
+  argv: readonly string[],
+  index: number,
+  flag: string,
+): number {
+  const raw = readCliOptionValue(argv, index, flag);
+  const value = Number(raw);
+  if (!Number.isFinite(value)) {
+    throw new Error(`${flag} requires a finite number`);
+  }
+  return value;
+}

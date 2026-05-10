@@ -8,7 +8,11 @@ import { fileURLToPath } from "node:url";
 import { generateHtml } from "./generate_report";
 import { improveDescription } from "./improve_description";
 import { findProjectRoot, loadEvalSet, runEval } from "./run_eval";
-import { parseSkillMd } from "./utils";
+import {
+  parseSkillMd,
+  readCliNumberOption,
+  readCliOptionValue,
+} from "./utils";
 import { assertOutputWritable } from "./output_guard";
 
 export const procedure = defineCliProcedure({
@@ -416,22 +420,22 @@ export function parseArgs(argv: readonly string[]): any {
   };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
-    if (arg === "--eval-set") args.evalSet = argv[++index];
-    else if (arg === "--skill-path") args.skillPath = argv[++index];
-    else if (arg === "--description") args.description = argv[++index];
-    else if (arg === "--num-workers") args.numWorkers = Number(argv[++index]);
-    else if (arg === "--timeout") args.timeout = Number(argv[++index]);
+    if (arg === "--eval-set") args.evalSet = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--skill-path") args.skillPath = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--description") args.description = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--num-workers") args.numWorkers = readCliNumberOption(argv, index++, arg);
+    else if (arg === "--timeout") args.timeout = readCliNumberOption(argv, index++, arg);
     else if (arg === "--max-iterations")
-      args.maxIterations = Number(argv[++index]);
+      args.maxIterations = readCliNumberOption(argv, index++, arg);
     else if (arg === "--runs-per-query")
-      args.runsPerQuery = Number(argv[++index]);
+      args.runsPerQuery = readCliNumberOption(argv, index++, arg);
     else if (arg === "--trigger-threshold")
-      args.triggerThreshold = Number(argv[++index]);
-    else if (arg === "--holdout") args.holdout = Number(argv[++index]);
-    else if (arg === "--model") args.model = argv[++index];
+      args.triggerThreshold = readCliNumberOption(argv, index++, arg);
+    else if (arg === "--holdout") args.holdout = readCliNumberOption(argv, index++, arg);
+    else if (arg === "--model") args.model = readCliOptionValue(argv, index++, arg);
     else if (arg === "--verbose") args.verbose = true;
-    else if (arg === "--report") args.report = argv[++index];
-    else if (arg === "--results-dir") args.resultsDir = argv[++index];
+    else if (arg === "--report") args.report = readCliOptionValue(argv, index++, arg);
+    else if (arg === "--results-dir") args.resultsDir = readCliOptionValue(argv, index++, arg);
     else if (arg === "--overwrite") args.overwrite = true;
   }
   if (!args.evalSet || !args.skillPath || !args.model) {
