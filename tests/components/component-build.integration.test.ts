@@ -749,6 +749,32 @@ describe("component build integration", () => {
       ["typescript-type-safety"],
       "Route-only skills should stay in agent body routing guidance, not Claude preload frontmatter",
     );
+    assert.match(
+      typescriptReviewer.tools,
+      /(?:^|, )Skill(?:,|$)/,
+      "Claude agents with route-only skills and explicit tools must keep the Skill tool available",
+    );
+
+    for (const agentFile of collectFiles(join(tmpDistDir, "claude/agents"), (file) => file.endsWith(".md"))) {
+      const source = readFileSync(agentFile, "utf-8");
+      const frontmatter = parseMarkdownFrontmatter(agentFile);
+      const preloadedSkillIds = new Set(frontmatter.skills ?? []);
+      const routedSkillIds = [
+        ...source.matchAll(/- `([a-z0-9-]+)` \((?:route|reference)\):/gu),
+      ].map((match) => match[1]);
+      const hasExplicitTools = Object.hasOwn(frontmatter, "tools");
+      const tools = typeof frontmatter.tools === "string"
+        ? frontmatter.tools.split(/,\s*/u)
+        : frontmatter.tools ?? [];
+      for (const skillId of routedSkillIds) {
+        if (preloadedSkillIds.has(skillId) || !hasExplicitTools) continue;
+        assert.equal(
+          tools.includes("Skill"),
+          true,
+          `${relative(tmpDistDir, agentFile)} routes ${skillId} but omits the Claude Skill tool`,
+        );
+      }
+    }
   });
 
   test("manifest file checksums cover every generated file", () => {
@@ -1600,6 +1626,7 @@ describe("component build integration", () => {
 
     const claudeAgent = readFileSync(join(tmpDistDir, "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);
+    assert.match(claudeAgent, /tools: Read, Grep, Glob, Bash, Skill/);
     assert.match(claudeAgent, /skills:\n  - typescript-type-safety\nmodel: sonnet/);
     assert.match(claudeAgent, /model: sonnet\neffort: high/);
     assert.match(claudeAgent, /你是资深 TypeScript 工程师/);

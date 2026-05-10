@@ -366,12 +366,16 @@ function renderClaudeAgent(
     name: agent.id,
     description: agent.description,
   };
-  const tools = (agent.tools ?? []).map(renderToolMatcher);
-  if (tools.length > 0) frontmatter.tools = tools.join(", ");
   const skills = platformAgentSkills(agent, platformSkillIds);
   const claudeSkills = skills
     .filter((skill) => skill.mode === SkillUseMode.Preload && claudePreloadableSkillIds.has(skill.id))
     .map((skill) => skill.id);
+  const needsSkillTool = skills.some(
+    (skill) => skill.mode !== SkillUseMode.Preload && claudePreloadableSkillIds.has(skill.id),
+  );
+  const tools = (agent.tools ?? []).map(renderToolMatcher);
+  if (needsSkillTool && tools.length > 0 && !tools.includes("Skill")) tools.push("Skill");
+  if (tools.length > 0) frontmatter.tools = tools.join(", ");
   if (claudeSkills.length > 0) frontmatter.skills = claudeSkills;
   const model = agent.claudeModel ?? agent.model;
   if (model) frontmatter.model = model;
