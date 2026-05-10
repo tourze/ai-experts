@@ -15,6 +15,7 @@ import { InvocationPolicy, Platform } from "../components/sdk";
 import type {
   ComponentFile,
   HookDefinition,
+  HookMatcher,
   SkillReferenceDefinition,
   ToolMatcher,
 } from "../components/sdk";
@@ -256,7 +257,7 @@ export function renderToolMatcher(matcher: ToolMatcher): string {
   throw new Error(`Unsupported matcher: ${JSON.stringify(matcher)}`);
 }
 
-function renderHookToolMatcher(matcher: ToolMatcher): string {
+function renderHookToolMatcher(matcher: HookMatcher): string {
   if (typeof matcher === "string") return escapeRegexLiteral(matcher);
   if (matcher.kind === "mcp") {
     const server = escapeRegexLiteral(matcher.server);

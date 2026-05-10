@@ -159,6 +159,35 @@ describe("build/pipeline registry agent and hook validation", () => {
       "Hook fixture-hook defines matcher for UserPromptSubmit",
     );
 
+    const sessionStartMatcherRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{ ...fixture.hook, event: HookEvent.SessionStart, matcher: ["startup|resume"] }],
+    };
+    expect(() => validateRegistry(sessionStartMatcherRegistry)).not.toThrow();
+
+    const claudePreCompactMatcherRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        platforms: [ComponentPlatform.Claude],
+        event: HookEvent.PreCompact,
+        matcher: ["manual|auto"],
+      }],
+    };
+    expect(() => validateRegistry(claudePreCompactMatcherRegistry)).not.toThrow();
+
+    const invalidSessionStartMcpMatcherRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      hooks: [{
+        ...fixture.hook,
+        event: HookEvent.SessionStart,
+        matcher: [{ kind: "mcp", server: "memory", tool: "read" }],
+      }],
+    };
+    expect(() => validateRegistry(invalidSessionStartMcpMatcherRegistry)).toThrow(
+      "mcp matcher is only supported for tool events",
+    );
+
     const invalidHookMcpServerRegistry: ComponentRegistry = {
       ...fixture.registry,
       hooks: [{

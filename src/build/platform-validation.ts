@@ -259,6 +259,13 @@ const hookEventsWithToolMatcher = new Set<HookEvent>([
   HookEvent.PreToolUse,
 ]);
 
+const hookEventsWithMatcher = new Set<HookEvent>([
+  ...hookEventsWithToolMatcher,
+  HookEvent.PreCompact,
+  HookEvent.SessionStart,
+  HookEvent.SubagentStop,
+]);
+
 const codexHookEvents = new Set<HookEvent>([
   HookEvent.PermissionRequest,
   HookEvent.PostToolUse,
@@ -283,10 +290,10 @@ function validateMcpMatcherPart(
 
 function validateHookMatcher(hook: HookDefinition): void {
   if (!hook.matcher || hook.matcher.length === 0) return;
-  if (!hookEventsWithToolMatcher.has(hook.event)) {
+  if (!hookEventsWithMatcher.has(hook.event)) {
     throw new Error(
-      `Hook ${hook.id} defines matcher for ${hook.event}; matcher is only supported for tool events: ` +
-      "PermissionRequest, PostToolUse, PreToolUse",
+      `Hook ${hook.id} defines matcher for ${hook.event}; matcher is only supported for events with matcher input: ` +
+      "PermissionRequest, PostToolUse, PreToolUse, PreCompact, SessionStart, SubagentStop",
     );
   }
   for (const [index, matcher] of hook.matcher.entries()) {
@@ -295,6 +302,12 @@ function validateHookMatcher(hook: HookDefinition): void {
       throw new Error(`Hook ${hook.id} matcher[${index}] must be a tool name or matcher object`);
     }
     if (matcher.kind === "mcp") {
+      if (!hookEventsWithToolMatcher.has(hook.event)) {
+        throw new Error(
+          `Hook ${hook.id} matcher[${index}] mcp matcher is only supported for tool events: ` +
+          "PermissionRequest, PostToolUse, PreToolUse",
+        );
+      }
       if (typeof matcher.server !== "string" || matcher.server.trim() === "") {
         throw new Error(`Hook ${hook.id} matcher[${index}] mcp.server must be a non-empty string`);
       }

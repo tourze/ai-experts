@@ -52,6 +52,8 @@ export type ToolMatcher =
   | { kind: "mcp"; server: string; tool?: string }
   | { kind: "regex"; source: string };
 
+export type HookMatcher = ToolMatcher | string;
+
 export type ProcedureOwners = {
   skillIds?: readonly string[];
   agentIds?: readonly string[];
@@ -325,7 +327,7 @@ export type HookDefinition = {
   platforms: PlatformList;
   event: HookEvent;
   entry: ComponentFile;
-  matcher?: readonly ToolMatcher[];
+  matcher?: readonly HookMatcher[];
   order?: number;
   timeoutSeconds?: number;
   statusMessage?: string;
