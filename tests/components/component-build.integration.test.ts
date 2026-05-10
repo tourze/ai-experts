@@ -2423,21 +2423,17 @@ describe("component build integration", () => {
 
     for (const platform of ["claude", "codex"]) {
       const platformProceduresSource = readFileSync(join(tmpDistDir, `${platform}/procedures.js`), "utf-8");
-      const bundledTsModuleIds = [...platformProceduresSource.matchAll(/["'](\.\/src\/[^"']+\.ts)["']/gu)]
-        .map((match) => match[1] ?? "");
-      const nonComponentModuleIds = bundledTsModuleIds.filter(
-        (moduleId) => !moduleId.startsWith("./src/components/"),
-      );
       assert.doesNotMatch(
         platformProceduresSource,
         /\bnode\s+(?:\.\/)?scripts\//,
         `${platform} bundled procedures.js should not suggest removed repository-local scripts`,
       );
-      assert.deepEqual(
-        nonComponentModuleIds,
-        [],
-        `${platform} bundled procedures.js should only include TypeScript modules from src/components`,
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /\.\/src\/components\/|src\/components\/procedures\/sources/,
+        `${platform} bundled procedures.js should not expose source-tree procedure module ids`,
       );
+      assert.match(platformProceduresSource, /ai-experts-component-module:procedures\/sources/);
       if (platform === "claude") {
         assert.match(
           platformProceduresSource,

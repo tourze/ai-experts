@@ -139,6 +139,7 @@ function canonicalizeProcedureBundleSource(source: string, platform: PlatformTyp
       /(?:\.\.\/)*[^"'\n]*ai-experts-procedure-webpack-[^/"'\n]+\/procedure-runtime-entry\.ts/gu,
       runtimeEntryId,
     )
+    .replaceAll("./src/components/", "ai-experts-component-module:")
     .replace(
       /(node ~\/\.(?:claude|codex)\/procedures\.js --procedure-id [A-Za-z0-9-]+ --trigger-(?:skill|agent) [A-Za-z0-9-]+) --(?=\r?\n)/gu,
       "$1",
