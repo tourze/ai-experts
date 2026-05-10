@@ -777,6 +777,18 @@ describe("component build integration", () => {
     }
   });
 
+  test("generated skill entrypoints stay concise", () => {
+    for (const platform of ["claude", "codex"]) {
+      for (const skillFile of collectFiles(join(tmpDistDir, platform, "skills"), (file) => basename(file) === "SKILL.md")) {
+        const lineCount = readFileSync(skillFile, "utf-8").split(/\r?\n/u).length;
+        assert.ok(
+          lineCount <= 500,
+          `${relative(tmpDistDir, skillFile)} has ${lineCount} lines; move detail to references or compact procedure params`,
+        );
+      }
+    }
+  });
+
   test("manifest file checksums cover every generated file", () => {
     for (const platform of ["claude", "codex"]) {
       const platformRoot = join(tmpDistDir, platform);

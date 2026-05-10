@@ -14,6 +14,7 @@ export type ResolvedProcedureUse = {
   reason?: string;
   exampleArgs?: unknown;
   expectedOutput?: unknown;
+  showParams?: boolean;
 };
 
 function validateOptionalNonEmptyString(
@@ -68,7 +69,7 @@ function validateJsonObject(
 
 export function resolveProcedureUse(procedureUse: ProcedureUseReference): ResolvedProcedureUse {
   if (!procedureUse || typeof procedureUse !== "object" || Array.isArray(procedureUse)) {
-    throw new Error("procedure reference must be { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput? }");
+    throw new Error("procedure reference must be { id, useId?, label?, when?, reason?, exampleArgs?, expectedOutput?, showParams? }");
   }
   const id = procedureUse.id;
   if (typeof id !== "string" || id.trim() === "") {
@@ -92,6 +93,10 @@ export function resolveProcedureUse(procedureUse: ProcedureUseReference): Resolv
   if (exampleArgs !== undefined) validateJsonObject(id, "exampleArgs", exampleArgs);
   const expectedOutput = procedureUse.expectedOutput;
   if (expectedOutput !== undefined) validateJsonObject(id, "expectedOutput", expectedOutput);
+  const showParams = procedureUse.showParams;
+  if (showParams !== undefined && typeof showParams !== "boolean") {
+    throw new Error(`procedure reference ${id} showParams must be a boolean when provided`);
+  }
   return {
     id,
     platforms,
@@ -101,6 +106,7 @@ export function resolveProcedureUse(procedureUse: ProcedureUseReference): Resolv
     reason,
     exampleArgs,
     expectedOutput,
+    showParams,
   };
 }
 

@@ -1509,6 +1509,26 @@ describe("build/pipeline modules", () => {
     expect(skillMd).toContain("### `fixture-procedure`");
     expect(skillMd).toContain("**调用示例：**");
 
+    const compactProcedure = {
+      ...fixture.procedure,
+      params: [{
+        flag: "--mode",
+        type: "字符串",
+        description: "fixture mode",
+        required: false,
+      }],
+    };
+    const compactProcedureSkillMd = renderSkillMd(
+      {
+        ...structuredProcedureRegistry.skills[0]!,
+        procedures: [defineProcedureUse({ id: fixture.procedure.id, showParams: false })],
+      },
+      Platform.Claude,
+      new Map([[fixture.procedure.id, compactProcedure]]),
+    );
+    expect(compactProcedureSkillMd).toContain("完整参数以该 Procedure 的 `--help` 输出为准");
+    expect(compactProcedureSkillMd).not.toContain("| `--mode` |");
+
     const duplicateProcedureUsesRegistry: ComponentRegistry = {
       ...fixture.registry,
       skills: [{

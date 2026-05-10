@@ -117,10 +117,13 @@ function renderProcedureEntry(
     lines.push(`**何时调用：** ${procedureUse.when}`);
   }
 
-  const paramsSection = renderProcedureParams(procedure);
+  const paramsSection = procedureUse.showParams === false ? "" : renderProcedureParams(procedure);
   if (paramsSection) {
     lines.push("");
     lines.push(paramsSection);
+  } else if (procedureUse.showParams === false && procedure?.params && procedure.params.length > 0) {
+    lines.push("");
+    lines.push("**参数：** 完整参数以该 Procedure 的 `--help` 输出为准。");
   }
 
   lines.push("");

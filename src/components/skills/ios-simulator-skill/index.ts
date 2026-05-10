@@ -11,6 +11,11 @@ import { procedureUse, iosSimulatorSkillAccessibilityAudit, iosSimulatorSkillApp
 import { appleAppstoreReviewerSkill } from "../apple-appstore-reviewer/index";
 import { swiftuiPerformanceAuditSkill } from "../swiftui-performance-audit/index";
 
+const simulatorProcedureUse = (
+  procedure: Parameters<typeof procedureUse>[0],
+  options: NonNullable<Parameters<typeof procedureUse>[1]>,
+) => procedureUse(procedure, { showParams: false, ...options });
+
 export const iosSimulatorSkillSkill = defineSkill({
   id: "ios-simulator-skill",
   fullName: "iOS 模拟器自动化",
@@ -104,117 +109,117 @@ export const iosSimulatorSkillSkill = defineSkill({
     ],
   }),
   procedures: [
-    procedureUse(iosSimulatorSkillAccessibilityAudit, {
+    simulatorProcedureUse(iosSimulatorSkillAccessibilityAudit, {
       label: "无障碍审计",
       when: "需要检查模拟器屏幕无障碍性问题（缺失标签、空按钮、图像无 alt 文本等）时。",
       reason: "自动扫描无障碍树并按严重度分级输出发现问题，避免手动逐元素检查。",
     }),
-    procedureUse(iosSimulatorSkillAppLauncher, {
+    simulatorProcedureUse(iosSimulatorSkillAppLauncher, {
       label: "应用生命周期管理",
       when: "需要启动/终止/重启/安装/卸载应用、列出已安装包或查询应用状态时。",
       reason: "统一管理 iOS 应用生命周期，避免手写 xcrun simctl launch/terminate 等命令。",
     }),
-    procedureUse(iosSimulatorSkillAppStateCapture, {
+    simulatorProcedureUse(iosSimulatorSkillAppStateCapture, {
       label: "应用状态快照",
       when: "需要一次性采集截图、无障碍树、应用日志和设备信息用于调试时。",
       reason: "一键采集全状态证据并输出 summary，避免分多次执行 simctl 命令。",
     }),
-    procedureUse(iosSimulatorSkillBuildAndTest, {
+    simulatorProcedureUse(iosSimulatorSkillBuildAndTest, {
       label: "Xcode 构建与测试",
       when: "需要在模拟器上构建或测试 Xcode 项目时。",
       reason: "自动查找 xcodeproj/workspace 并执行构建/测试 task，避免手写多步 xcodebuild 命令链。",
     }),
-    procedureUse(iosSimulatorSkillClipboard, {
+    simulatorProcedureUse(iosSimulatorSkillClipboard, {
       label: "剪贴板写入",
       when: "需要向模拟器剪贴板写入文本（如测试粘贴功能）时。",
       reason: "统一写入剪贴板并自动标记测试场景，避免手写 simctl pbcopy。",
     }),
-    procedureUse(iosSimulatorSkillGesture, {
+    simulatorProcedureUse(iosSimulatorSkillGesture, {
       label: "手势操作",
       when: "需要在模拟器上执行滑动、滚动、长按、捏合或下拉刷新手势时。",
       reason: "自动适配屏幕坐标系执行常见手势，避免手写带像素坐标的 xcrun simctl 命令。",
     }),
-    procedureUse(iosSimulatorSkillKeyboard, {
+    simulatorProcedureUse(iosSimulatorSkillKeyboard, {
       label: "键盘与硬件按钮",
       when: "需要向模拟器输入文本、发送按键事件或按下硬件按钮（home/volume/power）时。",
       reason: "支持命名键、组合键、硬件按钮和慢速输入，避免手写 idb 命令。",
     }),
-    procedureUse(iosSimulatorSkillLogMonitor, {
+    simulatorProcedureUse(iosSimulatorSkillLogMonitor, {
       label: "日志监控",
       when: "需要按应用过滤并收集模拟器日志流，按严重级别分类错误/警告时。",
       reason: "自动按应用过滤日志并按严重度分级收集，避免在大量模拟器日志中手动检索关键信息。",
     }),
-    procedureUse(iosSimulatorSkillNavigator, {
+    simulatorProcedureUse(iosSimulatorSkillNavigator, {
       label: "UI 导航",
       when: "需要在模拟器屏幕上按文本/类型/标识符查找元素并点击或输入时。",
       reason: "基于无障碍树语义操作，可避免使用像素坐标点击。",
     }),
-    procedureUse(iosSimulatorSkillPrivacyManager, {
+    simulatorProcedureUse(iosSimulatorSkillPrivacyManager, {
       label: "权限管理",
       when: "需要授予、撤销或重置模拟器中应用的隐私权限（相机/位置/麦克风等）时。",
       reason: "统一管理 simctl privacy 权限操作，支持测试场景和步骤追踪。",
     }),
-    procedureUse(iosSimulatorSkillPushNotification, {
+    simulatorProcedureUse(iosSimulatorSkillPushNotification, {
       label: "推送通知模拟",
       when: "需要向模拟器发送模拟推送通知以测试通知处理逻辑时。",
       reason: "支持简单标题/正文/角标和自定义 JSON payload，避免手写 simctl push 命令。",
     }),
-    procedureUse(iosSimulatorSkillScreenMapper, {
+    simulatorProcedureUse(iosSimulatorSkillScreenMapper, {
       label: "屏幕 UI 分析",
       when: "需要了解当前屏幕上有哪些可交互元素（按钮/文本字段/导航栏）时。",
       reason: "通过无障碍树获取可交互元素分类摘要，避免手动逐项遍历模拟器屏幕识别按钮和文本字段。",
     }),
-    procedureUse(iosSimulatorSkillSimHealthCheck, {
+    simulatorProcedureUse(iosSimulatorSkillSimHealthCheck, {
       label: "环境健康检查",
       when: "首次使用 iOS 模拟器 skill 或怀疑开发环境配置有问题时。",
       reason: "一次性确认 Xcode CLT、simctl、IDB 和模拟器状态，避免逐个工具手动验证。",
     }),
-    procedureUse(iosSimulatorSkillSimList, {
+    simulatorProcedureUse(iosSimulatorSkillSimList, {
       label: "模拟器列表",
       when: "需要查看可用模拟器列表、获取推荐型号或按条件过滤设备时。",
       reason: "渐进式披露模拟器信息，支持缓存和推荐评分，避免手写 simctl list。",
     }),
-    procedureUse(iosSimulatorSkillSimctlBoot, {
+    simulatorProcedureUse(iosSimulatorSkillSimctlBoot, {
       label: "启动模拟器",
       when: "需要启动一个或多个 iOS 模拟器时。",
       reason: "自动等待模拟器完全就绪后返回，避免手写 simctl boot 加轮询等待循环。",
     }),
-    procedureUse(iosSimulatorSkillSimctlCreate, {
+    simulatorProcedureUse(iosSimulatorSkillSimctlCreate, {
       label: "创建模拟器",
       when: "需要创建新 iOS 模拟器（指定设备类型和 iOS 版本）时。",
       reason: "自动查询可用设备类型和 runtime，避免手写 simctl create。",
     }),
-    procedureUse(iosSimulatorSkillSimctlDelete, {
+    simulatorProcedureUse(iosSimulatorSkillSimctlDelete, {
       label: "删除模拟器",
       when: "需要永久删除模拟器以释放磁盘空间时。",
       reason: "支持批量删除和旧版本清理，避免逐一查找和手动执行 simctl delete。",
     }),
-    procedureUse(iosSimulatorSkillSimctlErase, {
+    simulatorProcedureUse(iosSimulatorSkillSimctlErase, {
       label: "擦除模拟器",
       when: "需要将模拟器恢复出厂设置时。",
       reason: "支持批量擦除和验证等待，避免逐一执行 simctl erase 并确认完成状态。",
     }),
-    procedureUse(iosSimulatorSkillSimctlShutdown, {
+    simulatorProcedureUse(iosSimulatorSkillSimctlShutdown, {
       label: "关闭模拟器",
       when: "需要关闭一个或多个已启动的 iOS 模拟器时。",
       reason: "支持批量关闭和验证等待，避免逐一执行 simctl shutdown。",
     }),
-    procedureUse(iosSimulatorSkillSimulatorSelector, {
+    simulatorProcedureUse(iosSimulatorSkillSimulatorSelector, {
       label: "智能选择器",
       when: "需要获取推荐的最合适模拟器时。",
       reason: "根据多维度评分自动推荐最合适模拟器，避免手动比对型号、版本和启动状态。",
     }),
-    procedureUse(iosSimulatorSkillStatusBar, {
+    simulatorProcedureUse(iosSimulatorSkillStatusBar, {
       label: "状态栏覆盖",
       when: "需要定制模拟器状态栏（时间/网络/电池）用于截图时。",
       reason: "支持预设和自定义值，避免手写 simctl status_bar 命令。",
     }),
-    procedureUse(iosSimulatorSkillTestRecorder, {
+    simulatorProcedureUse(iosSimulatorSkillTestRecorder, {
       label: "测试录制",
       when: "需要按步骤录制测试过程，包括截图和无障碍树快照时。",
       reason: "自动管理截图、无障碍树和报告生成，避免手动记录每一步。",
     }),
-    procedureUse(iosSimulatorSkillVisualDiff, {
+    simulatorProcedureUse(iosSimulatorSkillVisualDiff, {
       label: "视觉差异对比",
       when: "需要比较两张截图并输出差异百分比和 diff 图时。",
       reason: "内置 PNG 解析，不依赖外部工具，自动生成 diff 图和并排对比图。",

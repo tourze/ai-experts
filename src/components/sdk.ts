@@ -122,6 +122,7 @@ export type ProcedureUseDefinition<
   reason?: string;
   exampleArgs?: TArgs;
   expectedOutput?: ProcedureExpectedOutput<TResult>;
+  showParams?: boolean;
 };
 
 export type ProcedureUseReference = ProcedureUseDefinition;
