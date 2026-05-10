@@ -2296,6 +2296,29 @@ describe("component source conventions", () => {
     );
   });
 
+  test("procedure runtime fixtures use argv passthrough directly", () => {
+    const deprecatedTokens = [
+      ["--request", "json"].join("-"),
+      ["request", "Payload"].join(""),
+    ];
+    const checkedFiles = [
+      ...collectFiles(join(repoRoot, "src"), (file) => file.endsWith(".ts")),
+      ...collectFiles(join(repoRoot, "tests"), (file) => file.endsWith(".ts")),
+    ].filter((file) => basename(file) !== "source-conventions.unit.test.ts");
+    const offenders = checkedFiles.flatMap((file) => {
+      const source = readFileSync(file, "utf-8");
+      return deprecatedTokens
+        .filter((token) => source.includes(token))
+        .map((token) => `${relative(repoRoot, file)}: ${token}`);
+    });
+
+    assert.deepEqual(
+      offenders,
+      [],
+      "procedure runtime and tests should pass argv args directly, not deprecated request JSON wrappers",
+    );
+  });
+
   test("procedure source modules are registered entries or imported helpers", () => {
     function procedurePath(entry: URL | string): string {
       return entry instanceof URL ? fileURLToPath(entry) : entry;

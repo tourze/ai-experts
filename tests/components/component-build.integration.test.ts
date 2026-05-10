@@ -1660,7 +1660,6 @@ describe("component build integration", () => {
         triggerSkill: "screenshot",
         triggerAgent: "",
         sessionId: "",
-        requestPayload: { args: ["--title", "child-owner-mismatch"] },
         args: ["--title", "child-owner-mismatch"],
       }),
     ], { encoding: "utf-8" });
