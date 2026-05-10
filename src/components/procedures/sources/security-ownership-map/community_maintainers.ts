@@ -10,21 +10,33 @@ export const procedure = defineCliProcedure({
   id: "security-ownership-map-community-maintainers",
   entry: procedureEntry(import.meta.url),
   description:
-    "快速运行所有权分析（简化参数），重点关注社区维护者检测和共改关系。",
+    "基于已生成的所有权图谱或 git 历史输出社区维护者时间序列 CSV。",
   owners: { skillIds: ["security-ownership-map"] },
   target: "scripts/community_maintainers.mjs",
   runtime: "node",
   params: [
     {
-      flag: "--repo",
+      flag: "--data-dir",
       type: "路径",
-      description: "Git 仓库路径（默认 .）",
+      description: "所有权分析输出目录（默认 ownership-map-out）",
       required: false,
     },
     {
-      flag: "--out",
+      flag: "--repo",
       type: "路径",
-      description: "输出目录（默认 ownership-map-out）",
+      description: "当 data-dir 中缺少 commits.jsonl 时用于读取 git 历史的仓库路径",
+      required: false,
+    },
+    {
+      flag: "--file",
+      type: "字符串",
+      description: "按文件路径定位社区；未提供时需传 --community-id",
+      required: false,
+    },
+    {
+      flag: "--community-id",
+      type: "数字",
+      description: "直接指定社区 ID；未提供时需传 --file",
       required: false,
     },
     {
@@ -58,32 +70,64 @@ export const procedure = defineCliProcedure({
       required: false,
     },
     {
-      flag: "--author-exclude-regex",
+      flag: "--top",
+      type: "数字",
+      description: "每个时间桶输出的维护者数量（默认 5）",
+      required: false,
+    },
+    {
+      flag: "--bucket",
+      type: "month|quarter",
+      description: "时间桶粒度（默认 month）",
+      required: false,
+    },
+    {
+      flag: "--touch-mode",
+      type: "commit|file",
+      description: "按提交次数或文件触达数计数（默认 commit）",
+      required: false,
+    },
+    {
+      flag: "--window-days",
+      type: "数字",
+      description: "使用滚动窗口天数；0 表示按时间桶自然范围统计",
+      required: false,
+    },
+    {
+      flag: "--weight",
+      type: "touches|recency",
+      description: "贡献权重方式（默认 touches）",
+      required: false,
+    },
+    {
+      flag: "--half-life-days",
+      type: "数字",
+      description: "recency 权重半衰期天数（默认 180）",
+      required: false,
+    },
+    {
+      flag: "--min-share",
+      type: "数字",
+      description: "最小维护占比阈值（默认 0）",
+      required: false,
+    },
+    {
+      flag: "--ignore-author-regex",
       type: "字符串",
-      description: "排除匹配正则的作者（可重复）",
+      description: "排除匹配正则的作者或邮箱",
       required: false,
     },
     {
-      flag: "--sensitive-config",
-      type: "路径",
-      description: "敏感规则配置文件路径",
-      required: false,
-    },
-    {
-      flag: "--no-cochange",
-      type: "",
-      description: "跳过共改关系分析，传此标志即启用",
-      required: false,
-    },
-    {
-      flag: "--no-communities",
-      type: "",
-      description: "跳过社区检测，传此标志即启用",
+      flag: "--min-touches",
+      type: "数字",
+      description: "最小触达数阈值（默认 1）",
       required: false,
     },
   ],
 
-  exampleArgs: { args: ["--repo", ".", "--since", "2024-01-01"] },
+  exampleArgs: {
+    args: ["--data-dir", "ownership-map-out", "--file", "src/auth.ts"],
+  },
 });
 
 export function parseDate(value: any): any {

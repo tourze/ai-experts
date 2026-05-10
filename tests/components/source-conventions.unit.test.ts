@@ -442,6 +442,40 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(runSource, /commandArgs\.push\("--overwrite"\)/u);
+
+    const communitySource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/security-ownership-map/community_maintainers.ts"),
+      "utf-8",
+    );
+    const communityFlags = [...communitySource.matchAll(/flag:\s+"([^"]+)"/gu)]
+      .map((match) => match[1]);
+    assert.deepEqual(communityFlags, [
+      "--data-dir",
+      "--repo",
+      "--file",
+      "--community-id",
+      "--since",
+      "--until",
+      "--identity",
+      "--date-field",
+      "--include-merges",
+      "--top",
+      "--bucket",
+      "--touch-mode",
+      "--window-days",
+      "--weight",
+      "--half-life-days",
+      "--min-share",
+      "--ignore-author-regex",
+      "--min-touches",
+    ]);
+    for (const unsupportedFlag of ["--out", "--author-exclude-regex", "--sensitive-config", "--no-cochange", "--no-communities"]) {
+      assert.doesNotMatch(
+        communitySource,
+        new RegExp(`flag:\\s+"${unsupportedFlag}"`, "u"),
+        `community maintainers metadata should not advertise unsupported ${unsupportedFlag}`,
+      );
+    }
   });
 
   test("speckit baseline output procedures require explicit overwrite for existing outputs", () => {
