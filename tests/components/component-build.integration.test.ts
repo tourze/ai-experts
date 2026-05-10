@@ -11,6 +11,7 @@ import { resolveHookTimeoutSeconds } from "../../src/build/hooks.ts";
 import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import { codexSystemSkillIds } from "../../src/build/platform.ts";
 import { listProcedureUses, procedureUseAppliesToPlatform } from "../../src/build/procedure-uses.ts";
+import { compactCodexOpenAiShortDescription } from "../../src/build/skills.ts";
 import { registry } from "../../src/components/registry.ts";
 import { InvocationPolicy, Platform, type SkillReferenceDefinition } from "../../src/components/sdk.ts";
 import {
@@ -1322,13 +1323,17 @@ describe("component build integration", () => {
         {
           interface: {
             display_name: skill.fullName,
-            short_description: skill.description,
+            short_description: compactCodexOpenAiShortDescription(skill.description),
           },
           policy: {
             allow_implicit_invocation: allowImplicit,
           },
         },
         `${skillId} should mirror its InvocationPolicy in openai.yaml`,
+      );
+      assert.ok(
+        Array.from(parsedMetadata.interface.short_description).length <= 64,
+        `${skillId} Codex openai.yaml short_description should stay UI-sized`,
       );
     }
 

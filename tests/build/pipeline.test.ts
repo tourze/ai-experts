@@ -16,7 +16,15 @@ import {
 import { main } from "../../src/build/main.ts";
 import { emitPlatform, renderInstruction, validateId, validateRegistry } from "../../src/build/platform.ts";
 import { byId, compileRegistry, materializeRegistry } from "../../src/build/registry.ts";
-import { emitSkill, renderSkillMd, validateAntiPatterns, validateParameters, validateSkillWorkflow, validateTextList } from "../../src/build/skills.ts";
+import {
+  compactCodexOpenAiShortDescription,
+  emitSkill,
+  renderSkillMd,
+  validateAntiPatterns,
+  validateParameters,
+  validateSkillWorkflow,
+  validateTextList,
+} from "../../src/build/skills.ts";
 import { validateMermaidSyntax } from "../../src/build/mermaid.ts";
 import type { ComponentRegistry } from "../../src/build/types.ts";
 import { renderWorkflowMermaidSource } from "../../src/build/workflows.ts";
@@ -387,12 +395,15 @@ describe("build/pipeline modules", () => {
     expect(parseYaml(codexSkillMetadata)).toEqual({
       interface: {
         display_name: fixture.skill.fullName,
-        short_description: fixture.skill.description,
+        short_description: compactCodexOpenAiShortDescription(fixture.skill.description),
       },
       policy: {
         allow_implicit_invocation: false,
       },
     });
+    expect(compactCodexOpenAiShortDescription(
+      "当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。适用于 token/JWT/session/cookie/OAuth 认证链路。",
+    )).toBe("当需要审计认证会话安全、密钥管理、敏感数据暴露或批量赋值漏洞时使用。");
     const claudeSkill = renderSkillMd(fixture.skill, Platform.Claude, procedureMap);
     expect(claudeSkill).toContain("  - mcp__fixture__lookup");
     expect(claudeSkill).toContain(
