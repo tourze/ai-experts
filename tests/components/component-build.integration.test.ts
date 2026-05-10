@@ -651,6 +651,7 @@ describe("component build integration", () => {
 
     const claudeCrossPlatformMentions: string[] = [];
     const codexCrossPlatformMentions: string[] = [];
+    const unresolvedPlaceholders: string[] = [];
     let claudeCanonicalMentions = 0;
     let codexCanonicalMentions = 0;
 
@@ -658,6 +659,9 @@ describe("component build integration", () => {
       const source = readFileSync(file, "utf-8");
       if (/~\/\.codex\/procedures\.js\b/u.test(source)) {
         claudeCrossPlatformMentions.push(relative(tmpDistDir, file));
+      }
+      if (/<runtime-root>|<skills-dir>/u.test(source)) {
+        unresolvedPlaceholders.push(relative(tmpDistDir, file));
       }
       claudeCanonicalMentions += (source.match(/~\/\.claude\/procedures\.js\b/gu) ?? []).length;
     }
@@ -667,9 +671,17 @@ describe("component build integration", () => {
       if (/~\/\.claude\/procedures\.js\b/u.test(source)) {
         codexCrossPlatformMentions.push(relative(tmpDistDir, file));
       }
+      if (/<runtime-root>|<skills-dir>/u.test(source)) {
+        unresolvedPlaceholders.push(relative(tmpDistDir, file));
+      }
       codexCanonicalMentions += (source.match(/~\/\.codex\/procedures\.js\b/gu) ?? []).length;
     }
 
+    assert.deepEqual(
+      unresolvedPlaceholders,
+      [],
+      "generated dist should not retain runtime placeholder paths",
+    );
     assert.deepEqual(
       claudeCrossPlatformMentions,
       [],

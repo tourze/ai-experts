@@ -56,6 +56,14 @@ function procedureRuntimePath(platform: PlatformType): string {
   return platform === "claude-code" ? "~/.claude/procedures.js" : "~/.codex/procedures.js";
 }
 
+function procedureRuntimeRoot(platform: PlatformType): string {
+  return platform === "claude-code" ? "~/.claude" : "~/.codex";
+}
+
+function skillRuntimeRoot(platform: PlatformType): string {
+  return platform === "claude-code" ? "~/.claude/skills" : "~/.agents/skills";
+}
+
 function normalizeSeparators(path: string): string {
   return path.replaceAll("\\", "/");
 }
@@ -116,8 +124,10 @@ function checksum(content: string): string {
   return createHash("sha256").update(content).digest("hex");
 }
 
-function canonicalizeProcedureBundleSource(source: string): string {
+function canonicalizeProcedureBundleSource(source: string, platform: PlatformType): string {
   return source
+    .replaceAll("<runtime-root>", procedureRuntimeRoot(platform))
+    .replaceAll("<skills-dir>", skillRuntimeRoot(platform))
     .replace(
       /(?:\.\.\/)*[^"'\n]*ai-experts-procedure-webpack-[^/"'\n]+\/procedure-runtime-entry\.ts/gu,
       runtimeEntryId,
@@ -695,7 +705,7 @@ async function emitBundledProceduresFile(
   }
   const proceduresFile = join(root, "procedures.js");
   const bundledSource = readFileSync(proceduresFile, "utf-8");
-  const canonicalSource = canonicalizeProcedureBundleSource(bundledSource);
+  const canonicalSource = canonicalizeProcedureBundleSource(bundledSource, platform);
   if (canonicalSource !== bundledSource) writeFileSync(proceduresFile, canonicalSource, "utf-8");
   return canonicalSource;
 }
