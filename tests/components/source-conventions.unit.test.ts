@@ -925,10 +925,14 @@ describe("component source conventions", () => {
     assert.match(skillSource, /默认不会覆盖已存在的导出文件/u);
     assert.match(skillSource, /确认目标可替换后才传 `--overwrite`/u);
 
-    const procedureSource = readFileSync(
-      join(repoRoot, "src/components/procedures/sources/data-analysis/analyze.ts"),
-      "utf-8",
-    );
+    const procedureSource = ["analyze.ts", "analyze_output.ts"]
+      .map((sourceFile) =>
+        readFileSync(
+          join(repoRoot, "src/components/procedures/sources/data-analysis", sourceFile),
+          "utf-8",
+        ),
+      )
+      .join("\n");
     assert.match(procedureSource, /flag:\s+"--overwrite"/u);
     assert.match(procedureSource, /output file already exists/u);
     assert.match(procedureSource, /existsSync\(target\) && !overwrite/u);
