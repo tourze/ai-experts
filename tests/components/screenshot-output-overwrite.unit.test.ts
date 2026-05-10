@@ -5,12 +5,17 @@ import { describe, expect, test } from "vitest";
 import {
   assertOutputPathsWritable,
   assertOutputWritable,
+  escapeAppleScriptString,
   main as takeScreenshotMain,
   parseArgs as parseScreenshotArgs,
 } from "../../src/components/procedures/sources/screenshot/take_screenshot.ts";
 import { parseArgs as parseWindowsArgs } from "../../src/components/procedures/sources/screenshot/take_screenshot_windows.ts";
 
 describe("screenshot output overwrite guards", () => {
+  test("escapes app names before embedding them in AppleScript", () => {
+    expect(escapeAppleScriptString('Foo "Bar" \\ Baz')).toBe('Foo \\"Bar\\" \\\\ Baz');
+  });
+
   test("tracks explicit overwrite state", () => {
     expect(parseScreenshotArgs(["--mode", "temp"])).toMatchObject({
       overwrite: false,

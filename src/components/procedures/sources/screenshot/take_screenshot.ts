@@ -403,8 +403,11 @@ your terminal and the active CLI if needed, then rerun your screenshot command.`
   }
   console.log("Screen Recording permission granted.");
 }
+export function escapeAppleScriptString(value: string): string {
+  return value.replaceAll("\\", "\\\\").replaceAll('"', '\\"');
+}
 export function activateApp(app: any): any {
-  const safeApp = app.replaceAll('"', '\\"');
+  const safeApp = escapeAppleScriptString(String(app));
   spawnSync("osascript", ["-e", `tell application "${safeApp}" to activate`], {
     encoding: "utf-8",
   });
