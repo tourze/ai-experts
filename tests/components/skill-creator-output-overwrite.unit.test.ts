@@ -13,6 +13,7 @@ import {
   plannedBenchmarkOutputFiles,
 } from "../../src/components/procedures/sources/skill-creator/aggregate_benchmark.ts";
 import {
+  generateHtml as generateReportHtml,
   parseArgs as parseGenerateReportArgs,
   main as generateReportMain,
 } from "../../src/components/procedures/sources/skill-creator/generate_report.ts";
@@ -31,6 +32,31 @@ import {
 } from "../../src/components/procedures/sources/skill-creator/output_guard.ts";
 
 describe("skill creator output overwrite guards", () => {
+  test("escapes generated report result values", () => {
+    const html = generateReportHtml({
+      history: [
+        {
+          iteration: 1,
+          description: "<b>unsafe</b>",
+          results: [
+            {
+              query: "<script>alert(1)</script>",
+              should_trigger: true,
+              pass: true,
+              triggers: "<img src=x onerror=alert(1)>",
+              runs: "</span><script>alert(2)</script>",
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(html).not.toContain("<script>alert");
+    expect(html).not.toContain("<img src=x");
+    expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
+    expect(html).toContain("0/0");
+  });
+
   test("tracks explicit overwrite state for report generators", () => {
     expect(parseGenerateReportArgs(["results.json", "-o", "report.html"]))
       .toMatchObject({

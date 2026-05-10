@@ -49,12 +49,16 @@ function escapeHtml(value: any): any {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
 }
+function numericCount(value: any): number {
+  const count = Number(value ?? 0);
+  return Number.isFinite(count) ? count : 0;
+}
 function aggregateRuns(results: any): any {
   let correct = 0;
   let total = 0;
   for (const result of results ?? []) {
-    const runs = result.runs ?? 0;
-    const triggers = result.triggers ?? 0;
+    const runs = numericCount(result.runs);
+    const triggers = numericCount(result.triggers);
     total += runs;
     correct += (result.should_trigger ?? true) ? triggers : runs - triggers;
   }
@@ -72,8 +76,8 @@ function resultCell(result: any, test: any = false): any {
   const didPass = result?.pass ?? false;
   const icon = didPass ? "&#10003;" : "&#10007;";
   const cssClass = didPass ? "pass" : "fail";
-  const triggers = result?.triggers ?? 0;
-  const runs = result?.runs ?? 0;
+  const triggers = numericCount(result?.triggers);
+  const runs = numericCount(result?.runs);
   return `<td class="result ${test ? "test-result " : ""}${cssClass}">${icon}<span class="rate">${triggers}/${runs}</span></td>`;
 }
 export function generateHtml(
