@@ -7,7 +7,7 @@ import { describe, test } from "vitest";
 import { validateRegistry } from "../../src/build/platform.ts";
 import { collectPlatformProcedures } from "../../src/build/procedures.ts";
 import { registry } from "../../src/components/registry.ts";
-import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
+import { InvocationPolicy, Platform, SkillUseMode } from "../../src/components/sdk.ts";
 import {
   collectFiles,
   extractPropertyArray,
@@ -79,6 +79,25 @@ function collectMarkdownAnchors(source: string): Set<string> {
 
 
 describe("component source runtime guidance conventions", () => {
+  test("agents do not preload explicit-only skills", () => {
+    const skillsById = new Map(registry.skills.map((skill) => [skill.id, skill]));
+    const violations: string[] = [];
+    for (const agent of registry.agents) {
+      for (const skillUse of agent.skills ?? []) {
+        const skill = skillsById.get(skillUse.id);
+        if (skillUse.mode === SkillUseMode.Preload && skill?.invocation === InvocationPolicy.ExplicitOnly) {
+          violations.push(`${agent.id} -> ${skillUse.id}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      violations,
+      [],
+      "explicit-only skills set disable-model-invocation and cannot be preloaded by Claude subagents",
+    );
+  });
+
   test("agent runtime guidance names web access neutrally", () => {
     const agentSourceFiles = collectFiles(
       join(repoRoot, "src/components/agents"),

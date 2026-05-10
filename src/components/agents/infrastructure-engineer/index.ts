@@ -106,7 +106,7 @@ export const infrastructureEngineerAgent = defineAgent({
     },
     {
       id: remoteSshCommandSkill.id,
-      mode: SkillUseMode.Preload,
+      mode: SkillUseMode.Route,
       reason: "管理 SSH 主机配置和远端运维命令执行。",
     },
     {

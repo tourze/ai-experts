@@ -135,7 +135,7 @@ export const windowsPlatformReviewerAgent = defineAgent({
     },
     {
       id: prlctlVmControlSkill.id,
-      mode: SkillUseMode.Preload,
+      mode: SkillUseMode.Route,
       reason: "审查 Parallels VM 编排、快照策略与 host/guest 边界。",
     },
     {
