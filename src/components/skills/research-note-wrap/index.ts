@@ -8,6 +8,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { sessionFinalizationWorkflowSkill } from "../session-finalization-workflow/index";
 
 export const researchNoteWrapSkill = defineSkill({
   id: "research-note-wrap",
@@ -55,6 +56,14 @@ export const researchNoteWrapSkill = defineSkill({
       fail: "错触发",
       pass: "转手到 meeting-notes-and-actions",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return sessionFinalizationWorkflowSkill.id;
+      },
+      reason: "会话产物是 coding 收尾、session journal、合作复盘或经验沉淀，而不是调研结论笔记时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

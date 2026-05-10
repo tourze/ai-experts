@@ -8,6 +8,12 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { goTestingPatternsSkill } from "../go-testing-patterns/index";
+import { javaJunitSkill } from "../java-junit/index";
+import { javascriptTypescriptJestSkill } from "../javascript-typescript-jest/index";
+import { phpTestingSkill } from "../php-testing/index";
+import { pythonTestingPatternsSkill } from "../python-testing-patterns/index";
+import { rustTestingSkill } from "../rust-testing/index";
 
 export const testingPatternsSkill = defineSkill({
   id: "testing-patterns",
@@ -32,6 +38,44 @@ export const testingPatternsSkill = defineSkill({
     "Fixture 是否独立、清理明确且不包含业务逻辑。",
     "Mock / Stub / Fake 的选择是否匹配边界和断言目标。",
     "参数化测试是否覆盖典型值、边界值、空/零输入、异常值和等价类代表。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goTestingPatternsSkill.id;
+      },
+      reason: "Go 测试需要 table-driven tests、subtest、benchmark、race 或 `testing` 包约定时联动。",
+    },
+    {
+      get id() {
+        return pythonTestingPatternsSkill.id;
+      },
+      reason: "Python 测试需要 pytest fixture、parametrize、monkeypatch 或 async 测试约定时联动。",
+    },
+    {
+      get id() {
+        return rustTestingSkill.id;
+      },
+      reason: "Rust 测试需要 `#[test]`、property testing、fixture、panic 断言或 cargo test 约定时联动。",
+    },
+    {
+      get id() {
+        return javaJunitSkill.id;
+      },
+      reason: "Java 测试需要 JUnit、Mockito、Spring 测试切片或 JVM 测试组织方式时联动。",
+    },
+    {
+      get id() {
+        return phpTestingSkill.id;
+      },
+      reason: "PHP 测试需要 PHPUnit / Pest、属性、data provider、mock 或 `phpunit.xml` 细节时联动。",
+    },
+    {
+      get id() {
+        return javascriptTypescriptJestSkill.id;
+      },
+      reason: "JavaScript / TypeScript 测试需要 Jest / Vitest、mock、fake timers 或异步断言细节时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({

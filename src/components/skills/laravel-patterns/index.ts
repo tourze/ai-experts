@@ -8,6 +8,9 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { laravelSecuritySkill } from "../laravel-security/index";
+import { laravelTddSkill } from "../laravel-tdd/index";
+import { laravelVerificationSkill } from "../laravel-verification/index";
 
 export const laravelPatternsSkill = defineSkill({
   id: "laravel-patterns",
@@ -50,6 +53,26 @@ export const laravelPatternsSkill = defineSkill({
       fail: "缓存只加不失效",
       pass: "为缓存定义失效事件、TTL 和 key version。",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return laravelSecuritySkill.id;
+      },
+      reason: "Laravel 架构边界涉及授权、输入验证、密钥、租户隔离或安全基线时联动。",
+    },
+    {
+      get id() {
+        return laravelTddSkill.id;
+      },
+      reason: "Laravel 实现需要先写 Pest / PHPUnit 测试、HTTP 测试、factory 或 fake 副作用时联动。",
+    },
+    {
+      get id() {
+        return laravelVerificationSkill.id;
+      },
+      reason: "Laravel 改动需要发布前命令链、配置缓存、迁移、队列或端到端验证时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

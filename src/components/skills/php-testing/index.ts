@@ -8,6 +8,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { laravelTddSkill } from "../laravel-tdd/index";
 import { phpXFeaturesSkill } from "../php-8x-features/index";
 import { phpErrorHandlingSkill } from "../php-error-handling/index";
 import { phpTypeSafetySkill } from "../php-type-safety/index";
@@ -57,6 +58,12 @@ export const phpTestingSkill = defineSkill({
         return testingPatternsSkill.id;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 PHP 特有语法与工具。",
+    },
+    {
+      get id() {
+        return laravelTddSkill.id;
+      },
+      reason: "PHP 测试运行在 Laravel 项目内，涉及 HTTP 测试、RefreshDatabase、Queue::fake、Sanctum 或 Eloquent factory 时联动。",
     },
   ],
   antiPatterns: [

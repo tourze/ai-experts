@@ -7,6 +7,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { startupIcpDefinerSkill } from "../startup-icp-definer/index";
 
 export const stpSegmentationSkill = defineSkill({
   id: "stp-segmentation",
@@ -36,6 +37,14 @@ export const stpSegmentationSkill = defineSkill({
       fail: "跳过 S 直接定位",
       pass: "逐步收敛",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return startupIcpDefinerSkill.id;
+      },
+      reason: "STP 选定目标市场后，需要细化创业公司 ICP、早期客户画像或销售线索判断时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

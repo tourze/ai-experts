@@ -1099,6 +1099,42 @@ describe("component source conventions", () => {
     );
   });
 
+  test("visible skill guidance mentions of hyphenated skill ids are backed by relatedSkills", () => {
+    const hyphenatedSkillIds = registry.skills
+      .map((skill) => skill.id)
+      .filter((skillId) => skillId.includes("-"));
+    const missingRelatedSkills: string[] = [];
+    const escapeRegex = (value: string): string => value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
+    const stripMarkdownLinkDestinations = (text: string): string =>
+      text.replace(/\[([^\]]*)\]\((?:\\.|[^)])*\)/gu, "$1");
+
+    for (const skill of registry.skills) {
+      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.id));
+      const visibleGuidanceText = [
+        skill.description,
+        ...(skill.useCases ?? []),
+        ...(skill.constraints ?? []),
+        ...(skill.checklist ?? []),
+        ...(skill.outputs?.items ?? []),
+        skill.outputs?.body ?? "",
+      ].map(stripMarkdownLinkDestinations).join("\n");
+
+      for (const targetSkillId of hyphenatedSkillIds) {
+        if (targetSkillId === skill.id || relatedSkillIds.has(targetSkillId)) continue;
+        const pattern = new RegExp(`(^|[^A-Za-z0-9_-])${escapeRegex(targetSkillId)}(?=$|[^A-Za-z0-9_-])`, "u");
+        if (pattern.test(visibleGuidanceText)) {
+          missingRelatedSkills.push(`${skill.id}: guidance mentions ${targetSkillId}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      missingRelatedSkills,
+      [],
+      "visible skill guidance that routes to another hyphenated skill should also declare relatedSkills",
+    );
+  });
+
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
       const filePath = join(repoRoot, fileName);

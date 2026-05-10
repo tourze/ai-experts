@@ -10,6 +10,7 @@ import {
 } from "../../sdk";
 import { firstPrinciplesDecomposerSkill } from "../first-principles-decomposer/index";
 import { planningUnderUncertaintySkill } from "../planning-under-uncertainty/index";
+import { whatIfOracleSkill } from "../what-if-oracle/index";
 
 export const runningDecisionProcessesSkill = defineSkill({
   id: "running-decision-processes",
@@ -44,6 +45,12 @@ export const runningDecisionProcessesSkill = defineSkill({
         return planningUnderUncertaintySkill.id;
       },
       reason: "高不确定性决策需要情景、触发条件和可逆性设计时联动。",
+    },
+    {
+      get id() {
+        return whatIfOracleSkill.id;
+      },
+      reason: "争议证据需要转成先验、后验、行动阈值、敏感性报告或分支推演时联动。",
     },
   ],
   antiPatterns: [

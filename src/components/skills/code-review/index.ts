@@ -11,6 +11,7 @@ import {
 import { procedureUse, codeReviewAssessCode, codeReviewAssessTests } from "../../procedures/index";
 
 import { complexityReducerSkill } from "../complexity-reducer/index";
+import { preLandingReviewSkill } from "../pre-landing-review/index";
 import { testQualityReviewSkill } from "../test-quality-review/index";
 
 export const codeReviewSkill = defineSkill({
@@ -54,6 +55,12 @@ export const codeReviewSkill = defineSkill({
         return testQualityReviewSkill.id;
       },
       reason: "审查对象主要是测试代码、mock 滥用、脆弱测试或覆盖幻觉时联动。",
+    },
+    {
+      get id() {
+        return preLandingReviewSkill.id;
+      },
+      reason: "问题已经从代码质量审查升级为能否合并、发布阻断项或上线风险判断时联动。",
     },
   ],
   antiPatterns: [

@@ -8,6 +8,8 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { frontendDesignReviewSkill } from "../frontend-design-review/index";
+import { productDesignCriticSkill } from "../product-design-critic/index";
 import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
 export const uxHeuristicsSkill = defineSkill({
@@ -44,6 +46,18 @@ export const uxHeuristicsSkill = defineSkill({
         return uxResearcherDesignerSkill.id;
       },
       reason: "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
+    },
+    {
+      get id() {
+        return productDesignCriticSkill.id;
+      },
+      reason: "问题不是单个交互启发式，而是产品定位、关键流程、信任结构或治理暴露时联动。",
+    },
+    {
+      get id() {
+        return frontendDesignReviewSkill.id;
+      },
+      reason: "启发式问题需要落到 UI 实现质量、响应式状态、设计系统一致性或可访问性修复时联动。",
     },
   ],
   antiPatterns: [

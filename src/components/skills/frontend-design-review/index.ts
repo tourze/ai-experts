@@ -9,7 +9,9 @@ import {
   defineWorkflowStep,
 } from "../../sdk";
 import { modernWebDesignSkill } from "../modern-web-design/index";
+import { productDesignCriticSkill } from "../product-design-critic/index";
 import { responsiveDesignSkill } from "../responsive-design/index";
+import { uxHeuristicsSkill } from "../ux-heuristics/index";
 
 export const frontendDesignReviewSkill = defineSkill({
   id: "frontend-design-review",
@@ -48,6 +50,18 @@ export const frontendDesignReviewSkill = defineSkill({
         return modernWebDesignSkill.id;
       },
       reason: "`modern-web-design`：视觉方向、Web 设计规范和界面风格参考。",
+    },
+    {
+      get id() {
+        return productDesignCriticSkill.id;
+      },
+      reason: "评审对象上升到产品策略、主流程决策、信任设计或治理暴露时联动。",
+    },
+    {
+      get id() {
+        return uxHeuristicsSkill.id;
+      },
+      reason: "问题主要是导航、状态反馈、表单阻塞、信息架构或基础可用性启发式错误时联动。",
     },
   ],
   antiPatterns: [

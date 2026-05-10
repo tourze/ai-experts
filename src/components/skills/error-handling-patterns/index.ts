@@ -7,6 +7,10 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { goErrorHandlingSkill } from "../go-error-handling/index";
+import { phpErrorHandlingSkill } from "../php-error-handling/index";
+import { pythonErrorHandlingSkill } from "../python-error-handling/index";
+import { rustErrorHandlingSkill } from "../rust-error-handling/index";
 
 export const errorHandlingPatternsSkill = defineSkill({
   id: "error-handling-patterns",
@@ -41,6 +45,32 @@ export const errorHandlingPatternsSkill = defineSkill({
       fail: "无条件重试",
       pass: "有界重试 + 退避 + 幂等前提",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return goErrorHandlingSkill.id;
+      },
+      reason: "Go 项目需要落地错误包装、sentinel / typed error、panic 边界或 context 取消语义时联动。",
+    },
+    {
+      get id() {
+        return pythonErrorHandlingSkill.id;
+      },
+      reason: "Python 项目需要设计异常层级、错误映射、重试边界或异步失败传播时联动。",
+    },
+    {
+      get id() {
+        return rustErrorHandlingSkill.id;
+      },
+      reason: "Rust 项目需要在 `Result`、`thiserror`、`anyhow` 和错误枚举之间取舍时联动。",
+    },
+    {
+      get id() {
+        return phpErrorHandlingSkill.id;
+      },
+      reason: "PHP 项目需要定义异常层级、输入校验错误、框架边界映射或 PHPUnit 失败路径时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

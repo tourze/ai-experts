@@ -11,6 +11,8 @@ import {
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { copywritingSkill } from "../copywriting/index";
 import { croMethodologySkill } from "../cro-methodology/index";
+import { customerJourneyMapSkill } from "../customer-journey-map/index";
+import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
 export const customerResearchSkill = defineSkill({
   id: "customer-research",
@@ -63,6 +65,18 @@ export const customerResearchSkill = defineSkill({
         return competitiveIntelligenceSkill.id;
       },
       reason: "用户目标转为竞品情报、市场定位、battlecard 或竞品深拆时联动。",
+    },
+    {
+      get id() {
+        return uxResearcherDesignerSkill.id;
+      },
+      reason: "客户研究需要转成设计输入、可用性测试计划、Persona 方法论或 UX 复盘时联动。",
+    },
+    {
+      get id() {
+        return customerJourneyMapSkill.id;
+      },
+      reason: "洞察需要落成触点链路、情绪曲线、旅程阶段和机会点排序时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

@@ -10,6 +10,7 @@ import {
 } from "../../sdk";
 import { laravelPatternsSkill } from "../laravel-patterns/index";
 import { laravelVerificationSkill } from "../laravel-verification/index";
+import { phpTestingSkill } from "../php-testing/index";
 
 export const laravelTddSkill = defineSkill({
   id: "laravel-tdd",
@@ -47,6 +48,12 @@ export const laravelTddSkill = defineSkill({
         return laravelVerificationSkill.id;
       },
       reason: "需要把局部测试扩展为发布前完整验证命令链时联动。",
+    },
+    {
+      get id() {
+        return phpTestingSkill.id;
+      },
+      reason: "项目不是 Laravel，或测试问题主要是 PHPUnit / Pest 的 PHP 通用语法、fixture、mock 与配置时联动。",
     },
   ],
   antiPatterns: [

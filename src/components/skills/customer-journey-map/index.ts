@@ -8,6 +8,8 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { customerResearchSkill } from "../customer-research/index";
+import { uxResearcherDesignerSkill } from "../ux-researcher-designer/index";
 
 export const customerJourneyMapSkill = defineSkill({
   id: "customer-journey-map",
@@ -38,6 +40,20 @@ export const customerJourneyMapSkill = defineSkill({
       fail: "所有阶段都是问题",
       pass: "量化 + 排序",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return customerResearchSkill.id;
+      },
+      reason: "旅程输入缺少客户声音、访谈证据、persona 或 JTBD 洞察时联动。",
+    },
+    {
+      get id() {
+        return uxResearcherDesignerSkill.id;
+      },
+      reason: "旅程图需要进一步转成 UX 设计输入、可用性测试计划或设计复盘时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

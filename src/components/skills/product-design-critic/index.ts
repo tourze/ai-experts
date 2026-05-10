@@ -10,6 +10,8 @@ import {
 } from "../../sdk";
 import { competitiveIntelligenceSkill } from "../competitive-intelligence/index";
 import { customerJourneyMapSkill } from "../customer-journey-map/index";
+import { frontendDesignReviewSkill } from "../frontend-design-review/index";
+import { uxHeuristicsSkill } from "../ux-heuristics/index";
 
 export const productDesignCriticSkill = defineSkill({
   id: "product-design-critic",
@@ -42,6 +44,18 @@ export const productDesignCriticSkill = defineSkill({
         return customerJourneyMapSkill.id;
       },
       reason: "需要把页面或流程评审放回端到端用户路径与关键触点时联动。",
+    },
+    {
+      get id() {
+        return frontendDesignReviewSkill.id;
+      },
+      reason: "产品批评需要落到 UI 实现质量、响应式状态、设计系统一致性或可访问性细节时联动。",
+    },
+    {
+      get id() {
+        return uxHeuristicsSkill.id;
+      },
+      reason: "问题收敛为导航、反馈、表单、信息架构或基础可用性启发式诊断时联动。",
     },
   ],
   antiPatterns: [

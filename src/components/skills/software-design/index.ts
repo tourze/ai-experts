@@ -8,6 +8,9 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { goDesignPatternsSkill } from "../go-design-patterns/index";
+import { phpDesignPatternsSkill } from "../php-design-patterns/index";
+import { pythonDesignPatternsSkill } from "../python-design-patterns/index";
 import { refactoringPatternsSkill } from "../refactoring-patterns/index";
 
 export const softwareDesignSkill = defineSkill({
@@ -65,6 +68,24 @@ export const softwareDesignSkill = defineSkill({
         return refactoringPatternsSkill.id;
       },
       reason: "设计判断已经明确，需要选择 Extract Method、Move Method、Extract Class 等具体重构动作时联动。",
+    },
+    {
+      get id() {
+        return goDesignPatternsSkill.id;
+      },
+      reason: "Go 代码需要把通用职责边界落成 interface、package、context、repository 或 service 结构时联动。",
+    },
+    {
+      get id() {
+        return pythonDesignPatternsSkill.id;
+      },
+      reason: "Python 代码需要把通用设计判断落成 dataclass、protocol、service、repository 或依赖注入结构时联动。",
+    },
+    {
+      get id() {
+        return phpDesignPatternsSkill.id;
+      },
+      reason: "PHP 代码需要把通用设计判断落成 DTO、service、repository、异常层级或框架边界时联动。",
     },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,

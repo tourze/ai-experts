@@ -8,7 +8,9 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { businessHealthDiagnosticSkill } from "../business-health-diagnostic/index";
 import { raciMatrixSkill } from "../raci-matrix/index";
+import { swotAnalysisSkill } from "../swot-analysis/index";
 
 export const orgCanvasSkill = defineSkill({
   id: "org-canvas",
@@ -40,6 +42,18 @@ export const orgCanvasSkill = defineSkill({
         return raciMatrixSkill.id;
       },
       reason: "只需明确职责分工：不需要重新设计组织，只理清分工用 `raci-matrix`。",
+    },
+    {
+      get id() {
+        return swotAnalysisSkill.id;
+      },
+      reason: "组织问题需要先从优势、劣势、机会、威胁做诊断，再决定是否重设计时联动。",
+    },
+    {
+      get id() {
+        return businessHealthDiagnosticSkill.id;
+      },
+      reason: "用户目标是诊断企业经营健康、增长、组织或财务症状，而不是设计组织画布时联动。",
     },
   ],
   antiPatterns: [

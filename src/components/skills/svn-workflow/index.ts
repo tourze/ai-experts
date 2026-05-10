@@ -8,6 +8,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { gitAdvancedWorkflowsSkill } from "../git-advanced-workflows/index";
 
 export const svnWorkflowSkill = defineSkill({
   id: "svn-workflow",
@@ -51,6 +52,14 @@ export const svnWorkflowSkill = defineSkill({
       fail: "脏工作副本合并",
       pass: "干净副本 + update",
     }),
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return gitAdvancedWorkflowsSkill.id;
+      },
+      reason: "SVN 到 Git 迁移完成后，需要清理 Git 历史、分支、标签或高级仓库工作流时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

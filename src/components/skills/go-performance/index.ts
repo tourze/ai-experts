@@ -10,6 +10,8 @@ import {
 } from "../../sdk";
 import { goConcurrencyPatternsSkill } from "../go-concurrency-patterns/index";
 import { goErrorHandlingSkill } from "../go-error-handling/index";
+import { goObservabilitySkill } from "../go-observability/index";
+import { goTroubleshootingSkill } from "../go-troubleshooting/index";
 
 export const goPerformanceSkill = defineSkill({
   id: "go-performance",
@@ -42,6 +44,18 @@ export const goPerformanceSkill = defineSkill({
         return goConcurrencyPatternsSkill.id;
       },
       reason: "goroutine、channel、锁竞争或并发度瓶颈时联动。",
+    },
+    {
+      get id() {
+        return goObservabilitySkill.id;
+      },
+      reason: "性能问题需要落成生产监控、指标、trace、日志或持续可观测性方案时联动。",
+    },
+    {
+      get id() {
+        return goTroubleshootingSkill.id;
+      },
+      reason: "还没有明确性能瓶颈，只是在排查线上变慢、panic、死锁或异常行为时联动。",
     },
   ],
   antiPatterns: [

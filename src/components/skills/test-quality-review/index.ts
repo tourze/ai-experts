@@ -9,6 +9,7 @@ import {
   defineWorkflowStep,
 } from "../../sdk";
 import { preLandingReviewSkill } from "../pre-landing-review/index";
+import { testingStrategySkill } from "../testing-strategy/index";
 
 export const testQualityReviewSkill = defineSkill({
   id: "test-quality-review",
@@ -42,6 +43,12 @@ export const testQualityReviewSkill = defineSkill({
         return preLandingReviewSkill.id;
       },
       reason: "测试质量问题需要上升为合并阻断项、发布门禁或风险确认时联动。",
+    },
+    {
+      get id() {
+        return testingStrategySkill.id;
+      },
+      reason: "审查结论已经从已有测试质量转为该补测什么、风险如何扩面或覆盖策略如何设计时联动。",
     },
   ],
   antiPatterns: [
