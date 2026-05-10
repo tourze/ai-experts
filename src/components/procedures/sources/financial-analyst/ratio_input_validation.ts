@@ -112,7 +112,15 @@ export function validateRatioInput(data: any, category: any = null): any {
   throw new Error(messages.join("; "));
 }
 
-function parseArgs(argv: readonly string[]): {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value.startsWith("-")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): {
   inputFile?: string;
   category?: string;
   help: boolean;
@@ -125,9 +133,11 @@ function parseArgs(argv: readonly string[]): {
     if (arg === "--help" || arg === "-h") {
       args.help = true;
     } else if (arg === "--input" || arg === "-i") {
-      args.inputFile = argv[++index];
+      args.inputFile = readOptionValue(argv, index, arg);
+      index += 1;
     } else if (arg === "--category" || arg === "-c") {
-      args.category = argv[++index];
+      args.category = readOptionValue(argv, index, arg);
+      index += 1;
     } else {
       throw new Error(`unknown argument: ${arg}`);
     }

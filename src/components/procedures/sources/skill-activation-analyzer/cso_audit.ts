@@ -93,7 +93,15 @@ const SEVERITY_ORDER: Record<string, any> = {
   medium: 2,
   low: 3,
 };
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value.startsWith("-")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     skillsDir: null,
     json: false,
@@ -103,11 +111,13 @@ function parseArgs(argv: readonly string[]): any {
   for (let i = 0; i < argv.length; i += 1) {
     const current = argv[i];
     if (current === "--skills-dir") {
-      args.skillsDir = argv[++i] ?? null;
+      args.skillsDir = readOptionValue(argv, i, current);
+      i += 1;
     } else if (current === "--json") {
       args.json = true;
     } else if (current === "--severity") {
-      args.severity = argv[++i] ?? null;
+      args.severity = readOptionValue(argv, i, current);
+      i += 1;
     } else if (current === "-h" || current === "--help") {
       args.help = true;
     } else {

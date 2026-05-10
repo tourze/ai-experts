@@ -441,7 +441,15 @@ function usage(): any {
   return `Usage:
   node forecast_builder.mjs <input_file> [--format text|json] [--scenarios base,bull,bear]`;
 }
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value === "-h" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     inputFile: null,
     format: "text",
@@ -454,7 +462,7 @@ function parseArgs(argv: readonly string[]): any {
       process.exit(0);
     }
     if (arg === "--format") {
-      args.format = argv[i + 1];
+      args.format = readOptionValue(argv, i, arg);
       i += 1;
       continue;
     }
@@ -463,7 +471,7 @@ function parseArgs(argv: readonly string[]): any {
       continue;
     }
     if (arg === "--scenarios") {
-      args.scenarios = argv[i + 1];
+      args.scenarios = readOptionValue(argv, i, arg);
       i += 1;
       continue;
     }

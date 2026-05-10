@@ -392,7 +392,15 @@ function sanitizeForJson(value: any): any {
   }
   return value;
 }
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value === "-h" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     inputFile: null,
     format: "text",
@@ -401,14 +409,14 @@ function parseArgs(argv: readonly string[]): any {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--format") {
-      const value = argv[index + 1];
+      const value = readOptionValue(argv, index, arg);
       if (!VALID_FORMATS.has(value)) {
         throw new Error("argument --format: invalid choice");
       }
       args.format = value;
       index += 1;
     } else if (arg === "--projection-years") {
-      const value = Number.parseInt(argv[index + 1], 10);
+      const value = Number.parseInt(readOptionValue(argv, index, arg), 10);
       if (!Number.isInteger(value)) {
         throw new Error("argument --projection-years: invalid int value");
       }

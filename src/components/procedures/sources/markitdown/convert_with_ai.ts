@@ -105,6 +105,31 @@ Options:
   --list-prompts, -l        List prompt types and exit
   --overwrite               Replace existing Markdown output after confirmation`);
 }
+
+const VALUE_OPTIONS = new Set([
+  "--api-key",
+  "-k",
+  "--model",
+  "-m",
+  "--prompt-type",
+  "-t",
+  "--custom-prompt",
+  "-p",
+]);
+const FLAG_OPTIONS = new Set(["--help", "-h", "--list-prompts", "-l", "--overwrite"]);
+
+function readOptionValue(
+  argv: readonly string[],
+  index: number,
+  flag: string,
+): string {
+  const value = argv[index + 1];
+  if (value == null || VALUE_OPTIONS.has(value) || FLAG_OPTIONS.has(value)) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
 export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   const options: Record<string, any> = {
@@ -123,13 +148,33 @@ export function parseArgs(argv: readonly string[]): any {
     if (arg === "--list-prompts" || arg === "-l") {
       options.listPrompts = true;
     } else if (arg === "--api-key" || arg === "-k") {
-      options.apiKey = argv[++index];
+      try {
+        options.apiKey = readOptionValue(argv, index, arg);
+      } catch (error: any) {
+        return { error: error.message };
+      }
+      index += 1;
     } else if (arg === "--model" || arg === "-m") {
-      options.model = argv[++index];
+      try {
+        options.model = readOptionValue(argv, index, arg);
+      } catch (error: any) {
+        return { error: error.message };
+      }
+      index += 1;
     } else if (arg === "--prompt-type" || arg === "-t") {
-      options.promptType = argv[++index];
+      try {
+        options.promptType = readOptionValue(argv, index, arg);
+      } catch (error: any) {
+        return { error: error.message };
+      }
+      index += 1;
     } else if (arg === "--custom-prompt" || arg === "-p") {
-      options.customPrompt = argv[++index];
+      try {
+        options.customPrompt = readOptionValue(argv, index, arg);
+      } catch (error: any) {
+        return { error: error.message };
+      }
+      index += 1;
     } else if (arg === "--overwrite") {
       options.overwrite = true;
     } else {

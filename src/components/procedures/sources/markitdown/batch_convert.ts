@@ -91,6 +91,32 @@ Options:
   --plugins, -p             Enable MarkItDown plugins
   --overwrite               Replace existing Markdown outputs after confirmation`);
 }
+
+const VALUE_OPTIONS = new Set(["--extensions", "-e", "--workers", "-w"]);
+const FLAG_OPTIONS = new Set([
+  "--help",
+  "-h",
+  "--recursive",
+  "-r",
+  "--verbose",
+  "-v",
+  "--plugins",
+  "-p",
+  "--overwrite",
+]);
+
+function readOptionValue(
+  argv: readonly string[],
+  index: number,
+  flag: string,
+): string {
+  const value = argv[index + 1];
+  if (value == null || VALUE_OPTIONS.has(value) || FLAG_OPTIONS.has(value)) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
 export function parseArgs(argv: readonly string[]): any {
   const positional: any[] = [];
   const options: Record<string, any> = {
@@ -115,10 +141,26 @@ export function parseArgs(argv: readonly string[]): any {
     } else if (arg === "--overwrite") {
       options.overwrite = true;
     } else if (arg === "--workers" || arg === "-w") {
-      options.workers = Number.parseInt(argv[++index] ?? "", 10);
+      try {
+        options.workers = Number.parseInt(readOptionValue(argv, index, arg), 10);
+      } catch (error: any) {
+        return { error: error.message };
+      }
+      index += 1;
     } else if (arg === "--extensions" || arg === "-e") {
       options.extensions = [];
-      while (argv[index + 1] && !argv[index + 1].startsWith("-")) {
+      if (
+        argv[index + 1] == null ||
+        VALUE_OPTIONS.has(argv[index + 1]) ||
+        FLAG_OPTIONS.has(argv[index + 1])
+      ) {
+        return { error: `${arg} requires a value` };
+      }
+      while (
+        argv[index + 1] &&
+        !VALUE_OPTIONS.has(argv[index + 1]) &&
+        !FLAG_OPTIONS.has(argv[index + 1])
+      ) {
         options.extensions.push(argv[++index]);
       }
     } else {

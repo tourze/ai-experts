@@ -889,21 +889,36 @@ export function parseArgs(argv: readonly string[]): any {
     outputFile: null,
     overwrite: false,
   };
+  const readOptionValue = (index: number, flag: string): string => {
+    const value = argv[index + 1];
+    if (value == null || value.startsWith("--")) {
+      throw new Error(`${flag} requires a value`);
+    }
+    return value;
+  };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--files") {
+      const start = args.files.length;
       while (argv[index + 1] && !argv[index + 1].startsWith("--")) {
         args.files.push(argv[index + 1]);
         index += 1;
       }
+      if (args.files.length === start) {
+        throw new Error("--files requires a value");
+      }
     } else if (arg === "--action") {
-      args.action = argv[++index];
+      args.action = readOptionValue(index, arg);
+      index += 1;
     } else if (arg === "--sql") {
-      args.sql = argv[++index];
+      args.sql = readOptionValue(index, arg);
+      index += 1;
     } else if (arg === "--table") {
-      args.table = argv[++index];
+      args.table = readOptionValue(index, arg);
+      index += 1;
     } else if (arg === "--output-file") {
-      args.outputFile = argv[++index];
+      args.outputFile = readOptionValue(index, arg);
+      index += 1;
     } else if (arg === "--overwrite") {
       args.overwrite = true;
     } else {

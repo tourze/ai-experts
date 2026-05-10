@@ -53,6 +53,13 @@ describe("canvas output overwrite guards", () => {
       });
   });
 
+  test("rejects batch option flags without values", () => {
+    expect(() => parseBuildBatchArgs(["--outline", "--prompts"]))
+      .toThrow(/--outline requires a value/);
+    expect(() => parseBuildBatchArgs(["--outline", "outline.md", "--jobs", "--output"]))
+      .toThrow(/--jobs requires a value/);
+  });
+
   test("refuses existing output files unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-canvas-output-"));
     try {

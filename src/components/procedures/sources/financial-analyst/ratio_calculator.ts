@@ -388,7 +388,15 @@ function formatRatio(value: any, isPercentage: any = false): any {
   }
   return value.toFixed(2);
 }
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value === "-h" || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     inputFile: null,
     format: "text",
@@ -397,14 +405,14 @@ function parseArgs(argv: readonly string[]): any {
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--format") {
-      const value = argv[index + 1];
+      const value = readOptionValue(argv, index, arg);
       if (!VALID_FORMATS.has(value)) {
         throw new Error("argument --format: invalid choice");
       }
       args.format = value;
       index += 1;
     } else if (arg === "--category") {
-      const value = argv[index + 1];
+      const value = readOptionValue(argv, index, arg);
       if (!VALID_CATEGORIES.has(value)) {
         throw new Error("argument --category: invalid choice");
       }

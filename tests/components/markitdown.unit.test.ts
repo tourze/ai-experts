@@ -40,6 +40,18 @@ describe("markitdown conversion procedures", () => {
     });
   });
 
+  test("reject option flags without required values", () => {
+    expect(parseAiArgs(["input.png", "output.md", "--api-key", "--model"]))
+      .toMatchObject({ error: "--api-key requires a value" });
+    expect(parseAiArgs(["input.png", "output.md", "-m", "-t"]))
+      .toMatchObject({ error: "-m requires a value" });
+
+    expect(parseBatchArgs(["input", "output", "--workers", "--recursive"]))
+      .toMatchObject({ error: "--workers requires a value" });
+    expect(parseBatchArgs(["input", "output", "--extensions", "--recursive"]))
+      .toMatchObject({ error: "--extensions requires a value" });
+  });
+
   test("refuse existing markdown outputs before calling converters", async () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-markitdown-"));
     try {

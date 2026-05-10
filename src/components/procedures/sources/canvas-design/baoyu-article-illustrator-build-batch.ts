@@ -120,21 +120,31 @@ export function parseArgs(argv: readonly string[]): any {
     overwrite: false,
     help: false,
   };
+  const readOptionValue = (index: number, flag: string): string => {
+    const value = argv[index + 1];
+    if (value == null || value.startsWith("--")) {
+      throw new Error(`${flag} requires a value`);
+    }
+    return value;
+  };
   for (let i = 0; i < argv.length; i++) {
     const current = argv[i];
-    if (current === "--outline") args.outlinePath = argv[++i] ?? null;
-    else if (current === "--prompts") args.promptsDir = argv[++i] ?? null;
-    else if (current === "--output") args.outputPath = argv[++i] ?? null;
-    else if (current === "--images-dir") args.imagesDir = argv[++i] ?? null;
+    if (current === "--outline") args.outlinePath = readOptionValue(i++, current);
+    else if (current === "--prompts")
+      args.promptsDir = readOptionValue(i++, current);
+    else if (current === "--output")
+      args.outputPath = readOptionValue(i++, current);
+    else if (current === "--images-dir")
+      args.imagesDir = readOptionValue(i++, current);
     else if (current === "--provider")
-      args.provider = argv[++i] ?? args.provider;
-    else if (current === "--model") args.model = argv[++i] ?? args.model;
+      args.provider = readOptionValue(i++, current);
+    else if (current === "--model") args.model = readOptionValue(i++, current);
     else if (current === "--ar")
-      args.aspectRatio = argv[++i] ?? args.aspectRatio;
-    else if (current === "--quality") args.quality = argv[++i] ?? args.quality;
+      args.aspectRatio = readOptionValue(i++, current);
+    else if (current === "--quality")
+      args.quality = readOptionValue(i++, current);
     else if (current === "--jobs") {
-      const value = argv[++i];
-      args.jobs = value ? parseInt(value, 10) : null;
+      args.jobs = parseInt(readOptionValue(i++, current), 10);
     } else if (current === "--help" || current === "-h") {
       args.help = true;
     } else if (current === "--overwrite") {
@@ -167,7 +177,13 @@ async function findPromptFile(promptsDir: any, entry: any): Promise<any> {
   return match ? path.join(promptsDir, match) : null;
 }
 export async function main(argv: readonly string[]): Promise<any> {
-  const args = parseArgs(argv);
+  let args;
+  try {
+    args = parseArgs(argv);
+  } catch (error: any) {
+    console.error(`Error: ${error.message}`);
+    process.exit(1);
+  }
   if (args.help) {
     printUsage();
     return;
