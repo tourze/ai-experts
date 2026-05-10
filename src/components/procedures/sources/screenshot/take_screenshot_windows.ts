@@ -80,6 +80,34 @@ Options:
   --overwrite                          Replace existing output after confirmation`);
 }
 export function parseArgs(argv: readonly string[]): any {
+  const valueOptions = new Set([
+    "--path",
+    "-Path",
+    "--mode",
+    "-Mode",
+    "--format",
+    "-Format",
+    "--region",
+    "-Region",
+    "--window-handle",
+    "-WindowHandle",
+  ]);
+  const flagOptions = new Set([
+    "--help",
+    "-h",
+    "-Help",
+    "--active-window",
+    "-ActiveWindow",
+    "--overwrite",
+    "-Overwrite",
+  ]);
+  const readValue = (index: number, flag: string): string => {
+    const value = argv[index + 1];
+    if (value == null || valueOptions.has(value) || flagOptions.has(value)) {
+      throw new Error(`${flag} requires a value`);
+    }
+    return value;
+  };
   const options: Record<string, any> = {
     path: "",
     mode: "default",
@@ -94,19 +122,23 @@ export function parseArgs(argv: readonly string[]): any {
     if (["--help", "-h", "-Help"].includes(arg)) {
       options.help = true;
     } else if (["--path", "-Path"].includes(arg)) {
-      options.path = argv[++i] || "";
+      options.path = readValue(i++, arg);
     } else if (["--mode", "-Mode"].includes(arg)) {
-      options.mode = argv[++i] || "default";
+      options.mode = readValue(i++, arg);
     } else if (["--format", "-Format"].includes(arg)) {
-      options.format = argv[++i] || "png";
+      options.format = readValue(i++, arg);
     } else if (["--region", "-Region"].includes(arg)) {
-      options.region = argv[++i] || "";
+      options.region = readValue(i++, arg);
     } else if (["--active-window", "-ActiveWindow"].includes(arg)) {
       options.activeWindow = true;
     } else if (["--overwrite", "-Overwrite"].includes(arg)) {
       options.overwrite = true;
     } else if (["--window-handle", "-WindowHandle"].includes(arg)) {
-      options.windowHandle = Number.parseInt(argv[++i] || "0", 10);
+      const handle = Number(readValue(i++, arg));
+      if (!Number.isInteger(handle) || handle < 1) {
+        throw new Error(`${arg} requires a positive integer`);
+      }
+      options.windowHandle = handle;
     } else {
       throw new Error(`Unknown argument: ${arg}`);
     }

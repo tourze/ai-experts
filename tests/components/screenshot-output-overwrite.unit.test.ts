@@ -32,6 +32,15 @@ describe("screenshot output overwrite guards", () => {
     });
   });
 
+  test("windows screenshot parser rejects missing option values", () => {
+    expect(() => parseWindowsArgs(["--path", "--overwrite"]))
+      .toThrow(/--path requires a value/);
+    expect(() => parseWindowsArgs(["--mode"]))
+      .toThrow(/--mode requires a value/);
+    expect(() => parseWindowsArgs(["--window-handle", "abc"]))
+      .toThrow(/--window-handle requires a positive integer/);
+  });
+
   test("refuses existing screenshot outputs unless overwrite is explicit", () => {
     const workDir = mkdtempSync(join(tmpdir(), "ai-experts-screenshot-output-"));
     const previousTestMode = process.env.AI_EXPERTS_SCREENSHOT_TEST_MODE;
