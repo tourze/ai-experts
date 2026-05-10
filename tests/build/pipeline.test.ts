@@ -2010,6 +2010,8 @@ describe("build/pipeline modules", () => {
     expect(surface.skills.length).toBe(1);
     expect(renderInstruction(surface, Platform.Claude)).not.toContain("可用能力索引");
     const codexInstruction = renderInstruction(surface, Platform.Codex);
+    expect(codexInstruction).toContain("Codex Skill 路由补充");
+    expect(codexInstruction).toContain("~/.agents/skills/*/SKILL.md");
     expect(codexInstruction).toContain("Agent 索引");
     expect(codexInstruction).toContain("fixture-agent");
     expect(codexInstruction).not.toContain("Skill 索引");

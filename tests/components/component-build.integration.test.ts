@@ -1755,6 +1755,8 @@ describe("component build integration", () => {
     assert.doesNotMatch(codexInstructions.slice(0, 220), /# ai-experts|你正在使用|ai-experts/);
     assert.match(codexInstructions, /## 使用原则/);
     assert.match(codexInstructions, /## 任务执行协议/);
+    assert.match(codexInstructions, /## Codex Skill 路由补充/);
+    assert.match(codexInstructions, /~\/\.agents\/skills\/\*\/SKILL\.md/);
     assert.match(codexInstructions, /## Agent 索引/);
     assert.match(codexInstructions, /frontend-engineer/);
     assert.doesNotMatch(codexInstructions, /可用能力索引|Skill 索引|typescript-type-safety/);

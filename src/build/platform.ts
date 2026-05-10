@@ -74,6 +74,10 @@ export function renderInstruction(componentSurface: ComponentSurface, platform: 
   return [
     body,
     "",
+    "## Codex Skill 路由补充",
+    "",
+    "当可用 skill 数量很大时，Codex 可能只在 `skills_instructions` 中注入 skill 名称和路径，省略 description。若无法仅凭注入列表判断是否命中 skill，先用 `rg -n \"description: .*<关键词>|<关键词>\" ~/.agents/skills/*/SKILL.md` 定位候选，再读取候选 `SKILL.md`；在仓库内审计生成物时搜索 `dist/codex/skills/*/SKILL.md`。不要因为列表缺 description 就跳过本地 skill。",
+    "",
     "## Agent 索引",
     "",
     "Codex 原生 Skill discovery 会注入可用 Skill 列表；本节只补充当前安装的自定义 Agent，用于需要隔离上下文时选择角色。",
