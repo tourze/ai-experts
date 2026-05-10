@@ -1,6 +1,6 @@
 # Tauri v2 参考
 
-Tauri v2 开发的深入参考文档。当主 [`SKILL.md`](../SKILL.md) 快速入门不够用时使用这些文档。
+Tauri v2 开发的深入参考文档。当主 [tauri-v2](../SKILL.md) 快速入门不够用时使用这些文档。
 
 ## 参考文件
 

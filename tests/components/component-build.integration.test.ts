@@ -2788,8 +2788,6 @@ describe("component build integration", () => {
         const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
         for (const match of markdown.matchAll(/(?<!!)\[([^\]\n]+)\]\(([^)\n]+)\)/gu)) {
           const label = (match[1] ?? "").trim();
-          if (!/^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(label)) continue;
-
           const href = markdownDestination(match[2] as string);
           if (/^[a-z][a-z0-9+.-]*:|^#|^\//iu.test(href) || !isLikelyLocalDefinitionPath(href)) continue;
 

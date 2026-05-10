@@ -102,7 +102,7 @@ export const croMethodologySkill = defineSkill({
       loadWhen: "需要按 AIDA 模型审计线索转化或优化漏斗各层时读取。",
     }),
     defineReference({
-      id: "copywriting",
+      id: "cro-copywriting",
       source: new URL("./references/COPYWRITING.md", import.meta.url),
       target: "references/COPYWRITING.md",
       title: "COPYWRITING.md",

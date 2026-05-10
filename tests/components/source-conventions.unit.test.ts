@@ -1046,6 +1046,21 @@ describe("component source conventions", () => {
     assert.deepEqual(rawDisplayNames, [], "skill fullName should not be a raw kebab-case id");
   });
 
+  test("skill reference ids do not shadow registered skill ids", () => {
+    const skillIds = new Set(registry.skills.map((skill) => skill.id));
+    const shadowedReferenceIds = registry.skills.flatMap((skill) =>
+      (skill.references ?? [])
+        .filter((reference) => skillIds.has(reference.id))
+        .map((reference) => `${skill.id}: ${reference.id}`)
+    );
+
+    assert.deepEqual(
+      shadowedReferenceIds,
+      [],
+      "reference ids are rendered as link labels, so they should not look like registered skill ids",
+    );
+  });
+
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
       const filePath = join(repoRoot, fileName);
@@ -2009,6 +2024,52 @@ describe("component source conventions", () => {
       missingSkillLinks,
       [],
       "reference Markdown should not link to legacy sub-skill/plugin SKILL.md paths; link the real reference file or use plain text",
+    );
+  });
+
+  test("skill markdown labels generated skill links with the target skill id", () => {
+    const misleadingSkillLinks: string[] = [];
+    const skillSourceRoot = join(repoRoot, "src/components/skills");
+    const skillIds = new Set(registry.skills.map((skill) => skill.id));
+    const skillMarkdownSources = collectFiles(skillSourceRoot, (file) =>
+      file.endsWith(".md") && !file.split(/[\\/]/).includes("evals"),
+    );
+
+    const collectSkillLinkTarget = (sourceFile: string, label: string, targetPath: string | null): void => {
+      if (!targetPath || (targetPath !== "SKILL.md" && !targetPath.endsWith("/SKILL.md"))) return;
+
+      const targetSkillDir = dirname(resolve(dirname(sourceFile), targetPath));
+      const relativeSkillDir = relative(skillSourceRoot, targetSkillDir);
+      if (relativeSkillDir === "" || relativeSkillDir.startsWith("..")) return;
+      const targetSkillId = relativeSkillDir.split(/[\\/]/)[0] ?? "";
+      if (!skillIds.has(targetSkillId) || !existsSync(join(targetSkillDir, "index.ts"))) return;
+      if (label !== targetSkillId) {
+        misleadingSkillLinks.push(`${relative(repoRoot, sourceFile)}: [${label}] -> ${targetPath} targets ${targetSkillId}`);
+      }
+    };
+
+    for (const sourceFile of skillMarkdownSources) {
+      const source = stripMarkdownCode(readFileSync(sourceFile, "utf-8"));
+      for (const match of source.matchAll(/(?<!!)\[([^\]\n]+)\]\(([^)\n]+)\)/gu)) {
+        collectSkillLinkTarget(
+          sourceFile,
+          (match[1] ?? "").trim(),
+          localMarkdownPath(markdownDestination(match[2] ?? "")),
+        );
+      }
+      for (const match of source.matchAll(/^\s*\[([^\]\n]+)\]:\s+(\S+)/gmu)) {
+        collectSkillLinkTarget(
+          sourceFile,
+          (match[1] ?? "").trim(),
+          localMarkdownPath(markdownDestination(match[2] ?? "")),
+        );
+      }
+    }
+
+    assert.deepEqual(
+      misleadingSkillLinks,
+      [],
+      "local links to generated SKILL.md files should use the target skill id as the visible label",
     );
   });
 

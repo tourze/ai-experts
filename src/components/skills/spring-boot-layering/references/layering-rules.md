@@ -3,7 +3,7 @@
 ## 目的
 
 - 约束 `spring-boot-layering` skill 的输出风格、分层边界与验证顺序。
-- 作为 [SKILL.md](../SKILL.md) 的简版导航，避免调用时丢失关键规范。
+- 作为 [spring-boot-layering](../SKILL.md) 的简版导航，避免调用时丢失关键规范。
 
 ## 核心规则
 
@@ -13,6 +13,6 @@
 
 ## 集成点
 
-- 详细流程见 [SKILL.md](../SKILL.md)。
+- 详细流程见 [spring-boot-layering](../SKILL.md)。
 - 原生镜像问题转到 [graalvm-native-image](../../graalvm-native-image/SKILL.md)。
 - 测试策略转到 [java-junit](../../java-junit/SKILL.md)。
