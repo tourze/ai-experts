@@ -22,6 +22,12 @@ import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
 import { assertOutputWritable } from "./output_guard";
+import {
+  IMAGE_EXTENSIONS,
+  METADATA_FILES,
+  MIME_OVERRIDES,
+  TEXT_EXTENSIONS,
+} from "./generate_review_constants";
 
 export const procedure = defineCliProcedure({
   id: "skill-creator-generate-review",
@@ -81,59 +87,6 @@ export const procedure = defineCliProcedure({
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-const METADATA_FILES = new Set([
-  "transcript.md",
-  "user_notes.md",
-  "metrics.json",
-]);
-
-const TEXT_EXTENSIONS = new Set([
-  ".txt",
-  ".md",
-  ".json",
-  ".csv",
-  ".py",
-  ".js",
-  ".ts",
-  ".tsx",
-  ".jsx",
-  ".yaml",
-  ".yml",
-  ".xml",
-  ".html",
-  ".css",
-  ".sh",
-  ".rb",
-  ".go",
-  ".rs",
-  ".java",
-  ".c",
-  ".cpp",
-  ".h",
-  ".hpp",
-  ".sql",
-  ".r",
-  ".toml",
-]);
-
-const IMAGE_EXTENSIONS = new Set([
-  ".png",
-  ".jpg",
-  ".jpeg",
-  ".gif",
-  ".svg",
-  ".webp",
-]);
-
-const MIME_OVERRIDES: Record<string, string> = {
-  ".svg": "image/svg+xml",
-  ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  ".docx":
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ".pptx":
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-};
 
 function getMimeType(path: string): string {
   const ext = extname(path).toLowerCase();
