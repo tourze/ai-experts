@@ -146,17 +146,17 @@ describe("hooks implementation coverage", () => {
     expect(skipped).toBeNull();
   });
 
-  test("generated-dist-guard reports dist edits and ignores non-dist files", async () => {
+  test("generated-dist-guard blocks dist edits and ignores non-dist files", async () => {
     const reported = await runGeneratedDistGuard(
-      makeNormalizedPayload(HookEvent.PostToolUse, {
+      makeNormalizedPayload(HookEvent.PreToolUse, {
         tool: { fileTargets: ["dist/claude/CLAUDE.md"] },
       }),
     );
-    expect(reported?.kind).toBe("report");
-    expect((reported as { message?: string }).message).toContain("Generated dist output");
+    expect(reported?.kind).toBe("deny");
+    expect((reported as { message?: string }).message).toContain("cannot be edited directly");
 
     const skipped = await runGeneratedDistGuard(
-      makeNormalizedPayload(HookEvent.PostToolUse, {
+      makeNormalizedPayload(HookEvent.PreToolUse, {
         tool: { fileTargets: ["src/components/hooks/index.ts"] },
       }),
     );

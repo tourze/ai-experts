@@ -2801,7 +2801,7 @@ describe("component build integration", () => {
 
     const guardOutput = execFileSync(
       process.execPath,
-      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PostToolUse"],
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "PreToolUse"],
       {
         cwd: repoRoot,
         input: JSON.stringify({
@@ -2811,8 +2811,8 @@ describe("component build integration", () => {
         encoding: "utf-8",
       },
     );
-    assert.match(guardOutput, /additionalContext/);
-    assert.match(guardOutput, /Generated dist output/);
+    assert.match(guardOutput, /"permissionDecision": "deny"/);
+    assert.match(guardOutput, /Generated dist output cannot be edited directly/);
 
     const stalePlatformArgResult = spawnSync(
       process.execPath,
