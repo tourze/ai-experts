@@ -20,8 +20,6 @@ skills/shadcn-ui/
 shadcn-ui/
 ├── SKILL.md
 ├── README.md
-├── agents/
-│   └── openai.yaml
 └── references/
     ├── index.md
     ├── examples/
@@ -36,6 +34,8 @@ shadcn-ui/
         ├── migration-guide.md
         └── setup-guide.md
 ```
+
+平台专属配置文件由构建器按目标平台生成，不在本 README 的通用目录树里手写。
 
 ## 使用边界
 

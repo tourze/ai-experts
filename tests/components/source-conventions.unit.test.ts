@@ -3238,7 +3238,7 @@ describe("component source conventions", () => {
     for (const readmeFile of readmeFiles) {
       const source = readFileSync(readmeFile, "utf-8");
       if (
-        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|src\/components\/skills|`(?:rust-best-practices|typescript-magician)`/u.test(
+        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|src\/components\/skills|agents\/openai\.yaml|`(?:rust-best-practices|typescript-magician)`/u.test(
           source,
         )
       ) {
@@ -3249,7 +3249,7 @@ describe("component source conventions", () => {
     assert.deepEqual(
       offenders,
       [],
-      "supplemental skill README files are copied into dist and must not point users at external skill installation commands",
+      "supplemental skill README files are copied into dist and must not point users at external install commands or platform-specific generated files",
     );
   });
 

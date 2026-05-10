@@ -581,7 +581,7 @@ describe("component build integration", () => {
     for (const readmeFile of generatedReadmes) {
       const source = readFileSync(readmeFile, "utf-8");
       if (
-        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|src\/components\/skills|`(?:rust-best-practices|typescript-magician)`/u.test(
+        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|src\/components\/skills|agents\/openai\.yaml|`(?:rust-best-practices|typescript-magician)`/u.test(
           source,
         )
       ) {
@@ -592,7 +592,7 @@ describe("component build integration", () => {
     assert.deepEqual(
       offenders,
       [],
-      "generated supplemental README files should describe this harness package, not external skill installation",
+      "generated supplemental README files should describe this harness package without external install commands or platform-specific generated files",
     );
   });
 
