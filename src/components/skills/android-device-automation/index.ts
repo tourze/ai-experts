@@ -62,7 +62,7 @@ export const androidDeviceAutomationSkill = defineSkill({
       }),
       defineWorkflowStep({
         id: "step-6",
-        label: "需要机器可读输出时传 `--json`，需要完整参数时调用对应 procedure 的 `--help`；原始 ADB 流程读取 `adb-runbook`。",
+        label: "需要机器可读输出时仅对明确支持 JSON 的 procedure 传 `--json`，需要完整参数时调用对应 procedure 的 `--help`；原始 ADB 流程读取 `adb-runbook`。",
       }),
     ],
   }),

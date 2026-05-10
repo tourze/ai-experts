@@ -38,12 +38,6 @@ export const procedure = defineCliProcedure({
       description: "显示完整 Gradle 输出，传此标志即启用",
       required: false,
     },
-    {
-      flag: "--json",
-      type: "",
-      description: "结构化 JSON 输出（预留）",
-      required: false,
-    },
   ],
 
   exampleArgs: { args: ["--task", "assembleDebug"] },
@@ -132,7 +126,6 @@ Options:
   --test                 Run connectedAndroidTest
   --clean                Run clean before task
   --verbose              Show full Gradle output
-  --json                 Reserved for future structured output
   --help                 Show this help
 `;
 }
@@ -142,7 +135,6 @@ export function parseArgs(argv: readonly string[]): any {
     test: false,
     clean: false,
     verbose: false,
-    json: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -161,10 +153,6 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--verbose") {
       args.verbose = true;
-      continue;
-    }
-    if (arg === "--json") {
-      args.json = true;
       continue;
     }
     if (arg === "--task") {

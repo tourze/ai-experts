@@ -39,12 +39,6 @@ export const procedure = defineCliProcedure({
       description: "跳过关闭确认；仅在用户已明确确认模拟器 serial 后使用",
       required: false,
     },
-    {
-      flag: "--json",
-      type: "",
-      description: "结构化 JSON 输出（预留）",
-      required: false,
-    },
   ],
 
   exampleArgs: { args: ["--list"] },
@@ -110,7 +104,6 @@ Actions:
 
 Options:
   --yes                  Skip shutdown confirmation after explicit user approval
-  --json                 Reserved for future structured output
   --help                 Show this help
 `;
 }
@@ -120,7 +113,6 @@ export function parseArgs(argv: readonly string[]): any {
     boot: null,
     shutdown: null,
     yes: false,
-    json: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -131,10 +123,6 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--list") {
       args.list = true;
-      continue;
-    }
-    if (arg === "--json") {
-      args.json = true;
       continue;
     }
     if (arg === "--yes") {

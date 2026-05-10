@@ -124,6 +124,7 @@ describe("component source conventions", () => {
     assert.match(androidSkillSource, /强停应用或清空 logcat/u);
     assert.match(androidSkillSource, /只有用户明确确认包名、serial 和影响范围后才传 `--yes`，清空 logcat 还必须显式传 `--clear`/u);
     assert.match(androidSkillSource, /diagnose-app 默认不会覆盖输出目录内已存在的诊断文件/u);
+    assert.match(androidSkillSource, /仅对明确支持 JSON 的 procedure 传 `--json`/u);
 
     for (const sourceFile of ["app_launcher.ts", "diagnose_app.ts", "emulator_manage.ts", "log_monitor.ts"]) {
       const source = readFileSync(
@@ -133,6 +134,19 @@ describe("component source conventions", () => {
       assert.match(source, /flag:\s+"--yes"/u, `${sourceFile} should expose an explicit confirmation bypass`);
       assert.match(source, /仅在用户已明确确认/u, `${sourceFile} should describe when --yes is allowed`);
       assert.match(source, /readConfirmation/u, `${sourceFile} should ask for confirmation when --yes is absent`);
+    }
+
+    for (const sourceFile of ["app_launcher.ts", "build_and_test.ts", "emulator_manage.ts"]) {
+      const source = readFileSync(
+        join(repoRoot, "src/components/procedures/sources/android-device-automation", sourceFile),
+        "utf-8",
+      );
+      assert.doesNotMatch(source, /Reserved for future structured output/u);
+      assert.doesNotMatch(
+        source,
+        /flag:\s+"--json"/u,
+        `${sourceFile} should not advertise JSON output until it is implemented`,
+      );
     }
 
     const diagnoseSource = readFileSync(

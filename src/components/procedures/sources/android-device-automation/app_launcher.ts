@@ -67,12 +67,6 @@ export const procedure = defineCliProcedure({
       description: "目标设备序列号",
       required: false,
     },
-    {
-      flag: "--json",
-      type: "",
-      description: "结构化 JSON 输出（预留）",
-      required: false,
-    },
   ],
 
   exampleArgs: { args: ["--launch", "com.example.app"] },
@@ -181,7 +175,6 @@ Actions:
 Options:
   --serial, -s <serial>  Device serial
   --yes                  Skip uninstall confirmation after explicit user approval
-  --json                 Reserved for future structured output
   --help                 Show this help
 `;
 }
@@ -196,7 +189,6 @@ export function parseArgs(argv: readonly string[]): any {
     list: false,
     state: null,
     serial: null,
-    json: false,
     help: false,
   };
   for (let index = 0; index < argv.length; index += 1) {
@@ -207,10 +199,6 @@ export function parseArgs(argv: readonly string[]): any {
     }
     if (arg === "--list") {
       args.list = true;
-      continue;
-    }
-    if (arg === "--json") {
-      args.json = true;
       continue;
     }
     if (arg === "--yes") {

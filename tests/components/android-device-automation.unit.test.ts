@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import { parseArgs as parseAppLauncherArgs } from "../../src/components/procedures/sources/android-device-automation/app_launcher.ts";
+import { parseArgs as parseBuildAndTestArgs } from "../../src/components/procedures/sources/android-device-automation/build_and_test.ts";
 import {
   assertOutputFilesWritable as assertDiagnoseOutputFilesWritable,
   parseArgs as parseDiagnoseArgs,
@@ -32,6 +33,12 @@ describe("android device automation procedures", () => {
       shutdown: "emulator-5554",
       yes: true,
     });
+  });
+
+  test("rejects reserved JSON flags that do not produce structured output", () => {
+    expect(() => parseAppLauncherArgs(["--json"])).toThrow(/unrecognized argument: --json/);
+    expect(() => parseBuildAndTestArgs(["--json"])).toThrow(/unrecognized argument: --json/);
+    expect(() => parseEmulatorManageArgs(["--json"])).toThrow(/unrecognized argument: --json/);
   });
 
   test("keeps diagnose logcat preservation as the default", () => {
