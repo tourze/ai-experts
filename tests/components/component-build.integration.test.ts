@@ -581,7 +581,7 @@ describe("component build integration", () => {
     for (const readmeFile of generatedReadmes) {
       const source = readFileSync(readmeFile, "utf-8");
       if (
-        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills/u.test(
+        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|`(?:rust-best-practices|typescript-magician)`/u.test(
           source,
         )
       ) {

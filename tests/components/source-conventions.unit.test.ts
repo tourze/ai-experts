@@ -3005,7 +3005,7 @@ describe("component source conventions", () => {
     for (const readmeFile of readmeFiles) {
       const source = readFileSync(readmeFile, "utf-8");
       if (
-        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills/u.test(
+        /npx\s+skills\s+add|google-labs-code\/stitch-skills|--skill\s+\S+\s+--global|dist\/(?:claude|codex)\/skills|`(?:rust-best-practices|typescript-magician)`/u.test(
           source,
         )
       ) {
@@ -3108,6 +3108,16 @@ describe("component source conventions", () => {
         source,
         /交叉引用：/,
         `${skillSourceFile} should move cross-skill routing text to relatedSkills`,
+      );
+      assert.doesNotMatch(
+        source,
+        /需要和(?:其它|其他)技能联动时/,
+        `${skillSourceFile} should move cross-skill routing text to relatedSkills`,
+      );
+      assert.doesNotMatch(
+        source,
+        /`(?:rust-best-practices|typescript-magician)`/,
+        `${skillSourceFile} should use registered skill ids through relatedSkills, not deprecated aliases`,
       );
       assert.doesNotMatch(
         source,
