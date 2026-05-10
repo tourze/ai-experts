@@ -1038,6 +1038,20 @@ describe("component source conventions", () => {
     assert.deepEqual(offenders, []);
   });
 
+  test("procedure params expose non-empty display types", () => {
+    const blankParamTypes = registry.procedures.flatMap((procedure) =>
+      (procedure.params ?? [])
+        .filter((param) => param.type.trim() === "")
+        .map((param) => `${procedure.id}: ${param.flag}`)
+    );
+
+    assert.deepEqual(
+      blankParamTypes,
+      [],
+      "procedure params with no value should be normalized to an explicit boolean display type",
+    );
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

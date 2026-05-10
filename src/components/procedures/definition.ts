@@ -55,10 +55,16 @@ type CliProcedureDefinition = Omit<
 export function defineCliProcedure(
   definition: CliProcedureDefinition,
 ): ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult> {
+  const normalizedParams = definition.params?.map((param) => ({
+    ...param,
+    type: param.type.trim() === "" ? "布尔" : param.type,
+  }));
+
   return defineProcedure({
     args: cliProcedureArgs,
     output: runtimeProcedureOutput,
     ...definition,
+    ...(normalizedParams ? { params: normalizedParams } : {}),
   });
 }
 

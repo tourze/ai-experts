@@ -1300,8 +1300,8 @@ describe("component build integration", () => {
     assert.match(webContentFetcherSkill, /### `web-content-fetcher-fetch`/);
     assert.match(webContentFetcherSkill, /\| `\[url\]` \| URL \| 是 \| 要抓取正文的网页 URL/);
     assert.match(webContentFetcherSkill, /\| `\[max_chars\]` \| 数字 \| 否 \| 最大输出字符数/);
-    assert.match(webContentFetcherSkill, /\| `--stealth` \| — \| 否 \| 使用更接近浏览器的请求头/);
-    assert.match(webContentFetcherSkill, /\| `--json` \| — \| 否 \| 输出包含 URL、模式、选择器和 Markdown 的 JSON/);
+    assert.match(webContentFetcherSkill, /\| `--stealth` \| 布尔 \| 否 \| 使用更接近浏览器的请求头/);
+    assert.match(webContentFetcherSkill, /\| `--json` \| 布尔 \| 否 \| 输出包含 URL、模式、选择器和 Markdown 的 JSON/);
 
     const remoteSshCommandSkill = readFileSync(join(tmpDistDir, "codex/skills/remote-ssh-command/SKILL.md"), "utf-8");
     assert.match(remoteSshCommandSkill, /### `remote-ssh-command-ssh-exec`/);
@@ -1363,7 +1363,7 @@ describe("component build integration", () => {
     );
     assert.match(skillsPruneAndSyncReadmeSkill, /\| `\[command\]` \| 字符串 \| 是 \| 命令/);
     assert.match(skillsPruneAndSyncReadmeSkill, /\| `--format` \| 字符串 \| 否 \| audit 输出格式/);
-    assert.match(skillsPruneAndSyncReadmeSkill, /\| `--yes` \| — \| 否 \| 确认执行 prune 删除操作/);
+    assert.match(skillsPruneAndSyncReadmeSkill, /\| `--yes` \| 布尔 \| 否 \| 确认执行 prune 删除操作/);
 
     const securityOwnershipMapSkill = readFileSync(
       join(tmpDistDir, "codex/skills/security-ownership-map/SKILL.md"),
@@ -1372,7 +1372,7 @@ describe("component build integration", () => {
     assert.match(securityOwnershipMapSkill, /### `security-ownership-map-query-ownership`/);
     assert.match(securityOwnershipMapSkill, /\| `\[command\]` \| 字符串 \| 是 \| 查询命令/);
     assert.match(securityOwnershipMapSkill, /\| `--person` \| 字符串 \| 否 \| person 命令要查询/);
-    assert.match(securityOwnershipMapSkill, /\| `--include-files` \| — \| 否 \| community 命令同时输出社区文件列表/);
+    assert.match(securityOwnershipMapSkill, /\| `--include-files` \| 布尔 \| 否 \| community 命令同时输出社区文件列表/);
     assert.match(securityOwnershipMapSkill, /### `security-ownership-map-run-ownership-map`/);
     assert.match(securityOwnershipMapSkill, /\| `--author-exclude-regex` \| 字符串 \| 否 \| 排除匹配正则的作者/);
     assert.match(securityOwnershipMapSkill, /\| `--cochange-min-jaccard` \| 数字 \| 否 \| 共改最小 Jaccard 系数/);
