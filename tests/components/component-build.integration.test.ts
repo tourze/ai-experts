@@ -1731,6 +1731,24 @@ describe("component build integration", () => {
     assert.equal(missingScriptId.error.code, "RUNNER_ERROR");
     assert.match(missingScriptId.error.message, /--procedure-id is required/);
 
+    const shortOptionAsProcedureIdResult = runProcedureProcess([
+      "--procedure-id",
+      "-h",
+      "--trigger-skill",
+      "debug-methodology",
+    ]);
+    assert.equal(shortOptionAsProcedureIdResult.status, 1);
+    assert.match(shortOptionAsProcedureIdResult.payload.error.message, /--procedure-id requires a value/);
+
+    const shortOptionAsTriggerResult = runProcedureProcess([
+      "--procedure-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "-h",
+    ]);
+    assert.equal(shortOptionAsTriggerResult.status, 1);
+    assert.match(shortOptionAsTriggerResult.payload.error.message, /--trigger-skill requires a value/);
+
     const unknownScriptResult = runProcedureProcess([
       "--procedure-id",
       "not-exists",
@@ -2688,6 +2706,18 @@ describe("component build integration", () => {
     );
     assert.notEqual(stalePlatformArgResult.status, 0);
     assert.match(stalePlatformArgResult.stderr, /Unknown argument: --platform/);
+
+    const shortOptionEventResult = spawnSync(
+      process.execPath,
+      [join(tmpDistDir, "codex/hooks/dispatch.mjs"), "--event", "-h"],
+      {
+        cwd: repoRoot,
+        input: "{}",
+        encoding: "utf-8",
+      },
+    );
+    assert.notEqual(shortOptionEventResult.status, 0);
+    assert.match(shortOptionEventResult.stderr, /--event requires a value/);
   });
 
   test("renders directory references through generated index.md entry files", () => {

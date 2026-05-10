@@ -117,7 +117,7 @@ function parseArgs(argv) {
   for (let index = 0; index < argv.length; index += 1) {
     if (argv[index] === "--event") {
       const value = argv[++index];
-      if (!value || String(value).startsWith("--")) throw new Error("--event requires a value");
+      if (!value || String(value).startsWith("-")) throw new Error("--event requires a value");
       args.event = value;
     } else {
       throw new Error("Unknown argument: " + argv[index]);

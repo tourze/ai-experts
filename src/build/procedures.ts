@@ -209,7 +209,7 @@ function parseCliArgs(argv) {
     }
     if (arg === "--session-id" || arg === "--trigger-skill" || arg === "--trigger-agent" || arg === "--procedure-id") {
       const value = argv[index + 1];
-      if (value == null || value.startsWith("--")) {
+      if (value == null || value.startsWith("-")) {
         throw new Error(String(arg) + " requires a value");
       }
       index += 1;
