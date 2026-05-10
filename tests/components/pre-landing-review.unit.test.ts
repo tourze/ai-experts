@@ -4,8 +4,15 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, it } from "vitest";
-import { main as collectDiffMain } from "../../src/components/procedures/sources/pre-landing-review/collect_diff.ts";
-import { main as renderReportMain, renderReport } from "../../src/components/procedures/sources/pre-landing-review/render_report.ts";
+import {
+    main as collectDiffMain,
+    parseArgs as parseCollectDiffArgs,
+} from "../../src/components/procedures/sources/pre-landing-review/collect_diff.ts";
+import {
+    main as renderReportMain,
+    parseArgs as parseRenderReportArgs,
+    renderReport,
+} from "../../src/components/procedures/sources/pre-landing-review/render_report.ts";
 
 async function captureMain(run: () => unknown): Promise<{ status: number; stdout: string; stderr: string }> {
     const originalStdoutWrite = process.stdout.write;
@@ -87,6 +94,11 @@ describe("renderReport", (): any => {
     });
 });
 describe("CLI entrypoints", (): any => {
+    it("rejects option flags without values", () => {
+        assert.throws(() => parseCollectDiffArgs(["--base", "--cwd"]), /--base requires a value/);
+        assert.throws(() => parseCollectDiffArgs(["--cwd"]), /--cwd requires a value/);
+        assert.throws(() => parseRenderReportArgs(["--input", "--help"]), /--input requires a value/);
+    });
     it("render_report main 输出报告", async () => {
         const dir = mkdtempSync(join(tmpdir(), "pre-landing-render-"));
         const inputPath = join(dir, "findings.json");

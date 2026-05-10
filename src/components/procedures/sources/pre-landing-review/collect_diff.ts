@@ -73,7 +73,14 @@ export function collectDiff({
     cwd: cwd ?? process.cwd(),
   };
 }
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = {
     base: "origin/main",
     cwd: process.cwd(),
@@ -81,8 +88,8 @@ function parseArgs(argv: readonly string[]): any {
   };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
-    if (a === "--base") args.base = argv[++i];
-    else if (a === "--cwd") args.cwd = argv[++i];
+    if (a === "--base") args.base = readOptionValue(argv, i++, a);
+    else if (a === "--cwd") args.cwd = readOptionValue(argv, i++, a);
     else if (a === "--") args.paths.push(...argv.slice(i + 1));
     else if (!a.startsWith("--")) args.paths.push(a);
   }

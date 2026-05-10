@@ -91,11 +91,18 @@ export function renderReport(input: any): any {
     renderVerdict(input),
   ].join("\n");
 }
-function parseArgs(argv: readonly string[]): any {
+function readOptionValue(argv: readonly string[], index: number, flag: string): string {
+  const value = argv[index + 1];
+  if (value == null || value.startsWith("--")) {
+    throw new Error(`${flag} requires a value`);
+  }
+  return value;
+}
+export function parseArgs(argv: readonly string[]): any {
   const args: Record<string, any> = { input: "-" };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
-    if (a === "--input") args.input = argv[++i];
+    if (a === "--input") args.input = readOptionValue(argv, i++, a);
     else if (a === "--help" || a === "-h") args.help = true;
   }
   return args;
