@@ -578,21 +578,50 @@ function formatMarkdown(reports: any): any {
 function usage(scriptName: any): any {
   return `Usage: ${scriptName} <file_or_directory> [--format json|markdown]`;
 }
+export function parseArgs(argv: readonly string[]): any {
+  const args: Record<string, any> = {
+    target: null,
+    format: "json",
+  };
+  for (let index = 0; index < argv.length; index += 1) {
+    const arg = argv[index];
+    if (arg === "--format") {
+      const value = argv[index + 1];
+      if (value == null || value.startsWith("-")) {
+        throw new Error("--format requires a value");
+      }
+      args.format = value;
+      index += 1;
+    } else if (arg.startsWith("--format=")) {
+      args.format = arg.slice("--format=".length);
+    } else if (arg.startsWith("-")) {
+      throw new Error(`Unknown option: ${arg}`);
+    } else if (args.target === null) {
+      args.target = arg;
+    } else {
+      throw new Error(`Unexpected argument: ${arg}`);
+    }
+  }
+  if (!args.target) {
+    throw new Error("Missing target path.");
+  }
+  if (!["json", "markdown"].includes(args.format)) {
+    throw new Error("Invalid --format. Expected json or markdown.");
+  }
+  return args;
+}
 export function main(argv: readonly string[]): any {
-  const args = argv;
-  if (args.length < 1) {
+  let args;
+  try {
+    args = parseArgs(argv);
+  } catch (error: any) {
+    console.error(`Error: ${error.message}`);
     console.error(usage("procedure"));
     process.exitCode = 1;
     return;
   }
-  const target = args[0];
-  let format = "json";
-  const formatIndex = args.indexOf("--format");
-  if (formatIndex !== -1 && formatIndex + 1 < args.length) {
-    format = args[formatIndex + 1];
-  }
-  const reports = analyzePath(target);
-  if (format === "markdown") {
+  const reports = analyzePath(args.target);
+  if (args.format === "markdown") {
     console.log(formatMarkdown(reports));
   } else {
     console.log(JSON.stringify(reports, null, 2));

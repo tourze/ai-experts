@@ -28,6 +28,18 @@ export const procedure = defineCliProcedure({
   exampleArgs: { args: ["--input", "tsc-output.txt"] },
 });
 
+export function parseInputPath(argv: readonly string[]): string | null {
+  const inputFlag = argv.findIndex(
+    (arg: any): any => arg === "--input" || arg === "-i",
+  );
+  if (inputFlag < 0) return null;
+  const value = argv[inputFlag + 1];
+  if (value == null || value.startsWith("-")) {
+    throw new Error(`${argv[inputFlag]} requires a value`);
+  }
+  return value;
+}
+
 export function main(argv: readonly string[]): any {
   type Diagnostic = {
     file: string;
@@ -43,13 +55,8 @@ export function main(argv: readonly string[]): any {
     diagnostics: Diagnostic[];
   };
   function readInput(argv: readonly string[]): string {
-    const inputFlag = argv.findIndex(
-      (arg: any): any => arg === "--input" || arg === "-i",
-    );
-    if (inputFlag >= 0 && argv[inputFlag + 1]) {
-      return readFileSync(argv[inputFlag + 1], "utf-8");
-    }
-    return readFileSync(0, "utf-8");
+    const inputPath = parseInputPath(argv);
+    return inputPath ? readFileSync(inputPath, "utf-8") : readFileSync(0, "utf-8");
   }
   function parseDiagnostics(text: string): Diagnostic[] {
     const diagnostics: Diagnostic[] = [];
@@ -81,6 +88,13 @@ export function main(argv: readonly string[]): any {
       diagnostics,
     };
   }
-  const text = readInput(argv);
+  let text;
+  try {
+    text = readInput(argv);
+  } catch (error: any) {
+    console.error(`Error: ${error.message}`);
+    process.exitCode = 1;
+    return;
+  }
   console.log(JSON.stringify(summarize(parseDiagnostics(text)), null, 2));
 }

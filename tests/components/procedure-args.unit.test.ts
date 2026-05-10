@@ -1,10 +1,12 @@
 import { describe, expect, test } from "vitest";
+import { parseArgs as parseComplexityReportArgs } from "../../src/components/procedures/sources/complexity-reducer/complexity_report.ts";
 import { parseArgs as parseBudgetVarianceArgs } from "../../src/components/procedures/sources/financial-analyst/budget_variance_analyzer.ts";
 import { parseArgs as parseDcfValuationArgs } from "../../src/components/procedures/sources/financial-analyst/dcf_valuation.ts";
 import { parseArgs as parseForecastBuilderArgs } from "../../src/components/procedures/sources/financial-analyst/forecast_builder.ts";
 import { parseArgs as parseRatioCalculatorArgs } from "../../src/components/procedures/sources/financial-analyst/ratio_calculator.ts";
 import { parseArgs as parseRatioInputArgs } from "../../src/components/procedures/sources/financial-analyst/ratio_input_validation.ts";
 import { parseArgs as parseCsoAuditArgs } from "../../src/components/procedures/sources/skill-activation-analyzer/cso_audit.ts";
+import { parseInputPath } from "../../src/components/procedures/sources/typescript-type-safety/extract-ts-errors.ts";
 
 describe("procedure argument parsers", () => {
   test("reject option flags without values", () => {
@@ -26,5 +28,9 @@ describe("procedure argument parsers", () => {
       .toThrow(/--projection-years requires a value/);
     expect(() => parseForecastBuilderArgs(["forecast.json", "--scenarios", "--format"]))
       .toThrow(/--scenarios requires a value/);
+    expect(() => parseInputPath(["--input", "--json"]))
+      .toThrow(/--input requires a value/);
+    expect(() => parseComplexityReportArgs(["src", "--format"]))
+      .toThrow(/--format requires a value/);
   });
 });
