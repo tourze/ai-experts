@@ -15,6 +15,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["i18n-localization"] },
   target: "scripts/i18n_checker.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[target]",
+      type: "路径",
+      description: "要扫描的项目文件或目录（默认 .）",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["."] },
 });

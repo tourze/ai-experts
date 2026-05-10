@@ -14,6 +14,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["architecture-reviewer"] },
   target: "scripts/scan_codebase.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[codebase]",
+      type: "路径",
+      description: "要扫描的代码库目录（默认 .）",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["."] },
 });

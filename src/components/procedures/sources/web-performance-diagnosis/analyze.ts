@@ -16,6 +16,14 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["web-performance-diagnosis"] },
   target: "scripts/analyze.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[file-or-directory]",
+      type: "路径",
+      description: "要分析的 HTML 文件或目录（必填）",
+      required: true,
+    },
+  ],
 
   exampleArgs: { args: ["./dist"] },
 });

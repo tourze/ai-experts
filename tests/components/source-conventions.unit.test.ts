@@ -922,6 +922,34 @@ describe("component source conventions", () => {
     assert.match(assessTestsSource, /Usage: assess-tests <test-directory>/u);
   });
 
+  test("positional input procedures document their argv", () => {
+    const expectations = [
+      {
+        file: "src/components/procedures/sources/icon-retrieval/search.ts",
+        flags: ['flag: "[search_query]"', 'flag: "[topK]"'],
+      },
+      {
+        file: "src/components/procedures/sources/architecture-reviewer/scan_codebase.ts",
+        flags: ['flag: "[codebase]"'],
+      },
+      {
+        file: "src/components/procedures/sources/web-performance-diagnosis/analyze.ts",
+        flags: ['flag: "[file-or-directory]"'],
+      },
+      {
+        file: "src/components/procedures/sources/i18n-localization/i18n_checker.ts",
+        flags: ['flag: "[target]"'],
+      },
+    ];
+
+    for (const expectation of expectations) {
+      const source = readFileSync(join(repoRoot, expectation.file), "utf-8");
+      for (const flag of expectation.flags) {
+        assert.match(source, new RegExp(flag.replaceAll("[", "\\[").replaceAll("]", "\\]"), "u"));
+      }
+    }
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

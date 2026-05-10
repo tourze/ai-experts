@@ -11,6 +11,20 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["icon-retrieval"] },
   target: "scripts/search.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[search_query]",
+      type: "字符串",
+      description: "图标搜索词（必填）",
+      required: true,
+    },
+    {
+      flag: "[topK]",
+      type: "数字",
+      description: "返回候选数量（默认 5）",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["security shield", "3"] },
 });

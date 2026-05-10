@@ -1289,6 +1289,29 @@ describe("component build integration", () => {
 
     const iconRetrievalSkill = readFileSync(join(tmpDistDir, "codex/skills/icon-retrieval/SKILL.md"), "utf-8");
     assert.match(iconRetrievalSkill, /'security shield' 3/);
+    assert.match(iconRetrievalSkill, /\| `\[search_query\]` \| 字符串 \| 是 \| 图标搜索词/);
+    assert.match(iconRetrievalSkill, /\| `\[topK\]` \| 数字 \| 否 \| 返回候选数量/);
+
+    const architectureReviewerSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/architecture-reviewer/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(architectureReviewerSkill, /\| `\[codebase\]` \| 路径 \| 否 \| 要扫描的代码库目录/);
+
+    const webPerformanceDiagnosisSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/web-performance-diagnosis/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(
+      webPerformanceDiagnosisSkill,
+      /\| `\[file-or-directory\]` \| 路径 \| 是 \| 要分析的 HTML 文件或目录/,
+    );
+
+    const i18nLocalizationSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/i18n-localization/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(i18nLocalizationSkill, /\| `\[target\]` \| 路径 \| 否 \| 要扫描的项目文件或目录/);
 
     const copywritingSkill = readFileSync(join(tmpDistDir, "codex/skills/copywriting/SKILL.md"), "utf-8");
     assert.match(copywritingSkill, /--text '这是一段待检测文案' --platform social-platform/);
