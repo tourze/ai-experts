@@ -438,6 +438,7 @@ export function renderCodexConfig(): string {
     "codex_hooks = true",
     "",
     "[agents]",
+    "enabled = true",
     "max_depth = 1",
     "",
   ].join("\n");

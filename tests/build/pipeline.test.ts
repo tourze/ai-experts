@@ -1925,6 +1925,7 @@ describe("build/pipeline modules", () => {
     expect(groupedConfig.hooks.PreToolUse[0]?.hooks[0]?.statusMessage).toBeUndefined();
 
     expect(renderCodexConfig()).toContain("codex_hooks = true");
+    expect(renderCodexConfig()).toContain("[agents]\nenabled = true\nmax_depth = 1");
   });
 
   test("hook dispatcher fans out patch file targets to single-file hook payloads", async () => {
