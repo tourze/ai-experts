@@ -4,6 +4,10 @@ import {
   collectPlatformProcedureOwners,
   type ProcedureCommandRewriteCandidate,
 } from "../../src/build/procedures.ts";
+import {
+  renderProceduresEntrypoint,
+  type RuntimeProcedureModule,
+} from "../../src/build/procedure-runtime-entry.ts";
 import type { ComponentSurface } from "../../src/build/types.ts";
 import { Platform, type ProcedureDefinition } from "../../src/components/sdk.ts";
 
@@ -114,5 +118,25 @@ describe("build/procedures", () => {
       skillIds: ["skill-b"],
       agentIds: ["agent-a"],
     });
+  });
+
+  test("procedure runtime template replacement does not rewrite injected metadata", () => {
+    const markerDescription = "__AI_EXPERTS_PLATFORM_JSON__ __AI_EXPERTS_RUNTIME_PATH_JSON__";
+    const rendered = renderProceduresEntrypoint([
+      {
+        id: "marker-procedure",
+        target: "scripts/marker.mjs",
+        runtime: "node",
+        description: markerDescription,
+        owners: { skillIds: ["marker-skill"], agentIds: [] },
+        argsSchema: null,
+        outputSchema: null,
+        sourcePath: "/tmp/__AI_EXPERTS_PLATFORM_JSON__/marker.ts",
+      } satisfies RuntimeProcedureModule,
+    ], Platform.Codex);
+
+    expect(rendered).toContain(JSON.stringify(markerDescription));
+    expect(rendered).toContain('const platform = "codex-cli";');
+    expect(rendered).toContain('const procedureRuntimePath = "~/.codex/procedures.js";');
   });
 });

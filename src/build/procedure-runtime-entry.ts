@@ -56,14 +56,36 @@ function loadRuntimeTemplate(): string {
   return readFileSync(new URL("./procedure-runtime-entry.template.mjs", import.meta.url), "utf-8");
 }
 
+function renderRuntimeTemplate(replacements: Record<string, string>): string {
+  const template = loadRuntimeTemplate();
+  const markerPattern = /__AI_EXPERTS_[A-Z_]+__/gu;
+  const seen = new Set<string>();
+
+  const rendered = template.replace(markerPattern, (marker) => {
+    const replacement = replacements[marker];
+    if (replacement === undefined) {
+      throw new Error(`Unknown procedure runtime template marker: ${marker}`);
+    }
+    seen.add(marker);
+    return replacement;
+  });
+  for (const marker of Object.keys(replacements)) {
+    if (!seen.has(marker)) {
+      throw new Error(`Procedure runtime template marker was not used: ${marker}`);
+    }
+  }
+  return rendered;
+}
+
 export function renderProceduresEntrypoint(
   procedures: readonly RuntimeProcedureModule[],
   platform: PlatformType,
 ): string {
   const procedureMap = Object.fromEntries(procedures.map((procedure) => [procedure.id, metadataForRuntime(procedure)]));
-  return loadRuntimeTemplate()
-    .replace("__AI_EXPERTS_PROCEDURES_JSON__", JSON.stringify(procedureMap))
-    .replace("__AI_EXPERTS_PROCEDURE_LOADERS__", renderProcedureLoaders(procedures))
-    .replace("__AI_EXPERTS_PLATFORM_JSON__", JSON.stringify(platform))
-    .replace("__AI_EXPERTS_RUNTIME_PATH_JSON__", JSON.stringify(procedureRuntimePath(platform)));
+  return renderRuntimeTemplate({
+    __AI_EXPERTS_PROCEDURES_JSON__: JSON.stringify(procedureMap),
+    __AI_EXPERTS_PROCEDURE_LOADERS__: renderProcedureLoaders(procedures),
+    __AI_EXPERTS_PLATFORM_JSON__: JSON.stringify(platform),
+    __AI_EXPERTS_RUNTIME_PATH_JSON__: JSON.stringify(procedureRuntimePath(platform)),
+  });
 }
