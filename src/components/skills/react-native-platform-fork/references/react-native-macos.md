@@ -41,18 +41,12 @@ export function SettingsLayout() {
 }
 ```
 
-```md
 按任务加载这些参考文件：
 
-- [references/setup-project-init.md](references/setup-project-init.md)
-- [references/platform-specific-code.md](references/platform-specific-code.md)
-- [references/macos-specific-props.md](references/macos-specific-props.md)
-- [references/native-modules-appkit.md](references/native-modules-appkit.md)
-- [references/input-keyboard-mouse-drag.md](references/input-keyboard-mouse-drag.md)
-- [references/window-menu-toolbar.md](references/window-menu-toolbar.md)
-- [references/porting-ios-to-macos.md](references/porting-ios-to-macos.md)
-- [references/perf-debug.md](references/perf-debug.md)
-```
+- [adapter-interface.md](adapter-interface.md)
+- [boundary-file-pattern.md](boundary-file-pattern.md)
+- [metro-custom-platforms.md](metro-custom-platforms.md)
+- [platform-select-values.md](platform-select-values.md)
 
 ```bash
 # 常用命令

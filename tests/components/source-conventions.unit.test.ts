@@ -2075,6 +2075,27 @@ describe("component source conventions", () => {
     );
   });
 
+  test("skill reference markdown uses paths relative to the packaged reference file", () => {
+    const nestedReferenceLinks: string[] = [];
+    const skillSourceRoot = join(repoRoot, "src/components/skills");
+    const referenceMarkdownSources = collectFiles(skillSourceRoot, (file) =>
+      file.endsWith(".md") && file.split(/[\\/]/).includes("references"),
+    );
+
+    for (const sourceFile of referenceMarkdownSources) {
+      const source = readFileSync(sourceFile, "utf-8");
+      for (const match of source.matchAll(/\[[^\]\n]+\]\((references\/[^)\n]+)\)/gu)) {
+        nestedReferenceLinks.push(`${relative(repoRoot, sourceFile)}: ${match[1]}`);
+      }
+    }
+
+    assert.deepEqual(
+      nestedReferenceLinks,
+      [],
+      "reference Markdown is copied into references/, so same-skill reference links should omit a leading references/ prefix",
+    );
+  });
+
   test("skill reference markdown links to generated skills only for registered skill sources", () => {
     const missingSkillLinks: string[] = [];
     const skillSourceRoot = join(repoRoot, "src/components/skills");

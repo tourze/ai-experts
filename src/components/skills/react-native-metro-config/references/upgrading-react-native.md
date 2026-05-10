@@ -38,17 +38,13 @@ npx react-native build-android --mode debug --no-packager
 xcodebuild -workspace "$APP_DIR/ios/App.xcworkspace" -scheme App -sdk iphonesimulator build
 ```
 
-```md
 按问题加载这些参考文件：
 
-- [references/upgrading-react-native.md](references/upgrading-react-native.md)
-- [references/upgrade-helper-core.md](references/upgrade-helper-core.md)
-- [references/upgrading-dependencies.md](references/upgrading-dependencies.md)
-- [references/react.md](references/react.md)
-- [references/expo-sdk-upgrade.md](references/expo-sdk-upgrade.md)
-- [references/upgrade-verification.md](references/upgrade-verification.md)
-- [references/monorepo-singlerepo-targeting.md](references/monorepo-singlerepo-targeting.md)
-```
+- [react-native-bundle-size.md](react-native-bundle-size.md)
+- [bundle-analyze-app.md](bundle-analyze-app.md)
+- [bundle-analyze-js.md](bundle-analyze-js.md)
+- [ci-performance-config.md](ci-performance-config.md)
+- [monorepo-config.md](monorepo-config.md)
 
 ## 检查清单
 
