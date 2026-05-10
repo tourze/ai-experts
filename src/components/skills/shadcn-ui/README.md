@@ -12,7 +12,7 @@ skills/shadcn-ui/
 
 安装器应按当前平台 manifest 的 `install.skillEntries` 逐项复制或 symlink 这个 skill 目录，目标 skill 根目录以 `install.skillRoot` 为准。
 
-不要在本 README 里写外部 skill 包安装命令；本仓库的事实源在 `src/components/skills/shadcn-ui/`。
+不要在本 README 里写外部 skill 包安装命令；运行时以当前目录内容与平台 manifest 为准。
 
 ## 目录结构
 
