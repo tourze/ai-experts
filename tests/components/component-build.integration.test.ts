@@ -858,17 +858,28 @@ describe("component build integration", () => {
 
   test("generated runtime materials use direct procedure arguments", () => {
     const bareProcedureSeparators: string[] = [];
+    const legacyRequestProtocolMentions: string[] = [];
+    const removedRequestJsonFlag = ["--request", "json"].join("-");
+    const legacyRequestSchema = ["CliProcedure", "Request"].join("");
+    const legacyRequestPayload = ["request", "Payload"].join("");
     const textFilePattern = /\.(?:css|html|js|json|md|mjs|toml|ts|tsx|txt|ya?ml)$/u;
 
     for (const platform of ["claude", "codex"]) {
       const platformRoot = join(tmpDistDir, platform);
       for (const generatedFile of collectFiles(platformRoot, (file) => textFilePattern.test(file))) {
         const source = readFileSync(generatedFile, "utf-8");
+        const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
+        if (
+          source.includes(legacyRequestSchema) ||
+          source.includes(legacyRequestPayload) ||
+          (!generatedPath.endsWith("procedures.js") && source.includes(removedRequestJsonFlag))
+        ) {
+          legacyRequestProtocolMentions.push(`${platform}/${generatedPath}`);
+        }
         source.split(/\r?\n/u).forEach((line, index) => {
           if (
             /node ~\/\.(?:claude|codex)\/procedures\.js\b.*\s--(?:$|[`"')\];,。])/u.test(line.trim())
           ) {
-            const generatedPath = relative(platformRoot, generatedFile).split("\\").join("/");
             bareProcedureSeparators.push(`${platform}/${generatedPath}:${index + 1}`);
           }
         });
@@ -879,6 +890,11 @@ describe("component build integration", () => {
       bareProcedureSeparators,
       [],
       "generated runtime procedure commands should not end with a bare -- separator",
+    );
+    assert.deepEqual(
+      legacyRequestProtocolMentions,
+      [],
+      "generated runtime materials should not expose removed request-json procedure protocol outside the runner rejection path",
     );
   });
 
@@ -1762,6 +1778,18 @@ describe("component build integration", () => {
     assert.equal(unknownScript.ok, false);
     assert.match(unknownScript.error.message, /procedure not found/);
 
+    const removedRequestJsonResult = runProcedureProcess([
+      "--procedure-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      ["--request", "json"].join("-"),
+      JSON.stringify({ args: ["--title", "legacy-request"] }),
+    ]);
+    assert.equal(removedRequestJsonResult.status, 1);
+    assert.match(removedRequestJsonResult.payload.error.message, /has been removed/);
+    assert.match(removedRequestJsonResult.payload.error.message, /pass procedure arguments directly/);
+
     const helperOnlyProcedureResult = runProcedureProcess([
       "--procedure-id",
       "android-device-automation-common",
@@ -1939,10 +1967,10 @@ describe("component build integration", () => {
       ]);
     }
 
-    let requestCounter = 0;
-    function runProcedureRequest(id: string, skillId: string, request: Record<string, unknown>): any {
-      const requestFile = join(runtimeTmp, `request-${requestCounter += 1}.json`);
-      writeFileSync(requestFile, JSON.stringify(request));
+    let jsonInputCounter = 0;
+    function runProcedureWithJsonInput(id: string, skillId: string, input: Record<string, unknown>): any {
+      const inputFile = join(runtimeTmp, `input-${jsonInputCounter += 1}.json`);
+      writeFileSync(inputFile, JSON.stringify(input));
       return runProcedureCommand([
         "--procedure-id",
         id,
@@ -1950,7 +1978,7 @@ describe("component build integration", () => {
         skillId,
         "--",
         "--input",
-        requestFile,
+        inputFile,
       ]);
     }
 
@@ -1989,7 +2017,7 @@ describe("component build integration", () => {
       assert.equal(tsErrors.ok, true);
       assert.equal(JSON.parse(tsErrors.result.stdout).total, 2);
 
-      const metadataOptimizer = runProcedureRequest(
+      const metadataOptimizer = runProcedureWithJsonInput(
         "app-store-optimization-metadata-optimizer",
         "app-store-optimization",
         {

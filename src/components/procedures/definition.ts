@@ -33,7 +33,7 @@ function defineProcedureOutput<TResult>(
   return definition;
 }
 
-export type CliProcedureRequest = {
+export type CliProcedureArgs = {
   args?: readonly string[];
 };
 
@@ -43,8 +43,8 @@ export type RuntimeProcedureResult = {
   stderr: string;
 };
 
-const cliProcedureArgs = defineProcedureArgs<CliProcedureRequest>({
-  typeName: "CliProcedureRequest",
+const cliProcedureArgs = defineProcedureArgs<CliProcedureArgs>({
+  typeName: "CliProcedureArgs",
   fields: {
     args: {
       type: "string[]",
@@ -73,13 +73,13 @@ export const runtimeProcedureOutput = defineProcedureOutput<RuntimeProcedureResu
 });
 
 type CliProcedureDefinition = Omit<
-  ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult>,
+  ProcedureDefinition<CliProcedureArgs, RuntimeProcedureResult>,
   "args" | "output"
-> & Partial<Pick<ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult>, "args" | "output">>;
+> & Partial<Pick<ProcedureDefinition<CliProcedureArgs, RuntimeProcedureResult>, "args" | "output">>;
 
 export function defineCliProcedure(
   definition: CliProcedureDefinition,
-): ProcedureDefinition<CliProcedureRequest, RuntimeProcedureResult> {
+): ProcedureDefinition<CliProcedureArgs, RuntimeProcedureResult> {
   const normalizedParams = definition.params?.map((param) => ({
     ...param,
     type: param.type.trim() === "" ? "布尔" : param.type,
