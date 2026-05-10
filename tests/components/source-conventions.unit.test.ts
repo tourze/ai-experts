@@ -1061,6 +1061,44 @@ describe("component source conventions", () => {
     );
   });
 
+  test("workflow mentions of hyphenated skill ids are backed by relatedSkills", () => {
+    const hyphenatedSkillIds = registry.skills
+      .map((skill) => skill.id)
+      .filter((skillId) => skillId.includes("-"));
+    const missingRelatedSkills: string[] = [];
+    const escapeRegex = (value: string): string => value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
+
+    for (const skill of registry.skills) {
+      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.id));
+      const workflow = skill.workflow;
+      const workflowText = [
+        ...(workflow.steps ?? []).map((step) => step.label),
+        ...(workflow.finalSteps ?? []).map((step) => step.label),
+        ...(workflow.gates ?? []).flatMap((gate) => [gate.skill, gate.label, gate.checks]),
+        ...(workflow.routes ?? []).flatMap((route) => [
+          route.skill,
+          route.checks,
+          route.output,
+          ...route.triggers,
+        ]),
+      ].join("\n");
+
+      for (const targetSkillId of hyphenatedSkillIds) {
+        if (targetSkillId === skill.id || relatedSkillIds.has(targetSkillId)) continue;
+        const pattern = new RegExp(`(^|[^A-Za-z0-9_-])${escapeRegex(targetSkillId)}(?=$|[^A-Za-z0-9_-])`, "u");
+        if (pattern.test(workflowText)) {
+          missingRelatedSkills.push(`${skill.id}: workflow mentions ${targetSkillId}`);
+        }
+      }
+    }
+
+    assert.deepEqual(
+      missingRelatedSkills,
+      [],
+      "workflow text that routes to another hyphenated skill should also declare relatedSkills",
+    );
+  });
+
   test("root platform memory files stay linked to README", () => {
     for (const fileName of ["AGENTS.md", "CLAUDE.md"]) {
       const filePath = join(repoRoot, fileName);

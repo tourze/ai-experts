@@ -5,6 +5,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { speckitBaselineSkill } from "../speckit-baseline/index";
 
 export const speckitTaskstoissuesSkill = defineSkill({
   id: "speckit-taskstoissues",
@@ -16,6 +17,14 @@ export const speckitTaskstoissuesSkill = defineSkill({
   constraints: [
     "禁止向不匹配远端的仓库创建 issue。",
     "失败时输出明确原因并停止后续创建。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return speckitBaselineSkill.id;
+      },
+      reason: "缺少 `.specify/` scripts 或 templates，需要先初始化 Speckit 基线时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

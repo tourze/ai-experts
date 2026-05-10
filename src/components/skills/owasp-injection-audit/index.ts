@@ -7,6 +7,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { sqlReviewOptimizationSkill } from "../sql-review-optimization/index";
 
 export const owaspInjectionAuditSkill = defineSkill({
   id: "owasp-injection-audit",
@@ -21,6 +22,14 @@ export const owaspInjectionAuditSkill = defineSkill({
     "黑名单字符过滤、简单字符串替换或只检查主机名片段不能视为有效防护。",
     "确认/可能/推测要分开标注；没有输入可控路径证据时不声称 confirmed。",
     "修复建议必须落到白名单、参数数组、协议/网段限制、路径规范化或 ID 映射等具体控制。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return sqlReviewOptimizationSkill.id;
+      },
+      reason: "发现 SQL 字符串拼接、ORM raw query 或模板 SQL 注入风险时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({

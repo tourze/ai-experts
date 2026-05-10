@@ -6,6 +6,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { speckitBaselineSkill } from "../speckit-baseline/index";
 
 export const speckitClarifySkill = defineSkill({
   id: "speckit-clarify",
@@ -17,6 +18,14 @@ export const speckitClarifySkill = defineSkill({
   constraints: [
     "不要泛问；问题必须具体可回答。",
     "每次澄清应附带“影响范围”。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return speckitBaselineSkill.id;
+      },
+      reason: "缺少 `.specify/` scripts 或 templates，需要先初始化 Speckit 基线时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

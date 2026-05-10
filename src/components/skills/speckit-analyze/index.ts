@@ -7,6 +7,7 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { speckitBaselineSkill } from "../speckit-baseline/index";
 
 export const speckitAnalyzeSkill = defineSkill({
   id: "speckit-analyze",
@@ -18,6 +19,14 @@ export const speckitAnalyzeSkill = defineSkill({
   constraints: [
     "严格只读，不允许改文件。",
     "结论必须可追溯到文档中的具体段落。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return speckitBaselineSkill.id;
+      },
+      reason: "缺少 `.specify/` scripts 或 templates，需要先初始化 Speckit 基线时联动。",
+    },
   ],
   invocation: InvocationPolicy.ImplicitAndExplicit,
   platforms: [Platform.Claude, Platform.Codex],

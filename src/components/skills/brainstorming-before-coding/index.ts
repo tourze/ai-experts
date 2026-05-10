@@ -7,6 +7,9 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { featureDevSkill } from "../feature-dev/index";
+import { planReviewSkill } from "../plan-review/index";
+import { taskDecomposerSkill } from "../task-decomposer/index";
 
 export const brainstormingBeforeCodingSkill = defineSkill({
   id: "brainstorming-before-coding",
@@ -22,6 +25,26 @@ export const brainstormingBeforeCodingSkill = defineSkill({
   constraints: [
     '**违反字面规则 = 违反规则精神。不存在"灵活变通"。**',
     "<HARD-GATE> 在展示设计方案并获得用户批准之前，不启动任何实现 skill、不写任何代码、不创建任何文件、不做任何脚手架操作。无论任务看起来多简单，都适用。 </HARD-GATE>",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return featureDevSkill.id;
+      },
+      reason: "用户批准设计后，需要进入完整功能开发实现时联动。",
+    },
+    {
+      get id() {
+        return taskDecomposerSkill.id;
+      },
+      reason: "设计批准后需要拆解任务、依赖或 Execution Contract 时联动。",
+    },
+    {
+      get id() {
+        return planReviewSkill.id;
+      },
+      reason: "设计方案仍需风险评审、边界检查或可执行性压力测试时联动。",
+    },
   ],
   antiPatterns: [
     defineAntiPattern({

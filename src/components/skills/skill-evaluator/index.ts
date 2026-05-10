@@ -8,6 +8,9 @@ import {
   defineWorkflow,
   defineWorkflowStep,
 } from "../../sdk";
+import { skillActivationAnalyzerSkill } from "../skill-activation-analyzer/index";
+import { skillCreatorSkill } from "../skill-creator/index";
+import { skillEvolverSkill } from "../skill-evolver/index";
 
 export const skillEvaluatorSkill = defineSkill({
   id: "skill-evaluator",
@@ -22,6 +25,27 @@ export const skillEvaluatorSkill = defineSkill({
     "评分只看知识增量、流程质量、反模式和可用性，不因格式漂亮或篇幅长给高分。",
     "触发质量仅优化 description 时转 skill-activation-analyzer；用参考 skill 优化目标 skill 时转 skill-evolver。",
     "不能把基础模型已知的概念包装成高价值 skill 知识。",
+  ],
+  relatedSkills: [
+    {
+      get id() {
+        return skillActivationAnalyzerSkill.id;
+      },
+      reason: "只优化 frontmatter description、触发域或误触发问题时联动。",
+    },
+    {
+      get id() {
+        return skillEvolverSkill.id;
+      },
+      reason: "需要用参考 skill 优化目标 skill、做 A/B 迁移或模式提炼时联动。",
+    },
+    {
+      get id() {
+        return skillCreatorSkill.id;
+      },
+      reason: "Claude 侧需要创建新 skill、跑 with-skill/baseline 迭代或打包交付时联动。",
+      platforms: [Platform.Claude],
+    },
   ],
   antiPatterns: [
     defineAntiPattern({
