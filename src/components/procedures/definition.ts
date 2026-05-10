@@ -1,12 +1,37 @@
-import {
-  Platform,
-  defineProcedure,
-  defineProcedureArgs,
-  defineProcedureOutput,
-  type ProcedureDefinition,
+import type {
+  Platform as SdkPlatform,
+  ProcedureArgsDefinition,
+  ProcedureDefinition,
+  ProcedureOutputDefinition,
 } from "../sdk";
 
 export { Platform, defineProcedureOutput };
+
+const Platform = {
+  Claude: "claude-code" as SdkPlatform,
+  Codex: "codex-cli" as SdkPlatform,
+} as const;
+
+function defineProcedure<
+  TArgs extends object = object,
+  TResult extends object = object,
+>(
+  definition: ProcedureDefinition<TArgs, TResult>,
+): ProcedureDefinition<TArgs, TResult> {
+  return definition;
+}
+
+function defineProcedureArgs<TArgs>(
+  definition: ProcedureArgsDefinition<TArgs>,
+): ProcedureArgsDefinition<TArgs> {
+  return definition;
+}
+
+function defineProcedureOutput<TResult>(
+  definition: ProcedureOutputDefinition<TResult>,
+): ProcedureOutputDefinition<TResult> {
+  return definition;
+}
 
 export type CliProcedureRequest = {
   args?: readonly string[];

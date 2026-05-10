@@ -2433,6 +2433,11 @@ describe("component build integration", () => {
         /\.\/src\/components\/|src\/components\/procedures\/sources/,
         `${platform} bundled procedures.js should not expose source-tree procedure module ids`,
       );
+      assert.doesNotMatch(
+        platformProceduresSource,
+        /\b(?:ComponentKind|InvocationPolicy|KnownTool|HookEvent|defineSkill|defineAgent|defineHook)\b/,
+        `${platform} bundled procedures.js should not include unrelated skill/agent/hook SDK helpers`,
+      );
       assert.match(platformProceduresSource, /ai-experts-component-module:procedures\/sources/);
       if (platform === "claude") {
         assert.match(
