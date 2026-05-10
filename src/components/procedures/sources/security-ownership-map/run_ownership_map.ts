@@ -74,6 +74,12 @@ export const procedure = defineCliProcedure({
       required: false,
     },
     {
+      flag: "--author-exclude-regex",
+      type: "字符串",
+      description: "排除匹配正则的作者（可重复）",
+      required: false,
+    },
+    {
       flag: "--graphml",
       type: "",
       description: "输出 GraphML 格式，传此标志即启用",
@@ -83,6 +89,60 @@ export const procedure = defineCliProcedure({
       flag: "--sensitive-config",
       type: "路径",
       description: "敏感规则配置文件路径",
+      required: false,
+    },
+    {
+      flag: "--cochange-max-files",
+      type: "数字",
+      description: "共改最大文件数（默认 50）",
+      required: false,
+    },
+    {
+      flag: "--cochange-min-count",
+      type: "数字",
+      description: "共改最少出现次数（默认 2）",
+      required: false,
+    },
+    {
+      flag: "--cochange-min-jaccard",
+      type: "数字",
+      description: "共改最小 Jaccard 系数（默认 0.05）",
+      required: false,
+    },
+    {
+      flag: "--cochange-exclude",
+      type: "字符串",
+      description: "排除匹配正则的共改文件（可重复）",
+      required: false,
+    },
+    {
+      flag: "--no-default-cochange-excludes",
+      type: "",
+      description: "不使用默认的共改排除规则，传此标志即启用",
+      required: false,
+    },
+    {
+      flag: "--community-top-owners",
+      type: "数字",
+      description: "每个社区显示的最多 owner 数（默认 5）",
+      required: false,
+    },
+    {
+      flag: "--bus-factor-threshold",
+      type: "数字",
+      description: "bus factor 告警阈值（默认 1）",
+      required: false,
+    },
+    {
+      flag: "--stale-days",
+      type: "数字",
+      description: "孤儿代码判定天数（默认 365）",
+      required: false,
+    },
+    {
+      flag: "--owner-threshold",
+      type: "数字",
+      description: "隐藏 owner 判定阈值（默认 0.5）",
       required: false,
     },
     {

@@ -1340,6 +1340,18 @@ describe("component build integration", () => {
     assert.match(skillsPruneAndSyncReadmeSkill, /\| `--format` \| 字符串 \| 否 \| audit 输出格式/);
     assert.match(skillsPruneAndSyncReadmeSkill, /\| `--yes` \| — \| 否 \| 确认执行 prune 删除操作/);
 
+    const securityOwnershipMapSkill = readFileSync(
+      join(tmpDistDir, "codex/skills/security-ownership-map/SKILL.md"),
+      "utf-8",
+    );
+    assert.match(securityOwnershipMapSkill, /### `security-ownership-map-query-ownership`/);
+    assert.match(securityOwnershipMapSkill, /\| `\[command\]` \| 字符串 \| 是 \| 查询命令/);
+    assert.match(securityOwnershipMapSkill, /\| `--person` \| 字符串 \| 否 \| person 命令要查询/);
+    assert.match(securityOwnershipMapSkill, /\| `--include-files` \| — \| 否 \| community 命令同时输出社区文件列表/);
+    assert.match(securityOwnershipMapSkill, /### `security-ownership-map-run-ownership-map`/);
+    assert.match(securityOwnershipMapSkill, /\| `--author-exclude-regex` \| 字符串 \| 否 \| 排除匹配正则的作者/);
+    assert.match(securityOwnershipMapSkill, /\| `--cochange-min-jaccard` \| 数字 \| 否 \| 共改最小 Jaccard 系数/);
+
     const copywritingSkill = readFileSync(join(tmpDistDir, "codex/skills/copywriting/SKILL.md"), "utf-8");
     assert.match(copywritingSkill, /--text '这是一段待检测文案' --platform social-platform/);
 

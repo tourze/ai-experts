@@ -456,6 +456,49 @@ describe("component source conventions", () => {
       "utf-8",
     );
     assert.match(runSource, /commandArgs\.push\("--overwrite"\)/u);
+    const runFlags = [...runSource.matchAll(/flag:\s+"([^"]+)"/gu)].map((match) => match[1]);
+    for (const expectedFlag of [
+      "--author-exclude-regex",
+      "--cochange-max-files",
+      "--cochange-min-count",
+      "--cochange-min-jaccard",
+      "--cochange-exclude",
+      "--no-default-cochange-excludes",
+      "--community-top-owners",
+      "--bus-factor-threshold",
+      "--stale-days",
+      "--owner-threshold",
+    ]) {
+      assert.ok(runFlags.includes(expectedFlag), `run ownership metadata should expose ${expectedFlag}`);
+    }
+
+    const querySource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/security-ownership-map/query_ownership.ts"),
+      "utf-8",
+    );
+    const queryFlags = [...querySource.matchAll(/flag:\s+"([^"]+)"/gu)].map((match) => match[1]);
+    for (const expectedFlag of [
+      "[command]",
+      "--limit",
+      "--sort",
+      "--email-contains",
+      "--min-touches",
+      "--min-sensitive",
+      "--path-contains",
+      "--tag",
+      "--bus-factor-max",
+      "--sensitivity-min",
+      "--person",
+      "--file",
+      "--min-jaccard",
+      "--min-count",
+      "--section",
+      "--id",
+      "--include-files",
+      "--file-limit",
+    ]) {
+      assert.ok(queryFlags.includes(expectedFlag), `query ownership metadata should expose ${expectedFlag}`);
+    }
 
     const communitySource = readFileSync(
       join(repoRoot, "src/components/procedures/sources/security-ownership-map/community_maintainers.ts"),
