@@ -141,7 +141,7 @@ describe("component source conventions", () => {
         join(repoRoot, "src/components/procedures/sources/android-device-automation", sourceFile),
         "utf-8",
       );
-      assert.doesNotMatch(source, /Reserved for future structured output/u);
+      assert.equal(source.includes(["Reserved for future", "structured output"].join(" ")), false);
       assert.doesNotMatch(
         source,
         /flag:\s+"--json"/u,
