@@ -2560,8 +2560,14 @@ describe("component build integration", () => {
     assert.equal(hookManifest.hooks.some((hook: any) => "payloadMode" in hook), false);
     const legacyHookNamingPattern = /(?:^|["/_.-])(?:expert|plugin)(?:["/_.-]|$)/;
     assert.equal(hookManifest.hooks.some((hook: any) => legacyHookNamingPattern.test(hook.id)), false);
-    assert.doesNotMatch(readFileSync(join(tmpDistDir, "claude/hooks/dispatch.mjs"), "utf-8"), legacyHookNamingPattern);
-    assert.doesNotMatch(readFileSync(join(tmpDistDir, "codex/hooks/dispatch.mjs"), "utf-8"), legacyHookNamingPattern);
+    const claudeDispatchSource = readFileSync(join(tmpDistDir, "claude/hooks/dispatch.mjs"), "utf-8");
+    const codexDispatchSource = readFileSync(join(tmpDistDir, "codex/hooks/dispatch.mjs"), "utf-8");
+    assert.doesNotMatch(claudeDispatchSource, legacyHookNamingPattern);
+    assert.doesNotMatch(codexDispatchSource, legacyHookNamingPattern);
+    assert.doesNotMatch(claudeDispatchSource, /\bdefineHook\(/);
+    assert.doesNotMatch(codexDispatchSource, /\bdefineHook\(/);
+    assert.doesNotMatch(claudeDispatchSource, /entry:\s*new URL\(/);
+    assert.doesNotMatch(codexDispatchSource, /entry:\s*new URL\(/);
 
     const reminderOutput = execFileSync(
       process.execPath,

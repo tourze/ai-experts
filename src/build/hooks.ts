@@ -1,6 +1,7 @@
-import { rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { isAbsolute, join, relative } from "node:path";
 import * as esbuild from "esbuild";
+import * as ts from "typescript";
 import type { HookDefinition } from "../components/sdk";
 import {
   ensureDir,
@@ -49,6 +50,53 @@ function relativeImportSpecifier(fromDir: string, targetPath: string): string {
   return specifier.startsWith(".") ? specifier : `./${specifier}`;
 }
 
+function isDefineHookCall(initializer: ts.Expression | undefined): boolean {
+  return initializer !== undefined &&
+    ts.isCallExpression(initializer) &&
+    ts.isIdentifier(initializer.expression) &&
+    initializer.expression.text === "defineHook";
+}
+
+function stripHookMetadata(source: string, sourcePath: string): string {
+  const sourceFile = ts.createSourceFile(sourcePath, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  let changed = false;
+  const statements = sourceFile.statements.flatMap((statement): ts.Statement[] => {
+    if (!ts.isVariableStatement(statement)) return [statement];
+    const declarations = statement.declarationList.declarations.filter((declaration) =>
+      !isDefineHookCall(declaration.initializer)
+    );
+    if (declarations.length === statement.declarationList.declarations.length) return [statement];
+    changed = true;
+    if (declarations.length === 0) return [];
+    return [
+      ts.factory.updateVariableStatement(
+        statement,
+        statement.modifiers,
+        ts.factory.updateVariableDeclarationList(statement.declarationList, declarations),
+      ),
+    ];
+  });
+  if (!changed) return source;
+  const updated = ts.factory.updateSourceFile(sourceFile, statements);
+  return ts.createPrinter({ newLine: ts.NewLineKind.LineFeed }).printFile(updated);
+}
+
+function stripHookMetadataPlugin(): esbuild.Plugin {
+  return {
+    name: "strip-hook-metadata",
+    setup(build) {
+      build.onLoad({ filter: /\.ts$/ }, (args) => {
+        const source = readFileSync(args.path, "utf-8");
+        if (!source.includes("defineHook(")) return undefined;
+        return {
+          contents: stripHookMetadata(source, args.path),
+          loader: "ts",
+        };
+      });
+    },
+  };
+}
+
 export async function compileHookModules(
   hooks: readonly HookDefinition[],
   hooksRoot: string,
@@ -84,6 +132,7 @@ export async function compileHookModules(
       format: "esm",
       target: "node20",
       logLevel: "silent",
+      plugins: [stripHookMetadataPlugin()],
     });
     stripBundledSourcePathComments(dispatcherOutfile);
   } finally {
