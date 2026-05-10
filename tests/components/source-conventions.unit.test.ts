@@ -877,6 +877,23 @@ describe("component source conventions", () => {
     );
   });
 
+  test("web content fetcher documents supported fetch argv", () => {
+    const procedureSource = readFileSync(
+      join(repoRoot, "src/components/procedures/sources/web-content-fetcher/fetch.ts"),
+      "utf-8",
+    );
+    for (const expected of [
+      'flag: "[url]"',
+      'flag: "[max_chars]"',
+      'flag: "--stealth"',
+      'flag: "--json"',
+    ]) {
+      assert.match(procedureSource, new RegExp(expected.replaceAll("[", "\\[").replaceAll("]", "\\]"), "u"));
+    }
+    assert.match(procedureSource, /if \(arg === "--stealth"\) stealth = true/u);
+    assert.match(procedureSource, /else if \(arg === "--json"\) jsonOutput = true/u);
+  });
+
   test("skill display names are user-facing labels", () => {
     const rawDisplayNames = registry.skills
       .filter((skill) => /^[a-z0-9]+(?:-[a-z0-9]+)+$/u.test(skill.fullName))

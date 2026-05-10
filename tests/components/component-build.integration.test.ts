@@ -1271,6 +1271,13 @@ describe("component build integration", () => {
     assert.match(youtubeSearchSkill, /'tailwindcss tutorial' --count 5 --sort views/);
     assert.doesNotMatch(youtubeSearchSkill, /\n  tailwindcss tutorial --count 5 --sort views/);
 
+    const webContentFetcherSkill = readFileSync(join(tmpDistDir, "codex/skills/web-content-fetcher/SKILL.md"), "utf-8");
+    assert.match(webContentFetcherSkill, /### `web-content-fetcher-fetch`/);
+    assert.match(webContentFetcherSkill, /\| `\[url\]` \| URL \| 是 \| 要抓取正文的网页 URL/);
+    assert.match(webContentFetcherSkill, /\| `\[max_chars\]` \| 数字 \| 否 \| 最大输出字符数/);
+    assert.match(webContentFetcherSkill, /\| `--stealth` \| — \| 否 \| 使用更接近浏览器的请求头/);
+    assert.match(webContentFetcherSkill, /\| `--json` \| — \| 否 \| 输出包含 URL、模式、选择器和 Markdown 的 JSON/);
+
     const iconRetrievalSkill = readFileSync(join(tmpDistDir, "codex/skills/icon-retrieval/SKILL.md"), "utf-8");
     assert.match(iconRetrievalSkill, /'security shield' 3/);
 

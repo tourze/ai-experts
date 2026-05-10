@@ -11,6 +11,32 @@ export const procedure = defineCliProcedure({
   owners: { skillIds: ["web-content-fetcher"] },
   target: "scripts/fetch.mjs",
   runtime: "node",
+  params: [
+    {
+      flag: "[url]",
+      type: "URL",
+      description: "要抓取正文的网页 URL（必填）",
+      required: true,
+    },
+    {
+      flag: "[max_chars]",
+      type: "数字",
+      description: "最大输出字符数（默认 30000）",
+      required: false,
+    },
+    {
+      flag: "--stealth",
+      type: "",
+      description: "使用更接近浏览器的请求头；不执行 JavaScript",
+      required: false,
+    },
+    {
+      flag: "--json",
+      type: "",
+      description: "输出包含 URL、模式、选择器和 Markdown 的 JSON",
+      required: false,
+    },
+  ],
 
   exampleArgs: { args: ["https://example.com/article", "--json"] },
 });
