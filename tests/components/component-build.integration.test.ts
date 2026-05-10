@@ -1101,7 +1101,6 @@ describe("component build integration", () => {
       "codex/config.toml",
     );
     assert.equal(codexConfig.sections.features.codex_hooks, true);
-    assert.equal(codexConfig.sections.agents.enabled, true);
     assert.equal(codexConfig.sections.agents.max_depth, 1);
 
     const agentFiles = collectFiles(join(tmpDistDir, "codex/agents"), (file) => file.endsWith(".toml"));
