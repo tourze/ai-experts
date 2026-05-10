@@ -98,5 +98,11 @@ export function main(argv: readonly string[]): any {
 - [ ] 已运行验证命令：
 `;
   }
-  console.log(renderChecklist(parseArgs(argv)));
+  try {
+    console.log(renderChecklist(parseArgs(argv)));
+    return 0;
+  } catch (error: any) {
+    console.error(error.message);
+    return 1;
+  }
 }

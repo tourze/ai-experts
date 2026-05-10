@@ -1928,6 +1928,18 @@ describe("component build integration", () => {
     assert.equal(directArgs.procedureId, "debug-methodology-debug-checklist");
     assert.match(directArgs.result.stdout, /Debug Checklist: direct-args/);
 
+    const invalidDirectArgsResult = runProcedureProcess([
+      "--procedure-id",
+      "debug-methodology-debug-checklist",
+      "--trigger-skill",
+      "debug-methodology",
+      "--unknown",
+    ]);
+    assert.equal(invalidDirectArgsResult.status, 1);
+    assert.equal(invalidDirectArgsResult.payload.error.code, "PROCEDURE_EXECUTION_FAILED");
+    assert.match(invalidDirectArgsResult.payload.result.stderr, /Unknown argument: --unknown/);
+    assert.doesNotMatch(invalidDirectArgsResult.payload.result.stderr, /procedures\.js:\d+/);
+
     const executionFailureResult = runProcedureProcess([
       "--procedure-id",
       "web-content-fetcher-fetch",
