@@ -32,8 +32,8 @@ export const logAnalyzerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return incidentResponseSkill.id;
+      get skill() {
+        return incidentResponseSkill;
       },
       reason: "日志线索指向线上事故、影响面扩大或需要处置编排时联动。",
     },

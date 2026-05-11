@@ -33,14 +33,14 @@ export const phpErrorHandlingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpTypeSafetySkill.id;
+      get skill() {
+        return phpTypeSafetySkill;
       },
       reason: "异常类型、错误响应和批处理结果需要精确 PHPDoc / 静态分析表达时联动。",
     },
     {
-      get id() {
-        return phpTestingSkill.id;
+      get skill() {
+        return phpTestingSkill;
       },
       reason: "需要覆盖输入校验、业务异常、外部依赖失败或部分失败路径时联动。",
     },

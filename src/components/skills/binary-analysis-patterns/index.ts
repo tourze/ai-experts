@@ -32,8 +32,8 @@ export const binaryAnalysisPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return protocolReverseEngineeringSkill.id;
+      get skill() {
+        return protocolReverseEngineeringSkill;
       },
       reason: "协议编解码或加密路径不清晰时，可切到 `protocol-reverse-engineering`。",
     },

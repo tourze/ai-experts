@@ -33,14 +33,14 @@ export const wiresharkAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return protocolReverseEngineeringSkill.id;
+      get skill() {
+        return protocolReverseEngineeringSkill;
       },
       reason: "需要把会话样本交给 `protocol-reverse-engineering` 深挖协议。",
     },
     {
-      get id() {
-        return ethicalHackingMethodologySkill.id;
+      get skill() {
+        return ethicalHackingMethodologySkill;
       },
       reason: "需要把端口侦察结果和流量证据交叉验证暴露服务时联动。",
     },

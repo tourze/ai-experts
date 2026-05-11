@@ -52,26 +52,26 @@ export const modernWebDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
+      get skill() {
+        return webPerformanceDiagnosisSkill;
       },
       reason: "视觉方案可能影响 LCP、INP、CLS、图片、字体、脚本或动画成本时联动。",
     },
     {
-      get id() {
-        return interactionDesignSkill.id;
+      get skill() {
+        return interactionDesignSkill;
       },
       reason: "视觉方向需要转化为交互反馈、动效、状态流或可用性流程时联动。",
     },
     {
-      get id() {
-        return responsiveDesignSkill.id;
+      get skill() {
+        return responsiveDesignSkill;
       },
       reason: "视觉方案需要落到移动端、断点、容器查询或小屏内容路径时联动。",
     },
     {
-      get id() {
-        return industryDesignPresetsSkill.id;
+      get skill() {
+        return industryDesignPresetsSkill;
       },
       reason: "需要先按行业语义、配色、字体和反模式选择视觉 preset 时联动。",
     },

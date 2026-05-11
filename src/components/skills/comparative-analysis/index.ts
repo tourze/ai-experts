@@ -37,8 +37,8 @@ export const comparativeAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return deepResearchSkill.id;
+      get skill() {
+        return deepResearchSkill;
       },
       reason: "如果对比的外部概念需要先收集信息，先用 `deep-research`。",
     },

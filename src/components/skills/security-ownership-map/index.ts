@@ -36,8 +36,8 @@ export const securityOwnershipMapSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return securityThreatModelSkill.id;
+      get skill() {
+        return securityThreatModelSkill;
       },
       reason: "需要把 git 历史与 `security-threat-model` 的资产/边界分析关联起来。",
     },

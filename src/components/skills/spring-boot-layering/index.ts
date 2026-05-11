@@ -40,32 +40,32 @@ export const springBootLayeringSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return graalvmNativeImageSkill.id;
+      get skill() {
+        return graalvmNativeImageSkill;
       },
       reason: "Spring Boot 服务需要原生镜像、RuntimeHints 或 Native Image 配置时联动。",
     },
     {
-      get id() {
-        return gradleBuildPerformanceSkill.id;
+      get skill() {
+        return gradleBuildPerformanceSkill;
       },
       reason: "构建变慢、Gradle 配置或 CI 构建性能影响服务交付时联动。",
     },
     {
-      get id() {
-        return arthasCpuHighSkill.id;
+      get skill() {
+        return arthasCpuHighSkill;
       },
       reason: "线上 JVM CPU 飙高、线程热点或负载异常需要运行时诊断时联动。",
     },
     {
-      get id() {
-        return arthasSpringcontextIssuesResolveSkill.id;
+      get skill() {
+        return arthasSpringcontextIssuesResolveSkill;
       },
       reason: "线上 Bean、ApplicationContext、条件装配或配置注入异常需要运行时诊断时联动。",
     },
     {
-      get id() {
-        return javaJunitSkill.id;
+      get skill() {
+        return javaJunitSkill;
       },
       reason: "需要为 Controller、Service、Repository 或异常处理补单元/集成测试时联动。",
     },

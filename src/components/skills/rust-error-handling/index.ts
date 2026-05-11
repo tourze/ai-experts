@@ -32,20 +32,20 @@ export const rustErrorHandlingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return rustTestingSkill.id;
+      get skill() {
+        return rustTestingSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`。",
     },
     {
-      get id() {
-        return rustAsyncPatternsSkill.id;
+      get skill() {
+        return rustAsyncPatternsSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`。",
     },
     {
-      get id() {
-        return rustOwnershipIdiomsSkill.id;
+      get skill() {
+        return rustOwnershipIdiomsSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-testing` · `rust-async-patterns`",
     },

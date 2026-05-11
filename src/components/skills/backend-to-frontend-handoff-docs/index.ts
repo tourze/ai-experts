@@ -42,14 +42,14 @@ export const backendToFrontendHandoffDocsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "接口还处在方案设计或系统边界讨论阶段时先联动。",
     },
     {
-      get id() {
-        return featureDevSkill.id;
+      get skill() {
+        return featureDevSkill;
       },
       reason: "接口尚未落地、还需要实现或补齐开发任务时联动。",
     },

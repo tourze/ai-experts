@@ -35,20 +35,20 @@ export const fishboneDiagramSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "需要反推失败路径、做未来风险预判或事前验尸时联动。",
     },
     {
-      get id() {
-        return mckinseyStepSkill.id;
+      get skill() {
+        return mckinseyStepSkill;
       },
       reason: "与 `mckinsey-7-step` 配合：七步法的第二步（分解问题）可以用鱼骨图。问题定义阶段的补充工具见 references/five-w-two-h.md。",
     },
     {
-      get id() {
-        return priorityJudgeSkill.id;
+      get skill() {
+        return priorityJudgeSkill;
       },
       reason: "原因已知只需排优先级：鱼骨图是发散找原因的工具，原因已知时直接用 `priority-judge` 排序。",
     },

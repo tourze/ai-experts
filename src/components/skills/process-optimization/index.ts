@@ -30,14 +30,14 @@ export const processOptimizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return agileProductOwnerSkill.id;
+      get skill() {
+        return agileProductOwnerSkill;
       },
       reason: "需要从系统视角看依赖关系时，可配合 `systems-thinking`；涉及 Backlog 或 Sprint 流程时，可配合 `agile-product-owner`。",
     },
     {
-      get id() {
-        return systemsThinkingSkill.id;
+      get skill() {
+        return systemsThinkingSkill;
       },
       reason: "需要从系统视角看依赖关系时，可配合 `systems-thinking`；涉及 Backlog 或 Sprint 流程时，可配合 `agile-product-owner`。",
     },

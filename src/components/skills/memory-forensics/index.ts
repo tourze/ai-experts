@@ -33,8 +33,8 @@ export const memoryForensicsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要与 `binary-analysis-patterns` 联动定位可疑模块；面对反调试或壳层样本时，结合其中的 anti-reversing 资料解释运行时差异。",
     },

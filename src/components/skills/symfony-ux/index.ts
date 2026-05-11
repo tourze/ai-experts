@@ -36,14 +36,14 @@ export const symfonyUxSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return twigComponentsSkill.id;
+      get skill() {
+        return twigComponentsSkill;
       },
       reason: "页面需要抽取可复用 TwigComponent、slots 或服务端渲染组件时联动。",
     },
     {
-      get id() {
-        return symfonyMessengerSkill.id;
+      get skill() {
+        return symfonyMessengerSkill;
       },
       reason: "页面交互会触发异步任务、后台处理或失败队列时联动。",
     },

@@ -46,8 +46,8 @@ export const systemDesignSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "系统方案需要转成可执行任务、依赖关系或 Execution Contract 时联动。",
     },

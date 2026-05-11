@@ -35,8 +35,8 @@ export const markdownMermaidWritingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return mdToPdfSkill.id;
+      get skill() {
+        return mdToPdfSkill;
       },
       reason: "若最终要导出 PDF，可继续使用 `md-to-pdf`。",
     },

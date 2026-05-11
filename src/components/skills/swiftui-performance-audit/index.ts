@@ -34,14 +34,14 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return swiftConcurrencyExpertSkill.id;
+      get skill() {
+        return swiftConcurrencyExpertSkill;
       },
       reason: "性能问题来自 Task、actor、主线程隔离或并发边界时联动。",
     },
     {
-      get id() {
-        return swiftuiUiPatternsSkill.id;
+      get skill() {
+        return swiftuiUiPatternsSkill;
       },
       reason: "需要整理视图结构、状态拥有者、导航或 sheet 模式以降低重绘扇出时联动。",
     },

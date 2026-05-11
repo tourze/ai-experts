@@ -42,20 +42,20 @@ export const uxHeuristicsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return uxResearcherDesignerSkill.id;
+      get skill() {
+        return uxResearcherDesignerSkill;
       },
       reason: "发现问题已经超出视觉层，需结合 `ux-researcher-designer` 一起处理。",
     },
     {
-      get id() {
-        return productDesignCriticSkill.id;
+      get skill() {
+        return productDesignCriticSkill;
       },
       reason: "问题不是单个交互启发式，而是产品定位、关键流程、信任结构或治理暴露时联动。",
     },
     {
-      get id() {
-        return frontendDesignReviewSkill.id;
+      get skill() {
+        return frontendDesignReviewSkill;
       },
       reason: "启发式问题需要落到 UI 实现质量、响应式状态、设计系统一致性或可访问性修复时联动。",
     },

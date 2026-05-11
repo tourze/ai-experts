@@ -36,32 +36,32 @@ export const phpTestingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpXFeaturesSkill.id;
+      get skill() {
+        return phpXFeaturesSkill;
       },
       reason: "测试代码需要 PHP 8 attributes、readonly DTO、enum 或 match 语法时联动。",
     },
     {
-      get id() {
-        return phpErrorHandlingSkill.id;
+      get skill() {
+        return phpErrorHandlingSkill;
       },
       reason: "需要覆盖异常层级、输入校验、外部依赖失败或用户错误映射时联动。",
     },
     {
-      get id() {
-        return phpTypeSafetySkill.id;
+      get skill() {
+        return phpTypeSafetySkill;
       },
       reason: "测试夹具、data provider 和 mock 需要精确 PHPDoc / 静态分析类型时联动。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 PHP 特有语法与工具。",
     },
     {
-      get id() {
-        return laravelTddSkill.id;
+      get skill() {
+        return laravelTddSkill;
       },
       reason: "PHP 测试运行在 Laravel 项目内，涉及 HTTP 测试、RefreshDatabase、Queue::fake、Sanctum 或 Eloquent factory 时联动。",
     },

@@ -35,20 +35,20 @@ export const mckinseyStepSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return scientificBrainstormingSkill.id;
+      get skill() {
+        return scientificBrainstormingSkill;
       },
       reason: "需要创意发散：七步法是收敛式分析，创意发散用 `scientific-brainstorming`。",
     },
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "与 `first-principles-decomposer` 配合：第一性原理拆假设，七步法走全流程。",
     },
     {
-      get id() {
-        return fishboneDiagramSkill.id;
+      get skill() {
+        return fishboneDiagramSkill;
       },
       reason: "步骤 2 需要根因或问题结构拆解时用 `fishbone-diagram`；问题和方案都已明确、只需一次性行动计划时，参考 fishbone-diagram 的 5W2H reference。",
     },

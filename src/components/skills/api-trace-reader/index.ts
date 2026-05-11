@@ -34,14 +34,14 @@ export const apiTraceReaderSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return architectureReviewerSkill.id;
+      get skill() {
+        return architectureReviewerSkill;
       },
       reason: "调用链发现上升为系统级结构、企业就绪或子系统审计问题时联动。",
     },
     {
-      get id() {
-        return planReviewSkill.id;
+      get skill() {
+        return planReviewSkill;
       },
       reason: "用户要审查方案、RFC 或实现计划，而不是追踪已存在调用链时转向。",
     },

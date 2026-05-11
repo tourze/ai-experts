@@ -34,14 +34,14 @@ export const phpAsyncPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpErrorHandlingSkill.id;
+      get skill() {
+        return phpErrorHandlingSkill;
       },
       reason: "异步 worker、长驻服务和外部 I/O 需要异常映射、重试边界或失败治理时联动。",
     },
     {
-      get id() {
-        return phpXFeaturesSkill.id;
+      get skill() {
+        return phpXFeaturesSkill;
       },
       reason: "需要 Fiber、readonly、enum 或现代语法支撑异步代码结构时联动。",
     },

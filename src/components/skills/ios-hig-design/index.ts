@@ -57,20 +57,20 @@ export const iosHigDesignSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return swiftuiUiPatternsSkill.id;
+      get skill() {
+        return swiftuiUiPatternsSkill;
       },
       reason: "需要把 iOS HIG 决策落到 SwiftUI 导航、状态、表单或工具栏实现时联动。",
     },
     {
-      get id() {
-        return liquidGlassDesignSkill.id;
+      get skill() {
+        return liquidGlassDesignSkill;
       },
       reason: "需要处理 iOS 液态玻璃外观、层级、材质或可读性时联动。",
     },
     {
-      get id() {
-        return macosDesignGuidelinesSkill.id;
+      get skill() {
+        return macosDesignGuidelinesSkill;
       },
       reason: "目标平台转为 Mac、Mac Catalyst 或需要比较桌面端 HIG 差异时联动。",
     },

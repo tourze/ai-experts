@@ -34,14 +34,14 @@ export const hierarchicalMatchingSystemsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "匹配系统需要扩展到服务边界、存储、接口、数据流或可靠性设计时联动。",
     },
     {
-      get id() {
-        return architectureReviewerSkill.id;
+      get skill() {
+        return architectureReviewerSkill;
       },
       reason: "已有匹配系统需要子系统级问题审计、风险评分或企业就绪评审时联动。",
     },

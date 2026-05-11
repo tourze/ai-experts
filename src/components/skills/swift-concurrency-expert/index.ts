@@ -38,14 +38,14 @@ export const swiftConcurrencyExpertSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return swiftuiPerformanceAuditSkill.id;
+      get skill() {
+        return swiftuiPerformanceAuditSkill;
       },
       reason: "需要判断 SwiftUI 卡顿、重渲染或主线程重活是否由并发边界导致时联动。",
     },
     {
-      get id() {
-        return swiftuiUiPatternsSkill.id;
+      get skill() {
+        return swiftuiUiPatternsSkill;
       },
       reason: "需要把并发状态拆回 SwiftUI 视图结构、状态拥有者或依赖注入模式时联动。",
     },

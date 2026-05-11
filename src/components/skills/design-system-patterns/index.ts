@@ -38,14 +38,14 @@ export const designSystemPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return responsiveDesignSkill.id;
+      get skill() {
+        return responsiveDesignSkill;
       },
       reason: "需要把 token、组件状态和断点策略落到响应式布局时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "需要把设计系统原则落到现代 Web 页面视觉、层级、间距和组件审美时联动。",
     },

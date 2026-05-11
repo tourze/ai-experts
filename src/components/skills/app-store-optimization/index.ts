@@ -66,8 +66,8 @@ export const appStoreOptimizationSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return appleAppstoreReviewerSkill.id;
+      get skill() {
+        return appleAppstoreReviewerSkill;
       },
       reason: "ASO 或发版文案需要进入审核合规、拒审风险或 reviewer notes 视角时联动。",
     },

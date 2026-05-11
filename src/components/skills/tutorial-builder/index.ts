@@ -40,32 +40,32 @@ export const tutorialBuilderSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return mdToPdfSkill.id;
+      get skill() {
+        return mdToPdfSkill;
       },
       reason: "教程正文定稿后，需要以 Markdown 为源导出 PDF 时联动。",
     },
     {
-      get id() {
-        return markdownMermaidWritingSkill.id;
+      get skill() {
+        return markdownMermaidWritingSkill;
       },
       reason: "章节视觉需要流程图、架构图、时间线或 Mermaid 图示时联动。",
     },
     {
-      get id() {
-        return pptGenerateSkill.id;
+      get skill() {
+        return pptGenerateSkill;
       },
       reason: "教程需要转成演示材料、课程讲义或视觉规范 slide 时联动。",
     },
     {
-      get id() {
-        return userGuideWritingSkill.id;
+      get skill() {
+        return userGuideWritingSkill;
       },
       reason: "目标是终端用户操作指南、帮助中心或产品使用说明，而不是课程学习包时联动。",
     },
     {
-      get id() {
-        return docCoauthoringSkill.id;
+      get skill() {
+        return docCoauthoringSkill;
       },
       reason: "只需要协作文档结构、章节组织、审稿或 DOCX 交付边界时联动。",
     },

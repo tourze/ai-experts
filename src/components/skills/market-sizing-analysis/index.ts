@@ -32,14 +32,14 @@ export const marketSizingAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fundraiseAdvisorSkill.id;
+      get skill() {
+        return fundraiseAdvisorSkill;
       },
       reason: "与客户画像或融资故事联动时，可配合 `startup-icp-definer` 和 `fundraise-advisor`。",
     },
     {
-      get id() {
-        return startupIcpDefinerSkill.id;
+      get skill() {
+        return startupIcpDefinerSkill;
       },
       reason: "与客户画像或融资故事联动时，可配合 `startup-icp-definer` 和 `fundraise-advisor`。",
     },

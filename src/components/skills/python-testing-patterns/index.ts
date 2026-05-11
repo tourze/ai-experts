@@ -30,20 +30,20 @@ export const pythonTestingPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonErrorHandlingSkill.id;
+      get skill() {
+        return pythonErrorHandlingSkill;
       },
       reason: "失败路径设计和断言策略时，联动 `python-error-handling`。",
     },
     {
-      get id() {
-        return asyncPythonPatternsSkill.id;
+      get skill() {
+        return asyncPythonPatternsSkill;
       },
       reason: "异步测试组织方式时，联动 `async-python-patterns`。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Python 特有语法与工具。",
     },

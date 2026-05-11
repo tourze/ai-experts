@@ -40,20 +40,20 @@ export const phpXFeaturesSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpErrorHandlingSkill.id;
+      get skill() {
+        return phpErrorHandlingSkill;
       },
       reason: "需要设计异常层级或输入校验时，联动查看 `php-error-handling`。",
     },
     {
-      get id() {
-        return phpTypeSafetySkill.id;
+      get skill() {
+        return phpTypeSafetySkill;
       },
       reason: "需要配置 PHPStan/Psalm 或补泛型标注时，联动查看 `php-type-safety`。",
     },
     {
-      get id() {
-        return phpDesignPatternsSkill.id;
+      get skill() {
+        return phpDesignPatternsSkill;
       },
       reason: "需要设计服务层、DTO、Repository 时，联动查看 `php-design-patterns`。",
     },

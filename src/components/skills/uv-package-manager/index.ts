@@ -37,14 +37,14 @@ export const uvPackageManagerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonTypeSafetySkill.id;
+      get skill() {
+        return pythonTypeSafetySkill;
       },
       reason: "需要把 mypy/pyright 等静态检查纳入开发流时，联动 `python-type-safety`。",
     },
     {
-      get id() {
-        return pythonTestingPatternsSkill.id;
+      get skill() {
+        return pythonTestingPatternsSkill;
       },
       reason: "需要把测试工具链串起来时，联动 `python-testing-patterns`。",
     },

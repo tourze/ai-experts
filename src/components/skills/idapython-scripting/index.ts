@@ -33,8 +33,8 @@ export const idapythonScriptingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要先建立逆向目标、字符串/xref 线索、函数边界或算法假设时联动。",
     },

@@ -33,14 +33,14 @@ export const featureDevSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return planReviewSkill.id;
+      get skill() {
+        return planReviewSkill;
       },
       reason: "进入实现前需要审查方案风险、依赖、回滚和验证路径时联动。",
     },
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "需要拆成任务板、Execution Contract，或使用 persistent-planning reference 做跨 session 落盘时联动。",
     },

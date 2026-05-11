@@ -33,14 +33,14 @@ export const planningUnderUncertaintySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return estimateCalibratorSkill.id;
+      get skill() {
+        return estimateCalibratorSkill;
       },
       reason: "需要把不确定性转成估算或版本节奏时，可配合 `estimate-calibrator`。",
     },
     {
-      get id() {
-        return whatIfOracleSkill.id;
+      get skill() {
+        return whatIfOracleSkill;
       },
       reason: "关键未知项需要转成先验、证据更新、行动阈值、敏感性分析或情景推演时联动。",
     },

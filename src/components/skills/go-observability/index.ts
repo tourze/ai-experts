@@ -60,14 +60,14 @@ export const goObservabilitySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goTroubleshootingSkill.id;
+      get skill() {
+        return goTroubleshootingSkill;
       },
       reason: "性能优化中的 pprof/profile → `go-performance`；生产异常排查 → `go-troubleshooting`。",
     },
     {
-      get id() {
-        return goPerformanceSkill.id;
+      get skill() {
+        return goPerformanceSkill;
       },
       reason: "性能优化中的 pprof/profile → `go-performance`；生产异常排查 → `go-troubleshooting`。",
     },

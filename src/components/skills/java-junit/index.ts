@@ -32,14 +32,14 @@ export const javaJunitSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return springBootLayeringSkill.id;
+      get skill() {
+        return springBootLayeringSkill;
       },
       reason: "测试对象本身暴露服务层职责混乱，需要先拆清 Spring 分层边界时联动。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "需要通用测试原则、AAA/FIRST、fixture、mock、参数化测试或测试反模式时联动。",
     },

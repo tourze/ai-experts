@@ -39,14 +39,14 @@ export const debugMethodologySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return testDrivenDevelopmentSkill.id;
+      get skill() {
+        return testDrivenDevelopmentSkill;
       },
       reason: "根因修复后需要补回归测试、先写失败用例或用测试锁住复现条件时联动。",
     },
     {
-      get id() {
-        return refactoringChecklistSkill.id;
+      get skill() {
+        return refactoringChecklistSkill;
       },
       reason: "修复涉及重构、拆分风险或需要保持行为不变的结构调整时联动。",
     },

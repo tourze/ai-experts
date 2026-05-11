@@ -39,20 +39,20 @@ export const figmaImplementDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return shadcnUiSkill.id;
+      get skill() {
+        return shadcnUiSkill;
       },
       reason: "设计稿落地到 shadcn/ui 组件、主题或配置时联动。",
     },
     {
-      get id() {
-        return frontendDesignReviewSkill.id;
+      get skill() {
+        return frontendDesignReviewSkill;
       },
       reason: "实现完成后，用 `frontend-design-review` 复核视觉与交互一致性。",
     },
     {
-      get id() {
-        return designSystemPatternsSkill.id;
+      get skill() {
+        return designSystemPatternsSkill;
       },
       reason: "需要把 Figma token、组件状态和视觉语言映射到项目设计系统时联动。",
     },

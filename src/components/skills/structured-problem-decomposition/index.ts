@@ -49,74 +49,74 @@ export const structuredProblemDecompositionSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return mckinseyStepSkill.id;
+      get skill() {
+        return mckinseyStepSkill;
       },
       reason: "需要从问题定义、MECE 拆解、优先级和行动建议推进七步法时联动。",
     },
     {
-      get id() {
-        return structuredBusinessAnalysisFrameworkSkill.id;
+      get skill() {
+        return structuredBusinessAnalysisFrameworkSkill;
       },
       reason: "需要用 MECE 假设树、业务结构或咨询框架做结构化拆解时联动。",
     },
     {
-      get id() {
-        return fishboneDiagramSkill.id;
+      get skill() {
+        return fishboneDiagramSkill;
       },
       reason: "需要按人、机、料、法、环等维度展开根因候选时联动。",
     },
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "需要挑战默认假设、回到约束和物理/业务基本事实时联动。",
     },
     {
-      get id() {
-        return systemsThinkingSkill.id;
+      get skill() {
+        return systemsThinkingSkill;
       },
       reason: "需要识别反馈回路、延迟效应、杠杆点和二阶后果时联动。",
     },
     {
-      get id() {
-        return evidenceQualityFrameworkSkill.id;
+      get skill() {
+        return evidenceQualityFrameworkSkill;
       },
       reason: "需要把根因、结论和建议显式标注为事实/推断/假设并绑定证据时联动。",
     },
     {
-      get id() {
-        return processOptimizationSkill.id;
+      get skill() {
+        return processOptimizationSkill;
       },
       reason: "需要从流程瓶颈、交接、返工和吞吐角度解释系统动态时联动。",
     },
     {
-      get id() {
-        return businessHealthDiagnosticSkill.id;
+      get skill() {
+        return businessHealthDiagnosticSkill;
       },
       reason: "问题跨增长、交付、现金流、组织或客户健康度时联动。",
     },
     {
-      get id() {
-        return runningDecisionProcessesSkill.id;
+      get skill() {
+        return runningDecisionProcessesSkill;
       },
       reason: "需要把分析推进成可执行决策、责任人和会议流程时联动。",
     },
     {
-      get id() {
-        return planningUnderUncertaintySkill.id;
+      get skill() {
+        return planningUnderUncertaintySkill;
       },
       reason: "需要在高不确定性下给出选项、触发条件和回退策略时联动。",
     },
     {
-      get id() {
-        return pdcaCycleSkill.id;
+      get skill() {
+        return pdcaCycleSkill;
       },
       reason: "需要把决策落到执行、检查、复盘和改进闭环时联动。",
     },
     {
-      get id() {
-        return debugMethodologySkill.id;
+      get skill() {
+        return debugMethodologySkill;
       },
       reason: "问题实际是技术故障、已有日志/堆栈/复现路径，需要证据驱动调试时联动。",
     },

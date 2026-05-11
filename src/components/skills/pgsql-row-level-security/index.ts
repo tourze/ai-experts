@@ -38,14 +38,14 @@ export const pgsqlRowLevelSecuritySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sqlReviewOptimizationSkill.id;
+      get skill() {
+        return sqlReviewOptimizationSkill;
       },
       reason: "需要审查 RLS 谓词、索引命中或策略性能风险时联动。",
     },
     {
-      get id() {
-        return dbSchemaDesignSkill.id;
+      get skill() {
+        return dbSchemaDesignSkill;
       },
       reason: "需要设计租户列、共享表边界或权限表结构时联动。",
     },

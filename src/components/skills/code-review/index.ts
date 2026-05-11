@@ -45,20 +45,20 @@ export const codeReviewSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return complexityReducerSkill.id;
+      get skill() {
+        return complexityReducerSkill;
       },
       reason: "审查结论指向函数过长、嵌套过深、条件复杂或可维护性复杂度时联动。",
     },
     {
-      get id() {
-        return testQualityReviewSkill.id;
+      get skill() {
+        return testQualityReviewSkill;
       },
       reason: "审查对象主要是测试代码、mock 滥用、脆弱测试或覆盖幻觉时联动。",
     },
     {
-      get id() {
-        return preLandingReviewSkill.id;
+      get skill() {
+        return preLandingReviewSkill;
       },
       reason: "问题已经从代码质量审查升级为能否合并、发布阻断项或上线风险判断时联动。",
     },

@@ -35,14 +35,14 @@ export const fanOperationsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return copywritingSkill.id;
+      get skill() {
+        return copywritingSkill;
       },
       reason: "涉及站外导流前，先检查平台安全边界，参考 `copywriting` 中的社交平台内容安全过滤流程。",
     },
     {
-      get id() {
-        return xiaohongshuCommercialGrowthSkill.id;
+      get skill() {
+        return xiaohongshuCommercialGrowthSkill;
       },
       reason: "对外表达必须与账号定位一致；账号主张模糊时，先回到 `xiaohongshu-commercial-growth` 确认定位。",
     },

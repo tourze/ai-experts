@@ -55,8 +55,8 @@ export const svnWorkflowSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return gitAdvancedWorkflowsSkill.id;
+      get skill() {
+        return gitAdvancedWorkflowsSkill;
       },
       reason: "SVN 到 Git 迁移完成后，需要清理 Git 历史、分支、标签或高级仓库工作流时联动。",
     },

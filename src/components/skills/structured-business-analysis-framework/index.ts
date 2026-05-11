@@ -38,26 +38,26 @@ export const structuredBusinessAnalysisFrameworkSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return businessModelSkill.id;
+      get skill() {
+        return businessModelSkill;
       },
       reason: "问题落在商业模式、价值主张、收入结构或 BMC 分析时联动。",
     },
     {
-      get id() {
-        return mckinseyStepSkill.id;
+      get skill() {
+        return mckinseyStepSkill;
       },
       reason: "需要七步问题解决法的完整项目节奏和汇报结构时联动。",
     },
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "需要先剥离类比、行业惯例或隐含前提时联动。",
     },
     {
-      get id() {
-        return evidenceQualityFrameworkSkill.id;
+      get skill() {
+        return evidenceQualityFrameworkSkill;
       },
       reason: "需要更严格的证据质量、来源可信度或结论置信度标注时联动。",
     },

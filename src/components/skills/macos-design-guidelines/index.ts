@@ -34,14 +34,14 @@ export const macosDesignGuidelinesSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return iosHigDesignSkill.id;
+      get skill() {
+        return iosHigDesignSkill;
       },
       reason: "目标平台转为 iPhone、iPad 或需要比较移动端 HIG 差异时联动。",
     },
     {
-      get id() {
-        return swiftuiUiPatternsSkill.id;
+      get skill() {
+        return swiftuiUiPatternsSkill;
       },
       reason: "需要把 macOS 设计落到 SwiftUI 导航、窗口、工具栏或设置实现时联动。",
     },

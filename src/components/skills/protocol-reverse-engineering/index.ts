@@ -32,14 +32,14 @@ export const protocolReverseEngineeringSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要和 `binary-analysis-patterns` 对照客户端或固件中的编解码实现。",
     },
     {
-      get id() {
-        return wiresharkAnalysisSkill.id;
+      get skill() {
+        return wiresharkAnalysisSkill;
       },
       reason: "需要和 `wireshark-analysis` 配合做流量整理。",
     },

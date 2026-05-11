@@ -38,20 +38,20 @@ export const laravelTddSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return laravelPatternsSkill.id;
+      get skill() {
+        return laravelPatternsSkill;
       },
       reason: "测试暴露控制器、Action、模型关系、队列或资源边界设计问题时联动。",
     },
     {
-      get id() {
-        return laravelVerificationSkill.id;
+      get skill() {
+        return laravelVerificationSkill;
       },
       reason: "需要把局部测试扩展为发布前完整验证命令链时联动。",
     },
     {
-      get id() {
-        return phpTestingSkill.id;
+      get skill() {
+        return phpTestingSkill;
       },
       reason: "项目不是 Laravel，或测试问题主要是 PHPUnit / Pest 的 PHP 通用语法、fixture、mock 与配置时联动。",
     },

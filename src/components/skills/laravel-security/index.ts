@@ -37,14 +37,14 @@ export const laravelSecuritySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return laravelVerificationSkill.id;
+      get skill() {
+        return laravelVerificationSkill;
       },
       reason: "安全配置需要发布前环境、缓存、审计、迁移或依赖检查时联动。",
     },
     {
-      get id() {
-        return laravelTddSkill.id;
+      get skill() {
+        return laravelTddSkill;
       },
       reason: "Policy、FormRequest、上传、限流或认证授权需要测试覆盖时联动。",
     },

@@ -41,14 +41,14 @@ export const vueExpertJsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return javascriptTypescriptJestSkill.id;
+      get skill() {
+        return javascriptTypescriptJestSkill;
       },
       reason: "Vue JavaScript 组件、composable 或 Pinia store 需要 Vitest / Jest 测试边界时联动。",
     },
     {
-      get id() {
-        return modernJavascriptPatternsSkill.id;
+      get skill() {
+        return modernJavascriptPatternsSkill;
       },
       reason: "Vue 代码涉及 ES 模块、异步流程、数据转换或现代 JavaScript 重构时联动。",
     },

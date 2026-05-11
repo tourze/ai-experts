@@ -64,26 +64,26 @@ export const softwareDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "设计判断已经明确，需要选择 Extract Method、Move Method、Extract Class 等具体重构动作时联动。",
     },
     {
-      get id() {
-        return goDesignPatternsSkill.id;
+      get skill() {
+        return goDesignPatternsSkill;
       },
       reason: "Go 代码需要把通用职责边界落成 interface、package、context、repository 或 service 结构时联动。",
     },
     {
-      get id() {
-        return pythonDesignPatternsSkill.id;
+      get skill() {
+        return pythonDesignPatternsSkill;
       },
       reason: "Python 代码需要把通用设计判断落成 dataclass、protocol、service、repository 或依赖注入结构时联动。",
     },
     {
-      get id() {
-        return phpDesignPatternsSkill.id;
+      get skill() {
+        return phpDesignPatternsSkill;
       },
       reason: "PHP 代码需要把通用设计判断落成 DTO、service、repository、异常层级或框架边界时联动。",
     },

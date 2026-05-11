@@ -33,20 +33,20 @@ export const embeddingStrategiesSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return similaritySearchPatternsSkill.id;
+      get skill() {
+        return similaritySearchPatternsSkill;
       },
       reason: "需要把 embedding 方案落到检索架构、过滤、hybrid search 或 rerank 时联动。",
     },
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "若最终目标是 RAG，可把整条链路交给 `rag-auditor` 做回归评估。",
     },
     {
-      get id() {
-        return vectorIndexTuningSkill.id;
+      get skill() {
+        return vectorIndexTuningSkill;
       },
       reason: "检索质量已经确认不是 chunk/embedding 问题，而是索引召回、延迟或内存权衡时联动。",
     },

@@ -37,20 +37,20 @@ export const pythonTypeSafetySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonErrorHandlingSkill.id;
+      get skill() {
+        return pythonErrorHandlingSkill;
       },
       reason: "失败类型和错误边界建模时，联动 `python-error-handling`。",
     },
     {
-      get id() {
-        return pythonTestingPatternsSkill.id;
+      get skill() {
+        return pythonTestingPatternsSkill;
       },
       reason: "需要为类型守卫和泛型逻辑补测试时，联动 `python-testing-patterns`。",
     },
     {
-      get id() {
-        return pythonDesignPatternsSkill.id;
+      get skill() {
+        return pythonDesignPatternsSkill;
       },
       reason: "结构设计和边界拆分时，联动 `python-design-patterns`。",
     },

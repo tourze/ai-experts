@@ -39,14 +39,14 @@ export const goCodeStyleSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "需要命名或错误语义时联动。",
     },
     {
-      get id() {
-        return goDataStructuresSkill.id;
+      get skill() {
+        return goDataStructuresSkill;
       },
       reason: "涉及 nil、slice、map 或 copy 语义时联动。",
     },

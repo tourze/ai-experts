@@ -38,8 +38,8 @@ export const firstPrinciplesDecomposerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return crossPollinationEngineSkill.id;
+      get skill() {
+        return crossPollinationEngineSkill;
       },
       reason: "需要借别的行业做类比时，可接 `cross-pollination-engine`。",
     },

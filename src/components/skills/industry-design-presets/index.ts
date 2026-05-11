@@ -30,14 +30,14 @@ export const industryDesignPresetsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return designSystemPatternsSkill.id;
+      get skill() {
+        return designSystemPatternsSkill;
       },
       reason: "需要把主色组、字体、效果和反模式沉淀为 semantic token 与组件约束时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "需要把行业风格落到具体 Web 布局、材质、层级、动效或 CSS 特征时联动。",
     },

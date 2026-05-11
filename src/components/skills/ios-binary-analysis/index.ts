@@ -34,14 +34,14 @@ export const iosBinaryAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要分析反调试、混淆、校验和或自修改等反逆向保护逻辑时联动。",
     },
     {
-      get id() {
-        return fridaDynamicAnalysisSkill.id;
+      get skill() {
+        return fridaDynamicAnalysisSkill;
       },
       reason: "需要与 `frida-dynamic-analysis` 配合做运行时验证。",
     },

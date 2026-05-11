@@ -29,8 +29,8 @@ export const opportunitySolutionTreeSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return createPrdSkill.id;
+      get skill() {
+        return createPrdSkill;
       },
       reason: "需要把目标与版本规划、PRD 连接起来时，可配合 `create-prd`。",
     },

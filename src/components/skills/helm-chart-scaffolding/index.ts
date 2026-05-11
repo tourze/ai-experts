@@ -38,8 +38,8 @@ export const helmChartScaffoldingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return monitoringObservabilitySkill.id;
+      get skill() {
+        return monitoringObservabilitySkill;
       },
       reason: "Chart 暴露指标、ServiceMonitor、探针或告警配置时联动。",
     },

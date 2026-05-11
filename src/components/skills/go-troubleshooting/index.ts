@@ -31,20 +31,20 @@ export const goTroubleshootingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "goroutine/channel 死锁与泄漏模式 → `go-concurrency-patterns`。",
     },
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "panic、错误传播与资源释放边界需要收敛时联动。",
     },
     {
-      get id() {
-        return goPerformanceSkill.id;
+      get skill() {
+        return goPerformanceSkill;
       },
       reason: "优化方法论和 benchmark 验证 → `go-performance`。",
     },

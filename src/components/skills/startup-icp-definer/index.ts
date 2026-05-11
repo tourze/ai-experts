@@ -31,8 +31,8 @@ export const startupIcpDefinerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return marketSizingAnalysisSkill.id;
+      get skill() {
+        return marketSizingAnalysisSkill;
       },
       reason: "需要结合想法验证或市场空间时，可配合 `market-sizing-analysis`。",
     },

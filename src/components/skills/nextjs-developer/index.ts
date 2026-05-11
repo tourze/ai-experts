@@ -44,14 +44,14 @@ export const nextjsDeveloperSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactServerComponentsSkill.id;
+      get skill() {
+        return reactServerComponentsSkill;
       },
       reason: "Next.js App Router 中 RSC 边界、Server Action、安全或性能问题需要深入时联动。",
     },
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "动态路由 params、DTO、Server Action 输入或 API 合同类型需要收敛时联动。",
     },

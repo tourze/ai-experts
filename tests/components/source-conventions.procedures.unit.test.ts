@@ -213,7 +213,7 @@ describe("component source procedure conventions", () => {
     const escapeRegex = (value: string): string => value.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
 
     for (const skill of registry.skills) {
-      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.id));
+      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.skill.id));
       const workflow = skill.workflow;
       const workflowText = [
         ...(workflow.steps ?? []).map((step) => step.label),
@@ -253,7 +253,7 @@ describe("component source procedure conventions", () => {
       text.replace(/\[([^\]]*)\]\((?:\\.|[^)])*\)/gu, "$1");
 
     for (const skill of registry.skills) {
-      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.id));
+      const relatedSkillIds = new Set((skill.relatedSkills ?? []).map((related) => related.skill.id));
       const visibleGuidanceText = [
         skill.description,
         ...(skill.useCases ?? []),

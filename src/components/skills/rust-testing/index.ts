@@ -36,20 +36,20 @@ export const rustTestingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return rustOwnershipIdiomsSkill.id;
+      get skill() {
+        return rustOwnershipIdiomsSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-error-handling`。",
     },
     {
-      get id() {
-        return rustErrorHandlingSkill.id;
+      get skill() {
+        return rustErrorHandlingSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-error-handling`。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Rust 特有语法与工具。",
     },

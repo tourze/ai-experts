@@ -38,14 +38,14 @@ export const customerLifecycleSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return bcgMatrixSkill.id;
+      get skill() {
+        return bcgMatrixSkill;
       },
       reason: "多产品组合资源分配、业务优先级排序或 BCG/GE 矩阵分析时联动。",
     },
     {
-      get id() {
-        return designingGrowthLoopsSkill.id;
+      get skill() {
+        return designingGrowthLoopsSkill;
       },
       reason: "需要判断增长阶段、S 曲线拐点或增长飞轮动力学时联动。",
     },

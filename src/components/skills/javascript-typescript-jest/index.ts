@@ -35,26 +35,26 @@ export const javascriptTypescriptJestSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return modernJavascriptPatternsSkill.id;
+      get skill() {
+        return modernJavascriptPatternsSkill;
       },
       reason: "如果测试脆弱到依赖太多 mock，是否应该先回到 `modern-javascript-patterns` 重构生产代码。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 JavaScript/TypeScript 特有语法与工具。",
     },
     {
-      get id() {
-        return reactHooksSkill.id;
+      get skill() {
+        return reactHooksSkill;
       },
       reason: "组件测试涉及 Hook 行为、effect 清理或 React Testing Library 交互边界时联动。",
     },
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "测试夹具、mock、泛型或断言需要收敛复杂 TypeScript 类型时联动。",
     },

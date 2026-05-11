@@ -47,32 +47,32 @@ export const reactPerformanceSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactComposableComponentsSkill.id;
+      get skill() {
+        return reactComposableComponentsSkill;
       },
       reason: "性能问题需要通过组件拆分、组合边界或 children / slot 模式降低渲染面时联动。",
     },
     {
-      get id() {
-        return reactHooksSkill.id;
+      get skill() {
+        return reactHooksSkill;
       },
       reason: "瓶颈来自 Hook 依赖、effect 设计、回调稳定性或状态组织时联动。",
     },
     {
-      get id() {
-        return reactServerComponentsSkill.id;
+      get skill() {
+        return reactServerComponentsSkill;
       },
       reason: "需要把重模块、数据获取或渲染边界迁到 Server Components / Server Actions 时联动。",
     },
     {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
+      get skill() {
+        return webPerformanceDiagnosisSkill;
       },
       reason: "性能症状需要落到 Core Web Vitals、请求瀑布、hydration 或浏览器主线程诊断时联动。",
     },
     {
-      get id() {
-        return bundleOptimizationSkill.id;
+      get skill() {
+        return bundleOptimizationSkill;
       },
       reason: "瓶颈来自 bundle 体积、代码分割、懒加载边界或第三方脚本时联动。",
     },

@@ -37,14 +37,14 @@ export const architectureReviewerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return apiTraceReaderSkill.id;
+      get skill() {
+        return apiTraceReaderSkill;
       },
       reason: "需要把请求链路、调用路径或跨服务 API 行为作为架构证据时联动。",
     },
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "模块接缝、遗留代码隔离测试或 seam-ripper 类重构策略需要落到代码级改造时联动。",
     },

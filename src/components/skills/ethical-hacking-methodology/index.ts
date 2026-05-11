@@ -33,8 +33,8 @@ export const ethicalHackingMethodologySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return wiresharkAnalysisSkill.id;
+      get skill() {
+        return wiresharkAnalysisSkill;
       },
       reason: "需要把 nmap 的侦察结果和 `wireshark-analysis` 的流量证据串起来。",
     },

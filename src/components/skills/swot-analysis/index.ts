@@ -33,14 +33,14 @@ export const swotAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return competitiveIntelligenceSkill.id;
+      get skill() {
+        return competitiveIntelligenceSkill;
       },
       reason: "需要从 SWOT 的机会和威胁下钻到具体竞品、定位或 battlecard 时联动。",
     },
     {
-      get id() {
-        return portersFiveForcesSkill.id;
+      get skill() {
+        return portersFiveForcesSkill;
       },
       reason: "需要用行业结构解释外部机会、威胁和利润空间时联动。",
     },

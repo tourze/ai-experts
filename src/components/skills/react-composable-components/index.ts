@@ -38,8 +38,8 @@ export const reactComposableComponentsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactPerformanceSkill.id;
+      get skill() {
+        return reactPerformanceSkill;
       },
       reason: "根因是外部状态订阅、memo 边界或整棵树频繁重渲染时联动。",
     },

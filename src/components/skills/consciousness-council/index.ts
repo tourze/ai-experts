@@ -35,14 +35,14 @@ export const consciousnessCouncilSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return grillMeSkill.id;
+      get skill() {
+        return grillMeSkill;
       },
       reason: "重点是把现有方案、论证或计划问穿，而不是并列多视角生成时联动。",
     },
     {
-      get id() {
-        return whatIfOracleSkill.id;
+      get skill() {
+        return whatIfOracleSkill;
       },
       reason: "重点是未来分支、反事实路径或二阶后果推演时联动。",
     },

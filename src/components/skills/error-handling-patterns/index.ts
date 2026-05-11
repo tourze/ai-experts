@@ -48,26 +48,26 @@ export const errorHandlingPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "Go 项目需要落地错误包装、sentinel / typed error、panic 边界或 context 取消语义时联动。",
     },
     {
-      get id() {
-        return pythonErrorHandlingSkill.id;
+      get skill() {
+        return pythonErrorHandlingSkill;
       },
       reason: "Python 项目需要设计异常层级、错误映射、重试边界或异步失败传播时联动。",
     },
     {
-      get id() {
-        return rustErrorHandlingSkill.id;
+      get skill() {
+        return rustErrorHandlingSkill;
       },
       reason: "Rust 项目需要在 `Result`、`thiserror`、`anyhow` 和错误枚举之间取舍时联动。",
     },
     {
-      get id() {
-        return phpErrorHandlingSkill.id;
+      get skill() {
+        return phpErrorHandlingSkill;
       },
       reason: "PHP 项目需要定义异常层级、输入校验错误、框架边界映射或 PHPUnit 失败路径时联动。",
     },

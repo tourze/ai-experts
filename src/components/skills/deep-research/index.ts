@@ -38,8 +38,8 @@ export const deepResearchSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return webContentFetcherSkill.id;
+      get skill() {
+        return webContentFetcherSkill;
       },
       reason: "用户已经给出具体 URL，或需要抓取关键页面全文沉淀可引用材料时联动。",
     },

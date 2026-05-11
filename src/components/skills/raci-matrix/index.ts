@@ -33,8 +33,8 @@ export const raciMatrixSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return runningDecisionProcessesSkill.id;
+      get skill() {
+        return runningDecisionProcessesSkill;
       },
       reason: "与 `running-decision-processes` 配合：RACI 定角色，决策流程定方法。",
     },

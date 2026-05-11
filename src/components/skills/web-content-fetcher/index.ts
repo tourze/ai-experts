@@ -38,8 +38,8 @@ export const webContentFetcherSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return deepResearchSkill.id;
+      get skill() {
+        return deepResearchSkill;
       },
       reason: "常作为 `deep-research` 的正文抓取阶段。在深度研究流水线中，可先用 references/question-refiner.md 完善问题后再抓取。",
     },

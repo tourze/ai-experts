@@ -37,20 +37,20 @@ export const pythonBackgroundJobsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonErrorHandlingSkill.id;
+      get skill() {
+        return pythonErrorHandlingSkill;
       },
       reason: "任务失败治理、异常分层和错误映射时，联动 `python-error-handling`。",
     },
     {
-      get id() {
-        return pythonObservabilitySkill.id;
+      get skill() {
+        return pythonObservabilitySkill;
       },
       reason: "需要为 job 增加可观测性时，联动 `python-observability`。",
     },
     {
-      get id() {
-        return asyncPythonPatternsSkill.id;
+      get skill() {
+        return asyncPythonPatternsSkill;
       },
       reason: "任务编排涉及异步执行细节时，联动 `async-python-patterns`。",
     },

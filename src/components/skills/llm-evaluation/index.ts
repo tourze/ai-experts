@@ -32,14 +32,14 @@ export const llmEvaluationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "如果问题集中在检索链路，是否交给 `rag-auditor`。",
     },
     {
-      get id() {
-        return promptEngineeringPatternsSkill.id;
+      get skill() {
+        return promptEngineeringPatternsSkill;
       },
       reason: "评测结果指向 prompt 结构、指令层次或输出格式问题时联动。",
     },

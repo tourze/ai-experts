@@ -37,8 +37,8 @@ export const redisClusterHaSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return redisDataModelingSkill.id;
+      get skill() {
+        return redisDataModelingSkill;
       },
       reason: "分布式锁在集群下的考量参考 `redis-data-modeling`，键分布和锁模式见该 skill。",
     },

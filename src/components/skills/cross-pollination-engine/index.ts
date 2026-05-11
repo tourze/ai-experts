@@ -39,14 +39,14 @@ export const crossPollinationEngineSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return scientificBrainstormingSkill.id;
+      get skill() {
+        return scientificBrainstormingSkill;
       },
       reason: "跨界灵感需要继续发散成研究问题、实验假设或科学式探索时联动。",
     },
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "核心任务还没剥离清楚，或行业行话遮蔽真实问题时联动。",
     },

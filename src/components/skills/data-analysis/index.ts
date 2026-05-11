@@ -38,20 +38,20 @@ export const dataAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return dataStorytellingSkill.id;
+      get skill() {
+        return dataStorytellingSkill;
       },
       reason: "分析结果需要组织成业务叙事、洞察摘要或面向读者的结论材料时联动。",
     },
     {
-      get id() {
-        return statisticalAnalysisSkill.id;
+      get skill() {
+        return statisticalAnalysisSkill;
       },
       reason: "需求涉及显著性检验、置信区间、异常解释或统计边界时联动。",
     },
     {
-      get id() {
-        return dataVisualizationSkill.id;
+      get skill() {
+        return dataVisualizationSkill;
       },
       reason: "需要把聚合、对比或趋势结果转成图表和可视化表达时联动。",
     },

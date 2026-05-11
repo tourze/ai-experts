@@ -28,14 +28,14 @@ export const unicornEmulationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fridaDynamicAnalysisSkill.id;
+      get skill() {
+        return fridaDynamicAnalysisSkill;
       },
       reason: "需要用真机动态观察补齐参数、返回值、JNI 或系统调用行为时联动。",
     },
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要先静态定位函数边界、调用约定、导入依赖和关键数据结构时联动。",
     },

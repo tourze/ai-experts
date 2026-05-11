@@ -34,14 +34,14 @@ export const pestelAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return swotAnalysisSkill.id;
+      get skill() {
+        return swotAnalysisSkill;
       },
       reason: "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
     },
     {
-      get id() {
-        return portersFiveForcesSkill.id;
+      get skill() {
+        return portersFiveForcesSkill;
       },
       reason: "与 `porters-five-forces` 配合做行业分析，与 `swot-analysis` 配合把外部因素转化为机会和威胁。",
     },

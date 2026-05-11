@@ -32,8 +32,8 @@ export const networkTroubleshooterSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return systemDiagnosticsSkill.id;
+      get skill() {
+        return systemDiagnosticsSkill;
       },
       reason: "需要先拿系统整体快照时，先运行 `system-diagnostics`。",
     },

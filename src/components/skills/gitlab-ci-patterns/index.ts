@@ -33,8 +33,8 @@ export const gitlabCiPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return helmChartScaffoldingSkill.id;
+      get skill() {
+        return helmChartScaffoldingSkill;
       },
       reason: "流水线包含 Helm/Kubernetes 发布、Chart 校验或多环境部署时联动。",
     },

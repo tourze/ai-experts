@@ -39,20 +39,20 @@ export const goSecuritySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goTestingPatternsSkill.id;
+      get skill() {
+        return goTestingPatternsSkill;
       },
       reason: "需要为安全修复补回归测试、table-driven tests、HTTP 测试或 mock 边界时联动。",
     },
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "panic、错误传播、sentinel error 或边界错误合同影响安全行为时联动。",
     },
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "数据竞争、goroutine 泄漏或并发取消问题影响安全边界时联动。",
     },

@@ -111,8 +111,8 @@ describe("component source guidance conventions", () => {
       /来自 `task-decomposer`、`feature-dev`、`persistent-planning`/,
       "planner-producing skills and references should not be listed as inline aliases",
     );
-    assert.match(source, /return taskDecomposerSkill\.id;/);
-    assert.match(source, /return featureDevSkill\.id;/);
+    assert.match(source, /return taskDecomposerSkill;/);
+    assert.match(source, /return featureDevSkill;/);
   });
 
   test("related skill reasons are not duplicated in use cases or constraints", () => {

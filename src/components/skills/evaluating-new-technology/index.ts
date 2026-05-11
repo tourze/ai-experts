@@ -31,8 +31,8 @@ export const evaluatingNewTechnologySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return planningUnderUncertaintySkill.id;
+      get skill() {
+        return planningUnderUncertaintySkill;
       },
       reason: "讨论长期不确定性时，可配合 `planning-under-uncertainty`。",
     },

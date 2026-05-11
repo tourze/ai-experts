@@ -41,20 +41,20 @@ export const markitdownSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return docCoauthoringSkill.id;
+      get skill() {
+        return docCoauthoringSkill;
       },
       reason: "当用户只处理单个 Office 文件且最终仍要保留原格式或进入文档协作时，优先转 `doc-coauthoring`；PPT 生成转 `ppt-generate`。",
     },
     {
-      get id() {
-        return pptGenerateSkill.id;
+      get skill() {
+        return pptGenerateSkill;
       },
       reason: "用户目标是生成、改写或保留 PPT 结构而不是抽取 Markdown 文本时转向。",
     },
     {
-      get id() {
-        return mdToPdfSkill.id;
+      get skill() {
+        return mdToPdfSkill;
       },
       reason: "后续若还要导出 PDF，可转给 `md-to-pdf`。",
     },

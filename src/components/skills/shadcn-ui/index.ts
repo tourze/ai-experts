@@ -41,14 +41,14 @@ export const shadcnUiSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return frontendDesignReviewSkill.id;
+      get skill() {
+        return frontendDesignReviewSkill;
       },
       reason: "组件接入后需要复核视觉一致性、交互状态或响应式质量时联动。",
     },
     {
-      get id() {
-        return designSystemPatternsSkill.id;
+      get skill() {
+        return designSystemPatternsSkill;
       },
       reason: "需要把 shadcn 默认 token 映射到既有品牌、主题和设计系统时联动。",
     },

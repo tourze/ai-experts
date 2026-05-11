@@ -188,7 +188,7 @@ export function registerComponentBuildRepresentativeTests(): void {
       "utf-8",
     );
     assert.match(goTestingPatternsSkill, /## 相关 Skill/);
-    assert.match(goTestingPatternsSkill, /\[testing-patterns\]\(\.\.\/testing-patterns\/SKILL\.md\)/);
+    assert.match(goTestingPatternsSkill, /\[通用测试模式\]\(\.\.\/testing-patterns\/SKILL\.md\)/);
     assert.match(goTestingPatternsSkill, /## 检查清单/);
     assert.ok(
       goTestingPatternsSkill.indexOf("## 反模式") < goTestingPatternsSkill.indexOf("## 检查清单"),
@@ -322,8 +322,8 @@ export function registerComponentBuildRepresentativeTests(): void {
     }
     const claudeSkillEvolver = readFileSync(join(getTmpDistDir(), "claude/skills/skill-evolver/SKILL.md"), "utf-8");
     const codexSkillEvolver = readFileSync(join(getTmpDistDir(), "codex/skills/skill-evolver/SKILL.md"), "utf-8");
-    assert.match(claudeSkillEvolver, /\[skill-creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
-    assert.doesNotMatch(codexSkillEvolver, /\[skill-creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
+    assert.match(claudeSkillEvolver, /\[Skill Creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
+    assert.doesNotMatch(codexSkillEvolver, /\[Skill Creator\]\(\.\.\/skill-creator\/SKILL\.md\)/);
 
     const claudeAgent = readFileSync(join(getTmpDistDir(), "claude/agents/typescript-reviewer.md"), "utf-8");
     assert.match(claudeAgent, /name: typescript-reviewer/);

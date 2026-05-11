@@ -32,14 +32,14 @@ export const pricingStrategySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return marketSizingAnalysisSkill.id;
+      get skill() {
+        return marketSizingAnalysisSkill;
       },
       reason: "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
     },
     {
-      get id() {
-        return businessModelSkill.id;
+      get skill() {
+        return businessModelSkill;
       },
       reason: "讨论商业模式或市场空间时，可配合 `business-model` 和 `market-sizing-analysis`。",
     },

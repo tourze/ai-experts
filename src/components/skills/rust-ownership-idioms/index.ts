@@ -38,26 +38,26 @@ export const rustOwnershipIdiomsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return rustTestingSkill.id;
+      get skill() {
+        return rustTestingSkill;
       },
       reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
     },
     {
-      get id() {
-        return rustTypeDesignSkill.id;
+      get skill() {
+        return rustTypeDesignSkill;
       },
       reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
     },
     {
-      get id() {
-        return rustAsyncPatternsSkill.id;
+      get skill() {
+        return rustAsyncPatternsSkill;
       },
       reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`。",
     },
     {
-      get id() {
-        return rustErrorHandlingSkill.id;
+      get skill() {
+        return rustErrorHandlingSkill;
       },
       reason: "联动：`rust-error-handling` · `rust-testing` · `rust-type-design` · `rust-async-patterns`",
     },

@@ -36,8 +36,8 @@ export const xiaohongshuCommercialGrowthSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fanOperationsSkill.id;
+      get skill() {
+        return fanOperationsSkill;
       },
       reason: "需要落评论区和粉丝维护动作时，联动 `fan-operations`。",
     },

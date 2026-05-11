@@ -33,8 +33,8 @@ export const consultingAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return proposalWriterSkill.id;
+      get skill() {
+        return proposalWriterSkill;
       },
       reason: "当研究结果还要继续转成提案时，可联动 `proposal-writer`。",
     },

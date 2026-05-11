@@ -38,8 +38,8 @@ export const interactionDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "需要把动效语言和整体视觉风格、层级、布局及现代 Web 质感统一时联动。",
     },

@@ -34,14 +34,14 @@ export const createPrdSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return prfaqSkill.id;
+      get skill() {
+        return prfaqSkill;
       },
       reason: "如果还在验证阶段，先用 `prfaq` 定“为什么做”，再用 PRD 定“怎么做”。",
     },
     {
-      get id() {
-        return agileProductOwnerSkill.id;
+      get skill() {
+        return agileProductOwnerSkill;
       },
       reason: "需要把 discovery 结论转成可执行需求时，可配合 `agile-product-owner`。",
     },

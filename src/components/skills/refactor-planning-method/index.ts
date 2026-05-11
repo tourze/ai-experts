@@ -35,20 +35,20 @@ export const refactorPlanningMethodSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "需要从深模块、信息隐藏、复杂度投资或职责边界判断重构问题是否成立时联动。",
     },
     {
-      get id() {
-        return complexityReducerSkill.id;
+      get skill() {
+        return complexityReducerSkill;
       },
       reason: "需要用圈复杂度、嵌套深度或认知负载度量验证复杂度问题时联动。",
     },
     {
-      get id() {
-        return refactoringChecklistSkill.id;
+      get skill() {
+        return refactoringChecklistSkill;
       },
       reason: "计划进入执行前需要测试基线、范围界定、回滚和提交纪律门禁时联动。",
     },

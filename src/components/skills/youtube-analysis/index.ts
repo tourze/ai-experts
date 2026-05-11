@@ -39,8 +39,8 @@ export const youtubeAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return youtubeSearchSkill.id;
+      get skill() {
+        return youtubeSearchSkill;
       },
       reason: "用户还没有具体视频链接，需要先搜索候选视频或比较多个视频时联动。",
     },

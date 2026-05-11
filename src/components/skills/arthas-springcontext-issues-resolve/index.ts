@@ -33,8 +33,8 @@ export const arthasSpringcontextIssuesResolveSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return arthasCpuHighSkill.id;
+      get skill() {
+        return arthasCpuHighSkill;
       },
       reason: "核心症状是 JVM CPU 飙高、线程热点或负载异常而不是 Bean/配置问题时联动。",
     },

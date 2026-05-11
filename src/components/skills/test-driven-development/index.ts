@@ -40,14 +40,14 @@ export const testDrivenDevelopmentSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return testingStrategySkill.id;
+      get skill() {
+        return testingStrategySkill;
       },
       reason: "需要先确定风险驱动测试范围、质量门或缺陷后扩面优先级时联动。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "需要确认 AAA / FIRST、fixture、mock/stub/fake 或测试命名基线时联动。",
     },

@@ -33,20 +33,20 @@ export const similaritySearchPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return vectorIndexTuningSkill.id;
+      get skill() {
+        return vectorIndexTuningSkill;
       },
       reason: "如果问题主要在性能与召回权衡，是否转给 `vector-index-tuning`。",
     },
     {
-      get id() {
-        return embeddingStrategiesSkill.id;
+      get skill() {
+        return embeddingStrategiesSkill;
       },
       reason: "检索问题指向模型选择、chunking、metadata 或距离度量前置设计时联动。",
     },
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "需要把检索与生成链路一起审计或纳入 RAG 回归时联动。",
     },

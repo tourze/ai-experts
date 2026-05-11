@@ -99,12 +99,13 @@ describe("build/pipeline modules", () => {
     );
     expect(procedureUseOverrideMd).toContain("--override 'use value'");
     expect(procedureUseOverrideMd).not.toContain("--default 'procedure value'");
+    const otherSkill = { ...fixture.skill, id: "other-skill", fullName: "Other Skill" };
     const relatedSkillMd = renderSkillMd(
       {
         ...fixture.skill,
         relatedSkills: [
-          { id: "other-skill", reason: "first route" },
-          { id: "other-skill", reason: "duplicate route" },
+          { get skill() { return otherSkill; }, reason: "first route" },
+          { get skill() { return otherSkill; }, reason: "duplicate route" },
         ],
       },
       Platform.Claude,
@@ -204,7 +205,7 @@ describe("build/pipeline modules", () => {
         ],
         finalSteps: [defineWorkflowStep({ id: "finalize", label: "收束结论。" })],
       }),
-      relatedSkills: [{ id: workflowHelperSkill.id, reason: "workflow gate and route helper" }],
+      relatedSkills: [{ get skill() { return workflowHelperSkill; }, reason: "workflow gate and route helper" }],
     });
     expect(() =>
       validateRegistry({

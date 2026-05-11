@@ -510,7 +510,7 @@ function renderRelatedSkills(skill: SkillDefinition, platform: PlatformType): st
   );
   if (relatedSkills.length === 0) return "";
   const rows = relatedSkills.map((related) => {
-    return `- [${related.id}](../${related.id}/SKILL.md) — ${related.reason}`;
+    return `- [${related.skill.fullName}](../${related.skill.id}/SKILL.md) — ${related.reason}`;
   });
   return `## 相关 Skill\n\n${rows.join("\n")}\n`;
 }
@@ -519,8 +519,8 @@ function uniqueRelatedSkills(relatedSkills: readonly RelatedSkillDefinition[]): 
   const seen = new Set<string>();
   const unique: RelatedSkillDefinition[] = [];
   for (const related of relatedSkills) {
-    if (seen.has(related.id)) continue;
-    seen.add(related.id);
+    if (seen.has(related.skill.id)) continue;
+    seen.add(related.skill.id);
     unique.push(related);
   }
   return unique;

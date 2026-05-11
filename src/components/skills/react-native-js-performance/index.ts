@@ -36,8 +36,8 @@ export const reactNativeJsPerformanceSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactNativeDesignSkill.id;
+      get skill() {
+        return reactNativeDesignSkill;
       },
       reason: "交互与视觉实现优先联动 `react-native-design`。",
     },

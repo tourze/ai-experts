@@ -43,14 +43,14 @@ export const prlctlVmControlSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return windowsKernelSecuritySkill.id;
+      get skill() {
+        return windowsKernelSecuritySkill;
       },
       reason: "需要在虚拟机里验证驱动、回调、VBS/HVCI 等低层问题时，可联动 `windows-kernel-security`。",
     },
     {
-      get id() {
-        return windowsUiAutomationSkill.id;
+      get skill() {
+        return windowsUiAutomationSkill;
       },
       reason: "需要在隔离环境里复现 Windows 桌面自动化问题时，可联动 `windows-ui-automation`。",
     },

@@ -47,20 +47,20 @@ export const testingStrategySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return preLandingReviewSkill.id;
+      get skill() {
+        return preLandingReviewSkill;
       },
       reason: "需要把落地前阻断项、风险确认或发布门禁映射成补测策略时联动。",
     },
     {
-      get id() {
-        return webappTestingSkill.id;
+      get skill() {
+        return webappTestingSkill;
       },
       reason: "测试策略需要转成 Web 应用手工/自动化执行清单时联动。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "测试计划需要落到 AAA / FIRST、fixture、mock 或参数化测试结构时联动。",
     },

@@ -49,32 +49,32 @@ export const customerResearchSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return copywritingSkill.id;
+      get skill() {
+        return copywritingSkill;
       },
       reason: "用户目标转为营销页面文案、价值主张、CTA 或落地页段落撰写时联动。",
     },
     {
-      get id() {
-        return croMethodologySkill.id;
+      get skill() {
+        return croMethodologySkill;
       },
       reason: "用户目标转为页面转化诊断、CRO 实验假设或落地页优化时联动。",
     },
     {
-      get id() {
-        return competitiveIntelligenceSkill.id;
+      get skill() {
+        return competitiveIntelligenceSkill;
       },
       reason: "用户目标转为竞品情报、市场定位、battlecard 或竞品深拆时联动。",
     },
     {
-      get id() {
-        return uxResearcherDesignerSkill.id;
+      get skill() {
+        return uxResearcherDesignerSkill;
       },
       reason: "客户研究需要转成设计输入、可用性测试计划、Persona 方法论或 UX 复盘时联动。",
     },
     {
-      get id() {
-        return customerJourneyMapSkill.id;
+      get skill() {
+        return customerJourneyMapSkill;
       },
       reason: "洞察需要落成触点链路、情绪曲线、旅程阶段和机会点排序时联动。",
     },

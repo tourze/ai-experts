@@ -37,14 +37,14 @@ export const modelFirstReasoningSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return llmEvaluationSkill.id;
+      get skill() {
+        return llmEvaluationSkill;
       },
       reason: "冻结模型后需要把行为合同纳入评测或回归集时联动。",
     },
     {
-      get id() {
-        return promptEngineeringPatternsSkill.id;
+      get skill() {
+        return promptEngineeringPatternsSkill;
       },
       reason: "模型用于约束 prompt、工具调用或 agent 行为时联动。",
     },

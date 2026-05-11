@@ -44,14 +44,14 @@ export const swiftuiUiPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return swiftConcurrencyExpertSkill.id;
+      get skill() {
+        return swiftConcurrencyExpertSkill;
       },
       reason: "UI 状态流涉及 Task、actor、MainActor 或异步加载边界时联动。",
     },
     {
-      get id() {
-        return iosHigDesignSkill.id;
+      get skill() {
+        return iosHigDesignSkill;
       },
       reason: "需要按 iPhone/iPad 平台规范校准导航、表单、控件或系统行为时联动。",
     },

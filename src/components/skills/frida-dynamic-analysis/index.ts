@@ -34,14 +34,14 @@ export const fridaDynamicAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要先识别静态保护逻辑、字符串/xref 线索、函数边界或算法假设时联动。",
     },
     {
-      get id() {
-        return androidApkAuditSkill.id;
+      get skill() {
+        return androidApkAuditSkill;
       },
       reason: "Android APK 需要 jadx 静态定位类、方法、签名校验或网络栈后再 hook 时联动。",
     },

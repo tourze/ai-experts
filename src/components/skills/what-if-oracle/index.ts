@@ -41,14 +41,14 @@ export const whatIfOracleSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return priorityJudgeSkill.id;
+      get skill() {
+        return priorityJudgeSkill;
       },
       reason: "如果要给多个候选动作排当前优先级，可在推演后接 `priority-judge`。",
     },
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "如果要先从失败角度找脆弱点，可先用第一性原理中的反向推理方法。",
     },

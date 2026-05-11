@@ -50,20 +50,20 @@ export const refactoringPatternsSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return complexityReducerSkill.id;
+      get skill() {
+        return complexityReducerSkill;
       },
       reason: "需要先降低函数、模块或调用链复杂度，再选择具体重构手法时联动。",
     },
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "需要按设计原则、抽象边界或耦合方向校验重构目标时联动。",
     },
     {
-      get id() {
-        return refactoringChecklistSkill.id;
+      get skill() {
+        return refactoringChecklistSkill;
       },
       reason: "重构前需要检查测试基线、范围界定、行为变更隔离和回滚方案时联动。",
     },

@@ -32,8 +32,8 @@ export const pdcaCycleSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fishboneDiagramSkill.id;
+      get skill() {
+        return fishboneDiagramSkill;
       },
       reason: "需要根因深挖：PDCA 的 Plan 阶段可以配合 `fishbone-diagram`；一次性计划只需要 5W2H 时，参考 fishbone-diagram 的 5W2H reference，不把它当作独立 skill 链接。",
     },

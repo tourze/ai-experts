@@ -35,8 +35,8 @@ export const graalvmNativeImageSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return gradleBuildPerformanceSkill.id;
+      get skill() {
+        return gradleBuildPerformanceSkill;
       },
       reason: "主要问题是 Gradle 构建时间、缓存、配置阶段或 CI 构建性能时联动。",
     },

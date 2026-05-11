@@ -32,8 +32,8 @@ export const paidAdsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return redesignMyLandingpageSkill.id;
+      get skill() {
+        return redesignMyLandingpageSkill;
       },
       reason: "若着陆页承接弱，配合 `redesign-my-landingpage`。",
     },

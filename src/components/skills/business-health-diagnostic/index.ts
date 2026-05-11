@@ -34,8 +34,8 @@ export const businessHealthDiagnosticSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return processOptimizationSkill.id;
+      get skill() {
+        return processOptimizationSkill;
       },
       reason: "与 `process-optimization` 配合优化发现的瓶颈。",
     },

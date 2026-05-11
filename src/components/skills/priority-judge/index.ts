@@ -37,14 +37,14 @@ export const priorityJudgeSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return whatIfOracleSkill.id;
+      get skill() {
+        return whatIfOracleSkill;
       },
       reason: "如果用户在两个高风险方向间犹豫，可结合 `what-if-oracle` 做分支推演。",
     },
     {
-      get id() {
-        return thinkingPartnerSkill.id;
+      get skill() {
+        return thinkingPartnerSkill;
       },
       reason: "如果用户连核心目标都说不清，先用 `thinking-partner` 把问题理顺。",
     },

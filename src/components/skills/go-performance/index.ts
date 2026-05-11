@@ -34,26 +34,26 @@ export const goPerformanceSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "panic、错误传播或资源释放边界影响性能修复安全性时联动。",
     },
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "goroutine、channel、锁竞争或并发度瓶颈时联动。",
     },
     {
-      get id() {
-        return goObservabilitySkill.id;
+      get skill() {
+        return goObservabilitySkill;
       },
       reason: "性能问题需要落成生产监控、指标、trace、日志或持续可观测性方案时联动。",
     },
     {
-      get id() {
-        return goTroubleshootingSkill.id;
+      get skill() {
+        return goTroubleshootingSkill;
       },
       reason: "还没有明确性能瓶颈，只是在排查线上变慢、panic、死锁或异常行为时联动。",
     },

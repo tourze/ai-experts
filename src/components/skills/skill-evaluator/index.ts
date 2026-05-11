@@ -28,20 +28,20 @@ export const skillEvaluatorSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return skillActivationAnalyzerSkill.id;
+      get skill() {
+        return skillActivationAnalyzerSkill;
       },
       reason: "只优化 frontmatter description、触发域或误触发问题时联动。",
     },
     {
-      get id() {
-        return skillEvolverSkill.id;
+      get skill() {
+        return skillEvolverSkill;
       },
       reason: "需要用参考 skill 优化目标 skill、做 A/B 迁移或模式提炼时联动。",
     },
     {
-      get id() {
-        return skillCreatorSkill.id;
+      get skill() {
+        return skillCreatorSkill;
       },
       reason: "Claude 侧需要创建新 skill、跑 with-skill/baseline 迭代或打包交付时联动。",
       platforms: [Platform.Claude],

@@ -32,8 +32,8 @@ export const chipsecSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return binaryAnalysisPatternsSkill.id;
+      get skill() {
+        return binaryAnalysisPatternsSkill;
       },
       reason: "需要结合 `binary-analysis-patterns` 深挖 EFI 可执行模块。",
     },

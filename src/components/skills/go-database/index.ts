@@ -67,14 +67,14 @@ export const goDatabaseSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "查询取消传播、context 生命周期和长查询超时控制需要并发模型支撑时联动。",
     },
     {
-      get id() {
-        return goSecuritySkill.id;
+      get skill() {
+        return goSecuritySkill;
       },
       reason: "需要审查 SQL 注入防护、参数化查询和数据库访问安全边界时联动。",
     },

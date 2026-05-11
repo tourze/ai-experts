@@ -60,14 +60,14 @@ export const iosSimulatorSkillSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return swiftuiPerformanceAuditSkill.id;
+      get skill() {
+        return swiftuiPerformanceAuditSkill;
       },
       reason: "模拟器复现发现 SwiftUI 列表、动画、主线程或状态更新性能瓶颈时联动。",
     },
     {
-      get id() {
-        return appleAppstoreReviewerSkill.id;
+      get skill() {
+        return appleAppstoreReviewerSkill;
       },
       reason: "需要把模拟器证据用于提审前审核路径复现或拒审风险审查时联动。",
     },

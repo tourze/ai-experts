@@ -28,20 +28,20 @@ export const brainstormingBeforeCodingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return featureDevSkill.id;
+      get skill() {
+        return featureDevSkill;
       },
       reason: "用户批准设计后，需要进入完整功能开发实现时联动。",
     },
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "设计批准后需要拆解任务、依赖或 Execution Contract 时联动。",
     },
     {
-      get id() {
-        return planReviewSkill.id;
+      get skill() {
+        return planReviewSkill;
       },
       reason: "设计方案仍需风险评审、边界检查或可执行性压力测试时联动。",
     },

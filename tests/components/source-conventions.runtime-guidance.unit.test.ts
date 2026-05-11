@@ -620,12 +620,12 @@ describe("component source runtime guidance conventions", () => {
         assert.doesNotMatch(
           relatedSkillsSource,
           /\n\s*id:\s*["']/,
-          `${skillSourceFile} should import related skills and read otherSkill.id instead of hard-coded ids`,
+          `${skillSourceFile} should import related skills instead of hard-coded ids`,
         );
         assert.match(
           relatedSkillsSource,
-          /\n\s*get id\(\) \{\n\s*return \w+Skill\.id;\n\s*\}/,
-          `${skillSourceFile} should resolve related skill ids through imported skill definitions`,
+          /\n\s*get skill\(\) \{\n\s*return \w+Skill;\n\s*\}/,
+          `${skillSourceFile} should resolve related skills through imported skill definitions`,
         );
         assert.doesNotMatch(
           relatedSkillsSource,

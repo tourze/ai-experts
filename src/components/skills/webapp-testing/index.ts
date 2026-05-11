@@ -39,8 +39,8 @@ export const webappTestingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return testingStrategySkill.id;
+      get skill() {
+        return testingStrategySkill;
       },
       reason: "需要把测试策略里的 Web 场景落成实际浏览器检查时联动。",
     },

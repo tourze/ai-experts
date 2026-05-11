@@ -39,14 +39,14 @@ export const thinkingPartnerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return grillMeSkill.id;
+      get skill() {
+        return grillMeSkill;
       },
       reason: "如果用户已经有明确方案，只想做压力测试，转到 `grill-me`。",
     },
     {
-      get id() {
-        return priorityJudgeSkill.id;
+      get skill() {
+        return priorityJudgeSkill;
       },
       reason: "如果用户其实只是要给任务排先后，优先转到 `priority-judge`。",
     },

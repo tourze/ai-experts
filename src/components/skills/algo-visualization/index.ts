@@ -33,20 +33,20 @@ export const algoVisualizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return canvasDesignSkill.id;
+      get skill() {
+        return canvasDesignSkill;
       },
       reason: "用户要的是一页艺术化静态画面、PNG/SVG 或非交互式视觉稿时联动。",
     },
     {
-      get id() {
-        return dataVisualizationSkill.id;
+      get skill() {
+        return dataVisualizationSkill;
       },
       reason: "用户要的是业务数据图表、指标看板或统计可视化，而不是算法教学页时联动。",
     },
     {
-      get id() {
-        return markdownMermaidWritingSkill.id;
+      get skill() {
+        return markdownMermaidWritingSkill;
       },
       reason: "用户要的是流程图、时序图、状态图或 Mermaid 文档图示时联动。",
     },

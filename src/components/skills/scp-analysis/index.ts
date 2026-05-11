@@ -34,20 +34,20 @@ export const scpAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pestelAnalysisSkill.id;
+      get skill() {
+        return pestelAnalysisSkill;
       },
       reason: "需要先系统扫描政策、经济、社会、技术、环境和法律等外部因素时联动。",
     },
     {
-      get id() {
-        return portersFiveForcesSkill.id;
+      get skill() {
+        return portersFiveForcesSkill;
       },
       reason: "没有明确外部冲击、需要常规行业结构和竞争压力分析时联动。",
     },
     {
-      get id() {
-        return businessHealthDiagnosticSkill.id;
+      get skill() {
+        return businessHealthDiagnosticSkill;
       },
       reason: "问题转向内部经营健康度、组织能力或专项业务诊断时联动。",
     },

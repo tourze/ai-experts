@@ -41,38 +41,38 @@ export const testingPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goTestingPatternsSkill.id;
+      get skill() {
+        return goTestingPatternsSkill;
       },
       reason: "Go 测试需要 table-driven tests、subtest、benchmark、race 或 `testing` 包约定时联动。",
     },
     {
-      get id() {
-        return pythonTestingPatternsSkill.id;
+      get skill() {
+        return pythonTestingPatternsSkill;
       },
       reason: "Python 测试需要 pytest fixture、parametrize、monkeypatch 或 async 测试约定时联动。",
     },
     {
-      get id() {
-        return rustTestingSkill.id;
+      get skill() {
+        return rustTestingSkill;
       },
       reason: "Rust 测试需要 `#[test]`、property testing、fixture、panic 断言或 cargo test 约定时联动。",
     },
     {
-      get id() {
-        return javaJunitSkill.id;
+      get skill() {
+        return javaJunitSkill;
       },
       reason: "Java 测试需要 JUnit、Mockito、Spring 测试切片或 JVM 测试组织方式时联动。",
     },
     {
-      get id() {
-        return phpTestingSkill.id;
+      get skill() {
+        return phpTestingSkill;
       },
       reason: "PHP 测试需要 PHPUnit / Pest、属性、data provider、mock 或 `phpunit.xml` 细节时联动。",
     },
     {
-      get id() {
-        return javascriptTypescriptJestSkill.id;
+      get skill() {
+        return javascriptTypescriptJestSkill;
       },
       reason: "JavaScript / TypeScript 测试需要 Jest / Vitest、mock、fake timers 或异步断言细节时联动。",
     },

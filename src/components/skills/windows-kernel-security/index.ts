@@ -36,14 +36,14 @@ export const windowsKernelSecuritySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return windowsUiAutomationSkill.id;
+      get skill() {
+        return windowsUiAutomationSkill;
       },
       reason: "问题实际属于桌面自动化、窗口输入或用户态 UI 注入边界时联动。",
     },
     {
-      get id() {
-        return prlctlVmControlSkill.id;
+      get skill() {
+        return prlctlVmControlSkill;
       },
       reason: "实验需要虚拟机快照、回滚、重启或破坏性验证路径时联动。",
     },

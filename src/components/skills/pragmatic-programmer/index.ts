@@ -47,14 +47,14 @@ export const pragmaticProgrammerSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "原则判断需要落到具体重构手法、代码异味或重构序列时联动。",
     },
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "需要从耦合、抽象、复杂度或设计原则层面治理方案时联动。",
     },

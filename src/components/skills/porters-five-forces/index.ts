@@ -33,14 +33,14 @@ export const portersFiveForcesSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return competitiveIntelligenceSkill.id;
+      get skill() {
+        return competitiveIntelligenceSkill;
       },
       reason: "需要从行业结构下钻到具体竞品、battlecard 或竞品深拆时联动。",
     },
     {
-      get id() {
-        return swotAnalysisSkill.id;
+      get skill() {
+        return swotAnalysisSkill;
       },
       reason: "需要把行业结构判断连接到内部优势、劣势和执行风险时联动。",
     },

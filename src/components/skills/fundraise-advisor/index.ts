@@ -31,8 +31,8 @@ export const fundraiseAdvisorSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return marketSizingAnalysisSkill.id;
+      get skill() {
+        return marketSizingAnalysisSkill;
       },
       reason: "需要市场规模支撑时配合 `market-sizing-analysis`。",
     },

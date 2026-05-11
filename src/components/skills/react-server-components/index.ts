@@ -49,14 +49,14 @@ export const reactServerComponentsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return nextjsDeveloperSkill.id;
+      get skill() {
+        return nextjsDeveloperSkill;
       },
       reason: "需要完整 Next.js App Router、Route Handler、Metadata 或部署约束时联动。",
     },
     {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
+      get skill() {
+        return webPerformanceDiagnosisSkill;
       },
       reason: "RSC 问题表现为首屏、瀑布流、序列化或缓存性能退化时联动。",
     },

@@ -28,20 +28,20 @@ export const skillEvolverSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return skillEvaluatorSkill.id;
+      get skill() {
+        return skillEvaluatorSkill;
       },
       reason: "需要用源材料闭卷验证 skill 知识覆盖、能力边界或评分证据时联动。",
     },
     {
-      get id() {
-        return skillActivationAnalyzerSkill.id;
+      get skill() {
+        return skillActivationAnalyzerSkill;
       },
       reason: "只优化 frontmatter description、触发域和误触发问题时联动。",
     },
     {
-      get id() {
-        return skillCreatorSkill.id;
+      get skill() {
+        return skillCreatorSkill;
       },
       reason: "Claude 侧创建新 skill、改没有参考源的 skill、跑 with-skill/baseline 迭代时联动。",
       platforms: [Platform.Claude],

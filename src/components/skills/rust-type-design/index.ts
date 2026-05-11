@@ -35,14 +35,14 @@ export const rustTypeDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return rustPerformanceSkill.id;
+      get skill() {
+        return rustPerformanceSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-performance`。",
     },
     {
-      get id() {
-        return rustOwnershipIdiomsSkill.id;
+      get skill() {
+        return rustOwnershipIdiomsSkill;
       },
       reason: "联动：`rust-ownership-idioms` · `rust-performance`",
     },

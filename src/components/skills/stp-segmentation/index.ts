@@ -40,8 +40,8 @@ export const stpSegmentationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return startupIcpDefinerSkill.id;
+      get skill() {
+        return startupIcpDefinerSkill;
       },
       reason: "STP 选定目标市场后，需要细化创业公司 ICP、早期客户画像或销售线索判断时联动。",
     },

@@ -37,20 +37,20 @@ export const marketingPlanSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return stpSegmentationSkill.id;
+      get skill() {
+        return stpSegmentationSkill;
       },
       reason: "只需要做用户细分、目标市场、定位或 STP 判断，而不是完整推广方案时联动。",
     },
     {
-      get id() {
-        return paidAdsSkill.id;
+      get skill() {
+        return paidAdsSkill;
       },
       reason: "只需要广告账户、预算、出价、素材测试和受众结构时联动。",
     },
     {
-      get id() {
-        return contentStrategySkill.id;
+      get skill() {
+        return contentStrategySkill;
       },
       reason: "需要把信息支柱落到内容主题、内容日历和渠道内容矩阵时联动。",
     },

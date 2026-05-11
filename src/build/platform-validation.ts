@@ -155,19 +155,17 @@ function validateRelatedSkillPlatform(
   related: RelatedSkillDefinition,
   skillsById: ReadonlyMap<string, SkillDefinition>,
 ): void {
-  const relatedSkill = skillsById.get(related.id);
-  if (!relatedSkill) return;
   const relationPlatforms = related.platforms ?? skill.platforms;
   const unsupportedSkillPlatforms = relationPlatforms.filter((platform) => !skill.platforms.includes(platform));
   if (unsupportedSkillPlatforms.length > 0) {
     throw new Error(
-      `Skill ${skill.id} related skill ${related.id} applies to unsupported platform(s): ${unsupportedSkillPlatforms.join(", ")}`,
+      `Skill ${skill.id} related skill ${related.skill.id} applies to unsupported platform(s): ${unsupportedSkillPlatforms.join(", ")}`,
     );
   }
-  const missingPlatforms = relationPlatforms.filter((platform) => !relatedSkill.platforms.includes(platform));
+  const missingPlatforms = relationPlatforms.filter((platform) => !related.skill.platforms.includes(platform));
   if (missingPlatforms.length > 0) {
     throw new Error(
-      `Skill ${skill.id} related skill ${related.id} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
+      `Skill ${skill.id} related skill ${related.skill.id} unavailable on platform(s): ${missingPlatforms.join(", ")}`,
     );
   }
 }
@@ -562,26 +560,26 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
 
     const seenRelatedSkills = new Set<string>();
     for (const related of skill.relatedSkills ?? []) {
-      validateId(related.id, `related skill in ${skill.id}`);
-      if (!skillIds.has(related.id)) {
-        throw new Error(`Skill ${skill.id} references missing related skill: ${related.id}`);
+      validateId(related.skill.id, `related skill in ${skill.id}`);
+      if (!skillIds.has(related.skill.id)) {
+        throw new Error(`Skill ${skill.id} references missing related skill: ${related.skill.id}`);
       }
-      validatePlatformList(related.platforms, `Skill ${skill.id} related skill ${related.id}`, { optional: true });
+      validatePlatformList(related.platforms, `Skill ${skill.id} related skill ${related.skill.id}`, { optional: true });
       validateRelatedSkillPlatform(skill, related, skillsById);
-      if (related.id === skill.id) {
+      if (related.skill.id === skill.id) {
         throw new Error(`Skill ${skill.id} must not reference itself as a related skill`);
       }
       if ("label" in related) {
-        throw new Error(`Skill ${skill.id} related skill ${related.id} must not define a label alias`);
+        throw new Error(`Skill ${skill.id} related skill ${related.skill.id} must not define a label alias`);
       }
       if (typeof related.reason !== "string" || related.reason.trim() === "") {
-        throw new Error(`Skill ${skill.id} related skill ${related.id} has an empty reason`);
+        throw new Error(`Skill ${skill.id} related skill ${related.skill.id} has an empty reason`);
       }
-      validateSingleLineMetadata(`Skill ${skill.id} related skill ${related.id} reason`, related.reason);
-      if (seenRelatedSkills.has(related.id)) {
-        throw new Error(`Skill ${skill.id} has a duplicate related skill entry: ${related.id}`);
+      validateSingleLineMetadata(`Skill ${skill.id} related skill ${related.skill.id} reason`, related.reason);
+      if (seenRelatedSkills.has(related.skill.id)) {
+        throw new Error(`Skill ${skill.id} has a duplicate related skill entry: ${related.skill.id}`);
       }
-      seenRelatedSkills.add(related.id);
+      seenRelatedSkills.add(related.skill.id);
     }
     for (const workflowSkillId of new Set([
       ...(skillWorkflow?.gates ?? []).map((gate) => gate.skill),

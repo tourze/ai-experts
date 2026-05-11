@@ -37,14 +37,14 @@ export const laravelVerificationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return laravelSecuritySkill.id;
+      get skill() {
+        return laravelSecuritySkill;
       },
       reason: "验证失败涉及安全配置、密钥、CORS、上传、限流或生产 debug 时联动。",
     },
     {
-      get id() {
-        return laravelPatternsSkill.id;
+      get skill() {
+        return laravelPatternsSkill;
       },
       reason: "验证失败指向控制器、模型、队列、路由或资源实现边界时联动。",
     },

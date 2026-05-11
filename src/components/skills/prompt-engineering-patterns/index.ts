@@ -43,14 +43,14 @@ export const promptEngineeringPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "Prompt 绑定 RAG，且失败可能来自检索、上下文拼接或引用质量时联动。",
     },
     {
-      get id() {
-        return llmEvaluationSkill.id;
+      get skill() {
+        return llmEvaluationSkill;
       },
       reason: "需要设计评测集、打分 rubric、变体对比或模型表现验收时联动。",
     },

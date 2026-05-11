@@ -47,14 +47,14 @@ export const planReviewSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "评审后需要把方案拆成任务板、依赖关系或 Execution Contract 时联动。",
     },
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "计划缺少系统边界、组件、数据流或关键架构权衡时联动。",
     },

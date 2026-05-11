@@ -35,20 +35,20 @@ export const phpDesignPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpErrorHandlingSkill.id;
+      get skill() {
+        return phpErrorHandlingSkill;
       },
       reason: "服务层和控制器边界需要异常层级、输入校验或错误映射时联动。",
     },
     {
-      get id() {
-        return phpTypeSafetySkill.id;
+      get skill() {
+        return phpTypeSafetySkill;
       },
       reason: "DTO、Repository 和集合类型需要 PHPStan / Psalm 标注时联动。",
     },
     {
-      get id() {
-        return phpXFeaturesSkill.id;
+      get skill() {
+        return phpXFeaturesSkill;
       },
       reason: "需要 readonly DTO、enum 或 match 支撑分层代码时联动。",
     },

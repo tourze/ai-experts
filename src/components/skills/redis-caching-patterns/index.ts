@@ -35,8 +35,8 @@ export const redisCachingPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return redisDataModelingSkill.id;
+      get skill() {
+        return redisDataModelingSkill;
       },
       reason: "TTL 抖动防雪崩，配合 `redis-data-modeling` 的键设计与锁模式。",
     },

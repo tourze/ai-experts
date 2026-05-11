@@ -145,7 +145,7 @@ export type SkillAssetDefinition = {
 };
 
 export type RelatedSkillDefinition = {
-  id: string;
+  skill: SkillDefinition;
   reason: string;
   platforms?: PlatformList;
 };

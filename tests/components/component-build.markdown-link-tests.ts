@@ -165,6 +165,18 @@ export function registerComponentBuildMarkdownLinkTests(): void {
           .filter((entry) => entry.isDirectory())
           .map((entry) => entry.name),
       );
+      const skillH1Cache = new Map<string, string>();
+      const getSkillH1 = (skillId: string): string => {
+        const cached = skillH1Cache.get(skillId);
+        if (cached) return cached;
+        const skillMdPath = join(getTmpDistDir(), platform, "skills", skillId, "SKILL.md");
+        if (!existsSync(skillMdPath)) return skillId;
+        const md = stripFrontmatter(readFileSync(skillMdPath, "utf-8"));
+        const h1Match = md.match(/^#\s+(.+)/m);
+        const h1 = h1Match ? h1Match[1].trim() : skillId;
+        skillH1Cache.set(skillId, h1);
+        return h1;
+      };
       const misleadingSkillLinks: string[] = [];
       for (const markdownFile of runtimeMarkdownFiles) {
         const markdown = stripMarkdownCode(readFileSync(markdownFile, "utf-8"));
@@ -180,7 +192,7 @@ export function registerComponentBuildMarkdownLinkTests(): void {
 
           if (targetSkillMatch) {
             const targetSkillId = targetSkillMatch[1] ?? "";
-            if (label !== targetSkillId) {
+            if (label !== targetSkillId && label !== getSkillH1(targetSkillId)) {
               misleadingSkillLinks.push(`${markdownFile}: [${label}] -> ${href} targets ${targetSkillId}`);
             }
           } else if (skillIds.has(label)) {
@@ -191,7 +203,7 @@ export function registerComponentBuildMarkdownLinkTests(): void {
       assert.deepEqual(
         misleadingSkillLinks,
         [],
-        `${platform} generated Markdown should not label reference links as skills or skill links as references`,
+        `${platform} generated Markdown skill links should use the target skill fullName as the label`,
       );
 
       for (const skillFile of collectFiles(join(getTmpDistDir(), platform, "skills"), (file) => file.endsWith("SKILL.md"))) {

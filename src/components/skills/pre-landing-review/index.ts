@@ -40,8 +40,8 @@ export const preLandingReviewSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return testingStrategySkill.id;
+      get skill() {
+        return testingStrategySkill;
       },
       reason: "需要与 `testing-strategy` 配合，决定哪些风险必须补测后才能放行。",
     },

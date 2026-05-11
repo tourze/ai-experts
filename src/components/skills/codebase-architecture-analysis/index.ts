@@ -31,26 +31,26 @@ export const codebaseArchitectureAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return techDebtSkill.id;
+      get skill() {
+        return techDebtSkill;
       },
       reason: "`tech-debt`：技术债识别、排序与治理。",
     },
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "`software-design`：设计原则与架构模式，从复杂度、深模块和信息隐藏角度评估设计。",
     },
     {
-      get id() {
-        return architectureReviewerSkill.id;
+      get skill() {
+        return architectureReviewerSkill;
       },
       reason: "需要做架构设计质量评审，而不只是结构事实取证时联动。",
     },
     {
-      get id() {
-        return deepCodeReadSkill.id;
+      get skill() {
+        return deepCodeReadSkill;
       },
       reason: "`deep-code-read`：深度理解不熟悉代码库。",
     },

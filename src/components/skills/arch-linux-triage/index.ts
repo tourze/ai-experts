@@ -32,14 +32,14 @@ export const archLinuxTriageSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return systemDiagnosticsSkill.id;
+      get skill() {
+        return systemDiagnosticsSkill;
       },
       reason: "需要先做基线采样时，先运行 `system-diagnostics`。",
     },
     {
-      get id() {
-        return networkTroubleshooterSkill.id;
+      get skill() {
+        return networkTroubleshooterSkill;
       },
       reason: "涉及 DNS、链路或端口不可达时，联动 `network-troubleshooter`。",
     },

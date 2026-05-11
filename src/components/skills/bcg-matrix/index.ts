@@ -35,14 +35,14 @@ export const bcgMatrixSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return portersFiveForcesSkill.id;
+      get skill() {
+        return portersFiveForcesSkill;
       },
       reason: "评估外部竞争：BCG/GE 看内部组合，不看行业结构。用 `porters-five-forces`。",
     },
     {
-      get id() {
-        return designingGrowthLoopsSkill.id;
+      get skill() {
+        return designingGrowthLoopsSkill;
       },
       reason: "单产品公司不适合用组合矩阵时，需要判断增长阶段、S 曲线或增长飞轮动力学时联动。",
     },

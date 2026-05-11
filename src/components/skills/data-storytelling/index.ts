@@ -36,20 +36,20 @@ export const dataStorytellingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return dataAnalysisSkill.id;
+      get skill() {
+        return dataAnalysisSkill;
       },
       reason: "需要先清洗、聚合或验证指标事实时联动。",
     },
     {
-      get id() {
-        return dataVisualizationSkill.id;
+      get skill() {
+        return dataVisualizationSkill;
       },
       reason: "需要把叙事支撑点转成图表或仪表盘时联动。",
     },
     {
-      get id() {
-        return statisticalAnalysisSkill.id;
+      get skill() {
+        return statisticalAnalysisSkill;
       },
       reason: "需要判断显著性、效应量或因果边界时联动。",
     },

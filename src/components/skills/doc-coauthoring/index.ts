@@ -33,14 +33,14 @@ export const docCoauthoringSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return proposalWriterSkill.id;
+      get skill() {
+        return proposalWriterSkill;
       },
       reason: "若文档偏正式提案，可接续 `proposal-writer`；正式发送前评审读取 proposal-review reference。",
     },
     {
-      get id() {
-        return userGuideWritingSkill.id;
+      get skill() {
+        return userGuideWritingSkill;
       },
       reason: "交付后若还要延展成用户手册，可转给 `user-guide-writing`。",
     },

@@ -53,14 +53,14 @@ export const protocolFreezingPatternsSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "协议演进需要放回系统边界、服务职责、数据流或可靠性设计中判断时联动。",
     },
     {
-      get id() {
-        return errorHandlingPatternsSkill.id;
+      get skill() {
+        return errorHandlingPatternsSkill;
       },
       reason: "版本协商、未知字段、兼容失败或 breaking change 需要错误语义和降级策略时联动。",
     },

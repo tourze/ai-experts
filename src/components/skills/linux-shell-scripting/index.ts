@@ -33,14 +33,14 @@ export const linuxShellScriptingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return networkTroubleshooterSkill.id;
+      get skill() {
+        return networkTroubleshooterSkill;
       },
       reason: "脚本涉及网络探测、连通性验证、DNS/TLS 或重试策略时联动。",
     },
     {
-      get id() {
-        return systemDiagnosticsSkill.id;
+      get skill() {
+        return systemDiagnosticsSkill;
       },
       reason: "需要系统快照、诊断输出模板或主机状态采集时联动。",
     },

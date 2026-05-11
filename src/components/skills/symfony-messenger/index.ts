@@ -38,14 +38,14 @@ export const symfonyMessengerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return symfonyVotersSkill.id;
+      get skill() {
+        return symfonyVotersSkill;
       },
       reason: "消息入队前后需要权限判断、资源归属或授权矩阵时联动。",
     },
     {
-      get id() {
-        return doctrineBatchProcessingSkill.id;
+      get skill() {
+        return doctrineBatchProcessingSkill;
       },
       reason: "Handler 内涉及批量写库、回填或 Doctrine UnitOfWork 控制时联动。",
     },

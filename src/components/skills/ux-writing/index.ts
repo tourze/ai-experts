@@ -33,20 +33,20 @@ export const uxWritingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return i18nLocalizationSkill.id;
+      get skill() {
+        return i18nLocalizationSkill;
       },
       reason: "微文案需要国际化、本地化重写、ICU 变量或字符串拼接审查时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "微文案问题和整体 Web 界面结构、视觉层级或交互设计一起审查时联动。",
     },
     {
-      get id() {
-        return productDesignCriticSkill.id;
+      get skill() {
+        return productDesignCriticSkill;
       },
       reason: "需要从产品任务、关键状态、信任损耗和 trade-off 角度审查文案时联动。",
     },

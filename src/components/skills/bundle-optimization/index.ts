@@ -39,8 +39,8 @@ export const bundleOptimizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
+      get skill() {
+        return webPerformanceDiagnosisSkill;
       },
       reason: "bundle 体积问题需要落到 LCP、INP、瀑布流或质量审计指标时联动。",
     },

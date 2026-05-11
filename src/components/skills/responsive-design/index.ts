@@ -37,14 +37,14 @@ export const responsiveDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return webPerformanceDiagnosisSkill.id;
+      get skill() {
+        return webPerformanceDiagnosisSkill;
       },
       reason: "响应式图片、CLS、LCP、移动端长任务或真实设备性能问题需要诊断时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "响应式方案需要落到整体视觉方向、排版系统或 Web 设计规范时联动。",
     },

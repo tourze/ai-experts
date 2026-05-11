@@ -37,8 +37,8 @@ export const twigComponentsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return symfonyUxSkill.id;
+      get skill() {
+        return symfonyUxSkill;
       },
       reason: "还在选择 Stimulus、Turbo、TwigComponent 或 LiveComponent 方案边界时联动。",
     },

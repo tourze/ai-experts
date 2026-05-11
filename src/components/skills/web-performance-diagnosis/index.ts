@@ -51,32 +51,32 @@ export const webPerformanceDiagnosisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return responsiveDesignSkill.id;
+      get skill() {
+        return responsiveDesignSkill;
       },
       reason: "性能问题涉及响应式图片、尺寸预留、移动端布局或小屏内容密度时联动。",
     },
     {
-      get id() {
-        return frontendDesignReviewSkill.id;
+      get skill() {
+        return frontendDesignReviewSkill;
       },
       reason: "性能修复会影响视觉层级、交互清晰度、可访问性或设计系统一致性时联动。",
     },
     {
-      get id() {
-        return bundleOptimizationSkill.id;
+      get skill() {
+        return bundleOptimizationSkill;
       },
       reason: "诊断指向 JS 体积、代码分割、tree shaking 或第三方脚本加载时联动。",
     },
     {
-      get id() {
-        return reactPerformanceSkill.id;
+      get skill() {
+        return reactPerformanceSkill;
       },
       reason: "瓶颈来自 React re-render、memo、外部 store 订阅或组件渲染成本时联动。",
     },
     {
-      get id() {
-        return reactServerComponentsSkill.id;
+      get skill() {
+        return reactServerComponentsSkill;
       },
       reason: "瓶颈来自 RSC 边界、Server Actions、请求瀑布或序列化成本时联动。",
     },

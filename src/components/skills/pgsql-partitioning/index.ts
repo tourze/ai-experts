@@ -38,14 +38,14 @@ export const pgsqlPartitioningSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sqlReviewOptimizationSkill.id;
+      get skill() {
+        return sqlReviewOptimizationSkill;
       },
       reason: "需要验证分区裁剪、索引设计或查询计划时联动。",
     },
     {
-      get id() {
-        return dbSchemaDesignSkill.id;
+      get skill() {
+        return dbSchemaDesignSkill;
       },
       reason: "需要确定基础表结构、主键/唯一约束和分区键建模时联动。",
     },

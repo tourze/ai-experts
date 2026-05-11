@@ -33,14 +33,14 @@ export const userGuideWritingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return docCoauthoringSkill.id;
+      get skill() {
+        return docCoauthoringSkill;
       },
       reason: "如果当前还在收集素材和结构，可先用 `doc-coauthoring`。",
     },
     {
-      get id() {
-        return readmeBlueprintGeneratorSkill.id;
+      get skill() {
+        return readmeBlueprintGeneratorSkill;
       },
       reason: "若还需要同步更新仓库说明，可结合 `readme-blueprint-generator`。",
     },

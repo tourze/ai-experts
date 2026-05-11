@@ -35,8 +35,8 @@ export const youtubeSearchSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return youtubeAnalysisSkill.id;
+      get skill() {
+        return youtubeAnalysisSkill;
       },
       reason: "用户已经给出明确视频链接且诉求是“总结内容”时联动。",
     },

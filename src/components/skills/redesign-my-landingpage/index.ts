@@ -33,8 +33,8 @@ export const redesignMyLandingpageSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return croMethodologySkill.id;
+      get skill() {
+        return croMethodologySkill;
       },
       reason: "若任务主要是实验设计或诊断，不直接写代码时，配合 `cro-methodology`。",
     },

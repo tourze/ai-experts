@@ -34,14 +34,14 @@ export const liquidGlassDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return iosHigDesignSkill.id;
+      get skill() {
+        return iosHigDesignSkill;
       },
       reason: "需要确认整体 iOS 界面层级、平台规范或旧系统回退体验时联动。",
     },
     {
-      get id() {
-        return swiftuiUiPatternsSkill.id;
+      get skill() {
+        return swiftuiUiPatternsSkill;
       },
       reason: "需要把 Liquid Glass 落到 SwiftUI 组件结构、状态和布局实现时联动。",
     },

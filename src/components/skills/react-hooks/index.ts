@@ -41,20 +41,20 @@ export const reactHooksSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactServerComponentsSkill.id;
+      get skill() {
+        return reactServerComponentsSkill;
       },
       reason: "如果任务在 Next.js App Router / RSC 边界上，优先联动 `react-server-components`。",
     },
     {
-      get id() {
-        return reactPerformanceSkill.id;
+      get skill() {
+        return reactPerformanceSkill;
       },
       reason: "如果问题已经扩展成\\\"渲染性能、外部 store 订阅或 memo 治理\\\"，统一看 `react-performance`。",
     },
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "自定义 Hook 返回类型、Reducer action 或泛型约束复杂时联动。",
     },

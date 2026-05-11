@@ -41,20 +41,20 @@ export const modernJavascriptPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return javascriptTypescriptJestSkill.id;
+      get skill() {
+        return javascriptTypescriptJestSkill;
       },
       reason: "需要在业务代码和测试代码之间复用一致的数据变换模式时，联动 `javascript-typescript-jest`。",
     },
     {
-      get id() {
-        return reactHooksSkill.id;
+      get skill() {
+        return reactHooksSkill;
       },
       reason: "现代 JS 重构触及 React Hook 状态、effect 或闭包依赖边界时联动。",
     },
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "重构涉及 API 合同、复杂泛型、`any` 清理或 TypeScript 边界时联动。",
     },

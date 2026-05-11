@@ -39,8 +39,8 @@ export const copywritingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return croMethodologySkill.id;
+      get skill() {
+        return croMethodologySkill;
       },
       reason: "转化率优化 → `cro-methodology`。",
     },

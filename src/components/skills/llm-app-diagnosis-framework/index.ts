@@ -38,26 +38,26 @@ export const llmAppDiagnosisFrameworkSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return promptEngineeringPatternsSkill.id;
+      get skill() {
+        return promptEngineeringPatternsSkill;
       },
       reason: "诊断结果落到 prompt 模板、输出约束、few-shot 或失败模式修复时联动。",
     },
     {
-      get id() {
-        return llmEvaluationSkill.id;
+      get skill() {
+        return llmEvaluationSkill;
       },
       reason: "需要设计离线 eval、case 集、评分 rubric 或 baseline 对比时联动。",
     },
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "问题落在 chunking、embedding、混合检索、rerank、top-k 或引用对齐时联动。",
     },
     {
-      get id() {
-        return llmAppDesignPipelineSkill.id;
+      get skill() {
+        return llmAppDesignPipelineSkill;
       },
       reason: "需要从诊断回到 LLM 应用五步设计流程、重建需求和架构时联动。",
     },

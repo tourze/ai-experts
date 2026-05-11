@@ -34,8 +34,8 @@ export const brandHealthSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return contentStrategySkill.id;
+      get skill() {
+        return contentStrategySkill;
       },
       reason: "与 `content-strategy` 配合：品牌诊断找问题，内容策略做修复。",
     },

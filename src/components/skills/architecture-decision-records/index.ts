@@ -41,26 +41,26 @@ export const architectureDecisionRecordsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "需要拆模块职责、信息隐藏、深模块或局部设计原则时联动。",
     },
     {
-      get id() {
-        return protocolFreezingPatternsSkill.id;
+      get skill() {
+        return protocolFreezingPatternsSkill;
       },
       reason: "接口线格式、版本冻结、向后兼容或 breaking change 治理时联动。",
     },
     {
-      get id() {
-        return errorHandlingPatternsSkill.id;
+      get skill() {
+        return errorHandlingPatternsSkill;
       },
       reason: "决策涉及错误分层、传播、重试条件或错误码兼容时联动。",
     },
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "需要先做系统架构全貌、容量、数据流或组件关系设计时联动。",
     },

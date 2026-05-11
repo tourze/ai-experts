@@ -36,26 +36,26 @@ export const ragAuditorSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return vectorIndexTuningSkill.id;
+      get skill() {
+        return vectorIndexTuningSkill;
       },
       reason: "检索失败指向索引参数、top-k、过滤或向量库配置时联动。",
     },
     {
-      get id() {
-        return llmEvaluationSkill.id;
+      get skill() {
+        return llmEvaluationSkill;
       },
       reason: "需要把 RAG 指标纳入模型或系统回归评测时联动。",
     },
     {
-      get id() {
-        return embeddingStrategiesSkill.id;
+      get skill() {
+        return embeddingStrategiesSkill;
       },
       reason: "失败原因指向 embedding 模型、chunk 表示或语义覆盖时联动。",
     },
     {
-      get id() {
-        return similaritySearchPatternsSkill.id;
+      get skill() {
+        return similaritySearchPatternsSkill;
       },
       reason: "需要审查相似度检索策略、过滤、rerank 或混合检索时联动。",
     },

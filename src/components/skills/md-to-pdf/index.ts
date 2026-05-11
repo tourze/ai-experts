@@ -39,8 +39,8 @@ export const mdToPdfSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return markdownMermaidWritingSkill.id;
+      get skill() {
+        return markdownMermaidWritingSkill;
       },
       reason: "若文档内容本身还没写好，先用 `markdown-mermaid-writing` 产出源文档。",
     },

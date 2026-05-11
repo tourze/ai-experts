@@ -41,8 +41,8 @@ export const mysqlTransactionLockingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sqlReviewOptimizationSkill.id;
+      get skill() {
+        return sqlReviewOptimizationSkill;
       },
       reason: "需要理解索引对锁范围的影响，联动 `sql-review-optimization`（含深度索引策略）。",
     },

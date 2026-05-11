@@ -59,20 +59,20 @@ export const goCliSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "需要设计 CLI 错误语义、错误包装、用户可见消息和退出码映射时联动。",
     },
     {
-      get id() {
-        return goCodeStyleSkill.id;
+      get skill() {
+        return goCodeStyleSkill;
       },
       reason: "需要校验 `cmd/` 组织、Go 命名、文件拆分和可读性惯例时联动。",
     },
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "长运行命令需要取消传播、信号处理、goroutine 生命周期或并发上限时联动。",
     },

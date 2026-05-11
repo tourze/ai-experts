@@ -36,8 +36,8 @@ export const seoSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return contentStrategySkill.id;
+      get skill() {
+        return contentStrategySkill;
       },
       reason: "站点层级和 URL 规划配合 `content-strategy`。",
     },

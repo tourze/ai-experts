@@ -37,20 +37,20 @@ export const pythonObservabilitySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonBackgroundJobsSkill.id;
+      get skill() {
+        return pythonBackgroundJobsSkill;
       },
       reason: "后台任务监控和重试治理时，联动 `python-background-jobs`。",
     },
     {
-      get id() {
-        return pythonTestingPatternsSkill.id;
+      get skill() {
+        return pythonTestingPatternsSkill;
       },
       reason: "需要把失败路径覆盖进测试时，联动 `python-testing-patterns`。",
     },
     {
-      get id() {
-        return asyncPythonPatternsSkill.id;
+      get skill() {
+        return asyncPythonPatternsSkill;
       },
       reason: "异步链路上下文透传时，联动 `async-python-patterns`。",
     },

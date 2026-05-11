@@ -53,14 +53,14 @@ export const techDebtSkill = defineSkill({
   sourceDir: new URL("./", import.meta.url),
   relatedSkills: [
     {
-      get id() {
-        return complexityReducerSkill.id;
+      get skill() {
+        return complexityReducerSkill;
       },
       reason: "债务治理需要先量化复杂度热点或降低复杂函数、模块和调用链时联动。",
     },
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "债务项需要落到具体重构手法、测试接缝或分步整改序列时联动。",
     },

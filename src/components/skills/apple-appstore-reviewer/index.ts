@@ -45,20 +45,20 @@ export const appleAppstoreReviewerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return iosHigDesignSkill.id;
+      get skill() {
+        return iosHigDesignSkill;
       },
       reason: "需要判断界面是否符合 iOS 平台习惯、权限前置说明或 HIG 合规时联动。",
     },
     {
-      get id() {
-        return iosSimulatorSkillSkill.id;
+      get skill() {
+        return iosSimulatorSkillSkill;
       },
       reason: "需要真实走审核路径、截图、日志或无障碍树复现 UI 流程时联动。",
     },
     {
-      get id() {
-        return appStoreOptimizationSkill.id;
+      get skill() {
+        return appStoreOptimizationSkill;
       },
       reason: "需要撰写门店更新文案、发布说明或 ASO 元数据时联动。",
     },

@@ -49,26 +49,26 @@ export const complexityReducerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return refactoringChecklistSkill.id;
+      get skill() {
+        return refactoringChecklistSkill;
       },
       reason: "需要按重构纪律控制行为不变、步长和验证顺序时联动。",
     },
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "需要选择具体重构手法或替换复杂结构时联动。",
     },
     {
-      get id() {
-        return codeReviewSkill.id;
+      get skill() {
+        return codeReviewSkill;
       },
       reason: "复杂度问题来自审查发现或需要复核可维护性风险时联动。",
     },
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "复杂度来自职责边界、抽象层次或模块设计问题时联动。",
     },

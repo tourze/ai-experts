@@ -48,26 +48,26 @@ export const incidentResponseSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return monitoringObservabilitySkill.id;
+      get skill() {
+        return monitoringObservabilitySkill;
       },
       reason: "需要补齐 metrics、logs、traces、告警和 SLO 监控设计时联动。",
     },
     {
-      get id() {
-        return systemDiagnosticsSkill.id;
+      get skill() {
+        return systemDiagnosticsSkill;
       },
       reason: "需要检查 Linux 主机、进程、磁盘、CPU、内存或服务状态时联动。",
     },
     {
-      get id() {
-        return networkTroubleshooterSkill.id;
+      get skill() {
+        return networkTroubleshooterSkill;
       },
       reason: "症状指向 DNS、TLS、端口、路由、丢包或外部依赖网络问题时联动。",
     },
     {
-      get id() {
-        return logAnalyzerSkill.id;
+      get skill() {
+        return logAnalyzerSkill;
       },
       reason: "需要对齐多源日志、错误上下文和时间窗口以支撑时间线时联动。",
     },

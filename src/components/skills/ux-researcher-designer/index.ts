@@ -46,20 +46,20 @@ export const uxResearcherDesignerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return uxHeuristicsSkill.id;
+      get skill() {
+        return uxHeuristicsSkill;
       },
       reason: "问题已明确是界面启发式错误、交互可用性或设计评审项时联动。",
     },
     {
-      get id() {
-        return customerResearchSkill.id;
+      get skill() {
+        return customerResearchSkill;
       },
       reason: "研究问题偏市场视角、购买决策、VOC、评论挖掘或市场 persona 构建时联动。",
     },
     {
-      get id() {
-        return customerJourneyMapSkill.id;
+      get skill() {
+        return customerJourneyMapSkill;
       },
       reason: "输出重点是触点链路、阶段情绪、阻塞点和端到端旅程可视化时联动。",
     },

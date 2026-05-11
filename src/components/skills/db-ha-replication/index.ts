@@ -37,8 +37,8 @@ export const dbHaReplicationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return mysqlTransactionLockingSkill.id;
+      get skill() {
+        return mysqlTransactionLockingSkill;
       },
       reason: "需要理解事务与锁对复制的影响，联动 `mysql-transaction-locking`。",
     },

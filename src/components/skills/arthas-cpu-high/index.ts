@@ -33,8 +33,8 @@ export const arthasCpuHighSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return arthasSpringcontextIssuesResolveSkill.id;
+      get skill() {
+        return arthasSpringcontextIssuesResolveSkill;
       },
       reason: "症状转向 Spring Bean 装配、条件装配或配置注入问题时联动。",
     },

@@ -33,20 +33,20 @@ export const vectorIndexTuningSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return ragAuditorSkill.id;
+      get skill() {
+        return ragAuditorSkill;
       },
       reason: "如果问题已经扩散到整条 RAG 链路，是否交给 `rag-auditor`。",
     },
     {
-      get id() {
-        return similaritySearchPatternsSkill.id;
+      get skill() {
+        return similaritySearchPatternsSkill;
       },
       reason: "需要重选检索架构、引擎、过滤策略或 hybrid/rerank 方案时联动。",
     },
     {
-      get id() {
-        return embeddingStrategiesSkill.id;
+      get skill() {
+        return embeddingStrategiesSkill;
       },
       reason: "基准显示索引不是主因，问题来自 embedding、chunking 或距离度量时联动。",
     },

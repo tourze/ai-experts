@@ -40,14 +40,14 @@ export const i18nLocalizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return responsiveDesignSkill.id;
+      get skill() {
+        return responsiveDesignSkill;
       },
       reason: "多语言、长文案或 RTL 改动影响断点、换行和布局稳定性时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "本地化影响整体页面视觉、内容层级或现代 Web 体验时联动。",
     },

@@ -40,14 +40,14 @@ export const redisDataModelingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return redisClusterHaSkill.id;
+      get skill() {
+        return redisClusterHaSkill;
       },
       reason: "需要考虑 Cluster slot、hash tag、multi-key 操作或高可用拓扑时联动。",
     },
     {
-      get id() {
-        return redisCachingPatternsSkill.id;
+      get skill() {
+        return redisCachingPatternsSkill;
       },
       reason: "需要把键设计、TTL 和互斥锁落到缓存读写策略时联动。",
     },

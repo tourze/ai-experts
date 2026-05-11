@@ -43,8 +43,8 @@ export const sqlReviewOptimizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return dbSchemaDesignSkill.id;
+      get skill() {
+        return dbSchemaDesignSkill;
       },
       reason: "如果优化依赖具体数据库引擎特性，联动 `db-schema-design`。",
     },

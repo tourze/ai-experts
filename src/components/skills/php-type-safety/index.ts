@@ -47,20 +47,20 @@ export const phpTypeSafetySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return phpDesignPatternsSkill.id;
+      get skill() {
+        return phpDesignPatternsSkill;
       },
       reason: "需要把类型合同落实到 DTO、Repository、Service 或值对象边界时联动。",
     },
     {
-      get id() {
-        return phpTestingSkill.id;
+      get skill() {
+        return phpTestingSkill;
       },
       reason: "类型守卫、断言、条件返回或复杂数组结构需要测试覆盖时联动。",
     },
     {
-      get id() {
-        return phpXFeaturesSkill.id;
+      get skill() {
+        return phpXFeaturesSkill;
       },
       reason: "PHP 8.x 原生类型、readonly、enum 或 attributes 可替代 PHPDoc 约束时联动。",
     },

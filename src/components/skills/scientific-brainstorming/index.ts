@@ -39,14 +39,14 @@ export const scientificBrainstormingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "如果要先拆掉既有假设，再重建研究问题，可结合 `first-principles-decomposer`。",
     },
     {
-      get id() {
-        return crossPollinationEngineSkill.id;
+      get skill() {
+        return crossPollinationEngineSkill;
       },
       reason: "如果要借其他行业或学科的成熟机制，可结合 `cross-pollination-engine`。",
     },

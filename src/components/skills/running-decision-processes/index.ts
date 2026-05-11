@@ -35,20 +35,20 @@ export const runningDecisionProcessesSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return firstPrinciplesDecomposerSkill.id;
+      get skill() {
+        return firstPrinciplesDecomposerSkill;
       },
       reason: "需要反推失败路径、拆解关键假设或做事前验尸时联动。",
     },
     {
-      get id() {
-        return planningUnderUncertaintySkill.id;
+      get skill() {
+        return planningUnderUncertaintySkill;
       },
       reason: "高不确定性决策需要情景、触发条件和可逆性设计时联动。",
     },
     {
-      get id() {
-        return whatIfOracleSkill.id;
+      get skill() {
+        return whatIfOracleSkill;
       },
       reason: "争议证据需要转成先验、后验、行动阈值、敏感性报告或分支推演时联动。",
     },

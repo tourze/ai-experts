@@ -32,8 +32,8 @@ export const prfaqSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return createPrdSkill.id;
+      get skill() {
+        return createPrdSkill;
       },
       reason: "PRFAQ 已压实用户价值和立项理由，需要继续写 PRD、需求边界和验收标准时联动。",
     },

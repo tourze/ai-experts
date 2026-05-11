@@ -56,20 +56,20 @@ export const laravelPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return laravelSecuritySkill.id;
+      get skill() {
+        return laravelSecuritySkill;
       },
       reason: "Laravel 架构边界涉及授权、输入验证、密钥、租户隔离或安全基线时联动。",
     },
     {
-      get id() {
-        return laravelTddSkill.id;
+      get skill() {
+        return laravelTddSkill;
       },
       reason: "Laravel 实现需要先写 Pest / PHPUnit 测试、HTTP 测试、factory 或 fake 副作用时联动。",
     },
     {
-      get id() {
-        return laravelVerificationSkill.id;
+      get skill() {
+        return laravelVerificationSkill;
       },
       reason: "Laravel 改动需要发布前命令链、配置缓存、迁移、队列或端到端验证时联动。",
     },

@@ -40,8 +40,8 @@ export const benchmarkRunnerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return testingStrategySkill.id;
+      get skill() {
+        return testingStrategySkill;
       },
       reason: "需要把基准测试纳入端到端验证、发布门禁或测试矩阵时联动。",
     },

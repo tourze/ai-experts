@@ -31,8 +31,8 @@ export const leadChannelOptimizerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return paidAdsSkill.id;
+      get skill() {
+        return paidAdsSkill;
       },
       reason: "若需要重做广告结构，配合 `paid-ads`。",
     },

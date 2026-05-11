@@ -37,8 +37,8 @@ export const dbSchemaDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sqlReviewOptimizationSkill.id;
+      get skill() {
+        return sqlReviewOptimizationSkill;
       },
       reason: "需要基于表结构继续设计索引、解释执行计划或优化真实 SQL 查询路径时联动。",
     },

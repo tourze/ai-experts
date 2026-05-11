@@ -38,20 +38,20 @@ export const refactoringChecklistSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "已经满足流程门禁，需要选择 Extract Method、Move Method 或异味对应手法时联动。",
     },
     {
-      get id() {
-        return complexityReducerSkill.id;
+      get skill() {
+        return complexityReducerSkill;
       },
       reason: "重构目标是降低过长函数、深层嵌套、复杂条件或认知复杂度时联动。",
     },
     {
-      get id() {
-        return codeReviewSkill.id;
+      get skill() {
+        return codeReviewSkill;
       },
       reason: "重构触发来自代码审查发现，或完成后需要审查结构质量时联动。",
     },

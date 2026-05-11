@@ -33,14 +33,14 @@ export const readmeBlueprintGeneratorSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return markdownMermaidWritingSkill.id;
+      get skill() {
+        return markdownMermaidWritingSkill;
       },
       reason: "如需统一 Markdown 风格，可结合 `markdown-mermaid-writing`。",
     },
     {
-      get id() {
-        return userGuideWritingSkill.id;
+      get skill() {
+        return userGuideWritingSkill;
       },
       reason: "若后续要写面向终端用户的指南，可转给 `user-guide-writing`。",
     },

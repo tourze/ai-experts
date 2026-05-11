@@ -21,8 +21,8 @@ export const speckitTasksSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return speckitBaselineSkill.id;
+      get skill() {
+        return speckitBaselineSkill;
       },
       reason: "缺少 `.specify/` scripts 或 templates，需要先初始化 Speckit 基线时联动。",
     },

@@ -33,8 +33,8 @@ export const gradleBuildPerformanceSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return graalvmNativeImageSkill.id;
+      get skill() {
+        return graalvmNativeImageSkill;
       },
       reason: "瓶颈属于 Native Image 构建链路、原生镜像配置或 nativeCompile 失败时联动。",
     },

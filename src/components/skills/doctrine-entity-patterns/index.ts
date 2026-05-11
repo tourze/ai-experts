@@ -36,14 +36,14 @@ export const doctrineEntityPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return symfonyBundleArchitectureSkill.id;
+      get skill() {
+        return symfonyBundleArchitectureSkill;
       },
       reason: "Entity 需要进入 Bundle 目录结构、DI 配置或多 Bundle 边界时联动。",
     },
     {
-      get id() {
-        return doctrineBatchProcessingSkill.id;
+      get skill() {
+        return doctrineBatchProcessingSkill;
       },
       reason: "Repository 查询、数据回填或大批量更新需要批处理策略时联动。",
     },

@@ -262,18 +262,6 @@ describe("build/pipeline registry workflow validation", () => {
       "skill fixture-skill references procedure fixture-procedure for unsupported platform(s): codex-cli",
     );
 
-    const duplicateRelatedSkillRegistry: ComponentRegistry = {
-      ...fixture.registry,
-      skills: [{
-        ...fixture.skill,
-        relatedSkills: [
-          { id: "other-skill", reason: "first route" },
-          { id: "other-skill", reason: "duplicate route" },
-        ],
-      }],
-    };
-    expect(() => validateRegistry(duplicateRelatedSkillRegistry)).toThrow("references missing related skill");
-
     const otherSkill = defineSkill({
       ...fixture.skill,
       id: "other-skill",
@@ -289,6 +277,19 @@ describe("build/pipeline registry workflow validation", () => {
       relatedSkills: [],
       procedures: [],
     });
+
+    const duplicateRelatedSkillRegistry: ComponentRegistry = {
+      ...fixture.registry,
+      skills: [{
+        ...fixture.skill,
+        relatedSkills: [
+          { get skill() { return otherSkill; }, reason: "first route" },
+          { get skill() { return otherSkill; }, reason: "duplicate route" },
+        ],
+      }],
+    };
+    expect(() => validateRegistry(duplicateRelatedSkillRegistry)).toThrow("references missing related skill");
+
     expect(() =>
       validateRegistry({
         ...fixture.registry,
@@ -296,7 +297,7 @@ describe("build/pipeline registry workflow validation", () => {
         skills: [{
           ...fixture.skill,
           procedures: [],
-          relatedSkills: [{ id: otherSkill.id, reason: "bad\nreason" }],
+          relatedSkills: [{ get skill() { return otherSkill; }, reason: "bad\nreason" }],
         }, otherSkill],
       })
     ).toThrow("related skill other-skill reason must be a single line");
@@ -308,7 +309,7 @@ describe("build/pipeline registry workflow validation", () => {
         skills: [{
           ...fixture.skill,
           procedures: [],
-          relatedSkills: [{ id: claudeOnlySkill.id, reason: "Claude-only route" }],
+          relatedSkills: [{ get skill() { return claudeOnlySkill; }, reason: "Claude-only route" }],
         }, claudeOnlySkill],
       })
     ).toThrow("related skill claude-only-skill unavailable on platform(s): codex-cli");
@@ -321,8 +322,8 @@ describe("build/pipeline registry workflow validation", () => {
           ...fixture.skill,
           procedures: [],
           relatedSkills: [
-            { id: otherSkill.id, reason: "first route" },
-            { id: otherSkill.id, reason: "duplicate route" },
+            { get skill() { return otherSkill; }, reason: "first route" },
+            { get skill() { return otherSkill; }, reason: "duplicate route" },
           ],
         }, otherSkill],
       })

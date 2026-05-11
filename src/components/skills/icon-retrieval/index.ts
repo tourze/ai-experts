@@ -36,14 +36,14 @@ export const iconRetrievalSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return figmaImplementDesignSkill.id;
+      get skill() {
+        return figmaImplementDesignSkill;
       },
       reason: "设计稿实现时需要把检索到的图标映射到 Figma 资产、组件或视觉状态时联动。",
     },
     {
-      get id() {
-        return designSystemPatternsSkill.id;
+      get skill() {
+        return designSystemPatternsSkill;
       },
       reason: "图标用于界面时，优先与 `design-system-patterns` 的尺寸、颜色和语义体系一致。",
     },

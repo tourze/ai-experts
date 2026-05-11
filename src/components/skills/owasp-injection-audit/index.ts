@@ -25,8 +25,8 @@ export const owaspInjectionAuditSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sqlReviewOptimizationSkill.id;
+      get skill() {
+        return sqlReviewOptimizationSkill;
       },
       reason: "发现 SQL 字符串拼接、ORM raw query 或模板 SQL 注入风险时联动。",
     },

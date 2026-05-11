@@ -32,8 +32,8 @@ export const contentStrategySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return seoSkill.id;
+      get skill() {
+        return seoSkill;
       },
       reason: "若任务转向具体页面优化，配合 `seo`。",
     },

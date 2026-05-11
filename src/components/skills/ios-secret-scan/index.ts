@@ -33,14 +33,14 @@ export const iosSecretScanSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fridaDynamicAnalysisSkill.id;
+      get skill() {
+        return fridaDynamicAnalysisSkill;
       },
       reason: "需要与 `frida-dynamic-analysis` 配合验证运行时保护有效性。",
     },
     {
-      get id() {
-        return iosBinaryAnalysisSkill.id;
+      get skill() {
+        return iosBinaryAnalysisSkill;
       },
       reason: "需要与 `ios-binary-analysis` 配合：先提取再扫描。",
     },

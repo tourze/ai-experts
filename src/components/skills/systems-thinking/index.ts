@@ -32,14 +32,14 @@ export const systemsThinkingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return planningUnderUncertaintySkill.id;
+      get skill() {
+        return planningUnderUncertaintySkill;
       },
       reason: "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
     },
     {
-      get id() {
-        return processOptimizationSkill.id;
+      get skill() {
+        return processOptimizationSkill;
       },
       reason: "涉及流程或不确定性时，可配合 `process-optimization` 与 `planning-under-uncertainty`。",
     },

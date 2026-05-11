@@ -59,8 +59,8 @@ export const researchNoteWrapSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return sessionFinalizationWorkflowSkill.id;
+      get skill() {
+        return sessionFinalizationWorkflowSkill;
       },
       reason: "会话产物是 coding 收尾、session journal、合作复盘或经验沉淀，而不是调研结论笔记时联动。",
     },

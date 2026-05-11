@@ -38,14 +38,14 @@ export const windowsUiAutomationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return windowsKernelSecuritySkill.id;
+      get skill() {
+        return windowsKernelSecuritySkill;
       },
       reason: "问题属于驱动、回调、内核对象或内核安全边界时联动。",
     },
     {
-      get id() {
-        return prlctlVmControlSkill.id;
+      get skill() {
+        return prlctlVmControlSkill;
       },
       reason: "需要在 Windows 虚拟机里复现自动化脚本、高风险窗口或安全边界时联动。",
     },

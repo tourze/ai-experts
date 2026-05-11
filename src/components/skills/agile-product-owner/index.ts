@@ -36,8 +36,8 @@ export const agileProductOwnerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return createPrdSkill.id;
+      get skill() {
+        return createPrdSkill;
       },
       reason: "需要故事拆分模式、Epic 分解模式或 PRD 上下文时联动。",
     },

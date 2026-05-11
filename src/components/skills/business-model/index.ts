@@ -39,15 +39,15 @@ export const businessModelSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pricingStrategySkill.id;
+      get skill() {
+        return pricingStrategySkill;
       },
       reason:
         "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",
     },
     {
-      get id() {
-        return portersFiveForcesSkill.id;
+      get skill() {
+        return portersFiveForcesSkill;
       },
       reason:
         "只看竞争结构时转 `porters-five-forces`；只做定价打包时转 `pricing-strategy`。",

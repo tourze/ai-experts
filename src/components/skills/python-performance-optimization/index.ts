@@ -37,14 +37,14 @@ export const pythonPerformanceOptimizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pythonDesignPatternsSkill.id;
+      get skill() {
+        return pythonDesignPatternsSkill;
       },
       reason: "结构层面的复杂度治理时，联动 `python-design-patterns`。",
     },
     {
-      get id() {
-        return asyncPythonPatternsSkill.id;
+      get skill() {
+        return asyncPythonPatternsSkill;
       },
       reason: "异步 I/O 优化时，联动 `async-python-patterns`。",
     },

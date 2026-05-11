@@ -42,20 +42,20 @@ export const dataVisualizationSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return dataStorytellingSkill.id;
+      get skill() {
+        return dataStorytellingSkill;
       },
       reason: "图表最终要用于汇报、叙事或 executive summary 时联动 headline 与故事顺序。",
     },
     {
-      get id() {
-        return dataAnalysisSkill.id;
+      get skill() {
+        return dataAnalysisSkill;
       },
       reason: "需要先做数据清洗、聚合、探索性分析或指标计算时联动。",
     },
     {
-      get id() {
-        return statisticalAnalysisSkill.id;
+      get skill() {
+        return statisticalAnalysisSkill;
       },
       reason: "图表涉及显著性、置信区间、分布假设或不确定性表达时联动。",
     },

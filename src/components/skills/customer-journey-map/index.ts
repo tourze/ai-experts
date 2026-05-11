@@ -43,14 +43,14 @@ export const customerJourneyMapSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return customerResearchSkill.id;
+      get skill() {
+        return customerResearchSkill;
       },
       reason: "旅程输入缺少客户声音、访谈证据、persona 或 JTBD 洞察时联动。",
     },
     {
-      get id() {
-        return uxResearcherDesignerSkill.id;
+      get skill() {
+        return uxResearcherDesignerSkill;
       },
       reason: "旅程图需要进一步转成 UX 设计输入、可用性测试计划或设计复盘时联动。",
     },

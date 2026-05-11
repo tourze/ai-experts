@@ -36,8 +36,8 @@ export const grillMeSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return thinkingPartnerSkill.id;
+      get skill() {
+        return thinkingPartnerSkill;
       },
       reason: "如果用户连问题本身都还没说清，先用 `thinking-partner` 收敛；如果用户想通过被提问来学习而非验证方案，使用其中的 Socratic teaching 方法。",
     },

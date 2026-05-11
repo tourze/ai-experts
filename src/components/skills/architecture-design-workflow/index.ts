@@ -30,38 +30,38 @@ export const architectureDesignWorkflowSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return systemDesignSkill.id;
+      get skill() {
+        return systemDesignSkill;
       },
       reason: "架构全貌方法论：需要理解系统架构的整体设计方法和原则时联动。",
     },
     {
-      get id() {
-        return architectureDecisionRecordsSkill.id;
+      get skill() {
+        return architectureDecisionRecordsSkill;
       },
       reason: "ADR 格式与系统边界分析：需要记录架构决策或分析系统边界时联动。",
     },
     {
-      get id() {
-        return softwareDesignSkill.id;
+      get skill() {
+        return softwareDesignSkill;
       },
       reason: "模块设计与设计原则：需要深入模块设计或应用设计原则时联动。",
     },
     {
-      get id() {
-        return protocolFreezingPatternsSkill.id;
+      get skill() {
+        return protocolFreezingPatternsSkill;
       },
       reason: "协议版本冻结：需要设计版本化协议或兼容策略时联动。",
     },
     {
-      get id() {
-        return errorHandlingPatternsSkill.id;
+      get skill() {
+        return errorHandlingPatternsSkill;
       },
       reason: "错误分层与传播：需要设计错误处理策略或错误传播路径时联动。",
     },
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "任务拆解与关键路径：需要将架构方案拆解为可执行任务时联动。",
     },

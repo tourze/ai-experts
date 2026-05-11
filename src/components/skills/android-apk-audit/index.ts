@@ -40,14 +40,14 @@ export const androidApkAuditSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return fridaDynamicAnalysisSkill.id;
+      get skill() {
+        return fridaDynamicAnalysisSkill;
       },
       reason: "用户需要串联 apktool、jadx、`frida-dynamic-analysis` 和 dex-dumper。",
     },
     {
-      get id() {
-        return ethicalHackingMethodologySkill.id;
+      get skill() {
+        return ethicalHackingMethodologySkill;
       },
       reason: "Intent/deep link 下钻使用该 skill 的 `intent-deeplink-abuse` reference。",
     },

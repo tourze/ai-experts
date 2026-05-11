@@ -34,14 +34,14 @@ export const crossPlatformAdapterPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return refactoringPatternsSkill.id;
+      get skill() {
+        return refactoringPatternsSkill;
       },
       reason: "需要用 seam-ripper reference 分析接缝、隔离遗留代码或规划重构路径时联动。",
     },
     {
-      get id() {
-        return architectureReviewerSkill.id;
+      get skill() {
+        return architectureReviewerSkill;
       },
       reason: "需要用 architecture-blueprint-generator reference 产出架构蓝图或做子系统级结构分析时联动。",
     },

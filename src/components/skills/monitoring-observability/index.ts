@@ -36,8 +36,8 @@ export const monitoringObservabilitySkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return logAnalyzerSkill.id;
+      get skill() {
+        return logAnalyzerSkill;
       },
       reason: "需要沿日志追根溯源时，参阅 `log-analyzer`。",
     },

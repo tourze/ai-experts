@@ -35,8 +35,8 @@ export const symfonyBundleArchitectureSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return doctrineEntityPatternsSkill.id;
+      get skill() {
+        return doctrineEntityPatternsSkill;
       },
       reason: "Bundle 内包含 Doctrine Entity、Repository 或 Migration 设计时联动。",
     },

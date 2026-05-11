@@ -49,14 +49,14 @@ export const subagentDrivenDevelopmentSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return taskDecomposerSkill.id;
+      get skill() {
+        return taskDecomposerSkill;
       },
       reason: "需要生成或修正 Execution Contract、waves、read_scope、write_scope 和 acceptance 时联动。",
     },
     {
-      get id() {
-        return featureDevSkill.id;
+      get skill() {
+        return featureDevSkill;
       },
       reason: "子代理执行的是完整功能交付，需要回到发现、设计、实现和验证工作流时联动。",
     },

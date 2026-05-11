@@ -37,8 +37,8 @@ export const reactNativeDesignSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return reactNativeJsPerformanceSkill.id;
+      get skill() {
+        return reactNativeJsPerformanceSkill;
       },
       reason: "如果重点是 JS 线程性能（掉帧、列表卡顿），优先看 `react-native-js-performance`。",
     },

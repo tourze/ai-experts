@@ -38,14 +38,14 @@ export const doctrineBatchProcessingSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return symfonyVotersSkill.id;
+      get skill() {
+        return symfonyVotersSkill;
       },
       reason: "批处理涉及权限过滤、资源归属或授权后动作时联动。",
     },
     {
-      get id() {
-        return symfonyMessengerSkill.id;
+      get skill() {
+        return symfonyMessengerSkill;
       },
       reason: "批处理由异步消息、失败队列或消费者驱动时联动。",
     },

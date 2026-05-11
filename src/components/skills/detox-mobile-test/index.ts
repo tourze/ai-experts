@@ -36,8 +36,8 @@ export const detoxMobileTestSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return javascriptTypescriptJestSkill.id;
+      get skill() {
+        return javascriptTypescriptJestSkill;
       },
       reason: "任务转为单元测试、组件测试、Jest 配置或非 E2E 断言设计时联动。",
     },

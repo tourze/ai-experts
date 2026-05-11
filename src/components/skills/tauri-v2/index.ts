@@ -66,32 +66,32 @@ export const tauriV2Skill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return rustErrorHandlingSkill.id;
+      get skill() {
+        return rustErrorHandlingSkill;
       },
       reason: "Rust 命令、插件注册或后端模块需要错误类型、Result 合同和错误传播策略时联动。",
     },
     {
-      get id() {
-        return rustOwnershipIdiomsSkill.id;
+      get skill() {
+        return rustOwnershipIdiomsSkill;
       },
       reason: "Tauri State、共享资源、生命周期对象或跨线程所有权边界需要建模时联动。",
     },
     {
-      get id() {
-        return rustAsyncPatternsSkill.id;
+      get skill() {
+        return rustAsyncPatternsSkill;
       },
       reason: "后台任务、异步命令、事件推送或非阻塞运行时设计需要收敛时联动。",
     },
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "前端 invoke 参数、返回 DTO、事件 payload 或 IPC 类型边界需要严格建模时联动。",
     },
     {
-      get id() {
-        return reactServerComponentsSkill.id;
+      get skill() {
+        return reactServerComponentsSkill;
       },
       reason: "Tauri 前端使用 React 并需要组件分层、数据边界或服务端组件取舍时联动。",
     },

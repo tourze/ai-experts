@@ -33,8 +33,8 @@ export const systemDiagnosticsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return networkTroubleshooterSkill.id;
+      get skill() {
+        return networkTroubleshooterSkill;
       },
       reason: "若后续需要网络分析，可切到 `network-troubleshooter`。",
     },

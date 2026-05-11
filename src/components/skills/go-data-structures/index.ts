@@ -56,14 +56,14 @@ export const goDataStructuresSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "并发容器、channel 或 map 并发读写问题时联动。",
     },
     {
-      get id() {
-        return goPerformanceSkill.id;
+      get skill() {
+        return goPerformanceSkill;
       },
       reason: "内存布局、分配、map / slice 热路径或缓存策略优化时联动。",
     },

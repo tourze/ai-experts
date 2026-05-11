@@ -31,14 +31,14 @@ export const funnelArchitectSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return pricingStrategySkill.id;
+      get skill() {
+        return pricingStrategySkill;
       },
       reason: "需要补充用户旅程时可配合 `customer-journey-map`，讨论套餐结构时可配合 `pricing-strategy`。",
     },
     {
-      get id() {
-        return customerJourneyMapSkill.id;
+      get skill() {
+        return customerJourneyMapSkill;
       },
       reason: "需要补充用户旅程时可配合 `customer-journey-map`，讨论套餐结构时可配合 `pricing-strategy`。",
     },

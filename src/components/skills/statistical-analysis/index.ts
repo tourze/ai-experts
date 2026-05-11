@@ -34,26 +34,26 @@ export const statisticalAnalysisSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return dataStorytellingSkill.id;
+      get skill() {
+        return dataStorytellingSkill;
       },
       reason: "统计结论需要转成业务叙事或汇报口径时联动。",
     },
     {
-      get id() {
-        return dataAnalysisSkill.id;
+      get skill() {
+        return dataAnalysisSkill;
       },
       reason: "需要先做数据清洗、聚合、缺失值或异常值检查时联动。",
     },
     {
-      get id() {
-        return dataVisualizationSkill.id;
+      get skill() {
+        return dataVisualizationSkill;
       },
       reason: "需要用分布图、置信区间或趋势图解释统计结果时联动。",
     },
     {
-      get id() {
-        return llmEvaluationSkill.id;
+      get skill() {
+        return llmEvaluationSkill;
       },
       reason: "统计对象是 LLM 评测集、模型对比或回归实验时联动。",
     },

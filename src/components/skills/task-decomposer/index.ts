@@ -37,20 +37,20 @@ export const taskDecomposerSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return planReviewSkill.id;
+      get skill() {
+        return planReviewSkill;
       },
       reason: "需要先审查计划质量、风险、依赖或回滚验证路径时联动。",
     },
     {
-      get id() {
-        return featureDevSkill.id;
+      get skill() {
+        return featureDevSkill;
       },
       reason: "拆解对象是完整功能开发，需要进入发现、设计、实现和验证工作流时联动。",
     },
     {
-      get id() {
-        return subagentDrivenDevelopmentSkill.id;
+      get skill() {
+        return subagentDrivenDevelopmentSkill;
       },
       reason: "用户明确要求按 Execution Contract 派遣子代理、worker、多 agent 或并行执行时联动。",
     },

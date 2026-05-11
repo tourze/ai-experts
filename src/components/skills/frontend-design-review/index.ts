@@ -40,26 +40,26 @@ export const frontendDesignReviewSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return responsiveDesignSkill.id;
+      get skill() {
+        return responsiveDesignSkill;
       },
       reason: "评审发现断点、移动端密度、触控目标或容器自适应问题时联动。",
     },
     {
-      get id() {
-        return modernWebDesignSkill.id;
+      get skill() {
+        return modernWebDesignSkill;
       },
       reason: "`modern-web-design`：视觉方向、Web 设计规范和界面风格参考。",
     },
     {
-      get id() {
-        return productDesignCriticSkill.id;
+      get skill() {
+        return productDesignCriticSkill;
       },
       reason: "评审对象上升到产品策略、主流程决策、信任设计或治理暴露时联动。",
     },
     {
-      get id() {
-        return uxHeuristicsSkill.id;
+      get skill() {
+        return uxHeuristicsSkill;
       },
       reason: "问题主要是导航、状态反馈、表单阻塞、信息架构或基础可用性启发式错误时联动。",
     },

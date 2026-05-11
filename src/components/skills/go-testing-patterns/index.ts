@@ -38,20 +38,20 @@ export const goTestingPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goPerformanceSkill.id;
+      get skill() {
+        return goPerformanceSkill;
       },
       reason: "性能测试和 `benchstat` 对比配合 `go-performance`；并发生命周期配合 `go-concurrency-patterns`。",
     },
     {
-      get id() {
-        return goConcurrencyPatternsSkill.id;
+      get skill() {
+        return goConcurrencyPatternsSkill;
       },
       reason: "性能测试和 `benchstat` 对比配合 `go-performance`；并发生命周期配合 `go-concurrency-patterns`。",
     },
     {
-      get id() {
-        return testingPatternsSkill.id;
+      get skill() {
+        return testingPatternsSkill;
       },
       reason: "通用测试原则（AAA/FIRST/fixture/mock/参数化/反模式）见 `testing-patterns`。本 skill 只覆盖 Go 特有语法与工具。",
     },

@@ -41,20 +41,20 @@ export const nestjsLayeringPatternsSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return typescriptTypeSafetySkill.id;
+      get skill() {
+        return typescriptTypeSafetySkill;
       },
       reason: "NestJS DTO、泛型 response、配置类型或边界合同需要 TypeScript 收敛时联动。",
     },
     {
-      get id() {
-        return javascriptTypescriptJestSkill.id;
+      get skill() {
+        return javascriptTypescriptJestSkill;
       },
       reason: "NestJS service、controller 或 E2E 测试需要 Jest 结构和 mock 边界时联动。",
     },
     {
-      get id() {
-        return openapiSpecGenerationSkill.id;
+      get skill() {
+        return openapiSpecGenerationSkill;
       },
       reason: "Swagger 装饰器需要沉淀为 OpenAPI 合同或 SDK / mock 源文件时联动。",
     },

@@ -38,14 +38,14 @@ export const symfonyVotersSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return doctrineBatchProcessingSkill.id;
+      get skill() {
+        return doctrineBatchProcessingSkill;
       },
       reason: "授权依赖 ORM 资源加载、批量资源过滤或 Doctrine 查询边界时联动。",
     },
     {
-      get id() {
-        return symfonyMessengerSkill.id;
+      get skill() {
+        return symfonyMessengerSkill;
       },
       reason: "授权后的动作会投递异步消息、触发 Handler 或失败队列时联动。",
     },

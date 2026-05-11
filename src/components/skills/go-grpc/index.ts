@@ -31,14 +31,14 @@ export const goGrpcSkill = defineSkill({
   ],
   relatedSkills: [
     {
-      get id() {
-        return goPerformanceSkill.id;
+      get skill() {
+        return goPerformanceSkill;
       },
       reason: "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
     },
     {
-      get id() {
-        return goErrorHandlingSkill.id;
+      get skill() {
+        return goErrorHandlingSkill;
       },
       reason: "与 `go-error-handling` 配合处理跨层错误传播；与 `go-performance` 配合优化序列化与连接复用。",
     },
