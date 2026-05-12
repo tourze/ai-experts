@@ -60,12 +60,12 @@ export function registerComponentBuildCoreTests(): void {
 
     assert.equal(
       claudeManifest.schema,
-      5,
+      6,
       "Claude manifest schema should version the install contract",
     );
     assert.equal(
       codexManifest.schema,
-      5,
+      6,
       "Codex manifest schema should version the install contract",
     );
     assert.equal(
@@ -92,9 +92,18 @@ export function registerComponentBuildCoreTests(): void {
     assert.equal(codexManifest.agents.length, 80);
     assert.equal(claudeManifest.hooks.length, 99);
     assert.equal(codexManifest.hooks.length, 98);
+    assert.equal(
+      claudeManifest.rules.length,
+      registry.rules.filter((rule) => rule.platforms.includes(Platform.Claude)).length,
+    );
+    assert.equal(
+      codexManifest.rules.length,
+      registry.rules.filter((rule) => rule.platforms.includes(Platform.Codex)).length,
+    );
     assert.equal(Object.hasOwn(claudeManifest, "profile"), false);
     assert.equal(Object.hasOwn(codexManifest, "profile"), false);
-    assert.equal(existsSync(join(getTmpDistDir(), "claude/rules")), false);
+    assert.equal(existsSync(join(getTmpDistDir(), "claude/rules")), true);
+    assert.equal(existsSync(join(getTmpDistDir(), "codex/context-rules")), true);
     assert.equal(existsSync(join(getTmpDistDir(), "codex/rules")), false);
     assert.equal(
       existsSync(join(getTmpDistDir(), "codex/installation_id")),
@@ -110,6 +119,7 @@ export function registerComponentBuildCoreTests(): void {
     assert.equal(claudeManifest.install.configRoot, "~/.claude");
     assert.equal(claudeManifest.install.skillSourceRoot, "skills/");
     assert.equal(claudeManifest.install.skillRoot, "~/.claude/skills");
+    assert.equal(claudeManifest.install.rootEntries.includes("rules/"), true);
     assert.equal(claudeManifest.install.skillEntries.length, claudeManifest.skills.length);
     assert.deepEqual(
       claudeManifest.install.skillEntries,
@@ -123,10 +133,12 @@ export function registerComponentBuildCoreTests(): void {
     assert.equal(codexManifest.install.skillRoot, "~/.agents/skills");
     assert.equal(codexManifest.install.skillEntries.length, codexManifest.skills.length);
     assert.equal(codexManifest.install.rootEntries.includes("skills/"), false);
+    assert.equal(codexManifest.install.rootEntries.includes("rules/"), false);
+    assert.equal(codexManifest.install.rootEntries.includes("context-rules/"), true);
     assert.equal(codexManifest.install.rootEntries.includes("AGENTS.md"), true);
     assert.equal(codexManifest.install.rootEntries.includes("config.toml"), true);
     assert.equal(codexManifest.install.rootEntries.includes("procedures.js"), true);
-    assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id"]);
+    assert.deepEqual(codexManifest.install.forbiddenRootEntries, ["skills/", "installation_id", "rules/"]);
     assert.deepEqual(codexManifest.install.forbiddenSkillEntries, [".system/"]);
     assert.deepEqual(
       codexManifest.install.skillEntries,
@@ -136,6 +148,31 @@ export function registerComponentBuildCoreTests(): void {
 
     assertInstallManifestEntriesExist(join(getTmpDistDir(), "claude"), claudeManifest, "Claude");
     assertInstallManifestEntriesExist(join(getTmpDistDir(), "codex"), codexManifest, "Codex");
+  });
+
+  test("emits context rules without occupying Codex rules policy directory", () => {
+    const claudeRuleFiles = collectFiles(join(getTmpDistDir(), "claude/rules"), (file) => file.endsWith(".md"));
+    const codexRuleFiles = collectFiles(
+      join(getTmpDistDir(), "codex/context-rules"),
+      (file) => file.endsWith(".md") && basename(file) !== "index.md",
+    );
+    const codexRuleIndex = readFileSync(join(getTmpDistDir(), "codex/context-rules/index.md"), "utf-8");
+
+    assert.equal(claudeRuleFiles.length, registry.rules.filter((rule) => rule.platforms.includes(Platform.Claude)).length);
+    assert.equal(codexRuleFiles.length, registry.rules.filter((rule) => rule.platforms.includes(Platform.Codex)).length);
+    assert.equal(existsSync(join(getTmpDistDir(), "codex/rules")), false);
+
+    for (const ruleFile of [...claudeRuleFiles, ...codexRuleFiles]) {
+      const frontmatter = parseMarkdownFrontmatter(ruleFile);
+      assert.equal(typeof frontmatter.description, "string", `${relative(getTmpDistDir(), ruleFile)} should describe the rule`);
+      assert.equal(Array.isArray(frontmatter.paths), true, `${relative(getTmpDistDir(), ruleFile)} should include path globs`);
+      assert.equal(frontmatter.paths.length > 0, true, `${relative(getTmpDistDir(), ruleFile)} should include at least one path glob`);
+      assert.match(readFileSync(ruleFile, "utf-8"), /^# .+/mu);
+    }
+
+    for (const rule of registry.rules.filter((item) => item.platforms.includes(Platform.Codex))) {
+      assert.match(codexRuleIndex, new RegExp(`\\[${escapeRegExp(rule.id)}\\]\\(${escapeRegExp(rule.id)}\\.md\\)`));
+    }
   });
 
   test("emits shared Mermaid workflows for every generated skill and agent", () => {

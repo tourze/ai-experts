@@ -64,11 +64,15 @@ describe("build/pipeline modules", () => {
     const fixture = createFixture();
     expect(byId(fixture.registry.skills, "skill").get("fixture-skill")?.id).toBe("fixture-skill");
     expect(() => byId([...fixture.registry.skills, fixture.skill], "skill")).toThrow("Duplicate skill id");
+    expect(byId(fixture.registry.rules, "rule").get("fixture-rule")?.id).toBe("fixture-rule");
+    expect(() => byId([...fixture.registry.rules, fixture.rule], "rule")).toThrow("Duplicate rule id");
     expect(materializeRegistry(fixture.registry).skills[0].id).toBe("fixture-skill");
+    expect(materializeRegistry(fixture.registry).rules[0].id).toBe("fixture-rule");
 
     const compiled = await compileRegistry();
     expect(compiled.registry.skills.length).toBeGreaterThan(0);
     expect(compiled.registry.agents.length).toBeGreaterThan(0);
+    expect(compiled.registry.rules.length).toBeGreaterThan(0);
     rmSync(compiled.tempDir, { recursive: true, force: true });
   });
 

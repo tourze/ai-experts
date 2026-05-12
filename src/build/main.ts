@@ -10,6 +10,7 @@ type PlatformManifest = {
   skills?: unknown;
   agents?: unknown;
   hooks?: unknown;
+  rules?: unknown;
   procedures?: {
     items?: unknown;
   };
@@ -35,6 +36,8 @@ function collectStats(outDir: string): BuildStats {
     codexHooks: itemCount(codexManifest.hooks),
     claudeProcedures: itemCount(claudeManifest.procedures?.items),
     codexProcedures: itemCount(codexManifest.procedures?.items),
+    claudeRules: itemCount(claudeManifest.rules),
+    codexRules: itemCount(codexManifest.rules),
   };
 }
 
@@ -59,8 +62,8 @@ export async function main(): Promise<void> {
     console.log(
       `component build: claude skills=${stats.claudeSkills} agents=${stats.claudeAgents} ` +
       `hooks=${stats.claudeHooks} procedures=${stats.claudeProcedures} ` +
-      `codex skills=${stats.codexSkills} agents=${stats.codexAgents} hooks=${stats.codexHooks} ` +
-      `procedures=${stats.codexProcedures} out=${outDir}`,
+      `rules=${stats.claudeRules} codex skills=${stats.codexSkills} agents=${stats.codexAgents} ` +
+      `hooks=${stats.codexHooks} procedures=${stats.codexProcedures} rules=${stats.codexRules} out=${outDir}`,
     );
 
     if (args.check) rmSync(outDir, { recursive: true, force: true });

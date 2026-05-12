@@ -4,10 +4,11 @@ import { basename, dirname, extname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { describe, test } from "vitest";
+import { toAbsolutePath } from "../../src/build/core.ts";
 import { validateRegistry } from "../../src/build/platform.ts";
 import { collectPlatformProcedures } from "../../src/build/procedures.ts";
 import { registry } from "../../src/components/registry.ts";
-import { InvocationPolicy, Platform } from "../../src/components/sdk.ts";
+import { InvocationPolicy, Platform, type RuleDefinition } from "../../src/components/sdk.ts";
 import {
   collectFiles,
   extractPropertyArray,
@@ -54,6 +55,13 @@ function localMarkdownPath(destination: string): string | null {
   return path.replace(/\\/gu, "/");
 }
 
+function ruleBodyText(rule: RuleDefinition): string {
+  if (rule.body instanceof URL || typeof rule.body === "string") {
+    return readFileSync(toAbsolutePath(rule.body), "utf-8");
+  }
+  return rule.body.lines.join("\n");
+}
+
 function collectMarkdownAnchors(source: string): Set<string> {
   const slugCounts = new Map<string, number>();
   const anchors = new Set<string>();
@@ -97,16 +105,18 @@ describe("component source repository conventions", () => {
     const componentSurface = validateRegistry(registry);
     const currentCounts =
       `${registry.skills.length} 个 skill、${registry.agents.length} 个 agent、` +
-      `${registry.hooks.length} 个 hook、${registry.procedures.length} 个 procedure`;
+      `${registry.hooks.length} 个 hook、${registry.procedures.length} 个 procedure、${registry.rules.length} 个 rule`;
     const claudeHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Claude)).length;
     const codexHookCount = registry.hooks.filter((hook) => hook.platforms.includes(Platform.Codex)).length;
     const claudeSkillCount = registry.skills.filter((skill) => skill.platforms.includes(Platform.Claude)).length;
     const codexSkillCount = registry.skills.filter((skill) => skill.platforms.includes(Platform.Codex)).length;
     const claudeProcedureCount = collectPlatformProcedures(componentSurface, Platform.Claude).length;
     const codexProcedureCount = collectPlatformProcedures(componentSurface, Platform.Codex).length;
+    const claudeRuleCount = registry.rules.filter((rule) => rule.platforms.includes(Platform.Claude)).length;
+    const codexRuleCount = registry.rules.filter((rule) => rule.platforms.includes(Platform.Codex)).length;
     const gateSummary =
-      `- \`dist/claude\` 生成 ${claudeSkillCount} 个 skill、${registry.agents.length} 个 agent、${claudeHookCount} 个 hook 和 ${claudeProcedureCount} 个 procedure；` +
-      `\`dist/codex\` 生成 ${codexSkillCount} 个 skill、${registry.agents.length} 个 agent、${codexHookCount} 个 hook 和 ${codexProcedureCount} 个 procedure`;
+      `- \`dist/claude\` 生成 ${claudeSkillCount} 个 skill、${registry.agents.length} 个 agent、${claudeHookCount} 个 hook、${claudeProcedureCount} 个 procedure 和 ${claudeRuleCount} 个 rule；` +
+      `\`dist/codex\` 生成 ${codexSkillCount} 个 skill、${registry.agents.length} 个 agent、${codexHookCount} 个 hook、${codexProcedureCount} 个 procedure 和 ${codexRuleCount} 个 rule`;
 
     assert.equal(
       readme.includes(`当前组件规模：${currentCounts}。`),
@@ -128,14 +138,22 @@ describe("component source repository conventions", () => {
     assert.match(readme, /`installation_id` 和 `~\/\.agents\/skills\/\.system\/`/);
     assert.match(readme, /Codex dist 不输出与 Codex `\.system` 内置 skill 同名的用户级 skill/);
     assert.match(readme, /例如 `skill-creator`/);
-    assert.match(readme, /`manifest\.json` 当前使用 schema 5/);
+    assert.match(readme, /`manifest\.json` 当前使用 schema 6/);
     assert.match(readme, /`install` 字段是安装器的一等事实源/);
     assert.match(readme, /`skillEntries` 从 `skillSourceRoot` 映射到 `skillRoot`/);
     assert.match(readme, /`forbiddenRootEntries` 与 `forbiddenSkillEntries`/);
     assert.match(readme, /Codex 的 `configRoot` 是 `~\/\.codex`、`skillRoot` 是 `~\/\.agents\/skills`/);
-    assert.match(readme, /Codex 的 `rootEntries` 不包含 `skills\/`/);
+    assert.match(readme, /Codex 的 `rootEntries` 不包含 `skills\/` 或 `rules\/`/);
+    assert.match(readme, /Codex 官方 `rules\/` 是 shell approval \/ exec policy，不能用于本项目的上下文 Rule/);
+    assert.match(readme, /`context-rules\/`/);
+    assert.match(readme, /Rule 是短上下文规则，只承载稳定、按用户项目路径命中的本地指导/);
+    assert.match(readme, /目标读者是最终运行时的 agent，而不是维护 `src\/components\/` 的仓库作者/);
+    assert.match(readme, /Rule 不能写成组件源码维护说明、dist 生成说明或 skill\/agent 索引说明/);
+    assert.match(readme, /语言类 Rule 应匹配真实用户代码文件/);
+    assert.match(readme, /Rule body 使用 `defineRuleBody\(\{ lines \}\)` 内联定义，不新增 `RULE\.body\.md`/);
     assert.match(readme, /需要 Node\.js >= 20\.19\.0/);
-    assert.doesNotMatch(readme, /^\s+rules\/$/m);
+    assert.match(readme, /^\s+rules\/<rule>\/$/m);
+    assert.match(readme, /^\s+context-rules\/$/m);
     assert.match(readme, /procedureUse\(procedureDefinition\)/);
     assert.match(readme, /构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后/);
     assert.match(readme, /Agent 不再使用 `AGENT\.body\.md`/);
@@ -281,6 +299,10 @@ describe("component source repository conventions", () => {
       .filter((entry) => entry.isDirectory())
       .map((entry) => entry.name)
       .sort();
+    const ruleDirs = readdirSync(join(repoRoot, "src/components/rules"), { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+      .sort();
 
     assert.deepEqual(
       skillDirs,
@@ -291,6 +313,51 @@ describe("component source repository conventions", () => {
       agentDirs,
       registry.agents.map((agent) => agent.id).sort(),
       "every agent source directory should be registered and every registered agent should have a source directory",
+    );
+    assert.deepEqual(
+      ruleDirs,
+      registry.rules.map((rule) => rule.id).sort(),
+      "every rule source directory should be registered and every registered rule should have a source directory",
+    );
+  });
+
+  test("context rules target runtime project files instead of component maintenance internals", () => {
+    const internalRulePaths: string[] = [];
+    const internalRuleBodies: string[] = [];
+    const fileBodyRules: string[] = [];
+    const forbiddenPathPattern = /^(?:src\/components|src\/build|tests|dist)(?:\/|$)|^README\.md$/u;
+    const forbiddenBodyPattern =
+      /src\/components|src\/build|dist\/(?:claude|codex)|生成契约|组件源码|skill\/agent 索引|维护 .*skills?\/agents?/iu;
+
+    for (const rule of registry.rules) {
+      if (!(typeof rule.body === "object" && rule.body !== null && !(rule.body instanceof URL) && Array.isArray(rule.body.lines))) {
+        fileBodyRules.push(rule.id);
+      }
+      for (const pathGlob of rule.paths) {
+        if (forbiddenPathPattern.test(pathGlob)) {
+          internalRulePaths.push(`${rule.id}: ${pathGlob}`);
+        }
+      }
+      const body = ruleBodyText(rule);
+      if (forbiddenBodyPattern.test(body)) {
+        internalRuleBodies.push(rule.id);
+      }
+    }
+
+    assert.deepEqual(
+      fileBodyRules,
+      [],
+      "rules should define short runtime context inline with defineRuleBody({ lines }), not RULE.body.md files",
+    );
+    assert.deepEqual(
+      internalRulePaths,
+      [],
+      "rules should match runtime project files, not ai-experts component/build/test maintenance paths",
+    );
+    assert.deepEqual(
+      internalRuleBodies,
+      [],
+      "rules should describe language/runtime coding constraints, not component source or dist generation maintenance",
     );
   });
 

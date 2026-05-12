@@ -10,6 +10,7 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
+  RuleDefinition,
   SkillDefinition,
 } from "../components/sdk";
 import type { ComponentRegistry, ComponentSurface } from "./types";
@@ -29,6 +30,7 @@ export function materializeRegistry(registry: ComponentRegistry): ComponentSurfa
   const agents = byId<AgentDefinition>(registry.agents, "agent");
   const hooks = byId<HookDefinition>(registry.hooks, "hook");
   const procedures = byId<ProcedureDefinition>(registry.procedures, "procedure");
+  const rules = byId<RuleDefinition>(registry.rules, "rule");
 
   const procedureIds = new Set<string>();
   for (const skill of skills.values()) {
@@ -51,6 +53,7 @@ export function materializeRegistry(registry: ComponentRegistry): ComponentSurfa
     skills: [...skills.values()],
     agents: [...agents.values()],
     hooks: [...hooks.values()],
+    rules: [...rules.values()],
   };
 }
 
@@ -93,5 +96,6 @@ function isComponentRegistry(value: unknown): value is ComponentRegistry {
     Array.isArray(maybe.procedures) &&
     Array.isArray(maybe.skills) &&
     Array.isArray(maybe.agents) &&
-    Array.isArray(maybe.hooks);
+    Array.isArray(maybe.hooks) &&
+    Array.isArray(maybe.rules);
 }

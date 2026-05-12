@@ -12,12 +12,13 @@ import {
 import { emitAgent } from "./agents";
 import { compileHookModules, renderCodexConfig, renderHookConfig } from "./hooks";
 import { emitProcedureRuntime } from "./procedures";
+import { collectPlatformRules, emitRules, renderCodexRuleRouteSupplement } from "./rules";
 import { emitSkill } from "./skills";
 import type { ComponentSurface } from "./types";
 
 export { codexSystemSkillIds, validateId, validateRegistry } from "./platform-validation";
 
-const manifestSchemaVersion = 5;
+const manifestSchemaVersion = 6;
 
 export function renderInstruction(componentSurface: ComponentSurface, platform: Platform): string {
   const instructions = componentSurface.instructions
@@ -35,6 +36,7 @@ export function renderInstruction(componentSurface: ComponentSurface, platform: 
   const agentRows = platformAgents.length > 0
     ? platformAgents.map((item) => `- ${item.id}: ${item.description}`)
     : ["- none"];
+  const ruleSupplement = renderCodexRuleRouteSupplement(collectPlatformRules(componentSurface.rules, platform));
 
   return [
     body,
@@ -42,6 +44,8 @@ export function renderInstruction(componentSurface: ComponentSurface, platform: 
     "## Codex Skill 路由补充",
     "",
     "当可用 skill 数量很大时，Codex 可能只在 `skills_instructions` 中注入 skill 名称和路径，省略 description。若无法仅凭注入列表判断是否命中 skill，先用 `rg -n \"description: .*<关键词>|<关键词>\" ~/.agents/skills/*/SKILL.md` 定位候选，再读取候选 `SKILL.md`；在仓库内审计生成物时搜索 `dist/codex/skills/*/SKILL.md`。不要因为列表缺 description 就跳过本地 skill。",
+    "",
+    ruleSupplement.trimEnd(),
     "",
     "## Agent 索引",
     "",
@@ -79,10 +83,10 @@ function renderInstallManifest(
     skillSourceRoot: "skills/",
     skillRoot: isClaude ? "~/.claude/skills" : "~/.agents/skills",
     rootEntries: isClaude
-      ? ["CLAUDE.md", "settings.json", "agents/", "hooks/", "procedures.js", "manifest.json"]
-      : ["AGENTS.md", "config.toml", "hooks.json", "agents/", "hooks/", "procedures.js", "manifest.json"],
+      ? ["CLAUDE.md", "settings.json", "rules/", "agents/", "hooks/", "procedures.js", "manifest.json"]
+      : ["AGENTS.md", "config.toml", "hooks.json", "context-rules/", "agents/", "hooks/", "procedures.js", "manifest.json"],
     skillEntries: skillIds.map((skillId) => `${skillId}/`),
-    forbiddenRootEntries: isClaude ? [] : ["skills/", "installation_id"],
+    forbiddenRootEntries: isClaude ? [] : ["skills/", "installation_id", "rules/"],
     forbiddenSkillEntries: isClaude ? [] : [".system/"],
   };
 }
@@ -98,6 +102,8 @@ export async function emitPlatform(
   ensureDir(join(root, "skills"));
   ensureDir(join(root, "agents"));
   ensureDir(join(root, "hooks"));
+
+  const ruleIds = emitRules(componentSurface.rules, root, platform);
 
   const instructionName = platform === Platform.Claude ? "CLAUDE.md" : "AGENTS.md";
   writeText(join(root, instructionName), renderInstruction(componentSurface, platform));
@@ -161,6 +167,7 @@ export async function emitPlatform(
       .filter((item) => item.platforms.includes(platform))
       .map((item) => item.id)
       .sort(),
+    rules: [...ruleIds].sort(),
     procedures: {
       proceduresFile: procedureRuntime.proceduresFile,
       bundleChecksum: procedureRuntime.bundleChecksum,

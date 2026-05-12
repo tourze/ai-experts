@@ -51,6 +51,7 @@ import {
   defineProcedure,
   defineProcedureUse,
   defineReference,
+  defineRule,
   defineSkill,
   defineSkillGoal,
   defineSkillOutputs,
@@ -78,11 +79,13 @@ export function createFixture() {
   const skillRoot = join(root, "skill");
   const hooksRoot = join(root, "hooks");
   const instructionRoot = join(root, "instruction");
+  const rulesRoot = join(root, "rules");
   ensureDir(skillRoot);
   ensureDir(join(skillRoot, "references"));
   ensureDir(join(skillRoot, "assets"));
   ensureDir(hooksRoot);
   ensureDir(instructionRoot);
+  ensureDir(rulesRoot);
 
   const skillReference = join(skillRoot, "references", "reference.md");
   const skillAsset = join(skillRoot, "assets", "asset.txt");
@@ -113,6 +116,8 @@ export function createFixture() {
 
   const instructionBody = join(instructionRoot, "INSTRUCTION.md");
   writeText(instructionBody, "## Runtime Model\n\nTest instruction.\n");
+  const ruleBody = join(rulesRoot, "fixture-rule.md");
+  writeText(ruleBody, "Fixture rule body for matched files.\n");
 
   const skill = defineSkill({
     id: "fixture-skill",
@@ -196,6 +201,16 @@ export function createFixture() {
     body: pathToFileURL(instructionBody),
   });
 
+  const rule = defineRule({
+    id: "fixture-rule",
+    title: "Fixture Rule",
+    description: "Fixture context rule used for build tests.",
+    platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
+    body: pathToFileURL(ruleBody),
+    paths: ["**/*.fixture.ts", "src/fixture/**"],
+    priority: 10,
+  });
+
   const registry: ComponentRegistry = {
     version: 1,
     instructions: [instruction],
@@ -203,6 +218,7 @@ export function createFixture() {
     skills: [skill],
     agents: [agent],
     hooks: [hook],
+    rules: [rule],
   };
-  return { root, procedure, skill, agent, hook, instruction, registry };
+  return { root, procedure, skill, agent, hook, instruction, rule, registry };
 }

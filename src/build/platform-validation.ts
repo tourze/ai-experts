@@ -1,10 +1,11 @@
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { basename, join } from "node:path";
 import type {
   AgentDefinition,
   HookDefinition,
   ProcedureDefinition,
   RelatedSkillDefinition,
+  RuleDefinition,
   SkillAssetDefinition,
   SkillDefinition,
 } from "../components/sdk";
@@ -98,6 +99,89 @@ function duplicateValues(values: readonly string[]): string[] {
 function validateSingleLineMetadata(context: string, value: string): void {
   if (/\r|\n/u.test(value)) {
     throw new Error(`${context} must be a single line`);
+  }
+}
+
+function validateNonEmptySingleLineMetadata(context: string, value: unknown): string {
+  if (typeof value !== "string" || value.trim() === "") {
+    throw new Error(`${context} must be a non-empty string`);
+  }
+  validateSingleLineMetadata(context, value);
+  return value;
+}
+
+function validateRulePathGlob(rule: RuleDefinition, path: unknown, index: number): void {
+  if (typeof path !== "string" || path.trim() === "") {
+    throw new Error(`Rule ${rule.id} paths[${index}] must be a non-empty string`);
+  }
+  if (path.trim() !== path) {
+    throw new Error(`Rule ${rule.id} paths[${index}] must not contain surrounding whitespace`);
+  }
+  if (path.startsWith("/") || /^[A-Za-z]:\//u.test(path) || path.includes("..") || path.includes("\\")) {
+    throw new Error(
+      `Rule ${rule.id} paths[${index}] must be a relative POSIX glob without absolute paths, parent traversal, or backslashes: ${path}`,
+    );
+  }
+}
+
+function validateRule(rule: RuleDefinition): void {
+  validateId(rule.id, "rule");
+  validatePlatformList(rule.platforms, `Rule ${rule.id}`);
+  validateNonEmptySingleLineMetadata(`Rule ${rule.id} title`, rule.title);
+  validateNonEmptySingleLineMetadata(`Rule ${rule.id} description`, rule.description);
+
+  const unsupportedFields = [
+    "assets",
+    "references",
+    "procedures",
+    "workflow",
+    "tools",
+    "sourceDir",
+    "outputs",
+    "relatedSkills",
+    "checklist",
+    "antiPatterns",
+  ].filter((field) => Object.hasOwn(rule as object, field));
+  if (unsupportedFields.length > 0) {
+    throw new Error(`Rule ${rule.id} must not define unsupported field(s): ${unsupportedFields.join(", ")}`);
+  }
+
+  if (!Array.isArray(rule.paths) || rule.paths.length === 0) {
+    throw new Error(`Rule ${rule.id} paths must be a non-empty array`);
+  }
+  for (const [index, path] of rule.paths.entries()) {
+    validateRulePathGlob(rule, path, index);
+  }
+
+  if (rule.body === undefined) {
+    throw new Error(`Rule ${rule.id} body is missing`);
+  }
+  let bodyText = "";
+  if (rule.body instanceof URL || typeof rule.body === "string") {
+    const bodyPath = toAbsolutePath(rule.body);
+    if (!existsSync(bodyPath)) {
+      throw new Error(`Rule ${rule.id} body is missing: ${displayPath(rule.body)}`);
+    }
+    bodyText = readFileSync(bodyPath, "utf-8");
+  } else if (typeof rule.body === "object" && rule.body !== null && Array.isArray(rule.body.lines)) {
+    if (rule.body.lines.length === 0) {
+      throw new Error(`Rule ${rule.id} body lines must be a non-empty array`);
+    }
+    for (const [index, line] of rule.body.lines.entries()) {
+      if (typeof line !== "string" || line.trim() === "") {
+        throw new Error(`Rule ${rule.id} body lines[${index}] must be a non-empty string`);
+      }
+    }
+    bodyText = rule.body.lines.join("\n");
+  } else {
+    throw new Error(`Rule ${rule.id} body must be a component file or defineRuleBody({ lines })`);
+  }
+  if (bodyText.trim() === "") {
+    throw new Error(`Rule ${rule.id} body must be non-empty`);
+  }
+  const bodyLineCount = bodyText.replace(/\r\n/gu, "\n").trimEnd().split("\n").length;
+  if (bodyLineCount > 120) {
+    throw new Error(`Rule ${rule.id} body must be 120 lines or fewer; found ${bodyLineCount}`);
   }
 }
 
@@ -422,6 +506,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
   }
   if (!Array.isArray(registry.agents)) throw new Error("registry.agents must be an array");
   if (!Array.isArray(registry.hooks)) throw new Error("registry.hooks must be an array");
+  if (!Array.isArray(registry.rules)) throw new Error("registry.rules must be an array");
   const surface = materializeRegistry(registry);
   const skillIds = new Set(registry.skills.map((skill) => skill.id));
   const skillsById = new Map(registry.skills.map((skill) => [skill.id, skill]));
@@ -513,6 +598,10 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     if (!existsSync(toAbsolutePath(instruction.body))) {
       throw new Error(`Instruction ${instruction.id} body is missing: ${displayPath(instruction.body)}`);
     }
+  }
+
+  for (const rule of registry.rules) {
+    validateRule(rule);
   }
 
   for (const skill of registry.skills) {

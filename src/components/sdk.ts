@@ -8,6 +8,7 @@ export enum ComponentKind {
   Skill = "skill",
   Agent = "agent",
   Hook = "hook",
+  Rule = "rule",
 }
 
 export enum InvocationPolicy {
@@ -46,6 +47,9 @@ export enum HookEvent {
 
 export type PlatformList = readonly Platform[];
 export type ComponentFile = URL | string;
+export type RuleBodyDefinition = {
+  lines: readonly string[];
+};
 
 export type ToolMatcher =
   | KnownTool
@@ -353,6 +357,17 @@ export type InstructionDefinition = {
   priority?: number;
 };
 
+export type RuleDefinition = {
+  kind: ComponentKind.Rule;
+  id: string;
+  title: string;
+  description: string;
+  platforms: PlatformList;
+  body: ComponentFile | RuleBodyDefinition;
+  paths: readonly string[];
+  priority?: number;
+};
+
 export type NormalizedHookPayload = {
   platform: Platform;
   event: HookEvent;
@@ -468,6 +483,17 @@ export function defineInstruction(
     kind: ComponentKind.Instruction,
     ...definition,
   };
+}
+
+export function defineRule(definition: Omit<RuleDefinition, "kind">): RuleDefinition {
+  return {
+    kind: ComponentKind.Rule,
+    ...definition,
+  };
+}
+
+export function defineRuleBody(definition: RuleBodyDefinition): RuleBodyDefinition {
+  return definition;
 }
 
 export function defineProcedure<

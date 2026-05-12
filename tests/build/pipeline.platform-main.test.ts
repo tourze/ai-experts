@@ -64,10 +64,17 @@ describe("build/pipeline platform and main entrypoint", () => {
     expect(() => validateId("bad_id", "skill")).toThrow();
     const surface = validateRegistry(fixture.registry);
     expect(surface.skills.length).toBe(1);
+    expect(surface.rules.length).toBe(1);
     expect(renderInstruction(surface, Platform.Claude)).not.toContain("可用能力索引");
+    expect(renderInstruction(surface, Platform.Claude)).not.toContain("Fixture rule body");
     const codexInstruction = renderInstruction(surface, Platform.Codex);
     expect(codexInstruction).toContain("Codex Skill 路由补充");
     expect(codexInstruction).toContain("~/.agents/skills/*/SKILL.md");
+    expect(codexInstruction).toContain("Context Rule 路由补充");
+    expect(codexInstruction).toContain("fixture-rule");
+    expect(codexInstruction).toContain("`**/*.fixture.ts`, `src/fixture/**`");
+    expect(codexInstruction).toContain("~/.codex/context-rules/fixture-rule.md");
+    expect(codexInstruction).not.toContain("Fixture rule body");
     expect(codexInstruction).toContain("Agent 索引");
     expect(codexInstruction).toContain("fixture-agent");
     expect(codexInstruction).not.toContain("Skill 索引");
@@ -78,6 +85,9 @@ describe("build/pipeline platform and main entrypoint", () => {
     await emitPlatform(surface, out, Platform.Codex);
     expect(existsSync(join(out, "claude", "manifest.json"))).toBe(true);
     expect(existsSync(join(out, "codex", "hooks.json"))).toBe(true);
+    expect(existsSync(join(out, "claude", "rules", "fixture-rule.md"))).toBe(true);
+    expect(existsSync(join(out, "codex", "context-rules", "fixture-rule.md"))).toBe(true);
+    expect(existsSync(join(out, "codex", "rules"))).toBe(false);
   });
 
   test("main supports help path and wrapper build.ts delegates errors", async () => {
@@ -91,8 +101,8 @@ describe("build/pipeline platform and main entrypoint", () => {
       process.argv = ["node", "build.ts", "--check"];
       await main();
       expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("component build: claude skills="));
-      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/procedures=\d+ codex skills=\d+/));
-      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/codex skills=\d+ agents=\d+ hooks=\d+ procedures=\d+ out=/));
+      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/procedures=\d+ rules=\d+ codex skills=\d+/));
+      expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/codex skills=\d+ agents=\d+ hooks=\d+ procedures=\d+ rules=\d+ out=/));
     } finally {
       process.argv = argvBackup;
     }

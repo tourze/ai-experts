@@ -3,6 +3,7 @@ import type {
   HookDefinition,
   InstructionDefinition,
   ProcedureDefinition,
+  RuleDefinition,
   SkillDefinition,
 } from "../components/sdk";
 
@@ -13,6 +14,7 @@ export type ComponentRegistry = {
   skills: readonly SkillDefinition[];
   agents: readonly AgentDefinition[];
   hooks: readonly HookDefinition[];
+  rules: readonly RuleDefinition[];
 };
 
 export type ComponentSurface = {
@@ -21,6 +23,7 @@ export type ComponentSurface = {
   skills: SkillDefinition[];
   agents: AgentDefinition[];
   hooks: HookDefinition[];
+  rules: RuleDefinition[];
 };
 
 export type BuildStats = {
@@ -32,4 +35,6 @@ export type BuildStats = {
   codexHooks: number;
   claudeProcedures: number;
   codexProcedures: number;
+  claudeRules: number;
+  codexRules: number;
 };
