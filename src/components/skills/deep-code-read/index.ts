@@ -26,10 +26,10 @@ export const deepCodeReadSkill = defineSkill({
     "每个模块用 task 跟踪进度",
   ],
   checklist: [
-    "已确认源码版本、分支或 tag。",
+    "是否已确认源码版本、分支或 tag，并在输出中记录证据？",
     "已选择模块边界并完成逐模块精读。",
     "ABC 闭卷验证通过或记录了 3 轮失败原因。",
-    "生成的 skill 能独立回答验收问题。",
+    "生成的 skill 是否能独立回答验收问题，并附上问答证据？",
   ],
   antiPatterns: [
     defineAntiPattern({

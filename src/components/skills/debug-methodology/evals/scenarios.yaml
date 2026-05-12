@@ -1,0 +1,29 @@
+scenario_version: 1
+cases:
+  - id: flaky_checkout_total_root_cause
+    prompt: "Checkout totals are wrong about one out of twenty CI runs. Do not patch blindly; find a root cause and tell me what evidence proves it."
+    trigger_expected: true
+    expected_trigger:
+      skills:
+        - debug-methodology
+      agents: []
+    fixtures:
+      - type: inline
+        path: tests/checkout-total.test.ts
+        content: |
+          it("totals discounted cart items", async () => {
+            const cart = sharedCartFixture();
+            cart.add(discountedItem);
+            expect(await total(cart)).toBe(42);
+          });
+    success_criteria:
+      - "Starts with expected vs actual behavior and reproduction strategy."
+      - "Forms falsifiable hypotheses around shared state, timing, data order, or environment."
+      - "Requires a regression test tied to the proven root cause."
+    must_report_evidence:
+      - "Reproduction command or reason reproduction is not yet stable."
+      - "Observed failure signal, narrowed scope, and hypothesis verification result."
+      - "Final test result or explicit未验证项."
+    prohibited_behaviors:
+      - "Do not change multiple variables in the same verification step."
+      - "Do not present a speculative source as root cause before evidence confirms it."

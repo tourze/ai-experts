@@ -1,0 +1,28 @@
+scenario_version: 1
+cases:
+  - id: payment_diff_gate_decision
+    prompt: "Review this branch before merge. It changes payment retry logic and a migration. Tell me CLEAR TO LAND or BLOCKED with evidence."
+    trigger_expected: true
+    expected_trigger:
+      skills:
+        - pre-landing-review
+      agents:
+        - code-reviewer
+    fixtures:
+      - type: inline
+        path: git-diff-summary.txt
+        content: |
+          M app/Payments/RetryPolicy.php
+          M database/migrations/2026_05_01_000000_add_retry_state.php
+          M tests/Feature/PaymentRetryTest.php
+    success_criteria:
+      - "Collects or requests the real diff before giving a gate conclusion."
+      - "Separates blocking items from suggestions and ties each blocker to a file/risk."
+      - "Ends with exactly `CLEAR TO LAND` or `BLOCKED` plus unresolved evidence gaps."
+    must_report_evidence:
+      - "Files and diff scope reviewed."
+      - "Commands or procedures used to collect diff and verification results."
+      - "Per-blocker file location, concrete risk, and user action choices."
+    prohibited_behaviors:
+      - "Do not approve from a directory guess without diff evidence."
+      - "Do not mark style-only feedback as a blocker."

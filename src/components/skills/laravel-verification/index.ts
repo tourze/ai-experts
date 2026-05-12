@@ -29,11 +29,11 @@ export const laravelVerificationSkill = defineSkill({
     "任何一步失败都必须阻断“准备发布”的结论，不能用手工解释覆盖掉红灯。",
   ],
   checklist: [
-    "确认 PHP、Composer、Artisan 和 `.env` 与目标环境一致，`APP_DEBUG` 在生产为 `false`。",
+    "PHP、Composer、Artisan 和 `.env` 是否与目标环境一致，且生产 `APP_DEBUG` 为 `false`？",
     "`pint`、`phpstan` / `psalm`、测试、`composer audit` 全部通过后再看迁移与缓存命令。",
     "审查迁移文件名、破坏性 SQL、`down()` 回滚路径和是否需要灰度步骤。",
-    "运行缓存预热后确认没有闭包路由、环境变量缺失或不可写目录问题。",
-    "检查调度器、队列、Horizon、失败作业和健康检查队列是否符合目标环境配置。",
+    "是否已运行缓存预热，并确认没有闭包路由、环境变量缺失或不可写目录问题？",
+    "调度器、队列、Horizon、失败作业和健康检查队列是否符合目标环境配置？",
   ],
   relatedSkills: [
     {

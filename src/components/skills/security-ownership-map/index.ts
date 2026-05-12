@@ -28,8 +28,8 @@ export const securityOwnershipMapSkill = defineSkill({
     "默认不会覆盖输出目录内已存在的 CSV/JSON/GraphML 产物；确认目标可替换后才传 `--overwrite`。",
   ],
   checklist: [
-    "确认时间窗、身份归因方式和敏感规则配置。",
-    "检查 `summary.json`、`people.csv`、`files.csv` 与 `edges.csv` 是否完整生成。",
+    "时间窗、身份归因方式和敏感规则配置是否已确认，并在输出中记录？",
+    "`summary.json`、`people.csv`、`files.csv` 与 `edges.csv` 是否已完整生成并核对文件证据？",
     "对“隐藏 owner”“低 bus factor”“孤儿敏感代码”分别解释证据。",
     "导出图数据前说明 co-change 过滤规则和作者排除规则。",
     "是否确认输出目录内目标产物不存在，或已得到明确覆盖许可后再使用 `--overwrite`。",

@@ -27,10 +27,10 @@ export const swiftuiPerformanceAuditSkill = defineSkill({
     "参考资料只使用真实存在的本地文档：`references/optimizing-swiftui-performance-instruments.md`、`references/understanding-improving-swiftui-performance.md`、`references/understanding-hangs-in-your-app.md`、`references/demystify-swiftui-performance-wwdc23.md`。",
   ],
   checklist: [
-    "检查列表和动画区域是否存在 `UUID()`、`id: \\.self`、临时排序 / 过滤。",
-    "检查 `body`、计算属性和 `task` 中是否混入格式化、图片解码、数据库或网络副作用。",
+    "列表和动画区域是否存在 `UUID()`、`id: \\.self`、临时排序 / 过滤，并已记录文件位置？",
+    "`body`、计算属性和 `task` 中是否混入格式化、图片解码、数据库或网络副作用？",
     "如果代码审查不足以定案，明确要求用户提供 SwiftUI template + Time Profiler trace。",
-    "修复后要求按同一交互路径复测，比较前后 CPU、掉帧和内存峰值。",
+    "修复后是否按同一交互路径复测，并比较前后 CPU、掉帧和内存峰值？",
   ],
   relatedSkills: [
     {

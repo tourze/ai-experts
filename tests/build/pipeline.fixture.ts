@@ -120,7 +120,7 @@ export function createFixture() {
     description: "A fixture skill used for build tests and validation checks.",
     useCases: ["处理 fixture 场景。"],
     constraints: ["必须产出可执行证据。"],
-    checklist: ["验证输出是否完整。"],
+    checklist: ["输出是否包含可核查证据和真实验证结果？"],
     antiPatterns: [{ fail: "直接跳过验证。", pass: "执行并验证输出。" }],
     invocation: InvocationPolicy.ExplicitOnly,
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
@@ -128,7 +128,7 @@ export function createFixture() {
     workflow: defineWorkflow({
       steps: [defineWorkflowStep({ id: "inspect", label: "执行检查。" })],
     }),
-    outputs: defineSkillOutputs({ items: ["检查结论"] }),
+    outputs: defineSkillOutputs({ items: ["检查结论、证据文件和真实命令结果。"] }),
     tools: [KnownTool.Read, { kind: "mcp", server: "fixture", tool: "lookup" }, KnownTool.Grep],
     procedures: [defineProcedureUse({ id: procedure.id })],
     references: [
@@ -155,14 +155,14 @@ export function createFixture() {
     platforms: [ComponentPlatform.Claude, ComponentPlatform.Codex],
     tools: [KnownTool.Bash, { kind: "mcp", server: "fixture", tool: "agent" }, KnownTool.Read],
     bashBoundary: ["禁止执行破坏性命令。"],
-    qualityStandards: ["输出必须可复现。"],
+    qualityStandards: ["输出必须包含可复现证据。"],
     outputFormat: defineAgentOutputFormat({
       kind: "markdown",
       title: "Fixture Report",
       sections: [
         defineAgentOutputSection({
           title: "Summary",
-          body: "done",
+          body: "done with evidence",
         }),
       ],
     }),

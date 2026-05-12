@@ -27,7 +27,7 @@ export const liquidGlassDesignSkill = defineSkill({
     "玻璃是强调层次的材料，不是把整页 UI 全部磨成同一块雾面板。",
   ],
   checklist: [
-    "确认部署目标与回退策略，不要让旧系统直接编译失败。",
+    "部署目标与回退策略是否已确认，并能避免旧系统直接编译失败？",
     "多个玻璃元素是否已经放入统一容器，并验证间距带来的融合效果。",
     "是否只在重要交互位使用 `interactive()`，而不是整页都带动态反馈。",
     "Widget 是否同时检查 full color 与 accented 模式。",

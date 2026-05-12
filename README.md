@@ -197,13 +197,14 @@ export const typescriptTypeSafety = defineSkill({
 - `sourceDir` 使用 `new URL("./", import.meta.url)`；Procedure `entry`、reference `source`、asset `source` 使用 `new URL("./file", import.meta.url)`。
 - 每个 skill 必须声明 `useCases` 与 `constraints`，最终 `SKILL.md` 的 `## 适用场景` 和 `## 核心约束` 只由生成器输出。
 - 不再使用 Markdown body 文件；主体内容拆入 `workflow`、`outputs`、`goal`、`checklist`、`antiPatterns`、`relatedSkills`、`parameters` 和 reference/asset/procedure 元数据。
-- 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。分组清单改写成 `分组：检查项`。
+- 检查清单使用 `checklist` 声明为普通字符串数组；构建器会生成 `## 检查清单`，并放在生成的 `## 反模式` 之后。分组清单改写成 `分组：检查项`。Checklist 应优先写成可判定问题并绑定证据要求，例如“是否已运行相关测试，并在最终输出中报告真实结果？”，不要写“运行相关测试”这类命令式待办。
 - 每个 skill 必须声明 `workflow: defineWorkflow({ steps/gates/routes/finalSteps })`；节点用 `defineWorkflowStep()` / `defineWorkflowGate()` / `defineWorkflowRoute()`，Skill 与 Agent 共用同一套工作流模型，构建器统一生成 `## 工作流` Mermaid flowchart。
 - 反模式使用 `antiPatterns` 声明，每行必须通过 `defineAntiPattern({ fail, pass })` 定义；构建器会生成 `## 反模式` Markdown 表格。大段代码对照放进 `references/`。
 - 交叉引用其他 skill 时使用 `relatedSkills` 声明；构建器会生成 `## 相关 Skill`。`relatedSkills` 必须 import 对应 skill definition，并通过 `get id() { return otherSkill.id; }` 延迟读取，避免双向关系造成 ESM 初始化循环；仅单平台可用的关系使用 `platforms` 收窄，不要牺牲另一个平台的输出；不要在 `useCases` 或 `constraints` 里手写 `../other-skill/SKILL.md` 或旧 `plugin:skill` 链接。
 - 每个可执行过程必须在 `src/components/procedures/` 登记为 Procedure；skill/agent 通过 `procedureUse(procedureDefinition)` 引用，不手写裸 procedure id。
 - reference 必须通过 `defineReference()` 登记，asset 必须通过 `defineAsset()` 登记。
-- `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。
+- `evals/` 是源码侧质量验证材料，不是运行时参考资料，不能登记为 reference，也不会复制到 `dist/*/skills/*/references/`。新增 eval 优先写成任务场景，包含 scenario id、触发任务、期望触发的 skill/agent、fixture、成功标准、必须报告的证据和不应出现的行为；模板见 [docs/component-quality-standards.md](docs/component-quality-standards.md)。
+- `outputs`、agent `outputFormat` 和 `qualityStandards` 应声明可核查证据字段，例如文件、命令、测试结果、行号、风险、未验证项或复现步骤；不要只写“给出结论”。
 - agent 引用 skill 时 import skill definition 并读取 `.id`，不在引用处手写 skill id。
 - 低频或高风险流程用 `InvocationPolicy.ExplicitOnly`；构建器会映射到 Claude 与 Codex 的平台配置。
 - `InvocationPolicy.ModelOnly` 只用于 Claude-only skill；Codex 只能通过 `allow_implicit_invocation` 控制隐式触发，不能隐藏显式 `$skill` 调用。

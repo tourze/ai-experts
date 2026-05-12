@@ -48,11 +48,11 @@ export const codeReviewerAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "审查范围",
-        body: "[用中文填写，保留必要的英文技术标识符]",
+        body: "[列出检查过的文件/目录、入口、配置、命令和未覆盖范围]",
       }),
       defineAgentOutputSection({
         title: "发现",
-        body: "[用中文填写，保留必要的英文技术标识符]",
+        body: "[每条发现包含严重度、文件/行号、触发条件、影响、证据和修复方向；无发现时说明检查范围和残余风险]",
       }),
       defineAgentOutputSection({
         title: "正向观察",
@@ -68,7 +68,7 @@ export const codeReviewerAgent = defineAgent({
       }),
       defineAgentOutputSection({
         title: "范围限制",
-        body: "[用中文填写，保留必要的英文技术标识符]",
+        body: "[列出未验证项、无法运行的命令、缺失测试结果和后续风险]",
       }),
     ],
   }),
@@ -78,7 +78,7 @@ export const codeReviewerAgent = defineAgent({
   qualityStandards: [
     "优先处理安全、正确性、数据完整性和用户可见风险。",
     "区分框架惯例、主观风格偏好和必须修复的问题。",
-    "发现性能问题时说明触发条件、影响范围和验证方式。",
+    "发现性能问题时说明触发条件、影响范围、证据和验证方式。",
   ],
   tools: [KnownTool.Read, KnownTool.Glob, KnownTool.Grep, KnownTool.Bash],
   sandbox: AgentSandbox.ReadOnly,

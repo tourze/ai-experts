@@ -26,7 +26,7 @@ export const idapythonScriptingSkill = defineSkill({
     "IDALib 模式必须 `import idapro` 在最前，且 `close_database()` 在最后。",
   ],
   checklist: [
-    "确认 IDA 版本（API 在 7.x / 8.x / 9.x 之间有重大变化）。",
+    "IDA 版本是否已确认，并说明 7.x / 8.x / 9.x API 差异带来的风险？",
     "`idaapi.FlowChart` 使用 `flags=idaapi.FC_PREDS` 获取前驱块。",
     "Appcall 需要在调试态执行，非调试态会抛异常。",
     "IDALib `close_database(save=True)` 会写 .idb，确认是否需要。",

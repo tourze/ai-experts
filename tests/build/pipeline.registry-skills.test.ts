@@ -21,7 +21,9 @@ import {
   emitSkill,
   renderSkillMd,
   validateAntiPatterns,
+  validateChecklistQuestions,
   validateParameters,
+  validateSkillOutputsEvidence,
   validateSkillWorkflow,
   validateTextList,
 } from "../../src/build/skills.ts";
@@ -357,5 +359,66 @@ describe("build/pipeline registry skill validation", () => {
     expect(() => validateRegistry(duplicateReferenceTargetRegistry)).toThrow(
       "Duplicate reference target in fixture-skill: references/shared.md",
     );
+  });
+
+  test("checklist validation rejects obvious imperative tasks and accepts判定问题", () => {
+    const fixture = createFixture();
+    expect(() =>
+      validateChecklistQuestions({
+        ...fixture.skill,
+        checklist: ["运行相关测试。"],
+      })
+    ).toThrow("must be a checklist question");
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [{
+          ...fixture.skill,
+          checklist: ["检查边界输入。"],
+        }],
+      })
+    ).toThrow("must be a checklist question");
+    expect(validateChecklistQuestions({
+      ...fixture.skill,
+      checklist: ["是否已运行相关测试，并在最终输出中报告真实结果？"],
+    })).toHaveLength(1);
+  });
+
+  test("skill output evidence helper requires evidence-oriented fields", () => {
+    const fixture = createFixture();
+    expect(() => validateSkillOutputsEvidence(fixture.skill)).not.toThrow();
+    expect(() =>
+      validateSkillOutputsEvidence({
+        ...fixture.skill,
+        outputs: defineSkillOutputs({ items: ["说明修复结果。"] }),
+      })
+    ).toThrow("outputs should name evidence fields");
+  });
+
+  test("registry rejects evals sources registered as runtime references", () => {
+    const fixture = createFixture();
+    const evalsRoot = join(fixture.root, "skill", "evals");
+    ensureDir(evalsRoot);
+    const evalCase = join(evalsRoot, "case.md");
+    writeText(evalCase, "# Eval case\n");
+
+    expect(() =>
+      validateRegistry({
+        ...fixture.registry,
+        skills: [{
+          ...fixture.skill,
+          references: [
+            defineReference({
+              id: "eval-scenario",
+              source: pathToFileURL(evalCase),
+              target: "references/eval-scenario.md",
+              title: "Eval Scenario",
+              summary: "source-side eval scenario",
+              loadWhen: "never at runtime",
+            }),
+          ],
+        }],
+      })
+    ).toThrow("must not register evals/ as a reference");
   });
 });

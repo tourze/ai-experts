@@ -38,6 +38,7 @@ export const typescriptTypeSafetySkill = defineSkill({
     "每个外部边界是否有\"运行时解析 + 静态类型\"双重约束？",
     "DTO 变换是否集中在适配器层？类型是否由单一源头推导？",
     "AI 或新同事改字段名后，编译期能否暴露影响面？",
+    "是否在最终输出中报告修改文件、`tsc --noEmit`/测试结果和未验证项？",
   ],
   antiPatterns: [
     defineAntiPattern({
@@ -76,7 +77,7 @@ export const typescriptTypeSafetySkill = defineSkill({
     items: [
       "TypeScript 错误归组、上游合同根因和修复顺序。",
       "`any` / 断言 / 类型守卫 / 泛型 / schema parser 的收敛建议。",
-      "需要补的类型示例、运行时校验和 `tsc --noEmit` / 测试验证命令。",
+      "修改文件、需要补的类型示例、运行时校验、`tsc --noEmit` / 测试结果和未验证风险。",
     ],
   }),
   tools: [KnownTool.Read, KnownTool.Grep, KnownTool.Glob, KnownTool.Bash],

@@ -38,6 +38,7 @@ export const testingPatternsSkill = defineSkill({
     "Fixture 是否独立、清理明确且不包含业务逻辑。",
     "Mock / Stub / Fake 的选择是否匹配边界和断言目标。",
     "参数化测试是否覆盖典型值、边界值、空/零输入、异常值和等价类代表。",
+    "是否在最终输出中报告新增/修改的测试文件、覆盖场景、真实测试结果和未验证风险？",
   ],
   relatedSkills: [
     {
@@ -122,7 +123,7 @@ export const testingPatternsSkill = defineSkill({
     items: [
       "测试结构、测试命名、行为覆盖和参数化建议。",
       "Fixture、mock/stub/fake、状态清理和异步同步策略。",
-      "测试反模式、脆弱性来源和需要转向的语言特定测试 skill。",
+      "测试文件、覆盖场景、真实测试结果、未验证风险和需要转向的语言特定测试 skill。",
     ],
   }),
   references: [

@@ -40,6 +40,9 @@ type TextListProperty = "useCases" | "constraints" | "checklist";
 
 const CODEX_OPENAI_SHORT_DESCRIPTION_MIN_LENGTH = 25;
 const CODEX_OPENAI_SHORT_DESCRIPTION_MAX_LENGTH = 64;
+const IMPERATIVE_CHECKLIST_PREFIX = /^(?:运行|检查|确认|补充|更新|修复|添加|删除|生成|验证)/u;
+const CHECKLIST_QUESTION_MARKERS = /是否|能否|有没有|？|\?/u;
+const EVIDENCE_OUTPUT_MARKERS = /证据|文件|命令|测试结果|行号|风险|未验证项|复现步骤/u;
 
 function validateSingleLineText(owner: string, property: string, value: string): void {
   if (/\r|\n/u.test(value)) {
@@ -296,6 +299,26 @@ export function validateTextList(
   return items;
 }
 
+function normalizeChecklistItem(item: string): string {
+  return item
+    .trim()
+    .replace(/^- \[[ xX]\]\s*/u, "")
+    .trim();
+}
+
+export function validateChecklistQuestions(skill: SkillDefinition): readonly string[] {
+  const items = validateTextList(skill, "checklist", "checklist item");
+  for (const [index, item] of items.entries()) {
+    const normalized = normalizeChecklistItem(item);
+    if (IMPERATIVE_CHECKLIST_PREFIX.test(normalized) && !CHECKLIST_QUESTION_MARKERS.test(normalized)) {
+      throw new Error(
+        `Skill ${skill.id} checklist[${index}] must be a checklist question; avoid imperative checklist item: ${normalized}`,
+      );
+    }
+  }
+  return items;
+}
+
 function renderTextListSection(
   skill: SkillDefinition,
   property: TextListProperty,
@@ -317,7 +340,7 @@ function renderConstraints(skill: SkillDefinition): string {
 function renderChecklist(skill: SkillDefinition): string {
   const checklist = skill.checklist ?? [];
   if (checklist.length === 0) return "";
-  validateTextList(skill, "checklist", "checklist item");
+  validateChecklistQuestions(skill);
   return `## 检查清单\n\n${checklist.map((item) => {
     const lines = String(item).trim().split(/\r?\n/);
     return lines.map((line, index) => index === 0 ? `- [ ] ${line}` : `  ${line}`).join("\n");
@@ -446,6 +469,27 @@ export function validateSkillOutputs(skill: SkillDefinition): SkillOutputsDefini
     throw new Error(`Skill ${skill.id} outputs.body must be a non-empty string when defined`);
   }
   return outputs;
+}
+
+export function skillOutputsContainEvidenceMarker(skill: SkillDefinition): boolean {
+  const outputs = skill.outputs;
+  if (outputs === undefined) return false;
+  const text = [
+    outputs.title,
+    outputs.body,
+    ...(outputs.items ?? []),
+  ].filter((item): item is string => typeof item === "string").join("\n");
+  return EVIDENCE_OUTPUT_MARKERS.test(text);
+}
+
+export function validateSkillOutputsEvidence(skill: SkillDefinition): void {
+  const outputs = validateSkillOutputs(skill);
+  if (!outputs) return;
+  if (!skillOutputsContainEvidenceMarker(skill)) {
+    throw new Error(
+      `Skill ${skill.id} outputs should name evidence fields such as 证据、文件、命令、测试结果、行号、风险、未验证项 or 复现步骤`,
+    );
+  }
 }
 
 function renderUserInput(skill: SkillDefinition, platform: PlatformType): string {

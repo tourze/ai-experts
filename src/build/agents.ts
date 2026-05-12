@@ -23,6 +23,7 @@ import { validateMermaidSyntax } from "./mermaid";
 import { renderWorkflowMermaidSource, renderWorkflowSection, validateWorkflow } from "./workflows";
 
 const AGENT_SKILL_ROUTING_GUIDANCE = "当列出的 skill 与任务相关时，必须显式按该 skill 的工作流执行。";
+const EVIDENCE_OUTPUT_MARKERS = /证据|文件|命令|测试结果|行号|风险|未验证项|复现步骤/u;
 
 function validateSingleLineText(owner: string, property: string, value: string): void {
   if (/\r|\n/u.test(value)) {
@@ -245,6 +246,53 @@ export function validateAgentOutputFormat(
     return format;
   }
   throw new Error(`Agent ${agent.id} outputFormat.kind must be "markdown", "json", "file-set", or "raw"`);
+}
+
+function agentOutputFormatText(format: AgentOutputFormatDefinition | undefined): string {
+  if (!format) return "";
+  if (format.kind === "raw") return format.body;
+  if (format.kind === "json") {
+    return [
+      format.introduction,
+      JSON.stringify(format.example),
+      ...(format.notes ?? []),
+    ].filter((item): item is string => typeof item === "string").join("\n");
+  }
+  if (format.kind === "file-set") {
+    return [
+      format.introduction,
+      ...format.files,
+      ...(format.notes ?? []),
+      ...(format.templates ?? []).flatMap((template) => [
+        template.heading,
+        template.intro,
+        template.title,
+        ...template.sections.flatMap((section) => [section.title, section.body]),
+      ]),
+    ].filter((item): item is string => typeof item === "string").join("\n");
+  }
+  return [
+    format.title,
+    ...format.sections.flatMap((section) => [section.title, section.body]),
+  ].join("\n");
+}
+
+export function agentOutputContainsEvidenceMarker(agent: AgentDefinition): boolean {
+  const text = [
+    agentOutputFormatText(agent.outputFormat),
+    ...(agent.qualityStandards ?? []),
+  ].join("\n");
+  return EVIDENCE_OUTPUT_MARKERS.test(text);
+}
+
+export function validateAgentOutputEvidence(agent: AgentDefinition): void {
+  validateAgentOutputFormat(agent);
+  validateAgentQualityStandards(agent);
+  if (!agentOutputContainsEvidenceMarker(agent)) {
+    throw new Error(
+      `Agent ${agent.id} outputFormat or qualityStandards should name evidence fields such as 证据、文件、命令、测试结果、行号、风险、未验证项 or 复现步骤`,
+    );
+  }
 }
 
 export function validateAgentWorkflow(agent: AgentDefinition): WorkflowDefinition | null {

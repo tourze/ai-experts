@@ -32,6 +32,7 @@ import { procedureRuntimeTarget, validateProcedureTarget } from "./procedures";
 import {
   skillSourceRoot,
   validateAntiPatterns,
+  validateChecklistQuestions,
   validateParameters,
   validateSkillGoal,
   validateSkillOutputs,
@@ -553,7 +554,7 @@ export function validateRegistry(registry: ComponentRegistry): ComponentSurface 
     }
     validateSkillOutputs(skill);
     if (skill.checklist !== undefined) {
-      validateTextList(skill, "checklist", "checklist item");
+      validateChecklistQuestions(skill);
     }
     validateAntiPatterns(skill);
     validateParameters(skill);

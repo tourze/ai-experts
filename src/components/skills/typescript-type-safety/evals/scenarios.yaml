@@ -1,0 +1,26 @@
+scenario_version: 1
+cases:
+  - id: ts_boundary_contract_evidence
+    prompt: "A Next.js route handler accepts user JSON and writes it to Prisma, but TS lets misspelled fields pass through. Redesign the boundary so bad fields fail at parse time and compile time."
+    trigger_expected: true
+    expected_trigger:
+      skills:
+        - typescript-type-safety
+      agents: []
+    fixtures:
+      - type: inline
+        path: app/api/users/route.ts
+        content: |
+          const body = await request.json();
+          await prisma.user.create({ data: body as any });
+    success_criteria:
+      - "Identifies the API payload as an external boundary needing a single canonical contract."
+      - "Proposes runtime parsing plus static type inference instead of widening assertions."
+      - "Separates upstream contract fixes from downstream call-site cleanup."
+    must_report_evidence:
+      - "Relevant file path and boundary function."
+      - "`any` or assertion escape hatch being removed or contained."
+      - "Recommended `tsc --noEmit` and test command results, or explicit未验证项."
+    prohibited_behaviors:
+      - "Do not solve by adding more optional properties or `as any`."
+      - "Do not claim tests or compiler checks passed without command evidence."

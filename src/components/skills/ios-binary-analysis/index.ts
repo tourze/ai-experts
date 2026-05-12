@@ -27,7 +27,7 @@ export const iosBinaryAnalysisSkill = defineSkill({
     "区分 app 代码和 framework 代码：第三方 framework 通常在 `Frameworks/` 目录下。",
   ],
   checklist: [
-    "确认 ipsw 已安装；如需通过 Homebrew 安装，先让用户确认包源和本机环境影响，再执行 `brew install blacktop/tap/ipsw`。",
+    "ipsw 是否已安装；如需通过 Homebrew 安装，是否已先让用户确认包源和本机环境影响，再执行 `brew install blacktop/tap/ipsw`？",
     "FairPlay DRM 加密的 IPA 需要先解密（`otool -l binary | grep cryptid`，cryptid=1 表示加密）。",
     "Swift 混淆后类名为乱码时用 `swift-demangle` 还原。",
     "列出 `Frameworks/` 下所有第三方 framework 及其版本。",

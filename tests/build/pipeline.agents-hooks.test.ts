@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { parse as parseYaml } from "yaml";
 import { afterEach, describe, expect, test, vi } from "vitest";
-import { emitAgent, hasStringTool, validateAgentBashBoundary, validateAgentOutputFormat, validateAgentQualityStandards, validateAgentWorkflow } from "../../src/build/agents.ts";
+import { emitAgent, hasStringTool, validateAgentBashBoundary, validateAgentOutputEvidence, validateAgentOutputFormat, validateAgentQualityStandards, validateAgentWorkflow } from "../../src/build/agents.ts";
 import { Platform, ensureDir, writeText } from "../../src/build/core.ts";
 import {
   DEFAULT_COMMAND_HOOK_TIMEOUT_SECONDS,
@@ -68,6 +68,18 @@ describe("build/pipeline agents and hooks", () => {
     expect(validateAgentWorkflow(fixture.agent)?.routes?.length).toBe(1);
     expect(() => validateAgentBashBoundary({ ...fixture.agent, bashBoundary: [] })).toThrow();
     expect(() => validateAgentQualityStandards({ ...fixture.agent, qualityStandards: [] })).toThrow();
+    expect(() => validateAgentOutputEvidence(fixture.agent)).not.toThrow();
+    expect(() =>
+      validateAgentOutputEvidence({
+        ...fixture.agent,
+        qualityStandards: ["输出必须完整。"],
+        outputFormat: defineAgentOutputFormat({
+          kind: "markdown",
+          title: "Fixture Report",
+          sections: [defineAgentOutputSection({ title: "Summary", body: "done" })],
+        }),
+      })
+    ).toThrow("outputFormat or qualityStandards should name evidence fields");
     expect(() => validateAgentOutputFormat({ ...fixture.agent, outputFormat: { kind: "raw", body: "" } })).toThrow();
     expect(() =>
       validateAgentOutputFormat({

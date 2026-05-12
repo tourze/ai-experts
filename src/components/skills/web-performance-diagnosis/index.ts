@@ -47,7 +47,7 @@ export const webPerformanceDiagnosisSkill = defineSkill({
     "事件处理链路无长任务；关键交互在低端设备和慢网下也可用。",
     "图片、视频、广告、嵌入内容都已声明尺寸或 `aspect-ratio`。",
     "无依赖请求已 Promise.all 并行化；hydration 无闪烁。",
-    "修复后同时复测实验室数据与真实用户数据。",
+    "修复后是否同时复测实验室数据与真实用户数据，并报告测试结果？",
   ],
   relatedSkills: [
     {

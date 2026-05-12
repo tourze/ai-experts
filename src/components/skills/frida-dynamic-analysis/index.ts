@@ -27,7 +27,7 @@ export const fridaDynamicAnalysisSkill = defineSkill({
     "hook 早加载模块时先检查 `Process.findModuleByName()` 是否返回 null，用轮询等模块加载后再 attach。",
   ],
   checklist: [
-    "确认 frida-server 版本与 frida-tools 版本匹配。",
+    "frida-server 版本与 frida-tools 版本是否匹配，并已记录命令结果？",
     "先用 `--pause` 确保 hook 在应用启动前生效（仅需要 hook 初始化逻辑时）。",
     "二进制数据用 `hexdump()` 而非 `toString()`。",
     "hook 回调包裹 try/catch，避免异常导致进程崩溃。",
