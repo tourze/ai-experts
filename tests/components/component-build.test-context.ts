@@ -30,7 +30,8 @@ export function getTmpDistDir(): string {
   return tmpDistDir;
 }
 export const codexSystemSkillIdSet = new Set<string>(codexSystemSkillIds);
-export const componentBuildSetupTimeoutMs = 300_000;
+// Full-suite runs can execute this integration build under heavy worker contention.
+export const componentBuildSetupTimeoutMs = 1_800_000;
 
 type ParsedTomlScalar = string | boolean | number;
 type ParsedGeneratedToml = {
